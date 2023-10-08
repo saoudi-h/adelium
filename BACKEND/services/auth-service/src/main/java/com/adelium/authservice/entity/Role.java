@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @Entity
-public class Role extends BaseEntity implements GrantedAuthority {
+public class Role extends BaseEntity<Long> implements GrantedAuthority {
     @Column(nullable = false, unique = true)
     private String authority;
 
