@@ -10,14 +10,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
+
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @SuperBuilder
-public abstract class BaseEntity {
+public abstract class BaseEntity<T extends Serializable> {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    protected Long id;
+    protected T id;
 }
