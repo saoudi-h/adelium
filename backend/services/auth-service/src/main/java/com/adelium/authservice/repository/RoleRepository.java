@@ -1,8 +1,7 @@
 package com.adelium.authservice.repository;
 
 import com.adelium.authservice.entity.Role;
-import com.adelium.authservice.entity.User;
-import com.adelium.common.model.BaseRepository;
+import com.adelium.common.repository.BaseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
