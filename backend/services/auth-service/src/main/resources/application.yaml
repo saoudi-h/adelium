@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: auth-service
   datasource:
     url: jdbc:mysql://localhost:3306/adel_auth?createDatabaseIfNotExist=true
     username: root
@@ -13,4 +15,9 @@ spring:
         format_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 
