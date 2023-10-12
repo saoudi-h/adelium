@@ -1,6 +1,29 @@
 spring:
-  application:
+    application:
     name: gateway
+
+  cloud:
+    gateway:
+      routes:
+        # auth route
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth
+
+        # eureka route
+        - id: discovery-server
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+
+        # eureka route static
+        - id: discovery-server
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/**
 
 eureka:
   client:
@@ -15,4 +38,5 @@ logging:
         cloud:
           gateway: trace
           gateway.route.RouteDefinitionLocator: info
+
 
