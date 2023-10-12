@@ -1,5 +1,8 @@
 spring:
-    application:
+  output:
+    ansi:
+      enabled: always
+  application:
     name: gateway
 
   cloud:

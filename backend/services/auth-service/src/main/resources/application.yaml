@@ -1,4 +1,7 @@
 spring:
+  output:
+    ansi:
+      enabled: always
   application:
     name: auth-service
   datasource:
@@ -21,3 +24,5 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
 
+server:
+  port: 0 # Random port based on local machine
