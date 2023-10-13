@@ -12,7 +12,7 @@ spring:
         - id: auth-service
           uri: lb://auth-service
           predicates:
-            - Path=/auth
+            - Path=/auth/**
 
         # eureka route
         - id: discovery-server
