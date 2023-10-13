@@ -5,7 +5,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@SuperBuilder
+@Builder
 @Entity
 public class Role extends BaseEntity<Long> implements GrantedAuthority {
     @Column(nullable = false, unique = true)
