@@ -1,48 +1,22 @@
 plugins {
-	id 'java'
+	id 'com.adelium.web.common-conventions'
 	id 'org.springframework.boot' version '3.1.4'
 	id 'io.spring.dependency-management' version '1.1.3'
 }
 
-group = 'com.adelium'
-version = '0.0.1-SNAPSHOT'
-
-java {
-	sourceCompatibility = '17'
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-repositories {
-	mavenCentral()
-}
-
-tasks.register('prepareKotlinBuildScriptModel') {
-
-}
-
 dependencies {
 	implementation project(':common')
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.3'
-	implementation 'io.jsonwebtoken:jjwt-api:0.12.2'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.2'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.2'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+	implementation libs.spring.boot.jpa
+	implementation libs.spring.boot.security
+	implementation libs.spring.boot.web
+	implementation libs.mysql.connector
+	implementation libs.spring.boot.actuator
+	implementation libs.spring.cloud.eureka.client
+	implementation libs.jjwt.api
+	runtimeOnly libs.jjwt.impl
+	runtimeOnly libs.jjwt.jackson
+	compileOnly libs.lombok
+	developmentOnly libs.spring.boot.devtools
+	annotationProcessor libs.lombok
+	testImplementation libs.spring.security.test
 }
