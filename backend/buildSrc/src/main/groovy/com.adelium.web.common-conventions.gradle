@@ -1,0 +1,46 @@
+plugins {
+	id 'java'
+	id 'com.diffplug.spotless'
+}
+
+repositories {
+    mavenCentral()
+}
+
+group = 'com.adelium'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+spotless {
+	ratchetFrom 'origin/main'
+
+	format 'misc', {
+		target '*.gradle', '*.md', '.gitignore'
+		trimTrailingWhitespace()
+		indentWithTabs()
+		endWithNewline()
+	}
+	java {
+		googleJavaFormat('1.18.1').aosp().reflowLongStrings().skipJavadocFormatting()
+		formatAnnotations()
+		licenseHeader '/* (C)$YEAR */'
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+dependencies {
+	implementation libs.google.java.format
+	testImplementation libs.spring.boot.test
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
