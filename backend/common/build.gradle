@@ -2,22 +2,21 @@
 // https://www.youtube.com/watch?v=tr5_OWgXDiw
 
 plugins {
-	id 'com.adelium.web.common-conventions'
-	id 'java-library'
-	id 'org.springframework.boot' version '3.1.4' apply false
-	id 'io.spring.dependency-management' version '1.1.3'
+    id 'com.adelium.web.common-conventions'
+    id 'java-library'
+    id 'org.springframework.boot' version '3.1.4' apply false
+    id 'io.spring.dependency-management' version '1.1.3'
 }
 
 dependencies {
-	implementation libs.spring.boot.jpa
-	implementation libs.spring.boot.web
-	compileOnly libs.lombok
-	annotationProcessor libs.lombok
-
+    implementation libs.spring.boot.jpa
+    implementation libs.spring.boot.web
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 }
 
 dependencyManagement {
-	imports {
-		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-	}
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
 }

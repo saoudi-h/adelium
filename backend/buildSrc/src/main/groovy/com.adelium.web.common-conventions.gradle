@@ -15,19 +15,50 @@ java {
 }
 
 spotless {
-	ratchetFrom 'origin/main'
-
-	format 'misc', {
-		target '*.gradle', '*.md', '.gitignore'
+	java {
+		target fileTree('.') {
+				include '**/*.java'
+				exclude '**/build/**', '**/build-*/**'
+		}
+		googleJavaFormat('1.18.1').aosp().reflowLongStrings().skipJavadocFormatting()
+		removeUnusedImports()
+		formatAnnotations()
 		trimTrailingWhitespace()
-		indentWithTabs()
+      	endWithNewline()
+	    toggleOffOn()
+		licenseHeader '/* (C)$YEAR */'
+   	}
+
+
+	groovyGradle {
+		target fileTree('.') {
+				include '**/*.gradle'
+				exclude '**/build/**', '**/build-*/**'
+		}
+		greclipse()
+		indentWithSpaces(4)
+		trimTrailingWhitespace()
 		endWithNewline()
 	}
-	java {
-		googleJavaFormat('1.18.1').aosp().reflowLongStrings().skipJavadocFormatting()
-		formatAnnotations()
-		licenseHeader '/* (C)$YEAR */'
-	}
+	format 'xml', {
+      target fileTree('.') {
+            include '**/*.xml'
+            exclude '**/build/**', '**/build-*/**'
+      }
+      eclipseWtp('xml')
+      trimTrailingWhitespace()
+      indentWithSpaces(2)
+      endWithNewline()
+   }
+	format 'misc', {
+      target fileTree('.') {
+            include '**/*.md', '**/.gitignore'
+            exclude '**/build/**', '**/build-*/**'
+      }
+      trimTrailingWhitespace()
+      indentWithSpaces(2)
+      endWithNewline()
+   }
 }
 
 configurations {

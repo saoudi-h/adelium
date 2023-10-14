@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.adelium.web.authservice.entity;
 
 import com.adelium.web.authservice.security.TokenType;
@@ -25,6 +26,6 @@ public class Token extends BaseEntity<Long> {
     public boolean expired;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName="id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User user;
 }

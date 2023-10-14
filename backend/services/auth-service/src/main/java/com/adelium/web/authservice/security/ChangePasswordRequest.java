@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.adelium.web.authservice.security;
 
 import lombok.Builder;

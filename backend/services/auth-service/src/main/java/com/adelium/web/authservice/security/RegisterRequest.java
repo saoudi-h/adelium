@@ -1,12 +1,12 @@
+/* (C)2023 */
 package com.adelium.web.authservice.security;
 
 import com.adelium.web.authservice.entity.Role;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 @Data
 @Builder

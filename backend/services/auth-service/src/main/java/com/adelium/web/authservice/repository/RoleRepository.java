@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.adelium.web.authservice.repository;
 
 import com.adelium.web.authservice.entity.Role;
@@ -7,5 +8,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Transactional
-public interface RoleRepository extends BaseRepository<Role, Long> {
-}
+public interface RoleRepository extends BaseRepository<Role, Long> {}

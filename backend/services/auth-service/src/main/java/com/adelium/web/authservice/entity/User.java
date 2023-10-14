@@ -1,11 +1,12 @@
+/* (C)2023 */
 package com.adelium.web.authservice.entity;
+
 import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.List;
 import java.util.Set;
+import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -18,7 +19,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable=false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -46,11 +47,10 @@ public class User extends BaseEntity<Long> implements UserDetails {
     @Builder.Default
     private boolean enabled = true;
 
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> authorities;
 

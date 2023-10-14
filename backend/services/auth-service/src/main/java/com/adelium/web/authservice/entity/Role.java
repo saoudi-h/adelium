@@ -1,14 +1,14 @@
+/* (C)2023 */
 package com.adelium.web.authservice.entity;
 
 import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

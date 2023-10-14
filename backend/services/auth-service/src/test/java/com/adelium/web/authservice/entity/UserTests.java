@@ -1,11 +1,14 @@
+/* (C)2023 */
 package com.adelium.web.authservice.entity;
 
 import static org.assertj.core.api.Assertions.*;
+
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 @DataJpaTest
 public class UserTests {
 
-    public void createUserTest(){
+    public void createUserTest() {
         User user = new User();
         user.setUsername("username");
         user.setEmail("username@adelium.com");

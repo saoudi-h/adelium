@@ -1,8 +1,10 @@
+/* (C)2023 */
 package com.adelium.web.authservice.config;
 
 import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.authservice.repository.UserRepository;
-
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,21 +17,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
-
     @Bean
-    public UserDetailsService userDetailsService(){
-        return username -> userRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+    public UserDetailsService userDetailsService() {
+        return username ->
+                userRepository
+                        .findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -40,9 +40,9 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
         return config.getAuthenticationManager();
-
     }
 
     @Bean

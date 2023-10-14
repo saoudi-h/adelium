@@ -3,3 +3,6 @@
 
 cd frontend
 npx lint-staged
+
+cd ../backend
+./gradlew spotlessApply 

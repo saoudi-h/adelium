@@ -1,18 +1,16 @@
+/* (C)2023 */
 package com.adelium.web.authservice.controller;
 
 import com.adelium.web.authservice.security.AuthenticationRequest;
 import com.adelium.web.authservice.security.AuthenticationResponse;
 import com.adelium.web.authservice.security.RegisterRequest;
+import com.adelium.web.authservice.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.adelium.web.authservice.service.AuthService;
-
-import lombok.RequiredArgsConstructor;
-
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,14 +25,14 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
     @PostMapping("/refresh")
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response) throws IOException {
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         service.refreshToken(request, response);
     }
 
