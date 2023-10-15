@@ -2,6 +2,13 @@ plugins {
     id 'groovy-gradle-plugin'
 }
 
+tasks.register('updateGitHooks', Copy) {
+    from '../../scripts/pre-commit'
+    into '../../.git/hooks'
+}
+
+compileJava.dependsOn updateGitHooks
+
 repositories {
     gradlePluginPortal()
 }
