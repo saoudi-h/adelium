@@ -14,6 +14,7 @@ dependencies {
     implementation libs.mysql.connector
     implementation libs.spring.boot.actuator
     implementation libs.spring.cloud.eureka.client
+    implementation libs.spring.cloud.config.client
     compileOnly libs.lombok
     developmentOnly libs.spring.boot.devtools
     annotationProcessor libs.lombok

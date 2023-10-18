@@ -7,4 +7,5 @@ plugins {
 dependencies {
     implementation libs.spring.cloud.gateway
     implementation libs.spring.cloud.eureka.client
+    implementation libs.spring.cloud.config.client
 }

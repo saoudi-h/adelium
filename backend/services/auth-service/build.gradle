@@ -13,6 +13,7 @@ dependencies {
     implementation libs.spring.boot.actuator
     implementation libs.spring.cloud.eureka.client
     implementation libs.jjwt.api
+    implementation libs.spring.cloud.config.client
     runtimeOnly libs.jjwt.impl
     runtimeOnly libs.jjwt.jackson
     compileOnly libs.lombok
