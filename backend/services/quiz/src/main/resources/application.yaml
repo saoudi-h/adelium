@@ -1,37 +1,5 @@
 spring:
-  output:
-    ansi:
-      enabled: always
+  config:
+    import: optional:configserver:http://localhost:8888
   application:
-    name: auth-service
-  datasource:
-    url: jdbc:mysql://localhost:3306/adel_quiz?createDatabaseIfNotExist=true
-    username: root
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQLDialect
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
-
-server:
-  port: 8082 #  0 Random port based on local machine
-
-
-#application:
-#  security:
-#    jwt:
-#      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-#      expiration: 86400000 # a day
-#      refresh-token:
-#        expiration: 604800000 # 7 days
+    name: quiz
