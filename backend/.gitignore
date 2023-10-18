@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### secret config ###
+**/application-secret.yaml
+**/application-secret.yml
+**/application-secret.properties
