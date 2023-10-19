@@ -4,19 +4,9 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/typography"),require('flowbite/plugin'), require('daisyui')],
+  plugins: [require('@tailwindcss/typography'), require('daisyui')],
   daisyui: {
-    themes: [
-      {
-        light: {
-          primary: '#a991f7',
-          secondary: '#f6d860',
-          accent: '#37cdbe',
-          neutral: '#3d4451',
-          'base-100': '#ffffff',
-        },
-      },
-      'business',
-    ],
+    themes: ['light', 'dark', 'cupcake'],
+    darkTheme: 'dark',
   },
 }
