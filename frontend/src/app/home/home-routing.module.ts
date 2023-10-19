@@ -11,6 +11,21 @@ const routes: Routes = [
         loadComponent: () => import('./pages/home/home.component').then(mod => mod.HomeComponent),
       },
       {
+        path: 'login',
+        loadComponent: () =>
+          import('./pages/login/login.component').then(mod => mod.LoginComponent),
+      },
+      {
+        path: 'logout',
+        loadComponent: () =>
+          import('./pages/logout/logout.component').then(mod => mod.LogoutComponent),
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./pages/register/register.component').then(mod => mod.RegisterComponent),
+      },
+      {
         path: '**',
         loadComponent: () =>
           import('./pages/not-found/not-found.component').then(mod => mod.NotFoundComponent),
