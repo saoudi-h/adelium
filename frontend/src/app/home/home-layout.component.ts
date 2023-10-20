@@ -10,7 +10,10 @@ import { HomeRoutingModule } from './home-routing.module'
   template: `
     <div class="flex flex-col min-h-screen justify-between">
       <app-navbar></app-navbar>
-      <router-outlet></router-outlet>
+      <main
+        class="bg-base-200 w-full h-max flex-1 mt-20 flex items-center justify-center content-center">
+        <router-outlet></router-outlet>
+      </main>
       <app-footer></app-footer>
     </div>
   `,
