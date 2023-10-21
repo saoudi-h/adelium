@@ -1,25 +1,45 @@
 #!/bin/sh
 
-###################################################################
-##  frontend
-###################################################################
-cd frontend
-npx lint-staged
-cd ..
-###################################################################
-##  backend
-###################################################################
+# Récupère le message du dernier commit
+# commit_message=$(cat .git/COMMIT_EDITMSG)
 
-# Part 1
 stagedFiles=$(git diff --staged --name-only)
-# Part 2
-echo "Running spotlessApply. Formatting code..."
-cd backend
-./gradlew spotlessApply
-cd ..
-# Part 3
+back=false
+front=false
 for file in $stagedFiles; do
-  if test -f "$file"; then
-    git add $file
+  if $back && $front; then
+    break
+  fi
+  if ! $front && [[ $file == "frontend/"* ]]; then
+    front=true
+  fi
+  if ! $back && [[ $file == "backend/"* ]]; then
+    back=true
   fi
 done
+
+# Vérifie si le message du commit commence par [front]
+if $front; then
+  echo "Front-end commit détecté. Exécution de npx lint-staged pour le front-end..."
+  (
+    cd frontend || exit
+    npx lint-staged
+  )
+fi
+
+if $back; then
+  echo "Running spotlessApply. Formatting code..."
+  (
+    cd backend || exit
+    ./gradlew spotlessApply
+  )
+
+  # Part 3
+  for file in $stagedFiles; do
+    if test -f "$file"; then
+      git add "$file"
+    fi
+  done
+fi
+
+exit 0
