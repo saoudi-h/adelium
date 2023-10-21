@@ -1,8 +1,8 @@
 import { ThemeService, ThemeType } from '@/core/services/theme.service'
-import { Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { SvgSunComponent } from '@shared/components/icons/sun.component'
+import { Component, OnInit } from '@angular/core'
 import { SvgMoonComponent } from '@shared/components/icons/moon.component'
+import { SvgSunComponent } from '@shared/components/icons/sun.component'
 import { SvgSystemComponent } from '@shared/components/icons/system.component'
 
 @Component({

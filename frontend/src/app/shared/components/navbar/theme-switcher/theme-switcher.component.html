@@ -2,7 +2,7 @@
   <label
     tabindex="0"
     for=""
-    class="btn btn-ghost btn-square m-2 flex justify-center items-center content-center"
+    class="btn btn-square btn-ghost m-2 flex content-center items-center justify-center"
     ngSwitch="{{ selectedTheme }}">
     <app-svg-sun *ngSwitchCase="'light'" className="h-6 w-6" />
     <app-svg-moon *ngSwitchCase="'dark'" className="h-6 w-6" />
@@ -10,14 +10,14 @@
   </label>
   <ul
     tabindex="0"
-    class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box flex gap-2">
+    class="menu dropdown-content rounded-box z-[1] flex gap-2 bg-base-200 p-2 shadow">
     <ng-container *ngFor="let theme of themes; let i = index">
       <ng-container *ngIf="theme.theme !== selectedTheme">
         <li>
           <button
             (click)="setTheme(theme.theme)"
             type="button"
-            class="btn btn-square bg-base-300 flex justify-center items-center content-center">
+            class="btn btn-square flex content-center items-center justify-center bg-base-300">
             <div class="" ngSwitch="{{ theme.theme }}">
               <app-svg-sun className="h-6 w-6" *ngSwitchCase="'light'" />
               <app-svg-moon className="h-6 w-6" *ngSwitchCase="'dark'" />

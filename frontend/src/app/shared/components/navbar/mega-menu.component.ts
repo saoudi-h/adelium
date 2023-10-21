@@ -1,5 +1,5 @@
-import { Component } from '@angular/core'
 import { CommonModule } from '@angular/common'
+import { Component } from '@angular/core'
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common'
   standalone: true,
   template: ` <summary>Parent</summary>
     <ul
-      class="xl:menu-horizontal lg:min-w-max rounded-box mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 w-52"
+      class="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow xl:menu-horizontal lg:min-w-max"
       tabindex="0">
       <li>
         <a>Solutions</a>

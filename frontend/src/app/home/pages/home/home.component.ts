@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
-import { NavbarComponent } from '../../../shared/components/navbar/navbar.component'
-import { LandingComponent } from '../../../shared/components/landing/landing.component'
 import { FooterComponent } from '../../../shared/components/footer/footer.component'
+import { LandingComponent } from '../../../shared/components/landing/landing.component'
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component'
 
 @Component({
   selector: 'app-home',
