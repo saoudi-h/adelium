@@ -4,8 +4,38 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['noto sans', 'ui-sans-serif', 'system-ui'],
-        serif: ['noto', 'ui-serif', 'Georgia'],
+        sans: ['Noto', 'ui-sans-serif', 'system-ui'],
+        serif: ['Noto Serif', 'ui-serif', 'Georgia'],
+      },
+      fontSize: {
+        'res-big': [
+          'clamp(1.3rem, 0.8rem + 2.6667vw, 4rem)',
+          {
+            lineHeight: '1.3',
+          },
+        ],
+        'res-h1': [
+          'clamp(1rem, 0.5833rem + 2.2222vw, 3.25rem)',
+          {
+            lineHeight: '1.2',
+          },
+        ],
+      },
+      screens: {
+        '-2xl': { max: '1535px' },
+        // => @media (max-width: 1535px) { ... }
+
+        '-xl': { max: '1279px' },
+        // => @media (max-width: 1279px) { ... }
+
+        '-lg': { max: '1023px' },
+        // => @media (max-width: 1023px) { ... }
+
+        '-md': { max: '767px' },
+        // => @media (max-width: 767px) { ... }
+
+        '-sm': { max: '639px' },
+        // => @media (max-width: 639px) { ... }
       },
     },
   },
@@ -14,34 +44,36 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: '#c90072',
-          secondary: '#96ffc8',
-          accent: '#4fcc39',
-          neutral: '#1f1825',
+          primary: '#c2410c',
+          secondary: '#075e4b',
+          accent: '#9d700b',
+          neutral: '#1e3a8a',
           'base-100': '#f2f5f8',
-          info: '#63a0cf',
-          success: '#19ae90',
-          warning: '#efd252',
-          error: '#f86d82',
+          info: '#22b4dd',
+          success: '#18c3aa',
+          warning: '#b17e10',
+          error: '#e51d1d',
           '--rounded-box': '2rem',
           '--rounded-btn': '2rem', // border radius rounded-btn utility class, used in buttons and similar element
           '--rounded-badge': '1.9rem',
+          '--btn-text-case': 'none',
         },
       },
       {
         dark: {
-          primary: '#e82c8a',
-          secondary: '#eda565',
-          accent: '#a1fcd6',
-          neutral: '#1a1b28',
-          'base-100': '#2e435c',
-          info: '#3562de',
-          success: '#148053',
-          warning: '#ac6206',
-          error: '#f75f64',
+          primary: '#c2410c',
+          secondary: '#075e4b',
+          accent: '#fbfa8d',
+          neutral: '#1e3a8a',
+          'base-100': '#334859',
+          info: '#22b4dd',
+          success: '#18c3aa',
+          warning: '#b17e10',
+          error: '#e51d1d',
           '--rounded-box': '2rem',
           '--rounded-btn': '2rem', // border radius rounded-btn utility class, used in buttons and similar element
           '--rounded-badge': '1.9rem',
+          '--btn-text-case': 'none',
         },
       },
       'cupcake',

@@ -1,11 +1,8 @@
 module.exports = {
-  'prettier/prettier': [
-    'error',
-    {
-      endOfLine: 'auto',
-    },
+  plugins: [
+    'prettier-plugin-organize-imports',
+    'prettier-plugin-tailwindcss', // MUST come last
   ],
-  plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-organize-imports'],
   tabWidth: 2,
   useTabs: false,
   singleQuote: true,
