@@ -9,9 +9,9 @@ import { SvgNotFoundComponent } from './svg-not-found.component'
       <div class="hero-content flex-col lg:flex-row-reverse">
         <div
           class="flex w-full flex-col items-center justify-center text-center lg:w-1/2 lg:px-2 xl:px-0">
-          <h1 class="font-serif text-res-big">
+          <h1 class="text-res-big font-serif">
             <p class="text-6xl font-bold tracking-wider text-accent md:text-7xl lg:text-8xl">404</p>
-            <p class="font-serif text-res-h1 font-bold">Page introuvable.</p>
+            <p class="text-res-h1 font-serif font-bold">Page introuvable.</p>
           </h1>
           <p class="py-4 font-light text-base-content/60 md:text-lg xl:text-2xl">
             Sorry, the page you are looking for could not be found.
