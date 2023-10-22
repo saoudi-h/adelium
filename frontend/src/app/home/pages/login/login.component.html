@@ -1,10 +1,10 @@
 <section class="container mx-auto">
-  <div class="hero relative z-10 mb-12 mt-20 sm:mt-12">
+  <div class="hero relative z-10 mb-12 mt-8 sm:mt-20">
     <div class="hero-content flex-col lg:flex-row-reverse">
       <div class="flex flex-col items-center justify-center gap-6">
         <div class="text-center lg:text-left">
-          <h1 class="font-serif text-4xl font-bold md:text-5xl">Connection en un Clin d'Œil!</h1>
-          <p class="py-8">
+          <h1 class="font-serif text-res-h1 font-bold">Connection en un Clin d'Œil!</h1>
+          <p class="py-4 font-light text-base-content/60 md:text-lg xl:text-2xl">
             Pour une connexion rapide, utilisez votre compte GitHub ou Google. Si vous préférez,
             optez pour une inscription classique en quelques étapes simples.
           </p>
@@ -58,16 +58,36 @@
           <div class="divider divider-vertical"></div>
           <form>
             <div class="form-control">
-              <label for="" class="label">
-                <span class="label-text">Email</span>
-              </label>
-              <input type="email" placeholder="email" class="input input-bordered" required />
+              <div class="group relative z-0 mb-6 w-full">
+                <input
+                  type="email"
+                  name="floating_email"
+                  id="floating_email"
+                  class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
+                  placeholder=" "
+                  required />
+                <label
+                  for="floating_email"
+                  class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-base-content/50 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
+                  >Adresse Email</label
+                >
+              </div>
             </div>
             <div class="form-control">
-              <label for="" class="label">
-                <span class="label-text">Mot de passe</span>
-              </label>
-              <input type="password" placeholder="password" class="input input-bordered" required />
+              <div class="group relative z-0 mb-6 w-full">
+                <input
+                  type="password"
+                  name="floating_password"
+                  id="floating_password"
+                  class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
+                  placeholder=" "
+                  required />
+                <label
+                  for="floating_password"
+                  class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
+                  >Mot de passe
+                </label>
+              </div>
               <label for="" class="label">
                 <a href="#" class="link-hover link label-text-alt">Mot de passe oublié ?</a>
               </label>
@@ -110,5 +130,5 @@
     </div>
   </div>
   <div
-    class="pointer-events-none absolute left-0 top-1/2 z-0 aspect-square w-1/2 -translate-y-1/2 rounded-full bg-primary opacity-5 blur-3xl [transform:translate3d(0,0,0)]"></div>
+    class="pointer-events-none absolute left-0 top-1/2 z-0 aspect-square w-1/2 -translate-y-1/2 rounded-full bg-primary opacity-10 blur-3xl [transform:translate3d(0,0,0)]"></div>
 </section>
