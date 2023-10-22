@@ -1,9 +1,12 @@
 <header
-  class="sticky top-0 z-30 flex h-16 w-full justify-center bg-base-100 bg-opacity-90 text-base-content backdrop-blur transition-all duration-100 [transform:translate3d(0,0,0)]">
+  class="sticky top-0 z-30 flex h-16 w-full justify-center bg-base-300 text-base-content backdrop-blur transition-all duration-100 [transform:translate3d(0,0,0)]">
   <div class="container navbar mx-auto">
     <div class="navbar-start">
       <div class="dropdown">
-        <div tabindex="0" class="btn btn-ghost lg:hidden">
+        <label
+          for="my-drawer-3"
+          aria-label="open sidebar"
+          class="btn btn-square btn-ghost lg:hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5"
@@ -16,17 +19,7 @@
               stroke-width="2"
               d="M4 6h16M4 12h8m-8 6h16" />
           </svg>
-        </div>
-        <ul
-          tabindex="0"
-          class="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow">
-          <li><a>Item 1</a></li>
-          <li class="dropdown">
-            <a>Parent</a>
-            <details megaMenu></details>
-          </li>
-          <li><a>Item 3</a></li>
-        </ul>
+        </label>
       </div>
       <a
         class="btn btn-ghost text-xl normal-case"
@@ -39,7 +32,13 @@
       <ul class="menu menu-horizontal px-1">
         <li><a>Item 1</a></li>
         <li tabindex="0">
-          <details megaMenu></details>
+          <details>
+            <summary>Parent</summary>
+            <ul
+              class="menu dropdown-content rounded-box menu-sm left-[-50%] z-[1] mt-3 w-52 bg-base-100 p-2 shadow xl:menu-horizontal lg:min-w-max"
+              tabindex="0"
+              megaMenu></ul>
+          </details>
         </li>
         <li><a>Item 3</a></li>
       </ul>
@@ -51,7 +50,7 @@
 
       <!-- se connecter  -->
       <a
-        class="btn btn-ghost"
+        class="btn btn-ghost -md:btn-square"
         routerLink="/login"
         routerLinkActive="btn-disabled"
         ariaCurrentWhenActive="page">
@@ -65,7 +64,7 @@
             d="M7.5 3.75A1.5 1.5 0 006 5.25v13.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5V15a.75.75 0 011.5 0v3.75a3 3 0 01-3 3h-6a3 3 0 01-3-3V5.25a3 3 0 013-3h6a3 3 0 013 3V9A.75.75 0 0115 9V5.25a1.5 1.5 0 00-1.5-1.5h-6zm10.72 4.72a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H9a.75.75 0 010-1.5h10.94l-1.72-1.72a.75.75 0 010-1.06z"
             clip-rule="evenodd" />
         </svg>
-        Se connecter
+        <span class="ml-2 hidden font-normal md:inline"> Se connecter </span>
       </a>
       <!-- se connecter  -->
     </div>

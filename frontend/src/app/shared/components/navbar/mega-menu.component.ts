@@ -5,54 +5,53 @@ import { Component } from '@angular/core'
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[megaMenu]',
   standalone: true,
-  template: ` <summary>Parent</summary>
-    <ul
-      class="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow xl:menu-horizontal lg:min-w-max"
-      tabindex="0">
-      <li>
-        <a>Solutions</a>
-        <ul>
-          <li><a>Design</a></li>
-          <li><a>Development</a></li>
-          <li><a>Hosting</a></li>
-          <li><a>Domain register</a></li>
-        </ul>
-      </li>
-      <li>
-        <a>Enterprise</a>
-        <ul>
-          <li><a>CRM software</a></li>
-          <li><a>Marketing management</a></li>
-          <li><a>Security</a></li>
-          <li><a>Consulting</a></li>
-        </ul>
-      </li>
-      <li>
-        <a>Products</a>
-        <ul>
-          <li><a>UI Kit</a></li>
-          <li><a>Wordpress themes</a></li>
-          <li><a>Wordpress plugins</a></li>
-          <li>
-            <a>Open source</a>
-            <ul>
-              <li><a>Auth management system</a></li>
-              <li><a>VScode theme</a></li>
-              <li><a>Color picker app</a></li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a>Company</a>
-        <ul>
-          <li><a>About us</a></li>
-          <li><a>Contact us</a></li>
-          <li><a>Privacy policy</a></li>
-          <li><a>Press kit</a></li>
-        </ul>
-      </li>
-    </ul>`,
+  template: ` <li>
+      <a>Formations</a>
+      <ul>
+        <li><a>Cours en ligne</a></li>
+        <li><a>Ateliers pratiques</a></li>
+        <li>
+          <a>Programmes de formation</a>
+          <ul>
+            <li><a>Développement web</a></li>
+            <li><a>Intelligence artificielle</a></li>
+            <li><a>Sécurité informatique</a></li>
+          </ul>
+        </li>
+        <li><a>Calendrier des formations</a></li>
+      </ul>
+    </li>
+    <li>
+      <a>Ressources pédagogiques</a>
+      <ul>
+        <li><a>Tutoriels en ligne</a></li>
+        <li><a>Exercices pratiques</a></li>
+        <li>
+          <a>Quiz d'évaluation</a>
+          <ul>
+            <li><a>Quiz de développement web</a></li>
+            <li><a>Quiz d'IA et machine learning</a></li>
+            <li><a>Quiz de sécurité informatique</a></li>
+          </ul>
+        </li>
+        <li><a>Blog</a></li>
+      </ul>
+    </li>
+    <li>
+      <a>À propos de nous</a>
+      <ul>
+        <li><a>Notre équipe</a></li>
+        <li><a>Nos valeurs</a></li>
+        <li><a>Nos partenaires</a></li>
+      </ul>
+    </li>
+    <li>
+      <a>Nous contacter</a>
+      <ul>
+        <li><a>Formulaire de contact</a></li>
+        <li><a>Nos bureaux</a></li>
+      </ul>
+    </li>`,
   imports: [CommonModule],
 })
 export class MegaMenuComponent {}
