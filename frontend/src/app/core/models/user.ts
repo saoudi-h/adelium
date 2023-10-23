@@ -1,15 +1,14 @@
 import { BaseModel } from './base-model'
-import { Token } from './token'
 
 export class User extends BaseModel {
-  private _userName: string
+  private _username: string
 
   private _expireAt: number
 
-  constructor(id: number, userName: string, expireAt: number) {
+  constructor(username: string, expireAt: number, id = 0) {
     super()
     this.id = id
-    this._userName = userName
+    this._username = username
     this._expireAt = expireAt
   }
 
@@ -18,23 +17,15 @@ export class User extends BaseModel {
   }
 
   ///////////////////////////////////////////////////////////////////////////////////
-  // static methods
-  ///////////////////////////////////////////////////////////////////////////////////
-  static fromToken(token: Token): User {
-    // TODO implemente fromToken
-    throw new Error('Method not implemented.')
-  }
-
-  ///////////////////////////////////////////////////////////////////////////////////
   // getters && setters
   ///////////////////////////////////////////////////////////////////////////////////
 
-  // userName
-  public get userName(): string {
-    return this._userName
+  // username
+  public get username(): string {
+    return this._username
   }
-  public set userName(value: string) {
-    this._userName = value
+  public set username(value: string) {
+    this._username = value
   }
 
   // expireAt

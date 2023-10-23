@@ -1,76 +1,88 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
+import { Token } from '@core/dto/Token'
+import { UserLogin } from '@core/dto/UserLogin'
+import { UserToken } from '@core/dto/UserToken'
 import { Role } from '@core/models/role'
-import { Token } from '@core/models/token'
-import { User } from '@core/models/user'
+import { BehaviorSubject, Observable, of } from 'rxjs'
 import { environment } from 'src/environments/environment.development'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private url = `${environment.baseUrl}/auth-service`
-  private loggedIn = false
+  private url = `${environment.baseUrl}/auth`
   private token: Token | null = null
-  private user: User | null = null
+  private user: UserToken | null = null
   private redirectUrl: string | null = null
+
+  private isLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
+  public isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable()
 
   constructor(
     private httpClient: HttpClient,
     private router: Router
   ) {
-    this.token = this.getTokenFromLocalStorage()
+    this.token = this.getToken()
+    if (!this.isLoggedInSubject.value) return
     this.user = this.getUserFromToken()
     if (this.hasTokenExpired()) {
       this.refresh()
     }
   }
 
-  getUserFromToken(): User | null {
-    if (!this.token) {
-      return null
-    }
-    return User.fromToken(JSON.parse(atob(this.token.accessToken.split('.')[1])))
+  getUserFromToken(): UserToken | null {
+    if (!this.isLoggedIn()) return null
+    const accessToken = this.getAccessToken()
+    if (!accessToken) return null
+    const userData = JSON.parse(atob(accessToken.split('.')[1])) as UserToken
+    return userData
   }
-
-  getTokenFromLocalStorage(): Token | null {
-    const accessToken: string | null = localStorage.getItem('accessToken')
-    const refreshToken: string | null = localStorage.getItem('refreshToken')
+  getAccessToken() {
+    return localStorage.getItem('accessToken')
+  }
+  getRefreshToken() {
+    return localStorage.getItem('refreshToken')
+  }
+  getToken(): Token | null {
+    const accessToken = this.getAccessToken()
+    const refreshToken = this.getRefreshToken()
 
     if (!accessToken || !refreshToken) {
-      this.loggedIn = false
+      this.isLoggedInSubject.next(false)
       return null
     }
-    this.loggedIn = true
-    return new Token(accessToken, refreshToken)
+    this.isLoggedInSubject.next(true)
+    return { accessToken, refreshToken }
   }
 
   hasTokenExpired(): boolean {
     this.withAuth()
-    return this.user!.expireAt < Date.now() / 1000
+    return this.user!.exp < Date.now() / 1000
   }
 
   setToken(token: Token) {
-    this.token = token
-    this.loggedIn = true
-    this.saveToken()
-    this.user = this.getUserFromToken()
-  }
-
-  saveToken() {
-    this.withAuth()
-    localStorage.setItem('refreshToken', this.token!.refreshToken)
-    localStorage.setItem('accessToken', this.token!.accessToken)
+    this.isLoggedInSubject.next(true)
+    localStorage.setItem('refreshToken', token.refreshToken)
+    localStorage.setItem('accessToken', token.accessToken)
   }
 
   isLoggedIn(): boolean {
-    return this.loggedIn
+    return this.isLoggedInSubject.getValue()
   }
 
-  login(user: User) {
-    if (this.loggedIn) return
-    const request = this.httpClient.post<Token>(`${this.url}/login`, user)
+  login(userLogin: UserLogin): Observable<Token | null> {
+    console.log('userLogin : ', userLogin)
+    console.log('isLoggedIn : ', this.isLoggedIn())
+    console.log(this.user)
+    if (this.isLoggedIn()) {
+      // observable vide
+      return of(null)
+    }
+
+    console.log('Not logged')
+    const request = this.httpClient.post<Token>(`${this.url}/authenticate`, userLogin)
 
     request.subscribe({
       next: (token: Token) => {
@@ -84,13 +96,15 @@ export class AuthService {
         }
       },
       error: () => {
-        throw new Error()
+        throw new Error('La connexion a échoué')
       },
     })
+    return request
   }
 
   refresh() {
     this.withAuth()
+    if (!this.isLoggedIn()) return
     return this.httpClient.get<Token>(`${this.url}/refresh`, {
       headers: { Authorization: `Bearer ${this.token!.refreshToken}` },
     })
@@ -101,6 +115,7 @@ export class AuthService {
     this.user = null
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
+    this.isLoggedInSubject.next(false)
     this.router.navigate(['/'])
   }
 
