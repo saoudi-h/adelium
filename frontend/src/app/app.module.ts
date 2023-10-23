@@ -1,4 +1,5 @@
 import { ThemeService } from '@/core/services/theme.service'
+import { HttpClientModule } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { AdminModule } from './admin/admin.module'
@@ -8,7 +9,7 @@ import { HomeLayoutComponent } from './home/home-layout.component'
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, AdminModule, HomeLayoutComponent],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, AdminModule, HomeLayoutComponent],
   providers: [ThemeService],
   bootstrap: [AppComponent],
 })
