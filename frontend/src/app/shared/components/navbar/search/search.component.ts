@@ -20,7 +20,6 @@ export class SearchComponent implements AfterViewInit {
     e.nativeElement.classList.remove('w-0')
   }
   handleClose(e: ElementRef) {
-    console.log('handle close')
     e.nativeElement.classList.remove(this.width)
     e.nativeElement.classList.add('w-0')
     e.nativeElement.classList.add('opacity-0')
@@ -35,9 +34,7 @@ export class SearchComponent implements AfterViewInit {
       : this.handleClose(this.searchContainer)
   }
   ngAfterViewInit() {
-    console.log('ngOnInit start')
     if (!this.searchContainer) return
-    console.log('ngOnInit after check')
     this.isSearchVisible
       ? this.handleOpen(this.searchContainer)
       : this.handleClose(this.searchContainer)
