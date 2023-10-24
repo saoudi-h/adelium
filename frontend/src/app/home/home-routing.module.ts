@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+import { HomeLayoutComponent } from './home-layout.component'
 
 const routes: Routes = [
     {
         path: '',
-        loadComponent: () =>
-            import('./home-layout.component').then(
-                mod => mod.HomeLayoutComponent
-            ),
+        component: HomeLayoutComponent,
         children: [
             {
                 path: '',

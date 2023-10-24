@@ -1,19 +1,7 @@
-import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
-import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component'
-import { NavbarComponent } from '../shared/components/navbar/navbar.component'
-import { FooterComponent } from './../shared/components/footer/footer.component'
-import { HomeRoutingModule } from './home-routing.module'
+
 @Component({
     selector: 'app-home-layout',
-    standalone: true,
-    imports: [
-        CommonModule,
-        NavbarComponent,
-        FooterComponent,
-        HomeRoutingModule,
-        MegaMenuComponent,
-    ],
     template: `
         <div class="drawer">
             <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
