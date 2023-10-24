@@ -40,3 +40,14 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# generated doc and storybook
+# Pendant qu'on développe,
+# il peut y avoir différentes versions générées car au moment du commit on pensera pas forcement a génèrer la doc.
+# donc ce serait mieux de ne pas les prendre en compte pour le moment.
+# Solution possible:
+# génèrer la documentation au moment du commit avec des outils de CI/CD.
+
+documentation/**
+.storybook/**
+storybook-static/**
