@@ -1,138 +1,157 @@
 <section class="container mx-auto">
-  <div class="hero relative z-10 mb-12 mt-8 sm:mt-20">
-    <div class="hero-content flex-col lg:flex-row-reverse">
-      <div class="flex flex-col items-center justify-center gap-6">
-        <div class="text-center lg:text-left">
-          <h1 class="font-serif text-res-h1 font-bold">Connection en un Clin d'Œil!</h1>
-          <p class="py-4 font-light text-base-content/60 md:text-lg xl:text-2xl">
-            Pour une connexion rapide, utilisez votre compte GitHub ou Google. Si vous préférez,
-            optez pour une inscription classique en quelques étapes simples.
-          </p>
+    <div class="hero relative z-10 mb-12 mt-8 sm:mt-20">
+        <div class="hero-content flex-col lg:flex-row-reverse">
+            <div class="flex flex-col items-center justify-center gap-6">
+                <div class="text-center lg:text-left">
+                    <h1 class="font-serif text-res-h1 font-bold">
+                        Connection en un Clin d'Œil!
+                    </h1>
+                    <p
+                        class="py-4 font-light text-base-content/60 md:text-lg xl:text-2xl">
+                        Pour une connexion rapide, utilisez votre compte GitHub
+                        ou Google. Si vous préférez, optez pour une inscription
+                        classique en quelques étapes simples.
+                    </p>
+                </div>
+                <div class="hidden w-[500px] lg:block">
+                    <app-svg-login></app-svg-login>
+                </div>
+            </div>
+
+            <!-- divider -->
+            <div class="divider divider-horizontal hidden lg:flex"></div>
+            <!-- /divider -->
+
+            <div
+                class="card w-full max-w-sm flex-shrink-0 bg-base-100 shadow-2xl">
+                <div class="card-body">
+                    <div class="form-control mt-6">
+                        <button
+                            class="btn bg-[#24292F] text-sm font-medium normal-case text-white hover:bg-[#24292F]/90">
+                            <svg
+                                class="mr-2 h-6 w-6"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Se connecter avec Github
+                        </button>
+                    </div>
+                    <div class="form-control mt-6">
+                        <button
+                            class="btn bg-[#4285F4] text-sm font-medium normal-case text-white hover:bg-[#4285F4]/90">
+                            <svg
+                                class="mr-2 h-6 w-6"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                viewBox="0 0 18 19">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Se connecter avec Google
+                        </button>
+                    </div>
+
+                    <div class="divider divider-vertical"></div>
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="form-control">
+                            <div class="group relative z-0 mb-6 w-full">
+                                <input
+                                    type="email"
+                                    name="username"
+                                    id="username"
+                                    class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
+                                    placeholder=""
+                                    formControlName="username"
+                                    required />
+                                <label
+                                    for="username"
+                                    class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-base-content/50 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
+                                    >Adresse Email</label
+                                >
+                            </div>
+                        </div>
+                        <div class="form-control">
+                            <div class="group relative z-0 mb-6 w-full">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
+                                    placeholder=" "
+                                    formControlName="password"
+                                    required />
+                                <label
+                                    for="password"
+                                    class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
+                                    >Mot de passe
+                                </label>
+                            </div>
+                            <label for="" class="label">
+                                <a
+                                    href="#"
+                                    class="link-hover link label-text-alt"
+                                    >Mot de passe oublié ?</a
+                                >
+                            </label>
+                        </div>
+                        <div class="form-control mt-6">
+                            <button
+                                class="btn btn-primary"
+                                type="submit"
+                                [disabled]="!loginForm.valid">
+                                Se conecter
+                            </button>
+                        </div>
+                        <div class="form-control mt-6">
+                            <div class="divider divider-vertical">
+                                <p class="mb-2 text-sm font-light">
+                                    Pas de compte?
+                                </p>
+                            </div>
+
+                            <a
+                                class="btn btn-ghost"
+                                routerLink="/register"
+                                routerLinkActive="btn-disabled"
+                                ariaCurrentWhenActive="page">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    class="h-6 w-6"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g
+                                        id="SVGRepo_bgCarrier"
+                                        stroke-width="0"></g>
+                                    <g
+                                        id="SVGRepo_tracerCarrier"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40973 4.7157 4.21799 5.09202C4 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15.5 5.5L18.3284 8.32843M10.7627 10.2373L17.411 3.58902C18.192 2.80797 19.4584 2.80797 20.2394 3.58902C21.0205 4.37007 21.0205 5.6364 20.2394 6.41745L13.3774 13.2794C12.6158 14.0411 12.235 14.4219 11.8012 14.7247C11.4162 14.9936 11.0009 15.2162 10.564 15.3882C10.0717 15.582 9.54378 15.6885 8.48793 15.9016L8 16L8.04745 15.6678C8.21536 14.4925 8.29932 13.9048 8.49029 13.3561C8.65975 12.8692 8.89125 12.4063 9.17906 11.9786C9.50341 11.4966 9.92319 11.0768 10.7627 10.2373Z"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                    </g>
+                                </svg>
+                                S'enregistrer
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="hidden w-[500px] lg:block">
-          <app-svg-login></app-svg-login>
-        </div>
-      </div>
-
-      <!-- divider -->
-      <div class="divider divider-horizontal hidden lg:flex"></div>
-      <!-- /divider -->
-
-      <div class="card w-full max-w-sm flex-shrink-0 bg-base-100 shadow-2xl">
-        <div class="card-body">
-          <div class="form-control mt-6">
-            <button
-              class="btn bg-[#24292F] text-sm font-medium normal-case text-white hover:bg-[#24292F]/90">
-              <svg
-                class="mr-2 h-6 w-6"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20">
-                <path
-                  fill-rule="evenodd"
-                  d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z"
-                  clip-rule="evenodd" />
-              </svg>
-              Se connecter avec Github
-            </button>
-          </div>
-          <div class="form-control mt-6">
-            <button
-              class="btn bg-[#4285F4] text-sm font-medium normal-case text-white hover:bg-[#4285F4]/90">
-              <svg
-                class="mr-2 h-6 w-6"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 18 19">
-                <path
-                  fill-rule="evenodd"
-                  d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z"
-                  clip-rule="evenodd" />
-              </svg>
-              Se connecter avec Google
-            </button>
-          </div>
-
-          <div class="divider divider-vertical"></div>
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="form-control">
-              <div class="group relative z-0 mb-6 w-full">
-                <input
-                  type="email"
-                  name="username"
-                  id="username"
-                  class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
-                  placeholder=""
-                  formControlName="username"
-                  required />
-                <label
-                  for="username"
-                  class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-base-content/50 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
-                  >Adresse Email</label
-                >
-              </div>
-            </div>
-            <div class="form-control">
-              <div class="group relative z-0 mb-6 w-full">
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
-                  placeholder=" "
-                  formControlName="password"
-                  required />
-                <label
-                  for="password"
-                  class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
-                  >Mot de passe
-                </label>
-              </div>
-              <label for="" class="label">
-                <a href="#" class="link-hover link label-text-alt">Mot de passe oublié ?</a>
-              </label>
-            </div>
-            <div class="form-control mt-6">
-              <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">
-                Se conecter
-              </button>
-            </div>
-            <div class="form-control mt-6">
-              <div class="divider divider-vertical">
-                <p class="mb-2 text-sm font-light">Pas de compte?</p>
-              </div>
-
-              <a
-                class="btn btn-ghost"
-                routerLink="/register"
-                routerLinkActive="btn-disabled"
-                ariaCurrentWhenActive="page">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  class="h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <path
-                      d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40973 4.7157 4.21799 5.09202C4 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15.5 5.5L18.3284 8.32843M10.7627 10.2373L17.411 3.58902C18.192 2.80797 19.4584 2.80797 20.2394 3.58902C21.0205 4.37007 21.0205 5.6364 20.2394 6.41745L13.3774 13.2794C12.6158 14.0411 12.235 14.4219 11.8012 14.7247C11.4162 14.9936 11.0009 15.2162 10.564 15.3882C10.0717 15.582 9.54378 15.6885 8.48793 15.9016L8 16L8.04745 15.6678C8.21536 14.4925 8.29932 13.9048 8.49029 13.3561C8.65975 12.8692 8.89125 12.4063 9.17906 11.9786C9.50341 11.4966 9.92319 11.0768 10.7627 10.2373Z"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </g>
-                </svg>
-                S'enregistrer
-              </a>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
-  <div
-    class="pointer-events-none absolute left-0 top-1/2 z-0 aspect-square w-1/2 -translate-y-1/2 rounded-full bg-primary opacity-10 blur-3xl [transform:translate3d(0,0,0)]"></div>
+    <div
+        class="pointer-events-none absolute left-0 top-1/2 z-0 aspect-square w-1/2 -translate-y-1/2 rounded-full bg-primary opacity-10 blur-3xl [transform:translate3d(0,0,0)]"></div>
 </section>

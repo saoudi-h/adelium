@@ -8,9 +8,15 @@ import { AppComponent } from './app.component'
 import { HomeLayoutComponent } from './home/home-layout.component'
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, AdminModule, HomeLayoutComponent],
-  providers: [ThemeService],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        AdminModule,
+        HomeLayoutComponent,
+    ],
+    providers: [ThemeService],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

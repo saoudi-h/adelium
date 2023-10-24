@@ -1,31 +1,37 @@
 <div class="dropdown">
-  <label
-    tabindex="0"
-    for=""
-    class="btn btn-square btn-ghost m-2 flex content-center items-center justify-center"
-    ngSwitch="{{ selectedTheme }}">
-    <app-svg-sun *ngSwitchCase="'light'" className="h-6 w-6" />
-    <app-svg-moon *ngSwitchCase="'dark'" className="h-6 w-6" />
-    <app-svg-system *ngSwitchCase="'system'" className="h-6 w-6" />
-  </label>
-  <ul
-    tabindex="0"
-    class="menu dropdown-content rounded-box z-[1] flex gap-2 bg-base-200 p-2 shadow">
-    <ng-container *ngFor="let theme of themes; let i = index">
-      <ng-container *ngIf="theme.theme !== selectedTheme">
-        <li>
-          <button
-            (click)="setTheme(theme.theme)"
-            type="button"
-            class="btn btn-square flex content-center items-center justify-center bg-base-300">
-            <div class="" ngSwitch="{{ theme.theme }}">
-              <app-svg-sun className="h-6 w-6" *ngSwitchCase="'light'" />
-              <app-svg-moon className="h-6 w-6" *ngSwitchCase="'dark'" />
-              <app-svg-system className="h-6 w-6" *ngSwitchCase="'system'" />
-            </div>
-          </button>
-        </li>
-      </ng-container>
-    </ng-container>
-  </ul>
+    <label
+        tabindex="0"
+        for=""
+        class="btn btn-square btn-ghost m-2 flex content-center items-center justify-center"
+        ngSwitch="{{ selectedTheme }}">
+        <app-svg-sun *ngSwitchCase="'light'" className="h-6 w-6" />
+        <app-svg-moon *ngSwitchCase="'dark'" className="h-6 w-6" />
+        <app-svg-system *ngSwitchCase="'system'" className="h-6 w-6" />
+    </label>
+    <ul
+        tabindex="0"
+        class="menu dropdown-content rounded-box z-[1] flex gap-2 bg-base-200 p-2 shadow">
+        <ng-container *ngFor="let theme of themes; let i = index">
+            <ng-container *ngIf="theme.theme !== selectedTheme">
+                <li>
+                    <button
+                        (click)="setTheme(theme.theme)"
+                        type="button"
+                        class="btn btn-square flex content-center items-center justify-center bg-base-300">
+                        <div class="" ngSwitch="{{ theme.theme }}">
+                            <app-svg-sun
+                                className="h-6 w-6"
+                                *ngSwitchCase="'light'" />
+                            <app-svg-moon
+                                className="h-6 w-6"
+                                *ngSwitchCase="'dark'" />
+                            <app-svg-system
+                                className="h-6 w-6"
+                                *ngSwitchCase="'system'" />
+                        </div>
+                    </button>
+                </li>
+            </ng-container>
+        </ng-container>
+    </ul>
 </div>
