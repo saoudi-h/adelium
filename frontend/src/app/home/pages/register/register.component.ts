@@ -71,17 +71,18 @@ export class RegisterComponent {
     onSubmit() {
         if (!this.registerForm.valid) return
         const { repeatPassword, ...userRegister } = this.registerForm.value
-        this.authService.register(userRegister as UserRegister)
 
-        // this.authService.login(userLogin).subscribe({
-        //   next: response => {
-        //     if (!response) {
-        //       throw new Error('Vous êtes déjà connecté.')
-        //     }
-        //   },
-        //   error: error => {
-        //     alert(JSON.stringify(error))
-        //   },
-        // })
+        this.authService.register(userRegister as UserRegister).subscribe({
+            next: response => {
+                if (!response) {
+                    throw new Error('Erreur lors de la création du compte.')
+                } else {
+                    console.log('Bienvenue.')
+                }
+            },
+            error: error => {
+                alert(JSON.stringify(error))
+            },
+        })
     }
 }
