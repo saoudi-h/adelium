@@ -1,9 +1,8 @@
 /* (C)2023 */
 package com.adelium.web.authservice.service;
 
-import static io.jsonwebtoken.Jwts.*;
-
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
@@ -50,12 +49,12 @@ public class JwtService {
 
     private String buildToken(
             Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
-        return builder()
+        return Jwts.builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SIG.HS256)
+                .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
     }
 
@@ -75,7 +74,11 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return parser().decryptWith(getSignInKey()).build().parseSignedClaims(token).getPayload();
+        return Jwts.parser()
+                .decryptWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private SecretKey getSignInKey() {

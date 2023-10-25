@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // get the header that contains jwt token
         final String authHeader = request.getHeader("Authorization");
         final String jwtToken;
-        final String userEmail;
+        final String username;
 
         // Bearer Token should start with "Bearer"
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
@@ -44,11 +44,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         jwtToken = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwtToken);
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        username = jwtService.extractUsername(jwtToken);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // user not connected
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             var isTokenValid =
                     tokenRepository

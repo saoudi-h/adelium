@@ -27,7 +27,7 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return username ->
                 userRepository
-                        .findByEmail(username)
+                        .findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -53,7 +53,7 @@ public class ApplicationConfig {
     @Bean
     public Set<Role> adminGroup() {
         Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().authority("ROLE_ADMIN").build());
+        roles.add(Role.builder().name("ROLE_ADMIN").build());
         // Ajoutez d'autres roles ici
         return roles;
     }
@@ -61,21 +61,21 @@ public class ApplicationConfig {
     @Bean
     public Set<Role> businessGroup() {
         Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().authority("ROLE_BUSINESS").build());
+        roles.add(Role.builder().name("ROLE_BUSINESS").build());
         return roles;
     }
 
     @Bean
     public Set<Role> registerGroup() {
         Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().authority("ROLE_REGISTER").build());
+        roles.add(Role.builder().name("ROLE_REGISTER").build());
         return roles;
     }
 
     @Bean
     public Set<Role> internGroup() {
         Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().authority("ROLE_INTERN").build());
+        roles.add(Role.builder().name("ROLE_INTERN").build());
         return roles;
     }
 }

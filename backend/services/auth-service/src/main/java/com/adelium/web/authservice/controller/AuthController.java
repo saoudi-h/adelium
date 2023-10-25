@@ -1,9 +1,9 @@
 /* (C)2023 */
 package com.adelium.web.authservice.controller;
 
-import com.adelium.web.authservice.security.AuthenticationRequest;
-import com.adelium.web.authservice.security.AuthenticationResponse;
-import com.adelium.web.authservice.security.RegisterRequest;
+import com.adelium.web.authservice.dto.AuthenticationRequest;
+import com.adelium.web.authservice.dto.AuthenticationResponse;
+import com.adelium.web.authservice.dto.RegisterRequest;
 import com.adelium.web.authservice.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +27,7 @@ public class AuthController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request) {
+        System.out.println(request.toString());
         return ResponseEntity.ok(service.authenticate(request));
     }
 

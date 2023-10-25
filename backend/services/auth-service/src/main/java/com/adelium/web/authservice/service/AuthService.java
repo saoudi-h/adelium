@@ -1,14 +1,14 @@
 /* (C)2023 */
 package com.adelium.web.authservice.service;
 
+import com.adelium.web.authservice.dto.AuthenticationRequest;
+import com.adelium.web.authservice.dto.AuthenticationResponse;
+import com.adelium.web.authservice.dto.RegisterRequest;
+import com.adelium.web.authservice.dto.TokenType;
 import com.adelium.web.authservice.entity.Token;
 import com.adelium.web.authservice.entity.User;
 import com.adelium.web.authservice.repository.TokenRepository;
 import com.adelium.web.authservice.repository.UserRepository;
-import com.adelium.web.authservice.security.AuthenticationRequest;
-import com.adelium.web.authservice.security.AuthenticationResponse;
-import com.adelium.web.authservice.security.RegisterRequest;
-import com.adelium.web.authservice.security.TokenType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,11 +35,10 @@ public class AuthService {
         var user =
                 User.builder()
                         .username(request.getUsername())
-                        .email(request.getEmail())
                         .firstname(request.getFirstname())
                         .lastname(request.getLastname())
                         .password(passwordEncoder.encode(request.getPassword()))
-                        .authorities(request.getAuthorities())
+                        .roles(request.getRoles())
                         .build();
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -66,11 +65,12 @@ public class AuthService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
 
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(), request.getPassword()));
 
         var user =
                 userRepository
-                        .findByEmail(request.getEmail())
+                        .findByUsername(request.getUsername())
                         .orElseThrow(() -> new UsernameNotFoundException("User not founded."));
 
         var jwtToken = jwtService.generateToken(user);
@@ -98,14 +98,14 @@ public class AuthService {
             throws IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
-        final String userEmail;
+        final String username;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(refreshToken);
-        if (userEmail != null) {
-            var user = userRepository.findByEmail(userEmail).orElseThrow();
+        username = jwtService.extractUsername(refreshToken);
+        if (username != null) {
+            var user = userRepository.findByUsername(username).orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);

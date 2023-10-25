@@ -11,9 +11,9 @@ public class RoleTests {
     @Test
     public void createRoleTest() {
         Role role = new Role();
-        role.setAuthority("ROLE_USER");
+        role.setName("ROLE_USER");
 
         Assertions.assertNotNull(role);
-        Assertions.assertEquals(role.getAuthority(), "ROLE_USER");
+        Assertions.assertEquals(role.getGrantedAuthorities(), "ROLE_USER");
     }
 }
