@@ -1,4 +1,4 @@
-<div class="relative">
+<form action="/search" method="get" class="relative">
     <label class="btn btn-square btn-ghost swap swap-rotate z-40">
         <!-- this hidden checkbox controls the state -->
         <input
@@ -37,13 +37,13 @@
     </label>
 
     <!-- input text block  -->
-    <div
-        class="absolute right-0 top-0 z-30 overflow-hidden transition-all"
-        #searchContainer>
+    <div class="absolute right-0 top-0 z-30 transition-all" #searchContainer>
         <div>
             <input
-                class="input input-bordered w-full bg-base-300 outline-none focus:outline-none"
+                class="input w-full appearance-none border-base-content text-base-content outline-none"
+                type="search"
+                name="q"
                 placeholder="Search" />
         </div>
     </div>
-</div>
+</form>

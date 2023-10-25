@@ -9,7 +9,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core'
     styles: [],
 })
 export class SearchComponent implements AfterViewInit {
-    width = 'w-64'
+    width = 'w-72'
     isSearchVisible = false
     @ViewChild('searchContainer') searchContainer: ElementRef | undefined
     @ViewChild('toggleInput') toggleInput: ElementRef | undefined
@@ -18,11 +18,13 @@ export class SearchComponent implements AfterViewInit {
         e.nativeElement.classList.remove('opacity-0')
         e.nativeElement.classList.add(this.width)
         e.nativeElement.classList.remove('w-0')
+        e.nativeElement.classList.remove('overflow-hidden')
     }
     handleClose(e: ElementRef) {
         e.nativeElement.classList.remove(this.width)
         e.nativeElement.classList.add('w-0')
         e.nativeElement.classList.add('opacity-0')
+        e.nativeElement.classList.add('overflow-hidden')
         e.nativeElement.querySelector('input').value = ''
     }
 
