@@ -67,98 +67,115 @@
                     <!-- divider -->
                     <div class="divider divider-vertical"></div>
                     <!-- /divider -->
-                    <form>
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <!-- email -->
                         <div class="group relative z-0 mb-6 w-full">
                             <input
                                 type="email"
-                                name="floating_email"
-                                id="floating_email"
+                                name="email"
+                                id="email"
                                 class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm focus:border-accent focus:outline-none focus:ring-0"
                                 placeholder=" "
+                                formControlName="username"
                                 required />
                             <label
-                                for="floating_email"
+                                for="email"
                                 class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
                                 >Adresse Email</label
                             >
                         </div>
+                        <!-- password -->
                         <div class="group relative z-0 mb-6 w-full">
                             <input
                                 type="password"
-                                name="floating_password"
-                                id="floating_password"
+                                name="password"
+                                id="password"
                                 class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm focus:border-accent focus:outline-none focus:ring-0"
                                 placeholder=" "
+                                formControlName="password"
                                 required />
                             <label
-                                for="floating_password"
+                                for="password"
                                 class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
                                 >Mot de passe
                             </label>
                         </div>
+                        <!-- repeat password -->
                         <div class="group relative z-0 mb-6 w-full">
                             <input
                                 type="password"
                                 name="repeat_password"
-                                id="floating_repeat_password"
+                                id="repeat_password"
+                                formControlName="repeatPassword"
                                 class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm focus:border-accent focus:outline-none focus:ring-0"
                                 placeholder=" "
                                 required />
                             <label
-                                for="floating_repeat_password"
+                                for="repeat_password"
                                 class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
                                 >Confirmez le mot de passe</label
                             >
                         </div>
+                        <!-- first name and last name -->
                         <div class="grid md:grid-cols-2 md:gap-6">
+                            <!-- first name -->
                             <div class="group relative z-0 mb-6 w-full">
                                 <input
                                     type="text"
-                                    name="floating_first_name"
-                                    id="floating_first_name"
+                                    name="first_name"
+                                    id="first_name"
+                                    formControlName="firstname"
                                     class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm focus:border-accent focus:outline-none focus:ring-0"
                                     placeholder=" "
                                     required />
                                 <label
-                                    for="floating_first_name"
+                                    for="first_name"
                                     class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
                                     >Prénom</label
                                 >
                             </div>
+                            <!-- last name -->
                             <div class="group relative z-0 mb-6 w-full">
                                 <input
                                     type="text"
-                                    name="floating_last_name"
-                                    id="floating_last_name"
+                                    name="last_name"
+                                    id="last_name"
+                                    formControlName="lastname"
                                     class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm focus:border-accent focus:outline-none focus:ring-0"
                                     placeholder=" "
                                     required />
                                 <label
-                                    for="floating_last_name"
+                                    for="last_name"
                                     class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
                                     >Nom</label
                                 >
                             </div>
                         </div>
+                        <!-- phone -->
                         <div class="grid md:grid-cols-2 md:gap-6">
                             <div class="group relative z-0 mb-6 w-full">
                                 <input
                                     type="tel"
-                                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                    name="floating_phone"
-                                    id="floating_phone"
+                                    name="phone"
+                                    id="phone"
+                                    formControlName="phone"
                                     class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm focus:border-accent focus:outline-none focus:ring-0"
                                     placeholder=" "
                                     required />
                                 <label
-                                    for="floating_phone"
+                                    for="phone"
                                     class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
                                     >Téléphone</label
                                 >
                             </div>
                         </div>
+
+                        <!-- submit button  -->
                         <div class="form-control">
-                            <button type="submit" class="btn btn-primary">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                [disabled]="!registerForm.valid">
                                 Envoyer
                             </button>
                         </div>
