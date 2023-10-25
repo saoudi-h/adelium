@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { Token } from '@core/dto/Token'
 import { UserLogin } from '@core/dto/UserLogin'
+import { UserRegister } from '@core/dto/UserRegister'
 import { UserToken } from '@core/dto/UserToken'
 import { Role } from '@core/models/role'
-import { BehaviorSubject, Observable, of } from 'rxjs'
+import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs'
 import { environment } from 'src/environments/environment.development'
 
 @Injectable({
@@ -75,11 +76,29 @@ export class AuthService {
     isLoggedIn(): boolean {
         return this.isLoggedInSubject.getValue()
     }
+    register(userRegister: UserRegister): Observable<Token | null> {
+        if (this.isLoggedIn()) {
+            // observable vide
+            return of(null)
+        }
+
+        const request = this.httpClient.post<Token>(
+            `${this.url}/register`,
+            userRegister
+        )
+
+        request.pipe(
+            tap(token => {
+                this.handleLoginSucess(token)
+            }),
+            catchError(error => {
+                throw new Error("L'inscription a échoué : ", error)
+            })
+        )
+        return request
+    }
 
     login(userLogin: UserLogin): Observable<Token | null> {
-        console.log('userLogin : ', userLogin)
-        console.log('isLoggedIn : ', this.isLoggedIn())
-        console.log(this.user)
         if (this.isLoggedIn()) {
             // observable vide
             return of(null)
@@ -91,22 +110,14 @@ export class AuthService {
             userLogin
         )
 
-        request.subscribe({
-            next: (token: Token) => {
-                this.setToken(token)
-
-                if (this.redirectUrl) {
-                    this.router.navigate([this.redirectUrl])
-                    this.redirectUrl = null
-                } else {
-                    this.router.navigate(['/'])
-                }
-            },
-            error: () => {
-                throw new Error('La connexion a échoué')
-            },
-        })
-        return request
+        return request.pipe(
+            tap(token => {
+                this.handleLoginSucess(token)
+            }),
+            catchError(error => {
+                throw new Error('La connexion a échoué : ', error)
+            })
+        )
     }
 
     refresh() {
@@ -135,5 +146,16 @@ export class AuthService {
             throw new Error(
                 'The method should not be called on an unauthenticated user.'
             )
+    }
+
+    handleLoginSucess(token: Token): void {
+        this.setToken(token)
+
+        if (this.redirectUrl) {
+            this.router.navigate([this.redirectUrl])
+            this.redirectUrl = null
+        } else {
+            this.router.navigate(['/'])
+        }
     }
 }
