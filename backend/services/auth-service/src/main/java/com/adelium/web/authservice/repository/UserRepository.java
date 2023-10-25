@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Transactional
 public interface UserRepository extends BaseRepository<User, Long> {
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
 }
