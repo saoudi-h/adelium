@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
+import { RouterLink } from '@angular/router'
 import { SvgNotFoundComponent } from './svg-not-found.component'
 
 @Component({
@@ -22,7 +23,9 @@ import { SvgNotFoundComponent } from './svg-not-found.component'
                         class="py-4 font-light text-base-content/60 md:text-lg xl:text-2xl">
                         Sorry, the page you are looking for could not be found.
                     </p>
-                    <a class="btn btn-primary btn-lg font-normal">
+                    <a
+                        class="btn btn-primary btn-lg font-normal"
+                        routerLink="/">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="mr-2 h-6 w-6"
@@ -44,6 +47,6 @@ import { SvgNotFoundComponent } from './svg-not-found.component'
         </div>
     </section>`,
     standalone: true,
-    imports: [CommonModule, SvgNotFoundComponent],
+    imports: [CommonModule, SvgNotFoundComponent, RouterLink],
 })
 export class NotFoundComponent {}
