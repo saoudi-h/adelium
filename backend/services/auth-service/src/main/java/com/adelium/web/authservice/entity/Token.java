@@ -1,7 +1,7 @@
 /* (C)2023 */
 package com.adelium.web.authservice.entity;
 
-import com.adelium.web.authservice.security.TokenType;
+import com.adelium.web.authservice.dto.TokenType;
 import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

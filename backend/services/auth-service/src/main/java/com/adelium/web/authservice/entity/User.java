@@ -3,6 +3,8 @@ package com.adelium.web.authservice.entity;
 
 import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.*;
@@ -16,11 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 public class User extends BaseEntity<Long> implements UserDetails {
 
+    // email
     @Column(nullable = false, unique = true)
     private String username;
-
-    @Column(nullable = false, unique = true)
-    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -52,8 +52,17 @@ public class User extends BaseEntity<Long> implements UserDetails {
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Set<Role> authorities;
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @Override
+    public Collection<Authority> getAuthorities() {
+        Set<Authority> authorities = new HashSet<>();
+        for (Role role : roles) {
+            authorities.addAll(role.getGrantedAuthorities());
+        }
+        return authorities;
+    }
 }

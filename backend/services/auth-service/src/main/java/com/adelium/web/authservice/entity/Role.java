@@ -2,13 +2,12 @@
 package com.adelium.web.authservice.entity;
 
 import com.adelium.web.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -16,11 +15,19 @@ import org.springframework.security.core.GrantedAuthority;
 @Data
 @Builder
 @Entity
-public class Role extends BaseEntity<Long> implements GrantedAuthority {
-    @Column(nullable = false, unique = true)
-    private String authority;
+public class Role extends BaseEntity<Long> implements GrantedAuthoritiesContainer {
 
-    @ManyToMany(mappedBy = "authorities")
+    @Column(unique = true)
+    private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "roles_authority",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private Collection<Authority> grantedAuthorities;
+
+    @ManyToMany(mappedBy = "roles")
     @Builder.Default
     private List<User> users = new ArrayList<>();
 }
