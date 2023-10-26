@@ -1,5 +1,5 @@
 
-![Logo Adelium](docs/assets/images/adelium_cli.png)
+![Logo Adelium](docs/assets/images/adelium_cli_logo.png)
 
 # Projet Adelium:
 
