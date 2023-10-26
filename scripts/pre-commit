@@ -1,13 +1,11 @@
 #!/bin/sh
 
-# Récupère le message du dernier commit
-# commit_message=$(cat .git/COMMIT_EDITMSG)
-
 stagedFiles=$(git diff --staged --name-only)
 back=false
 front=false
+
 for file in $stagedFiles; do
-  if $back && $front; then
+  if $back && $front && $docs; then
     break
   fi
   if ! $front && [[ $file == "frontend/"* ]]; then
@@ -18,7 +16,7 @@ for file in $stagedFiles; do
   fi
 done
 
-# Vérifie si le message du commit commence par [front]
+# S'ils y a des fichiers frontend/
 if $front; then
   echo "Front-end commit détecté. Exécution de npx lint-staged pour le front-end..."
   (
@@ -27,6 +25,7 @@ if $front; then
   )
 fi
 
+# S'ils y a des fichiers backend/
 if $back; then
   echo "Running spotlessApply. Formatting code..."
   (
@@ -42,4 +41,5 @@ if $back; then
   done
 fi
 
+# Validation
 exit 0
