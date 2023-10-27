@@ -15,11 +15,17 @@ export class CustomValidators {
         }
     }
 
-    static passwordMatch(passwordName: string): ValidatorFn {
+    static passwordMatch(
+        password: () => AbstractControl<any, any> | null
+    ): ValidatorFn {
         return (control: AbstractControl) => {
-            const password = control.get(passwordName)?.value
+            const passwordControl = password()
+            if (!passwordControl) return null
+            const passwordValue = passwordControl.value
             const repeatPassword = control.value
-            return password === repeatPassword ? null : { passwordMatch: true }
+            return passwordValue === repeatPassword
+                ? null
+                : { passwordMatch: true }
         }
     }
 }
