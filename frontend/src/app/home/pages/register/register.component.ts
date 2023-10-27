@@ -1,20 +1,31 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import {
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms'
 import { AuthService } from '@core/services/auth.service'
 import { CustomValidators } from '@core/utility/CustomValidators'
+import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { UserRegister } from './../../../core/dto/UserRegister'
 import { SvgRegisterComponent } from './svg-register.component'
 
 @Component({
     selector: 'app-register',
     standalone: true,
-    imports: [CommonModule, SvgRegisterComponent, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        SvgRegisterComponent,
+        ReactiveFormsModule,
+        FieldStatusComponent,
+    ],
     templateUrl: './register.component.html',
     styles: [],
 })
 export class RegisterComponent {
-    registerForm = this.fb.group({
+    registerForm: FormGroup = this.fb.group({
         username: ['', [Validators.required, Validators.email]],
         password: [
             '',
@@ -29,9 +40,9 @@ export class RegisterComponent {
             '',
             [
                 Validators.required,
-                Validators.minLength(8),
-                Validators.maxLength(40),
-                // CustomValidators.passwordMatch('password'),
+                CustomValidators.passwordMatch(
+                    () => this.registerForm?.get('password') || null
+                ),
             ],
         ],
         firstname: [
