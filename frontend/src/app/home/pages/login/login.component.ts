@@ -8,13 +8,20 @@ import {
 } from '@angular/forms'
 import { RouterLink } from '@angular/router'
 import { UserLogin } from '@core/dto/UserLogin'
+import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { AuthService } from './../../../core/services/auth.service'
 import { SvgLoginComponent } from './svg-login.component'
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule, RouterLink, SvgLoginComponent, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        RouterLink,
+        SvgLoginComponent,
+        ReactiveFormsModule,
+        FieldStatusComponent,
+    ],
     templateUrl: './login.component.html',
     styles: [],
 })
@@ -25,9 +32,9 @@ export class LoginComponent {
             '',
             [
                 Validators.required,
-                // Validators.minLength(8),
-                // Validators.maxLength(40),
-                // this.passwordValidator(),
+                Validators.minLength(8),
+                Validators.maxLength(40),
+                this.passwordValidator(),
             ],
         ],
     })

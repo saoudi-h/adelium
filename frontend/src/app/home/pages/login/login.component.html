@@ -63,46 +63,57 @@
                     <div class="divider divider-vertical"></div>
                     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                         <div class="form-control">
-                            <div class="group relative z-0 mb-6 w-full">
-                                <input
-                                    type="email"
-                                    name="username"
-                                    id="username"
-                                    class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
-                                    placeholder=""
-                                    formControlName="username"
-                                    required />
-                                <label
-                                    for="username"
-                                    class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-base-content/50 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
-                                    >Adresse Email</label
-                                >
-                            </div>
+                            <!-- email -->
+                            <app-field-status
+                                class="mb-6 w-full"
+                                [control]="loginForm.get('username')!">
+                                <div class="group relative z-0 w-full">
+                                    <input
+                                        type="email"
+                                        name="username"
+                                        id="username"
+                                        class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
+                                        placeholder=""
+                                        formControlName="username"
+                                        required />
+                                    <label
+                                        for="username"
+                                        class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-base-content/50 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
+                                        >Adresse Email</label
+                                    >
+                                </div>
+                            </app-field-status>
                         </div>
+
+                        <!-- password -->
                         <div class="form-control">
-                            <div class="group relative z-0 mb-6 w-full">
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
-                                    placeholder=" "
-                                    formControlName="password"
-                                    required />
-                                <label
-                                    for="password"
-                                    class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
-                                    >Mot de passe
-                                </label>
-                            </div>
-                            <label for="" class="label">
-                                <a
-                                    href="#"
-                                    class="link-hover link label-text-alt"
-                                    >Mot de passe oublié ?</a
-                                >
-                            </label>
+                            <app-field-status
+                                class="w-full"
+                                [control]="loginForm.get('password')!">
+                                <div class="group relative z-0 w-full">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        class="peer block w-full appearance-none border-0 border-b-2 border-base-200 bg-transparent px-0 py-2.5 text-sm text-base-content/70 focus:border-accent focus:outline-none focus:ring-0"
+                                        placeholder=" "
+                                        formControlName="password"
+                                        required />
+                                    <label
+                                        for="password"
+                                        class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-accent"
+                                        >Mot de passe
+                                    </label>
+                                </div>
+                            </app-field-status>
                         </div>
+                        <label for="" class="label">
+                            <a
+                                href="#"
+                                class="link-hover link label-text-alt pl-6"
+                                >Mot de passe oublié ?</a
+                            >
+                        </label>
                         <div class="form-control mt-6">
                             <button
                                 class="btn btn-primary"
