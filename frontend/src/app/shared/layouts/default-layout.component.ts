@@ -1,7 +1,11 @@
 import { Component } from '@angular/core'
+import { RouterModule } from '@angular/router'
+import { FooterComponent } from '@shared/components/footer/footer.component'
+import { NavbarComponent } from '@shared/components/navbar/navbar.component'
 
 @Component({
-    selector: 'app-home-layout',
+    selector: 'app-default-layout',
+    standalone: true,
     template: `
         <div class="drawer">
             <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
@@ -37,5 +41,6 @@ import { Component } from '@angular/core'
       backdrop-filter: blur(2px)
     `,
     ],
+    imports: [FooterComponent, NavbarComponent, RouterModule],
 })
-export class HomeLayoutComponent {}
+export class DefaultLayoutComponent {}
