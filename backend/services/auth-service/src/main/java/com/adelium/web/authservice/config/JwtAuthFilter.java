@@ -33,6 +33,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
+        if (request.getServletPath().startsWith("/auth")) {
+            System.out.println(request.getServletPath());
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // get the header that contains jwt token
         final String authHeader = request.getHeader("Authorization");
         final String jwtToken;
