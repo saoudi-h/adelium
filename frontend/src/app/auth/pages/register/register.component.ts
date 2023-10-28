@@ -87,9 +87,8 @@ export class RegisterComponent {
             next: response => {
                 if (!response) {
                     throw new Error('Erreur lors de la création du compte.')
-                } else {
-                    console.log('Bienvenue.')
                 }
+                console.log('Bienvenue.')
             },
             error: error => {
                 alert(JSON.stringify(error))
