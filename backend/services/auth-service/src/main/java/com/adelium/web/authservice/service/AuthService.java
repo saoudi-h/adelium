@@ -102,8 +102,11 @@ public class AuthService {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
+
         refreshToken = authHeader.substring(7);
+
         username = jwtService.extractUsername(refreshToken);
+
         if (username != null) {
             var user = userRepository.findByUsername(username).orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
