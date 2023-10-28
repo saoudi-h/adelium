@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { DefaultLayoutComponent } from '@shared/layouts/default-layout.component'
+import { notAuthGuard } from './guards/not-auth.guard'
 
 const routes: Routes = [
     {
         path: '',
         component: DefaultLayoutComponent,
+        canActivate: [notAuthGuard],
         children: [
             {
                 path: 'login',

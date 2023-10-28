@@ -87,7 +87,7 @@ export class AuthService {
             userRegister
         )
 
-        request.pipe(
+        return request.pipe(
             tap(token => {
                 this.handleLoginSucess(token)
             }),
@@ -95,7 +95,6 @@ export class AuthService {
                 throw new Error("L'inscription a échoué : ", error)
             })
         )
-        return request
     }
 
     login(userLogin: UserLogin): Observable<Token | null> {
@@ -104,7 +103,6 @@ export class AuthService {
             return of(null)
         }
 
-        console.log('Not logged')
         const request = this.httpClient.post<Token>(
             `${this.url}/authenticate`,
             userLogin
