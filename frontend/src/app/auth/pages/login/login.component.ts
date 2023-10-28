@@ -1,13 +1,9 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
-import {
-    AbstractControl,
-    FormBuilder,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterLink } from '@angular/router'
 import { UserLogin } from '@core/dto/UserLogin'
+import { CustomValidators } from '@core/utility/CustomValidators'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { AuthService } from './../../../core/services/auth.service'
 import { SvgLoginComponent } from './svg-login.component'
@@ -34,7 +30,7 @@ export class LoginComponent {
                 Validators.required,
                 Validators.minLength(8),
                 Validators.maxLength(40),
-                this.passwordValidator(),
+                CustomValidators.password(),
             ],
         ],
     })
@@ -47,30 +43,16 @@ export class LoginComponent {
     onSubmit() {
         if (!this.loginForm.valid) return
         const userLogin: UserLogin = this.loginForm.value as UserLogin
-        this.authService.login(userLogin)
-        // this.authService.login(userLogin).subscribe({
-        //   next: response => {
-        //     if (!response) {
-        //       throw new Error('Vous êtes déjà connecté.')
-        //     }
-        //   },
-        //   error: error => {
-        //     alert(JSON.stringify(error))
-        //   },
-        // })
-    }
-
-    passwordValidator() {
-        return (control: AbstractControl) => {
-            const password = control.value
-            const hasNumber = /\d/.test(password)
-            const hasUpper = /[A-Z]/.test(password)
-            const hasLower = /[a-z]/.test(password)
-            const hasSpecial = /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/.test(password)
-
-            const isValid = hasNumber && hasUpper && hasLower && hasSpecial
-
-            return isValid ? null : { complexPassword: true }
-        }
+        this.authService.login(userLogin).subscribe({
+            next: response => {
+                if (!response) {
+                    throw new Error('Vous êtes déjà connecté.')
+                }
+                console.log('Bienvenue.')
+            },
+            error: error => {
+                alert(JSON.stringify(error))
+            },
+        })
     }
 }
