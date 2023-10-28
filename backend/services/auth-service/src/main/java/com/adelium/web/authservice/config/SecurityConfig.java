@@ -26,6 +26,20 @@ public class SecurityConfig {
 
     private final LogoutHandler logoutHandler;
 
+    private static final String[] WHITE_LIST_URL = {
+        "/auth/**",
+        "/v2/api-docs",
+        "/v3/api-docs",
+        "/v3/api-docs/**",
+        "/swagger-resources",
+        "/swagger-resources/**",
+        "/configuration/ui",
+        "/configuration/security",
+        "/swagger-ui/**",
+        "/webjars/**",
+        "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -33,7 +47,7 @@ public class SecurityConfig {
                         (requests) ->
                                 requests
                                         // whitelist no permission needed
-                                        .requestMatchers("/auth/**")
+                                        .requestMatchers(WHITE_LIST_URL)
                                         .permitAll()
                                         // not in white list routes should be authenticated
                                         .anyRequest()

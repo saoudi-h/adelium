@@ -8,6 +8,7 @@ java-format = "1.18.1"
 mysql = "8.1.0"
 jjwt = "0.12.2"
 lombok = "1.18.30"
+springdoc-openapi = "2.2.0"
 
 [libraries]
 spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
@@ -30,6 +31,7 @@ google-java-format =  {module = "com.google.googlejavaformat:google-java-format"
 spring-boot-gradle-plugin = {module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref="spring-boot"}
 spring-cloud-config-server ={module  ="org.springframework.cloud:spring-cloud-config-server", version.ref="spring-cloud-config"}
 spring-cloud-config-client ={module  ="org.springframework.cloud:spring-cloud-config-client", version.ref="spring-cloud-config"}
+springdoc-openapi-webmvc-ui ={module  ="org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref="springdoc-openapi"}
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
