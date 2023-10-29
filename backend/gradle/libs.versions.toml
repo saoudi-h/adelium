@@ -32,6 +32,7 @@ spring-boot-gradle-plugin = {module = "org.springframework.boot:spring-boot-grad
 spring-cloud-config-server ={module  ="org.springframework.cloud:spring-cloud-config-server", version.ref="spring-cloud-config"}
 spring-cloud-config-client ={module  ="org.springframework.cloud:spring-cloud-config-client", version.ref="spring-cloud-config"}
 springdoc-openapi-webmvc-ui ={module  ="org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref="springdoc-openapi"}
-
+springdoc-openapi-webflux-ui = {module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref="springdoc-openapi"}
+spring-boot-validation = {module = "org.springframework.boot:spring-boot-starter-validation", version.ref="spring-boot"}
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
