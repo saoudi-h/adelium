@@ -8,4 +8,6 @@ dependencies {
     implementation libs.spring.cloud.gateway
     implementation libs.spring.cloud.eureka.client
     implementation libs.spring.cloud.config.client
+    implementation libs.springdoc.openapi.webflux.ui
+    implementation libs.spring.boot.actuator
 }
