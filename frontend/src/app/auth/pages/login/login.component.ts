@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router'
 import { UserLogin } from '@core/dto/UserLogin'
 import { CustomValidators } from '@core/utility/CustomValidators'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
-import { AuthService } from './../../../core/services/auth.service'
+import { AuthService } from '../../services/auth.service'
 import { SvgLoginComponent } from './svg-login.component'
 
 @Component({

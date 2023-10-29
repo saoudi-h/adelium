@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { AuthService } from '@core/services/auth.service'
+import { AuthService } from '@auth/services/auth.service'
 
 @Component({
     selector: 'app-nav-user',

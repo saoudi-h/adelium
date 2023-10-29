@@ -6,7 +6,7 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms'
-import { AuthService } from '@core/services/auth.service'
+import { AuthService } from '@auth/services/auth.service'
 import { CustomValidators } from '@core/utility/CustomValidators'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { UserRegister } from './../../../core/dto/UserRegister'
