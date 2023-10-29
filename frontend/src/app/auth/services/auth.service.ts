@@ -63,6 +63,7 @@ export class AuthService {
     }
 
     hasTokenExpired(): boolean {
+        console.log('user : ', this.user)
         this.withAuth()
         return this.user!.exp < Date.now() / 1000
     }
