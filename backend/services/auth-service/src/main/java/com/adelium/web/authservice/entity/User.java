@@ -52,6 +52,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")

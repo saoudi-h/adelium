@@ -11,11 +11,11 @@ public class UserTests {
     public void createUserTest() {
         User user = new User();
         user.setUsername("username");
-        user.setEmail("username@adelium.com");
+        user.setUsername("username@adelium.com");
         user.setPassword("password");
 
         assertThat(user.getUsername()).isEqualTo("username");
-        assertThat(user.getEmail()).isEqualTo("username@adelium.com");
+        assertThat(user.getUsername()).isEqualTo("username@adelium.com");
         assertThat(user.getPassword()).isEqualTo("password");
     }
 }
