@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { Token } from '@core/dto/Token'
@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment.development'
     providedIn: 'root',
 })
 export class AuthService {
-    private url = `${environment.baseUrl}/auth`
+    private url = `${environment.baseUrl}/api/v1/auth`
     private token: Token | null = null
     private user: UserToken | null = null
     private redirectUrl: string | null = null
@@ -82,10 +82,16 @@ export class AuthService {
             // observable vide
             return of(null)
         }
-
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                accept: 'application/json',
+            }),
+        }
         const request = this.httpClient.post<Token>(
             `${this.url}/register`,
-            userRegister
+            userRegister,
+            httpOptions
         )
 
         return request.pipe(
