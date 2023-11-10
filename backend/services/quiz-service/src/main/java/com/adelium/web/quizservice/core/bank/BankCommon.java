@@ -5,6 +5,12 @@ import com.adelium.web.quizservice.core.question.Question;
 import java.util.List;
 import org.apache.catalina.User;
 
+/**
+ * This class represents a common implementation of a bank of quiz questions.
+ * It implements the Bank interface with Question type.
+ *
+ * @see Bank
+ */
 public class BankCommon implements Bank<Question> {
     @Override
     public String getName() {
