@@ -1,11 +1,14 @@
 /* (C)2023 */
-package com.adelium.web.quizservice.core.question;
+package com.adelium.web.quizservice.core.tag;
 
 import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+/**
+ * Represents a tag that can be assigned to a question.
+ */
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,6 +17,9 @@ import lombok.*;
 @Entity
 public class Tag extends BaseEntity<Long> {
 
+    /**
+     * The name of the tag.
+     */
     @Column(unique = true)
     String name;
 }
