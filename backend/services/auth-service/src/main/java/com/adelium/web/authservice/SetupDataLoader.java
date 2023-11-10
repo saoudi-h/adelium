@@ -17,6 +17,11 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class is responsible for loading initial data into the database when the application starts.
+ * It implements ApplicationListener<ContextRefreshedEvent> to listen to the ContextRefreshedEvent event.
+ * It creates default roles, authorities, and a user with admin privileges if they do not exist in the database.
+ */
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 

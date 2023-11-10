@@ -8,6 +8,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a request for registering a new user, containing an email, a username, a first name, a last name and a
+ * password.
+ */
 @Data
 @Builder
 @AllArgsConstructor

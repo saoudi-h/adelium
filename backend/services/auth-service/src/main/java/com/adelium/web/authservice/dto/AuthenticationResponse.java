@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a response for authentication, containing an access token and a refresh token.
+ */
 @Data
 @Builder
 @AllArgsConstructor

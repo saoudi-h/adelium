@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a request for changing a password, containing the current password, the new password and the confirmation
+ * password.
+ */
 @Getter
 @Setter
 @Builder

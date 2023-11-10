@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a request for authentication, containing a username and password.
+ */
 @Data
 @Builder
 @AllArgsConstructor

@@ -6,6 +6,9 @@ import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Represents a token entity that can be used for authentication and authorization purposes.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
@@ -14,17 +17,32 @@ import lombok.*;
 @Entity
 public class Token extends BaseEntity<Long> {
 
+    /**
+     * The token value.
+     */
     @Column(unique = true)
     public String token;
 
+    /**
+     * The type of the token.
+     */
     @Enumerated(EnumType.STRING)
     @Builder.Default
     public TokenType tokenType = TokenType.BEARER;
 
+    /**
+     * The time to live of the token in seconds.
+     */
     public boolean revoked;
 
+    /**
+     * The time to live of the token in seconds.
+     */
     public boolean expired;
 
+    /**
+     * The time to live of the token in seconds.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;

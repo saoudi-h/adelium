@@ -9,6 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TokenRepository extends BaseRepository<Token, Long> {
 
+    /**
+     * Finds all valid tokens for a given user.
+     * @param id
+     * @return
+     */
     @Query(
             value =
                     """
@@ -18,5 +23,10 @@ public interface TokenRepository extends BaseRepository<Token, Long> {
       """)
     List<Token> findAllValidTokenByUser(Long id);
 
+    /**
+     * Finds a token by its token value.
+     * @param token
+     * @return
+     */
     Optional<Token> findByToken(String token);
 }

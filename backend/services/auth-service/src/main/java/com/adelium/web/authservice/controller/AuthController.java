@@ -12,6 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * The controller for the authentication service.
+ *
+ * <p>It contains the endpoints for registering, authenticating and refreshing tokens.</p>
+ */
 @RestController
 @RequiredArgsConstructor
 public class AuthController {

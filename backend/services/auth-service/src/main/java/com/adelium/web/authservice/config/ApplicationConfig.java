@@ -17,6 +17,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * Configuration class for the application.
+ * Defines beans for user details service, authentication provider, authentication manager, password encoder,
+ * and sets of roles for different user groups.
+ */
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
