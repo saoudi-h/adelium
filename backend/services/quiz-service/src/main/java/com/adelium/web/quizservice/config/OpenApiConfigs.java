@@ -11,11 +11,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration class for OpenAPI.
+ * Configuration class for customizing OpenAPI documentation.
  */
 @OpenAPIDefinition
 @Configuration
 public class OpenApiConfigs {
+
+    /**
+     * Configures custom OpenAPI documentation.
+     *
+     * @param serviceTitle    the title of the service
+     * @param serviceVersion  the version of the service
+     * @param url             the URL of the service
+     * @return the custom OpenAPI configuration
+     */
     @Bean
     public OpenAPI customOpenAPI(
             @Value("${openapi.service.title}") String serviceTitle,
