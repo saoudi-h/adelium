@@ -2,10 +2,11 @@
 package com.adelium.web.quizservice.entity.question;
 
 import com.adelium.web.quizservice.core.evaluation.Evaluation;
-import com.adelium.web.quizservice.core.media.Media;
+import com.adelium.web.quizservice.core.media.BaseMedia;
+import com.adelium.web.quizservice.core.media.MediaText;
 import com.adelium.web.quizservice.core.option.OptionTrueFalse;
 import com.adelium.web.quizservice.core.question.AbstractQuestion;
-import com.adelium.web.quizservice.core.question.Propositional;
+import com.adelium.web.quizservice.core.question.Optionable;
 import jakarta.persistence.*;
 import java.util.Set;
 import lombok.*;
@@ -21,15 +22,21 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Data
 @SuperBuilder
-@Entity
-public class QuestionTrueFalse extends AbstractQuestion implements Propositional<OptionTrueFalse> {
+@Entity(name = "question_true_false")
+public class QuestionTrueFalse extends AbstractQuestion
+        implements Optionable<OptionTrueFalse, BaseMedia, MediaText> {
+
+    /**
+     * The number of options of the question.
+     */
+    @Column private int numberOfOptions;
 
     /**
      * The media content representing the question.
      */
     @OneToOne
     @JoinColumn(name = "media_id")
-    private Media content;
+    private BaseMedia content;
 
     private static final String type = "true_false";
 
@@ -52,7 +59,7 @@ public class QuestionTrueFalse extends AbstractQuestion implements Propositional
     }
 
     @Override
-    public Evaluation assess(Media userAnswer) {
+    public Evaluation assess(MediaText userAnswer) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'assess'");
     }
