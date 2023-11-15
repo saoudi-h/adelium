@@ -7,21 +7,27 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * This interface represents a question in the quiz service.
+ * The Question interface represents a question in a quiz.
+ * It is a generic interface that can be implemented with different types of media.
+ * @param <T> the type of media associated with the question
+ * @see Media
+ * @see Serializable
  */
-public interface Question extends Serializable {
+public interface Question<T extends Media> extends Serializable {
 
     /**
-     * Returns the media associated with this question.
-     * @return
+     * Returns the content associated with this question.
+     *
+     * @return the content associated with this question
      */
-    Media getContent();
+    T getContent();
 
     /**
      * Sets the media associated with this question.
-     * @param content
+     *
+     * @param content the media to associate with this question
      */
-    void setContent(Media content);
+    void setContent(T content);
 
     /**
      * Returns the set of tags associated with this question.

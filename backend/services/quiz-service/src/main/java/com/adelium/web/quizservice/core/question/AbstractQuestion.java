@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
  * This class represents a question in the quiz service.
  * It extends the BaseEntity class and implements the Question interface.
  * It contains a set of Tag objects and methods for getting/setting the tags.
+ * @see BaseEntity
  */
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = true)
@@ -22,6 +23,7 @@ import lombok.experimental.SuperBuilder;
 public abstract class AbstractQuestion extends BaseEntity<Long> {
     /**
      * The set of tags associated with this question.
+     * @see Tag
      */
     @ManyToMany
     @JoinTable(

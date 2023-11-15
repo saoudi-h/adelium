@@ -5,14 +5,19 @@ import com.adelium.web.quizservice.core.evaluation.Evaluation;
 import com.adelium.web.quizservice.core.media.Media;
 
 /**
- * Represents an assessable question.
+ * This interface represents an assessable question, which is a question that can be evaluated based on a user's answer.
+ * It extends the Question interface and adds the ability to assess a user's answer.
+ * @param <T> the type of media used in the question
+ * @param <M> the type of media used in the user's answer
+ * @see Question
  */
-public interface Assessable extends Question {
+public interface Assessable<T extends Media, M extends Media> extends Question<T> {
+
     /**
-     * Assess the provided answer and return a score or evaluation result.
+     * Evaluates the user's answer to this question.
      *
-     * @param userAnswer the user-provided answer
-     * @return the assessment result, score, or feedback
+     * @return the evaluation of the user's answer
+     * @see Evaluation
      */
-    Evaluation assess(Media userAnswer);
+    Evaluation assess(M userAnswer);
 }
