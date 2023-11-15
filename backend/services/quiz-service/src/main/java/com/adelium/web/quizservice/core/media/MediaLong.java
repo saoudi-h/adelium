@@ -8,19 +8,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * Represents a text media object that extends BaseMedia.
- */
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class TextMedia extends BaseMedia {
+public class MediaLong extends BaseMedia {
 
-    @Column private String content;
+    /**
+     * The content of the media.
+     */
+    @Column private Long content;
 
-    private static final String type = "text";
+    private static final String type = "Long";
 
     @Override
     public String getType() {

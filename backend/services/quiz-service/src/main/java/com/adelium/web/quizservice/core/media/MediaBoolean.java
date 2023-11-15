@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-public class BooleanMedia extends BaseMedia {
+public class MediaBoolean extends BaseMedia {
 
     /**
      * The content of the media.
