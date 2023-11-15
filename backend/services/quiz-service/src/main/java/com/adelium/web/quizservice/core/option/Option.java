@@ -5,23 +5,25 @@ import com.adelium.web.quizservice.core.media.Media;
 import java.io.Serializable;
 
 /**
- * Represents an option for a quiz question.
+ * This interface represents an option in a quiz. It is a generic interface that can be implemented with different types of options.
+ * @param <O> the type of media used in the option
+ * @param <E> the type of media used in the explanation
  */
-public interface Option extends Serializable {
+public interface Option<O extends Media, E extends Media> extends Serializable {
 
     /**
-     * Gets the explanation associated with this option.
+     * Gets the explanation for this option.
      *
-     * @return the explanation of the option
+     * @return the explanation for this option
      */
-    Media getExplanation();
+    E getExplanation();
 
     /**
      * Sets the explanation for this option.
      *
-     * @param explanation the explanation to set
+     * @param explanation the explanation for this option.
      */
-    void setExplanation(Media explanation);
+    void setExplanation(E explanation);
 
     /**
      * Checks if this option is correct.
@@ -43,4 +45,11 @@ public interface Option extends Serializable {
      * @return the type of the option
      */
     String getType();
+
+    /**
+     * Gets the content of the option.
+     *
+     * @return the content of the option
+     */
+    O getContent();
 }

@@ -1,8 +1,7 @@
 /* (C)2023 */
 package com.adelium.web.quizservice.core.option;
 
-import com.adelium.web.quizservice.core.media.MediaBoolean;
-import com.adelium.web.quizservice.core.media.MediaText;
+import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.entity.question.QuestionTrueFalse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -22,21 +21,21 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Data
 @SuperBuilder
-@Entity
-public class OptionTrueFalse extends BaseOption<MediaBoolean, MediaText> {
+@Entity(name = "option_qcm")
+public class OptionQCM extends BaseOption<BaseMedia, BaseMedia> {
 
-    private static final String type = "true_false";
+    private static final String type = "qcm";
 
     /**
      * The media content representing the option.
      */
     @OneToOne
-    @JoinColumn(name = "explanation_text_media_id")
-    protected MediaText explanation;
+    @JoinColumn(name = "explanation_media_id")
+    protected BaseMedia explanation;
 
     @OneToOne
-    @JoinColumn(name = "content_boolean_media_id", referencedColumnName = "id")
-    private MediaBoolean content;
+    @JoinColumn(name = "content_media_id", referencedColumnName = "id")
+    private BaseMedia content;
 
     @ManyToOne
     @JoinColumn(name = "question_true_false_id", referencedColumnName = "id")
@@ -48,7 +47,7 @@ public class OptionTrueFalse extends BaseOption<MediaBoolean, MediaText> {
     }
 
     @Override
-    public MediaBoolean getContent() {
+    public BaseMedia getContent() {
         return content;
     }
 }
