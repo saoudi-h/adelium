@@ -8,6 +8,7 @@ import lombok.*;
 
 /**
  * Represents a tag that can be assigned to a question.
+ * @see BaseEntity
  */
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
