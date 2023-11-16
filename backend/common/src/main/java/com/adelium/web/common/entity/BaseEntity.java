@@ -11,6 +11,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * This abstract class represents a base entity.
+ *
+ * @param <ID> the type of the entity's ID
+ */
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
