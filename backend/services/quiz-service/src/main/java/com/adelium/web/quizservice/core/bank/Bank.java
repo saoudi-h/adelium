@@ -1,16 +1,28 @@
 /* (C)2023 */
 package com.adelium.web.quizservice.core.bank;
 
+import com.adelium.web.quizservice.core.media.Media;
 import com.adelium.web.quizservice.core.question.Question;
-import java.util.List;
-import org.apache.catalina.User;
+import com.adelium.web.quizservice.core.tag.Tag;
+import java.util.Set;
 
 /**
  * This interface represents a bank of questions.
- * A bank has a name, an owner, and a list of questions.
- * @param <T> the type of question in the bank
+ *
+ * @param <Q> the type of questions in the bank
+ * @param <M> the type of media associated with the questions
+ * @see Question
+ * @see Media
  */
-public interface Bank<T extends Question> {
+public interface Bank<Q extends Question<M>, M extends Media> {
+
+    /**
+     * Returns a set of tags associated with the bank.
+     *
+     * @return a set of tags associated with the bank
+     */
+    Set<Tag> getTags();
+
     /**
      * Returns the name of the bank.
      *
@@ -19,30 +31,31 @@ public interface Bank<T extends Question> {
     String getName();
 
     /**
-     * Returns the owner of the bank.
+     * Returns the ID of the owner of the bank.
      *
-     * @return the owner of the bank
+     * @return
      */
-    User getOwner();
+    Long getOwnerId();
 
     /**
-     * Returns the list of questions in the bank.
+     * Returns the set of questions in the bank.
      *
-     * @return the list of questions in the bank
+     * @param <Q> the type of questions in the bank
+     * @return the set of questions in the bank
      */
-    List<T> getQuestions();
+    Set<Q> getQuestions();
 
     /**
      * Adds a question to the bank.
      *
      * @param question the question to add
      */
-    void addQuestion(T question);
+    void addQuestion(Q question);
 
     /**
      * Removes a question from the bank.
      *
      * @param question the question to remove
      */
-    void removeQuestion(T question);
+    void removeQuestion(Q question);
 }
