@@ -11,6 +11,7 @@ import java.util.Set;
  *
  * @param <T> the type of media used in the question
  * @see Question
+ * @see Media
  */
 public interface MultiFormulable<T extends Media> extends Question<T> {
     /**

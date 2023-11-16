@@ -17,6 +17,9 @@ import java.util.Set;
  * @param <T> the type of media used in the question
  * @param <M> the type of media used in the user's answer
  * @see Assessable
+ * @see Option
+ * @see Media
+ * @see Question
  */
 public interface Optionable<O extends Option, T extends Media, M extends Media>
         extends Assessable<T, M> {

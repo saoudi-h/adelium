@@ -5,7 +5,7 @@ import com.adelium.web.quizservice.core.evaluation.Evaluation;
 import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.core.media.MediaText;
 import com.adelium.web.quizservice.core.option.OptionTrueFalse;
-import com.adelium.web.quizservice.core.question.AbstractQuestion;
+import com.adelium.web.quizservice.core.question.BaseQuestion;
 import com.adelium.web.quizservice.core.question.Optionable;
 import jakarta.persistence.*;
 import java.util.Set;
@@ -23,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @Entity(name = "question_true_false")
-public class QuestionTrueFalse extends AbstractQuestion
+public class QuestionTrueFalse extends BaseQuestion<BaseMedia>
         implements Optionable<OptionTrueFalse, BaseMedia, MediaText> {
 
     /**
