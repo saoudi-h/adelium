@@ -4,6 +4,7 @@ package com.adelium.web.quizservice.core.quiz;
 import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.core.question.BaseQuestion;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -32,7 +33,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class QuizDefault extends BaseQuiz<BaseQuestion<BaseMedia>, BaseMedia> {
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "quiz_question",
             joinColumns = @JoinColumn(name = "quiz_id", referencedColumnName = "id"),
