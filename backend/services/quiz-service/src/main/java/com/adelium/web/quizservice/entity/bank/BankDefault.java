@@ -1,10 +1,12 @@
 /* (C)2023 */
-package com.adelium.web.quizservice.core.bank;
+package com.adelium.web.quizservice.entity.bank;
 
+import com.adelium.web.quizservice.core.bank.Bank;
+import com.adelium.web.quizservice.core.bank.BaseBank;
 import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.core.question.BaseQuestion;
 import com.adelium.web.quizservice.core.question.Question;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,8 +18,6 @@ import lombok.experimental.SuperBuilder;
  * This class represents a default bank.
  * It extends the BaseBank class and implements the Bank interface.
  *
- * @param <Q> the type of questions in the bank
- * @param <M> the type of media associated with the questions
  * @see BaseBank
  * @see Bank
  * @see BaseQuestion
@@ -32,6 +32,11 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class BankDefault extends BaseBank<BaseQuestion<BaseMedia>, BaseMedia> {
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "bank_question",
+            joinColumns = @JoinColumn(name = "bank_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
     private Set<BaseQuestion<BaseMedia>> questions;
 
     @Override
