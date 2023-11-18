@@ -3,13 +3,15 @@ spring-boot = "3.1.5"
 spring-cloud-eureka = "4.0.3"
 spring-cloud-gateway = "4.0.8"
 spring-cloud-config = "4.0.4"
+spring-cloud-openfeign = "4.0.4"
 spring-security = "6.1.5"
 java-format = "1.18.1"
 mysql = "8.2.0"
 jjwt = "0.12.3"
 lombok = "1.18.30"
 springdoc-openapi = "2.2.0"
-spring-data = "4.1.5"
+spring-data = "4.2.0"
+mapstruct = "1.5.5.Final"
 
 [libraries]
 spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
@@ -37,6 +39,11 @@ springdoc-openapi-webflux-ui = { module = "org.springdoc:springdoc-openapi-start
 spring-boot-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
 spring-data-rest-webmvc = { module = "org.springframework.data:spring-data-rest-webmvc", version.ref = "spring-data" }
 spring-boot-data-rest = {module = "org.springframework.boot:spring-boot-starter-data-rest", version.ref = "spring-boot" }
+spirng-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
