@@ -1,8 +1,9 @@
 /* (C)2023 */
-package com.adelium.web.quizservice.core.option;
+package com.adelium.web.quizservice.entity.option;
 
 import com.adelium.web.quizservice.core.media.MediaBoolean;
 import com.adelium.web.quizservice.core.media.MediaText;
+import com.adelium.web.quizservice.core.option.BaseOption;
 import com.adelium.web.quizservice.entity.question.QuestionTrueFalse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
