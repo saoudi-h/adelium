@@ -14,19 +14,20 @@ import org.springframework.security.core.GrantedAuthority;
  * Represents an authority that can be granted to a user.
  * This class implements the Spring Security {@link GrantedAuthority} interface.
  */
-@Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@Entity
 public class Authority extends BaseEntity<Long> implements GrantedAuthority {
 
     /**
      * The name of the authority.
+     * This name is used by Spring Security to check if a user has this authority.
      */
     @Column(nullable = false)
-    private String name;
+    private String authority;
 
     /**
      * The roles that are granted this authority.
@@ -34,15 +35,4 @@ public class Authority extends BaseEntity<Long> implements GrantedAuthority {
     @ManyToMany(mappedBy = "grantedAuthorities")
     @Builder.Default
     private Collection<Role> roles = new HashSet<>();
-
-    /**
-     * Returns the name of the authority.
-     * This method is required by the {@link GrantedAuthority} interface.
-     *
-     * @return the name of the authority
-     */
-    @Override
-    public String getAuthority() {
-        return getName();
-    }
 }

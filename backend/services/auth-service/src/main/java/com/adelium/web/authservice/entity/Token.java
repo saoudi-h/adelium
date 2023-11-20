@@ -1,7 +1,7 @@
 /* (C)2023 */
 package com.adelium.web.authservice.entity;
 
-import com.adelium.web.authservice.dto.TokenType;
+import com.adelium.web.common.dto.TokenType;
 import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,8 +9,8 @@ import lombok.*;
 /**
  * Represents a token entity that can be used for authentication and authorization purposes.
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,7 +43,7 @@ public class Token extends BaseEntity<Long> {
     /**
      * The time to live of the token in seconds.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
 }

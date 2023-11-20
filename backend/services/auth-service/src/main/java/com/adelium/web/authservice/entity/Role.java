@@ -14,10 +14,10 @@ import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
  * Extends the BaseEntity class with a key of type Long.
  * Implements the GrantedAuthoritiesContainer interface from Spring Security.
  */
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 public class Role extends BaseEntity<Long> implements GrantedAuthoritiesContainer {

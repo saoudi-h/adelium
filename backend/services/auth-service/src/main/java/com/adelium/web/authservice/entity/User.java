@@ -5,27 +5,29 @@ import com.adelium.web.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Represents a user in the system.
- * Extends the BaseEntity class with a key of type Long.
- * Implements the UserDetails interface from Spring Security.
+ * This class represents a user of the application.
+ * <p>
+ * A user has a username, a password, a first name, a last name, a set of roles and a set of tokens.
+ * </p>
+ *
+ * @see Role
+ * @see Token
+ * @see UserDetails
+ * @see BaseEntity
  */
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 public class User extends BaseEntity<Long> implements UserDetails {
 
-    /**
-     * The username of the user.
-     */
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -78,7 +80,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
     /**
      * The roles of the user.
      */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -90,7 +92,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * The tokens of the user.
      */
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private List<Token> tokens;
+    private Set<Token> tokens;
 
     /**
      * Returns the authorities granted to the user.
