@@ -5,6 +5,7 @@ import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.common.repository.BaseRepository;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Transactional
+@RepositoryRestResource(collectionResourceRel = "roles", path = "roles")
 public interface RoleRepository extends BaseRepository<Role, Long> {
     /**
      * Finds a Role entity by its name.

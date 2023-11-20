@@ -5,21 +5,30 @@ import com.adelium.web.authservice.entity.Authority;
 import com.adelium.web.common.repository.BaseRepository;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 /**
- * This interface represents the Authority repository which extends the BaseRepository interface.
- * It provides methods to perform CRUD operations on Authority entities in the database.
+ * Repository interface for managing Authority entities.
+ * <p>
+ *     The @RepositoryRestResource annotation is used to customize the REST endpoint.
+ *     It is used to change the path of the endpoint, and the name of the collection.
+ *     The path is the part of the URL after the application name.
+ * </p>
+ *
+ * @see BaseRepository
+ * @see Authority
  */
 @Repository
 @Transactional
+@RepositoryRestResource(collectionResourceRel = "authorities", path = "authorities")
 public interface AuthorityRepository extends BaseRepository<Authority, Long> {
 
     /**
-     * Finds an Authority entity by its name.
+     * Find an Authority entity by its name.
      *
-     * @param name the name of the Authority entity to find
-     * @return an Optional containing the Authority entity with the given name, or an empty Optional if not found
+     * @param authority the name of the Authority entity to find
+     * @return an Optional Authority entity
      */
-    Optional<Authority> findByName(String name);
+    Optional<Authority> findByAuthority(String authority);
 }

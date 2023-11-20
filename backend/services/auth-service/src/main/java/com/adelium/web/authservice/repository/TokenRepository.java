@@ -6,7 +6,9 @@ import com.adelium.web.common.repository.BaseRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+@RepositoryRestResource(exported = false)
 public interface TokenRepository extends BaseRepository<Token, Long> {
 
     /**
