@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "auth-service", contextId = "authFeignClient", url = "http://localhost:8081")
+@FeignClient(name = "auth-service", contextId = "authFeignClient")
 public interface AuthServiceClient {
     @GetMapping("/users/{username}")
     ResponseEntity<UserDetailsDTO> getUser(@PathVariable("username") String username);

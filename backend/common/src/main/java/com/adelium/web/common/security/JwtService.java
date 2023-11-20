@@ -29,9 +29,10 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetailsDTO userDetails) {
+        System.out.println("tokens : " + userDetails.getTokens());
         final TokenDTO serverToken =
                 userDetails.getTokens().stream()
-                        .filter(t -> t.equals(token))
+                        .filter(t -> t.token.equals(token))
                         .findFirst()
                         .orElse(null);
         final String username = extractUsername(token);

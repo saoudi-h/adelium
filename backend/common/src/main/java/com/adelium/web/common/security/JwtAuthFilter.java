@@ -18,8 +18,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * JwtAuthFilter is a custom security filter that extends OncePerRequestFilter, ensuring
- * it's applied once per request within a single request thread. It's responsible for
+ * JwtAuthFilter is a custom security filter that extends OncePerRequestFilter,
+ * ensuring
+ * it's applied once per request within a single request thread. It's
+ * responsible for
  * intercepting HTTP requests and handling JWT-based authentication.
  */
 @Component
@@ -35,7 +37,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      *
      * @param request     The incoming HttpServletRequest.
      * @param response    The outgoing HttpServletResponse.
-     * @param filterChain The filter chain provided by the Spring security filter chain.
+     * @param filterChain The filter chain provided by the Spring security filter
+     *                    chain.
      * @throws ServletException if a servlet-specific error occurs.
      * @throws IOException      if an I/O error occurs during request processing.
      */
@@ -49,8 +52,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwtToken;
         final String username;
-
-        System.out.println("authHeader : " + authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
             filterChain.doFilter(request, response);
