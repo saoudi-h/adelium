@@ -1,27 +1,28 @@
 /* (C)2023 */
 package com.adelium.web.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
 public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
     @NotBlank(message = "Username is mandatory")
     private String username;
+
+    @NotBlank(message = "First name is mandatory")
+    private String firstname;
+
+    @NotBlank(message = "Last name is mandatory")
+    private String lastname;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password is mandatory")
@@ -37,7 +38,9 @@ public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
     //    @Valid
     private Set<RoleDTO> roles;
 
-    @JsonIgnore @Valid private List<TokenDTO> tokens;
+    //    @JsonIgnore
+    //    @Valid
+    private Set<TokenDTO> tokens;
 
     @Override
     public Collection<AuthorityDTO> getAuthorities() {
@@ -46,5 +49,29 @@ public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
             authorities.addAll(role.getGrantedAuthorities());
         }
         return authorities;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetailsDTO{"
+                + "username='"
+                + username
+                + '\''
+                + ", password='"
+                + password
+                + '\''
+                + ", accountNonExpired="
+                + accountNonExpired
+                + ", accountNonLocked="
+                + accountNonLocked
+                + ", credentialsNonExpired="
+                + credentialsNonExpired
+                + ", enabled="
+                + enabled
+                + ", roles="
+                + roles
+                + ", tokens="
+                + tokens
+                + '}';
     }
 }

@@ -3,13 +3,11 @@ package com.adelium.web.common.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
 public class TokenDTO extends BaseDTO<Long> {
 
     @NotBlank(message = "Token is mandatory")
