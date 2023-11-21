@@ -5,6 +5,7 @@ import com.adelium.web.common.repository.BaseRepository;
 import com.adelium.web.quizservice.entity.quiz.QuizMCQ;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 @Transactional
-@RepositoryRestResource(collectionResourceRel = "quizzesMQS", path = "quiz_mcq")
+@RepositoryRestResource(collectionResourceRel = "quizzesMQS", path = "quiz-mcq")
 public interface QuizMCQRepository extends BaseRepository<QuizMCQ, Long> {
 
     /**
@@ -27,5 +28,5 @@ public interface QuizMCQRepository extends BaseRepository<QuizMCQ, Long> {
      * @param name the name of the MCQ quiz to find
      * @return an Optional of the MCQ quiz found
      */
-    Optional<QuizMCQ> findByName(String name);
+    Optional<QuizMCQ> findByName(@Param("name") String name);
 }

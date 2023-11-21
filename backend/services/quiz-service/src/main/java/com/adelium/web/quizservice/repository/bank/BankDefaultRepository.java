@@ -5,6 +5,7 @@ import com.adelium.web.common.repository.BaseRepository;
 import com.adelium.web.quizservice.entity.bank.BankDefault;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
@@ -26,5 +27,5 @@ public interface BankDefaultRepository extends BaseRepository<BankDefault, Long>
      * @param name the name of the bank to find
      * @return an Optional of the bank found
      */
-    Optional<BankDefault> findByName(String name);
+    Optional<BankDefault> findByName(@Param("name") String name);
 }

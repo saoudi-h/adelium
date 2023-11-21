@@ -5,6 +5,7 @@ import com.adelium.web.common.repository.BaseRepository;
 import com.adelium.web.quizservice.entity.quiz.QuizDefault;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +22,5 @@ import org.springframework.stereotype.Repository;
 @RepositoryRestResource(collectionResourceRel = "quizzesDefault", path = "quiz_default")
 public interface QuizDefaultRepository extends BaseRepository<QuizDefault, Long> {
 
-    Optional<QuizDefault> findByName(String name);
+    Optional<QuizDefault> findByName(@Param("name") String name);
 }
