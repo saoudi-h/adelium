@@ -8,6 +8,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,23 +26,41 @@ public class JwtService {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        if (token == null || claimsResolver == null) {
+            return null;
+        }
         final Claims claims = extractAllClaims(token);
+        if (claims == null) {
+            return null;
+        }
+
         return claimsResolver.apply(claims);
     }
 
     public boolean isTokenValid(String token, UserDetailsDTO userDetails) {
-        final TokenDTO serverToken =
-                userDetails.getTokens().stream()
-                        .filter(t -> t.token.equals(token))
-                        .findFirst()
-                        .orElse(null);
+        if (token == null || userDetails == null) {
+            return false;
+        }
+
+        Set<TokenDTO> tokens = userDetails.getTokens();
+        if (tokens == null) {
+            return false;
+        }
+
+        final Optional<TokenDTO> serverTokenOptional =
+                userDetails.getTokens().stream().filter(t -> t.token.equals(token)).findFirst();
+
+        if (serverTokenOptional.isEmpty()) {
+            return false;
+        }
+
+        TokenDTO serverToken = serverTokenOptional.get();
+
         final String username = extractUsername(token);
-        Boolean res =
-                (username.equals(userDetails.getUsername()))
-                        && !isTokenExpired(token)
-                        && serverToken != null
-                        && !serverToken.isRevoked();
-        return res;
+
+        return (username.equals(userDetails.getUsername()))
+                && !isTokenExpired(token)
+                && !serverToken.isRevoked();
     }
 
     private boolean isTokenExpired(String token) {
