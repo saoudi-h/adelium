@@ -11,6 +11,7 @@ jjwt = "0.12.3"
 lombok = "1.18.30"
 springdoc-openapi = "2.2.0"
 mapstruct = "1.5.5.Final"
+mapstruct-lombok = "0.2.0"
 
 [libraries]
 spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
@@ -41,6 +42,7 @@ spirng-boot-starter-validation = { module = "org.springframework.boot:spring-boo
 spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+mapstruct-lombok = { module = "org.projectlombok:lombok-mapstruct-binding", version.ref = "mapstruct-lombok" }
 
 
 [plugins]
