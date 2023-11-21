@@ -1,10 +1,7 @@
 /* (C)2023 */
 package com.adelium.web.authservice.config;
 
-import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.authservice.repository.UserRepository;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,34 +50,5 @@ public class ApplicationConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public Set<Role> adminGroup() {
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().name("ROLE_ADMIN").build());
-        // Ajoutez d'autres roles ici
-        return roles;
-    }
-
-    @Bean
-    public Set<Role> businessGroup() {
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().name("ROLE_BUSINESS").build());
-        return roles;
-    }
-
-    @Bean
-    public Set<Role> registerGroup() {
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().name("ROLE_REGISTER").build());
-        return roles;
-    }
-
-    @Bean
-    public Set<Role> internGroup() {
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().name("ROLE_INTERN").build());
-        return roles;
     }
 }
