@@ -46,6 +46,7 @@ public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
     public Collection<AuthorityDTO> getAuthorities() {
         Set<AuthorityDTO> authorities = new HashSet<>();
         for (RoleDTO role : roles) {
+            authorities.add(new AuthorityDTO(role.getName()));
             authorities.addAll(role.getGrantedAuthorities());
         }
         return authorities;

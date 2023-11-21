@@ -104,6 +104,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
     public Collection<Authority> getAuthorities() {
         Set<Authority> authorities = new HashSet<>();
         for (Role role : roles) {
+            authorities.add(Authority.builder().authority(role.getName()).build());
             authorities.addAll(role.getGrantedAuthorities());
         }
         return authorities;
