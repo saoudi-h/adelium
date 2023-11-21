@@ -3,7 +3,6 @@ import { Component } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterLink } from '@angular/router'
 import { UserLogin } from '@core/dto/UserLogin'
-import { CustomValidators } from '@core/utility/CustomValidators'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { AuthService } from '../../services/auth.service'
 import { SvgLoginComponent } from './svg-login.component'
@@ -30,7 +29,7 @@ export class LoginComponent {
                 Validators.required,
                 Validators.minLength(8),
                 Validators.maxLength(40),
-                CustomValidators.password(),
+                // CustomValidators.password(),
             ],
         ],
     })
