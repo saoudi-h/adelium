@@ -7,4 +7,5 @@ plugins {
 dependencies {
     implementation libs.spring.cloud.eureka.server
     implementation libs.spring.cloud.config.client
+    testImplementation libs.spring.boot.test
 }
