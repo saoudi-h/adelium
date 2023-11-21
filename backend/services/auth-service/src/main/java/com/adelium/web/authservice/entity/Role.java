@@ -31,7 +31,7 @@ public class Role extends BaseEntity<Long> implements GrantedAuthoritiesContaine
     /**
      * Authorities granted to this role.
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "roles_authority",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),

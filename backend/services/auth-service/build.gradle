@@ -1,6 +1,6 @@
 plugins {
     id 'com.adelium.web.common-conventions'
-    id 'org.springframework.boot' version '3.1.4'
+    id 'org.springframework.boot' version '3.1.5'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
@@ -13,9 +13,14 @@ dependencies {
     implementation libs.spring.boot.actuator
     implementation libs.spring.boot.validation
     implementation libs.spring.cloud.eureka.client
+    implementation libs.spring.boot.data.rest
     implementation libs.jjwt.api
     implementation libs.spring.cloud.config.client
     implementation libs.springdoc.openapi.webmvc.ui
+    implementation libs.spring.cloud.starter.openfeign
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+    annotationProcessor libs.mapstruct.lombok
     runtimeOnly libs.jjwt.impl
     runtimeOnly libs.jjwt.jackson
     compileOnly libs.lombok

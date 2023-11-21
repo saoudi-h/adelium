@@ -11,7 +11,7 @@ import jakarta.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,17 +23,18 @@ import org.springframework.stereotype.Component;
  * It creates default roles, authorities, and a user with admin privileges if they do not exist in the database.
  */
 @Component
+@RequiredArgsConstructor
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-    boolean alreadySetup = false;
+    private boolean alreadySetup = false;
 
-    @Autowired private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired private AuthorityRepository authorityRepository;
+    private final AuthorityRepository authorityRepository;
 
-    @Autowired private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -70,10 +71,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Transactional
     public Authority createAuthorityIfNotFound(String name) {
 
-        Optional<Authority> optionalAuthority = authorityRepository.findByName(name);
+        Optional<Authority> optionalAuthority = authorityRepository.findByAuthority(name);
         Authority authority = null;
         if (optionalAuthority.isEmpty()) {
-            authority = Authority.builder().name(name).build();
+            authority = Authority.builder().authority(name).build();
             authorityRepository.save(authority);
         } else {
             authority = optionalAuthority.get();
