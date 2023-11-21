@@ -1,14 +1,16 @@
 /* (C)2023 */
 package com.adelium.web.authservice.service;
 
-import com.adelium.web.authservice.dto.AuthenticationRequest;
-import com.adelium.web.authservice.dto.AuthenticationResponse;
 import com.adelium.web.authservice.dto.RegisterRequest;
-import com.adelium.web.authservice.dto.TokenType;
+import com.adelium.web.authservice.dto.TokensDTO;
 import com.adelium.web.authservice.entity.Token;
 import com.adelium.web.authservice.entity.User;
+import com.adelium.web.authservice.mapper.UserDetailsMapper;
 import com.adelium.web.authservice.repository.TokenRepository;
 import com.adelium.web.authservice.repository.UserRepository;
+import com.adelium.web.common.dto.TokenType;
+import com.adelium.web.common.dto.UserAuthDTO;
+import com.adelium.web.common.security.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,8 +34,10 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserDetailsMapper userDetailsMapper;
+    private final TokenService tokenService;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public TokensDTO register(RegisterRequest request) {
         var user =
                 User.builder()
                         .username(request.getUsername())
@@ -41,13 +47,10 @@ public class AuthService {
                         .roles(request.getRoles())
                         .build();
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var jwtToken = tokenService.generateToken(user);
+        var refreshToken = tokenService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        return TokensDTO.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
     }
 
     private void saveUserToken(User user, String jwtToken) {
@@ -62,25 +65,25 @@ public class AuthService {
         tokenRepository.save(token);
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public TokensDTO login(UserAuthDTO userAuthDTO) {
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(), request.getPassword()));
+        Authentication authentication =
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                userAuthDTO.getUsername(), userAuthDTO.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         var user =
                 userRepository
-                        .findByUsername(request.getUsername())
+                        .findByUsername(userAuthDTO.getUsername())
                         .orElseThrow(() -> new UsernameNotFoundException("User not founded."));
 
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var jwtToken = tokenService.generateToken(user);
+        var refreshToken = tokenService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        return TokensDTO.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
     }
 
     private void revokeAllUserTokens(User user) {
@@ -96,10 +99,13 @@ public class AuthService {
 
     public void refreshToken(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String username;
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid refresh token");
             return;
         }
 
@@ -108,13 +114,14 @@ public class AuthService {
         username = jwtService.extractUsername(refreshToken);
 
         if (username != null) {
-            var user = userRepository.findByUsername(username).orElseThrow();
-            if (jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
+            User user = userRepository.findByUsername(username).orElse(null);
+            if (user != null
+                    && jwtService.isTokenValid(refreshToken, userDetailsMapper.toDTO(user))) {
+                var accessToken = tokenService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse =
-                        AuthenticationResponse.builder()
+                        TokensDTO.builder()
                                 .accessToken(accessToken)
                                 .refreshToken(refreshToken)
                                 .build();
