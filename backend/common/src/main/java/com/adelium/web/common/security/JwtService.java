@@ -29,17 +29,18 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetailsDTO userDetails) {
-        System.out.println("tokens : " + userDetails.getTokens());
         final TokenDTO serverToken =
                 userDetails.getTokens().stream()
                         .filter(t -> t.token.equals(token))
                         .findFirst()
                         .orElse(null);
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()))
-                && !isTokenExpired(token)
-                && serverToken != null
-                && !serverToken.isRevoked();
+        Boolean res =
+                (username.equals(userDetails.getUsername()))
+                        && !isTokenExpired(token)
+                        && serverToken != null
+                        && !serverToken.isRevoked();
+        return res;
     }
 
     private boolean isTokenExpired(String token) {
