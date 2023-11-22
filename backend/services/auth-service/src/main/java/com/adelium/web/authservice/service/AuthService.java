@@ -80,6 +80,7 @@ public class AuthService {
                         .orElseThrow(() -> new UsernameNotFoundException("User not founded."));
 
         var jwtToken = tokenService.generateToken(user);
+
         var refreshToken = tokenService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
@@ -117,7 +118,9 @@ public class AuthService {
             User user = userRepository.findByUsername(username).orElse(null);
             if (user != null
                     && jwtService.isTokenValid(refreshToken, userDetailsMapper.toDTO(user))) {
+                System.out.println("login user: " + user);
                 var accessToken = tokenService.generateToken(user);
+                System.out.println("access token: " + accessToken);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse =

@@ -13,9 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * The controller for the authentication service.
+ * Controller class for authentication.
+ * Defines endpoints for registering a new user, logging in, and refreshing the access token.
  *
- * <p>It contains the endpoints for registering, authenticating and refreshing tokens.</p>
+ * @see AuthService
  */
 @RestController
 @RequiredArgsConstructor
@@ -23,16 +24,35 @@ public class AuthController {
 
     private final AuthService service;
 
+    /**
+     * Registers a new user.
+     *
+     * @param request the register request containing user details
+     * @return the response entity containing the generated tokens
+     */
     @PostMapping(value = "/register")
     public ResponseEntity<TokensDTO> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.register(request));
     }
 
+    /**
+     * Authenticates a user and generates tokens.
+     *
+     * @param userAuthDTO the user authentication details
+     * @return the response entity containing the generated tokens
+     */
     @PostMapping("/login")
     public ResponseEntity<TokensDTO> login(@RequestBody UserAuthDTO userAuthDTO) {
         return ResponseEntity.ok(service.login(userAuthDTO));
     }
 
+    /**
+     * Refreshes the access token.
+     *
+     * @param request  the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws IOException if an I/O error occurs
+     */
     @PostMapping("/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response)
             throws IOException {

@@ -1,14 +1,18 @@
 /* (C)2023 */
 package com.adelium.web.authservice.service;
 
+import com.adelium.web.authservice.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +28,24 @@ public class TokenService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(User user) {
+        // add claims: firstname, lastname, roles to JWT token.
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("firstname", user.getFirstname());
+        extraClaims.put("lastname", user.getLastname());
+
+        // convert roles to list of strings
+        List<String> roles =
+                user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList());
+
+        // add roles to JWT token
+        extraClaims.put("roles", roles);
+        return generateToken(extraClaims, user);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 

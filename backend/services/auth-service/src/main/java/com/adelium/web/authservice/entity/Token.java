@@ -20,7 +20,7 @@ public class Token extends BaseEntity<Long> {
     /**
      * The token value.
      */
-    @Column(unique = true)
+    @Column(length = 1024, unique = true)
     public String token;
 
     /**
