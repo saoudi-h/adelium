@@ -1,10 +1,10 @@
 /* (C)2023 */
 package com.adelium.web.authservice.controller;
 
-import com.adelium.web.authservice.dto.RegisterRequest;
 import com.adelium.web.authservice.dto.TokensDTO;
 import com.adelium.web.authservice.service.AuthService;
 import com.adelium.web.common.dto.UserAuthDTO;
+import com.adelium.web.common.dto.UserDetailsDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,12 +27,12 @@ public class AuthController {
     /**
      * Registers a new user.
      *
-     * @param request the register request containing user details
+     * @param userDetailsDTO the user details
      * @return the response entity containing the generated tokens
      */
     @PostMapping(value = "/register")
-    public ResponseEntity<TokensDTO> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(service.register(request));
+    public ResponseEntity<TokensDTO> register(@RequestBody UserDetailsDTO userDetailsDTO) {
+        return ResponseEntity.ok(service.register(userDetailsDTO));
     }
 
     /**

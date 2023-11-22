@@ -1,20 +1,23 @@
 /* (C)2023 */
 package com.adelium.web.authservice.service;
 
-import com.adelium.web.authservice.dto.RegisterRequest;
 import com.adelium.web.authservice.dto.TokensDTO;
+import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.authservice.entity.Token;
 import com.adelium.web.authservice.entity.User;
 import com.adelium.web.authservice.mapper.UserDetailsMapper;
+import com.adelium.web.authservice.repository.RoleRepository;
 import com.adelium.web.authservice.repository.TokenRepository;
 import com.adelium.web.authservice.repository.UserRepository;
 import com.adelium.web.common.dto.TokenType;
 import com.adelium.web.common.dto.UserAuthDTO;
+import com.adelium.web.common.dto.UserDetailsDTO;
 import com.adelium.web.common.security.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,16 +39,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsMapper userDetailsMapper;
     private final TokenService tokenService;
+    private final RoleRepository roleRepository;
 
-    public TokensDTO register(RegisterRequest request) {
-        var user =
-                User.builder()
-                        .username(request.getUsername())
-                        .firstname(request.getFirstname())
-                        .lastname(request.getLastname())
-                        .password(passwordEncoder.encode(request.getPassword()))
-                        .roles(request.getRoles())
-                        .build();
+    public TokensDTO register(UserDetailsDTO userDetailsDTO) {
+        Role userRole =
+                roleRepository
+                        .findByName("ROLE_USER")
+                        .orElseThrow(() -> new RuntimeException("Role USER not found"));
+        var user = userDetailsMapper.toEntity(userDetailsDTO);
+        user.setRoles(Set.of(userRole));
         var savedUser = userRepository.save(user);
         var jwtToken = tokenService.generateToken(user);
         var refreshToken = tokenService.generateRefreshToken(user);
