@@ -111,7 +111,7 @@ export class AuthService {
         }
 
         const request = this.httpClient.post<Token>(
-            `${this.url}/authenticate`,
+            `${this.url}/login`,
             userLogin
         )
 
