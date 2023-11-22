@@ -12,7 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * This class represents a user of the application.
  * <p>
- * A user has a username, a password, a first name, a last name, a set of roles and a set of tokens.
+ * A user has a username, a password, a first name, a last name, a set of roles
+ * and a set of tokens.
  * </p>
  *
  * @see Role
@@ -48,6 +49,12 @@ public class User extends BaseEntity<Long> implements UserDetails {
      */
     @Column(nullable = false)
     private String lastname;
+
+    /**
+     * The Phone number of the user.
+     */
+    @Column(nullable = false)
+    private String phone;
 
     /**
      * Is the user account expired?

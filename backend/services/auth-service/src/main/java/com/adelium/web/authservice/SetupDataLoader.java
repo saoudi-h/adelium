@@ -61,6 +61,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         user.setUsername("admin@adelium.com");
         user.setFirstname("hakim");
         user.setLastname("saoudi");
+        user.setPhone("0123456789");
         user.setPassword(passwordEncoder.encode("password"));
         user.getRoles().add(adminRole);
         user.setEnabled(true);
