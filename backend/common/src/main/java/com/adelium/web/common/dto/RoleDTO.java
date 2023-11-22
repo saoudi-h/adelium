@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class RoleDTO extends BaseDTO<Long> implements GrantedAuthoritiesContainer {
     @NotBlank(message = "Name is mandatory")
     private String name;

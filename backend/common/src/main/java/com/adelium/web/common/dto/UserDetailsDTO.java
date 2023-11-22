@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
     @NotBlank(message = "Username is mandatory")
     private String username;
@@ -23,6 +24,9 @@ public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
 
     @NotBlank(message = "Last name is mandatory")
     private String lastname;
+
+    @NotBlank(message = "Phone number is mandatory")
+    private String phone;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password is mandatory")
@@ -34,12 +38,12 @@ public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
 
-    //    @NotEmpty(message = "Authorities must not be empty")
-    //    @Valid
+    // @NotEmpty(message = "Authorities must not be empty")
+    // @Valid
     private Set<RoleDTO> roles;
 
-    //    @JsonIgnore
-    //    @Valid
+    // @JsonIgnore
+    // @Valid
     private Set<TokenDTO> tokens;
 
     @Override

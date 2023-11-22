@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class AuthorityDTO extends BaseDTO<Long> implements GrantedAuthority {
 
     @NotBlank(message = "Authority must not be blank")

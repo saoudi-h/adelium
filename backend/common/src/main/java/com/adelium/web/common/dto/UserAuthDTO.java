@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserAuthDTO extends BaseDTO<Long> {
     @NotBlank(message = "Username is mandatory")
     private String username;
