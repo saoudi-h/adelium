@@ -15,27 +15,47 @@ import { environment } from 'src/environments/environment.development'
 export class AuthService {
     private url = `${environment.baseUrl}/api/v1/auth`
     private token: Token | null = null
-    private user: UserToken | null = null
+    private _user: UserToken | null = null
+    public get user(): UserToken | null {
+        return this._user
+    }
+    public set user(value: UserToken | null) {
+        this._user = value
+    }
     private redirectUrl: string | null = null
 
+    /**
+     * IsLoggedIn subject
+     * */
     private isLoggedInSubject: BehaviorSubject<boolean> =
         new BehaviorSubject<boolean>(false)
     public isLoggedIn$: Observable<boolean> =
         this.isLoggedInSubject.asObservable()
+
+    /**
+     * User subject
+     * */
+    private userSubject: BehaviorSubject<UserToken | null> =
+        new BehaviorSubject<UserToken | null>(null)
+    public user$: Observable<UserToken | null> = this.userSubject.asObservable()
 
     constructor(
         private httpClient: HttpClient,
         private router: Router
     ) {
         this.token = this.getToken()
-        if (!this.isLoggedInSubject.value) return
-        this.user = this.getUserFromToken()
+        if (this.isLoggedInSubject.value) this.updateUser()
+    }
+
+    private updateUser(): void {
+        this._user = this.getUserFromToken()
+        this.userSubject.next(this._user)
         if (this.hasTokenExpired()) {
             this.refresh()
         }
     }
 
-    getUserFromToken(): UserToken | null {
+    private getUserFromToken(): UserToken | null {
         if (!this.isLoggedIn()) return null
         const accessToken = this.getAccessToken()
         if (!accessToken) return null
@@ -59,11 +79,11 @@ export class AuthService {
             return null
         }
         this.isLoggedInSubject.next(true)
+        this.updateUser()
         return { accessToken, refreshToken }
     }
 
     hasTokenExpired(): boolean {
-        console.log('user : ', this.user)
         this.withAuth()
         return this.user!.exp < Date.now() / 1000
     }
@@ -138,16 +158,17 @@ export class AuthService {
         this.user = null
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
+        this.userSubject.next(null)
         this.isLoggedInSubject.next(false)
         this.router.navigate(['/'])
     }
 
-    validateRoles(roles: Role, method = 'any') {
+    validateRoles(roles: Role, _method = 'any') {
         return false
     }
 
     withAuth() {
-        if (!this.token || !this.user)
+        if (!this.isLoggedIn())
             throw new Error(
                 'The method should not be called on an unauthenticated user.'
             )
@@ -155,6 +176,7 @@ export class AuthService {
 
     handleLoginSucess(token: Token): void {
         this.setToken(token)
+        this.updateUser()
 
         if (this.redirectUrl) {
             this.router.navigate([this.redirectUrl])
