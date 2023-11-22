@@ -1,11 +1,29 @@
 /**
  * Represents a User Token, typically used for JSON Web Tokens (JWTs).
  */
+/**
+ * Represents a user token containing information about the user.
+ */
 export interface UserToken {
+    /**
+     * The first name of the user.
+     */
+    firstname: string
+
+    /**
+     * The last name of the user.
+     */
+    lastname: string
+
     /**
      * The "sub" field typically represents the subject of the JWT, such as a username or email address.
      */
     sub: string
+
+    /**
+     * The "roles" field represents the roles associated with the user.
+     */
+    roles: string[]
 
     /**
      * The "exp" field represents the expiration date of the JWT as a number (timestamp).
