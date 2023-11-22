@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
+import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component'
 import { NavbarComponent } from '@shared/components/navbar/navbar.component'
 
 @Component({
@@ -41,6 +42,11 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component'
       backdrop-filter: blur(2px)
     `,
     ],
-    imports: [FooterComponent, NavbarComponent, RouterModule],
+    imports: [
+        FooterComponent,
+        NavbarComponent,
+        RouterModule,
+        MegaMenuComponent,
+    ],
 })
 export class DefaultLayoutComponent {}
