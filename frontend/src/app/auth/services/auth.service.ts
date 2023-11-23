@@ -6,7 +6,14 @@ import { UserLogin } from '@core/dto/UserLogin'
 import { UserRegister } from '@core/dto/UserRegister'
 import { UserToken } from '@core/dto/UserToken'
 import { Role } from '@core/models/role'
-import { BehaviorSubject, Observable, catchError, of, tap, throwError } from 'rxjs'
+import {
+    BehaviorSubject,
+    Observable,
+    catchError,
+    of,
+    tap,
+    throwError,
+} from 'rxjs'
 import { environment } from 'src/environments/environment.development'
 
 @Injectable({
