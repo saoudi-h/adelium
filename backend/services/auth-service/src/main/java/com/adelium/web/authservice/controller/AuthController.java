@@ -2,13 +2,16 @@
 package com.adelium.web.authservice.controller;
 
 import com.adelium.web.authservice.dto.TokensDTO;
+import com.adelium.web.authservice.exception.UsernameAlreadyExistsException;
 import com.adelium.web.authservice.service.AuthService;
 import com.adelium.web.common.dto.UserAuthDTO;
 import com.adelium.web.common.dto.UserDetailsDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +32,25 @@ public class AuthController {
      *
      * @param userDetailsDTO the user details
      * @return the response entity containing the generated tokens
+     * @throws UsernameAlreadyExistsException if the username already exists
+     * @throws Exception                      if an error occurs
      */
     @PostMapping(value = "/register")
-    public ResponseEntity<TokensDTO> register(@RequestBody UserDetailsDTO userDetailsDTO) {
-        return ResponseEntity.ok(service.register(userDetailsDTO));
+    public ResponseEntity<?> register(@Valid @RequestBody UserDetailsDTO userDetailsDTO) {
+        try {
+            TokensDTO tokens = service.register(userDetailsDTO);
+            return ResponseEntity.ok(tokens);
+        } catch (UsernameAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur interne du serveur");
+        }
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<String> handleUsernameAlreadyExists(UsernameAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     /**
@@ -42,7 +60,7 @@ public class AuthController {
      * @return the response entity containing the generated tokens
      */
     @PostMapping("/login")
-    public ResponseEntity<TokensDTO> login(@RequestBody UserAuthDTO userAuthDTO) {
+    public ResponseEntity<TokensDTO> login(@Valid @RequestBody UserAuthDTO userAuthDTO) {
         return ResponseEntity.ok(service.login(userAuthDTO));
     }
 
