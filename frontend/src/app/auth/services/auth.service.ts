@@ -6,7 +6,7 @@ import { UserLogin } from '@core/dto/UserLogin'
 import { UserRegister } from '@core/dto/UserRegister'
 import { UserToken } from '@core/dto/UserToken'
 import { Role } from '@core/models/role'
-import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs'
+import { BehaviorSubject, Observable, catchError, of, tap, throwError } from 'rxjs'
 import { environment } from 'src/environments/environment.development'
 
 @Injectable({
@@ -119,7 +119,8 @@ export class AuthService {
                 this.handleLoginSucess(token)
             }),
             catchError(error => {
-                throw new Error("L'inscription a échoué : ", error)
+                // Propager l'erreur au lieu de la remplacer
+                return throwError(() => error)
             })
         )
     }
@@ -163,6 +164,7 @@ export class AuthService {
         this.router.navigate(['/'])
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     validateRoles(roles: Role, _method = 'any') {
         return false
     }

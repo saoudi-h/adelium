@@ -84,14 +84,18 @@ export class RegisterComponent {
         const { repeatPassword, ...userRegister } = this.registerForm.value
 
         this.authService.register(userRegister as UserRegister).subscribe({
-            next: response => {
-                if (!response) {
-                    throw new Error('Erreur lors de la création du compte.')
-                }
+            next: () => {
                 console.log('Bienvenue.')
             },
             error: error => {
-                alert(JSON.stringify(error))
+                if (error.status === 400) {
+                    alert('Erreur : ' + error.error)
+                } else {
+                    alert(
+                        "Erreur lors de l'enregistrement : " +
+                            JSON.stringify(error)
+                    )
+                }
             },
         })
     }
