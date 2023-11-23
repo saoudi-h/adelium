@@ -5,6 +5,7 @@ import com.adelium.web.authservice.entity.Authority;
 import com.adelium.web.common.repository.BaseRepository;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
@@ -30,5 +31,6 @@ public interface AuthorityRepository extends BaseRepository<Authority, Long> {
      * @param authority the name of the Authority entity to find
      * @return an Optional Authority entity
      */
+    @Cacheable("authorities")
     Optional<Authority> findByAuthority(String authority);
 }

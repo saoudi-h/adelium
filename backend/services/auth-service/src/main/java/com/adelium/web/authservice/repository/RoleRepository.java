@@ -5,6 +5,7 @@ import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.common.repository.BaseRepository;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +22,6 @@ public interface RoleRepository extends BaseRepository<Role, Long> {
      * @param name the name of the Role entity to find
      * @return an Optional containing the Role entity, or an empty Optional if not found
      */
+    @Cacheable("roles")
     Optional<Role> findByName(String name);
 }
