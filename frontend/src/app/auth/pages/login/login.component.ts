@@ -3,6 +3,7 @@ import { Component } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterLink } from '@angular/router'
 import { UserLogin } from '@core/dto/UserLogin'
+import { NotificationService } from '@core/services/notification.service'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { AuthService } from '../../services/auth.service'
 import { SvgLoginComponent } from './svg-login.component'
@@ -36,7 +37,8 @@ export class LoginComponent {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private notification: NotificationService
     ) {}
 
     onSubmit() {
@@ -45,12 +47,27 @@ export class LoginComponent {
         this.authService.login(userLogin).subscribe({
             next: response => {
                 if (!response) {
-                    throw new Error('Vous êtes déjà connecté.')
+                    this.notification.error(
+                        'Une erreur est survenue lors de la connexion.',
+                        'Erreur de connexion',
+                        {
+                            dismissible: false,
+                        }
+                    )
+                    return
                 }
-                console.log('Bienvenue.')
+                this.notification.success(
+                    'Vous êtes maintenant connecté.',
+                    'Bienvenue',
+                    {
+                        dismissible: true,
+                    }
+                )
             },
             error: error => {
-                alert(JSON.stringify(error))
+                this.notification.error(error.message, 'Erreur de connexion', {
+                    dismissible: true,
+                })
             },
         })
     }
