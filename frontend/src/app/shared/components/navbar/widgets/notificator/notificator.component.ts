@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import {
     Notice,
     NotificationService,
@@ -11,6 +11,7 @@ import { SuccessIconComponent } from '@shared/components/icons/success-icon.comp
 import { WarningIconComponent } from '@shared/components/icons/warning-icon.component'
 import { formatDistance } from 'date-fns'
 import fr from 'date-fns/locale/fr'
+import { ToastContainerDirective, ToastrService } from 'ngx-toastr'
 
 /**
  * Notificator component.
@@ -26,6 +27,7 @@ import fr from 'date-fns/locale/fr'
         WarningIconComponent,
         ErrorIconComponent,
         InfoIconComponent,
+        ToastContainerDirective,
     ],
     template: `<div class="dropdown dropdown-end">
         <label for="" tabindex="0" class="btn btn-square btn-ghost relative">
@@ -37,41 +39,56 @@ import fr from 'date-fns/locale/fr'
             </span>
         </label>
 
-        <ul
+        <!-- Toast container -->
+        <div
+            aria-live="polite"
+            toastContainer
+            class="absolute right-72 mt-4"></div>
+
+        <div
             tabindex="0"
-            class="dropdown-content menu-sm z-[1] mt-3 w-64 rounded-2xl bg-base-300 p-2 shadow">
-            <li class="flex flex-col gap-2 py-2">
+            class="dropdown-content menu-sm z-[1] mt-4 w-64 rounded-2xl bg-base-300 p-2 shadow">
+            <!-- Toast -->
+            <ul class="flex flex-col gap-2 py-2">
                 @for (notification of notifications; track notification) {
-                    <div
-                        role="alert"
-                        class="alert rounded-xl transition-colors duration-300 hover:border-error/30 active:!border-error/70 active:!bg-error/30">
-                        @switch (notification.type) {
-                            @case ('success') {
-                                <app-success-icon
-                                    className="h-6 w-6 text-success" />
+                    <li
+                        (click)="deleteById(notification.id)"
+                        (keyup.enter)="deleteById(notification.id)"
+                        tabindex="0"
+                        class="alert w-full grid-cols-4 rounded-xl px-2 py-2 transition-colors duration-300 hover:border-error/30 active:!border-error/70 active:!bg-error/30">
+                        <div class="col-span-1">
+                            @switch (notification.type) {
+                                @case ('success') {
+                                    <app-success-icon
+                                        className="h-6 w-6 text-success" />
+                                }
+                                @case ('warning') {
+                                    <app-warning-icon
+                                        className="h-6 w-6 text-warning" />
+                                }
+                                @case ('error') {
+                                    <app-error-icon
+                                        className="h-6 w-6 text-error" />
+                                }
+                                @case ('info') {
+                                    <app-info-icon
+                                        className="h-6 w-6 text-info" />
+                                }
                             }
-                            @case ('warning') {
-                                <app-warning-icon
-                                    className="h-6 w-6 text-warning" />
-                            }
-                            @case ('error') {
-                                <app-error-icon
-                                    className="h-6 w-6 text-error" />
-                            }
-                            @case ('info') {
-                                <app-info-icon className="h-6 w-6 text-info" />
-                            }
-                        }
-                        <div class="">
-                            <h3 class="font-bold">{{ notification.title }}</h3>
-                            <div class="text-xs">
+                        </div>
+                        <div class="col-span-3 grid  w-full grow">
+                            <h3 class="justify-self-start font-bold">
+                                {{ notification.title }}
+                            </h3>
+                            <div class="grow justify-self-start text-sm">
                                 {{ notification.message }}
                             </div>
-                            <div class="text-xs font-thin text-primary">
+                            <div
+                                class="justify-self-end text-xs font-semibold text-base-content/70">
                                 {{ formatDateDistance(notification.datetime) }}
                             </div>
                         </div>
-                    </div>
+                    </li>
                 }
                 @if (count() > 0) {
                     <div class="divider"></div>
@@ -99,16 +116,22 @@ import fr from 'date-fns/locale/fr'
                         Aucune notification
                     </div>
                 }
-            </li>
-        </ul>
+            </ul>
+        </div>
     </div>`,
 })
 export class NotificatorComponent implements OnInit {
+    @ViewChild(ToastContainerDirective, { static: true })
+    toastContainer: ToastContainerDirective | undefined
     notifications: Notice[] = []
 
-    constructor(private notificationService: NotificationService) {}
+    constructor(
+        private notificationService: NotificationService,
+        private toastrService: ToastrService
+    ) {}
 
     ngOnInit() {
+        this.toastrService.overlayContainer = this.toastContainer
         this.notificationService.getNotifications().subscribe(notifications => {
             this.notifications = notifications
         })
@@ -140,5 +163,13 @@ export class NotificatorComponent implements OnInit {
             addSuffix: false,
             locale: fr,
         })
+    }
+
+    /**
+     * Delete a notification by its id
+     * @param id Id of the notification to delete
+     */
+    deleteById(id: string) {
+        this.notificationService.deleteById(id)
     }
 }
