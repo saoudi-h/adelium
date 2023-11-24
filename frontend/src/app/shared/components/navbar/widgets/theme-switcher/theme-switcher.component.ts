@@ -1,9 +1,10 @@
 import { ThemeService, ThemeType } from '@/core/services/theme.service'
 import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { SvgMoonComponent } from '@shared/components/icons/moon.component'
 import { SvgSunComponent } from '@shared/components/icons/sun.component'
 import { SvgSystemComponent } from '@shared/components/icons/system.component'
+import { DropdownComponent } from '@shared/components/utility/dropdown.component'
 
 @Component({
     selector: 'app-theme-switcher',
@@ -13,10 +14,12 @@ import { SvgSystemComponent } from '@shared/components/icons/system.component'
         SvgSunComponent,
         SvgMoonComponent,
         SvgSystemComponent,
+        DropdownComponent,
     ],
     templateUrl: './theme-switcher.component.html',
 })
 export class ThemeSwitcherComponent implements OnInit {
+    @ViewChild(DropdownComponent) dropdown!: DropdownComponent
     selectedTheme: ThemeType = ThemeType.System
 
     themes: { theme: ThemeType; label: string; component: unknown }[] = [

@@ -1,18 +1,27 @@
 import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
 import { UserToken } from '@core/dto/UserToken'
+import { DropdownComponent } from '@shared/components/utility/dropdown.component'
 import { CapitalizePipe } from '@shared/pipe/capitalize.pipe'
 
 @Component({
     selector: 'app-nav-user',
     standalone: true,
-    imports: [CommonModule, RouterLink, RouterLinkActive, CapitalizePipe],
+    imports: [
+        CommonModule,
+        RouterLink,
+        RouterLinkActive,
+        CapitalizePipe,
+        DropdownComponent,
+    ],
     templateUrl: './nav-user.component.html',
     styles: [],
 })
 export class NavUserComponent implements OnInit {
+    @ViewChild(DropdownComponent) dropdown!: DropdownComponent
+
     public user: UserToken | null = null
 
     constructor(private authService: AuthService) {}
