@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core'
 import { ToastrService } from 'ngx-toastr'
-import { Observable, Subject } from 'rxjs'
+import { BehaviorSubject, Observable } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
- * Notification type
+ * Notice type
  */
-type NotificationType = 'success' | 'error' | 'info' | 'warning'
+type NoticeType = 'success' | 'error' | 'info' | 'warning'
 
 /**
- * Notification interface
+ * Notice interface
  */
-export interface Notification {
+export interface Notice {
     id: string
-    type: NotificationType
+    type: NoticeType
     title: string
     message: string
     datetime: Date
 }
 
 /**
- * Notification service to show notifications.
+ * Notice service to show notifications.
  *
  * @example  // Show a success notification
  * this.notificationService.success('Success message')
@@ -34,21 +34,25 @@ export interface Notification {
  * Service for managing notifications.
  */
 export class NotificationService {
-    private defaultDuration = 3000
-    private subject = new Subject<Notification>()
-    private history: Notification[] = []
+    private defaultDuration = 5000
+    private historySubject: BehaviorSubject<Notice[]> = new BehaviorSubject<
+        Notice[]
+    >([])
+    private history$: Observable<Notice[]> = this.historySubject.asObservable()
+    private _history: Notice[] = []
+    private get history(): Notice[] {
+        return this._history
+    }
+    private set history(value: Notice[]) {
+        this._history = value
+        this.historySubject.next(value)
+        this.saveToLocalStorage()
+    }
     private maxHistorySize = 10
-    private dissmissible = true
+    private dismissible = true
 
     constructor(private toastr: ToastrService) {
         this.loadFromLocalStorage()
-    }
-
-    /**
-     * Get the history of notifications
-     * */
-    getHistory(): Notification[] {
-        return this.history
     }
 
     /**
@@ -59,10 +63,10 @@ export class NotificationService {
     }
 
     /**
-     * Get the subject to subscribe to notifications
+     * Get the notifications observable
      * */
-    getNotification(): Observable<Notification> {
-        return this.subject.asObservable()
+    getNotifications(): Observable<Notice[]> {
+        return this.history$
     }
 
     /**
@@ -71,13 +75,9 @@ export class NotificationService {
      * @param type The type of the notification
      * @param message The message of the notification
      * @param duration The duration of the notification
-     * @param dissmissible Whether the notification is dissmissible or not
+     * @param dismissible Whether the notification is dismissible or not
      */
-    private add(
-        type: NotificationType,
-        message: string,
-        title: string = ''
-    ): Notification {
+    private add(type: NoticeType, message: string, title: string = ''): Notice {
         const notification = {
             id: uuidv4(),
             type,
@@ -85,11 +85,11 @@ export class NotificationService {
             message,
             datetime: new Date(),
         }
-        this.subject.next(notification)
         this.history.push(notification)
         if (this.history.length > this.maxHistorySize) {
             this.history.shift()
         }
+        this.historySubject.next(this.history)
         this.saveToLocalStorage()
         return notification
     }
@@ -98,7 +98,7 @@ export class NotificationService {
      * Delete a notification from the history
      * @param notification The notification to delete
      * */
-    delete(notification: Notification) {
+    delete(notification: Notice) {
         const index = this.history.indexOf(notification)
         if (index > -1) {
             this.history.splice(index, 1)
@@ -124,7 +124,7 @@ export class NotificationService {
      * Dismiss a notification
      * @param notification The notification to dismiss
      * */
-    dismiss(notification: Notification) {
+    dismiss(notification: Notice) {
         this.delete(notification)
     }
 
@@ -140,10 +140,15 @@ export class NotificationService {
      * Load the history from the local storage
      * */
     private loadFromLocalStorage() {
-        const storedHistory = localStorage.getItem('notificationHistory')
         try {
+            const storedHistory = localStorage.getItem('notificationHistory')
             if (storedHistory) {
-                this.history = JSON.parse(storedHistory)
+                this.history = JSON.parse(storedHistory).map(
+                    (item: Notice) => ({
+                        ...item,
+                        datetime: new Date(item.datetime),
+                    })
+                )
             }
         } catch (e) {
             console.error(
@@ -180,14 +185,14 @@ export class NotificationService {
      * @param title The title of the notification
      * @param message The message of the notification
      * @param duration The duration of the notification
-     * @param dissmissible Whether the notification is dissmissible or not
+     * @param dismissible Whether the notification is dismissible or not
      * */
     private showNotification(
-        type: NotificationType,
+        type: NoticeType,
         title: string,
         message: string,
         duration: number = this.defaultDuration,
-        dissmissible: boolean = this.dissmissible
+        dismissible: boolean = this.dismissible
     ) {
         const notification = this.add(type, message, title)
         const toastrFunc = {
@@ -199,11 +204,10 @@ export class NotificationService {
 
         const active = toastrFunc.call(this.toastr, message, title, {
             timeOut: duration,
-            closeButton: dissmissible,
+            closeButton: dismissible,
         })
 
-        active.onHidden.subscribe(() => {
-            console.log('hidden')
+        active.onTap.subscribe(() => {
             this.delete(notification)
         })
     }
@@ -213,15 +217,15 @@ export class NotificationService {
      * @param message The message of the notification
      * @param title The title of the notification
      * @param duration The duration of the notification
-     * @param dissmissible Whether the notification is dissmissible or not
+     * @param dismissible Whether the notification is dismissible or not
      */
     success(
         message: string,
         title: string,
         duration?: number,
-        dissmissible?: boolean
+        dismissible?: boolean
     ) {
-        this.showNotification('success', title, message, duration, dissmissible)
+        this.showNotification('success', title, message, duration, dismissible)
     }
 
     /**
@@ -230,15 +234,15 @@ export class NotificationService {
      * @param message - The error message to display.
      * @param title - The title of the error notification.
      * @param duration - The duration (in milliseconds) for which the error notification should be displayed. Optional.
-     * @param dissmissible - Specifies whether the error notification can be dismissed by the user. Optional.
+     * @param dismissible - Specifies whether the error notification can be dismissed by the user. Optional.
      */
     error(
         message: string,
         title: string,
         duration?: number,
-        dissmissible?: boolean
+        dismissible?: boolean
     ) {
-        this.showNotification('error', title, message, duration, dissmissible)
+        this.showNotification('error', title, message, duration, dismissible)
     }
 
     /**
@@ -247,15 +251,15 @@ export class NotificationService {
      * @param message - The message to be displayed in the notification.
      * @param title - The title of the notification.
      * @param duration - The duration in milliseconds for which the notification should be displayed. Optional.
-     * @param dissmissible - Specifies whether the notification can be dismissed by the user. Optional.
+     * @param dismissible - Specifies whether the notification can be dismissed by the user. Optional.
      */
     info(
         message: string,
         title: string,
         duration?: number,
-        dissmissible?: boolean
+        dismissible?: boolean
     ) {
-        this.showNotification('info', title, message, duration, dissmissible)
+        this.showNotification('info', title, message, duration, dismissible)
     }
 
     /**
@@ -264,14 +268,14 @@ export class NotificationService {
      * @param message - The message to be displayed in the notification.
      * @param title - The title of the notification.
      * @param duration - The duration of the notification in milliseconds. Optional.
-     * @param dissmissible - Specifies whether the notification can be dismissed. Optional.
+     * @param dismissible - Specifies whether the notification can be dismissed. Optional.
      */
     warning(
         message: string,
         title: string,
         duration?: number,
-        dissmissible?: boolean
+        dismissible?: boolean
     ) {
-        this.showNotification('warning', title, message, duration, dissmissible)
+        this.showNotification('warning', title, message, duration, dismissible)
     }
 }
