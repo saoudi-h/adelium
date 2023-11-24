@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { NavUserComponent } from './nav-user/nav-user.component'
+import { NotificatorComponent } from './notificator/notificator.component'
 import { SearchComponent } from './search/search.component'
 import { ThemeSwitcherComponent } from './theme-switcher/theme-switcher.component'
 
@@ -10,6 +11,7 @@ import { ThemeSwitcherComponent } from './theme-switcher/theme-switcher.componen
     template: ` <div class="flex flex-row">
         <app-theme-switcher />
         <app-search />
+        <app-notificator />
         <app-nav-user />
     </div>`,
     imports: [
@@ -17,6 +19,7 @@ import { ThemeSwitcherComponent } from './theme-switcher/theme-switcher.componen
         ThemeSwitcherComponent,
         SearchComponent,
         NavUserComponent,
+        NotificatorComponent,
     ],
 })
 export class WidgetsComponent {}
