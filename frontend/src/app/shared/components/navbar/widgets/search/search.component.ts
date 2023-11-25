@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonModule } from '@angular/common'
-import { Component } from '@angular/core'
+import { Component, ElementRef, ViewChild } from '@angular/core'
 
 @Component({
     selector: 'app-search',
@@ -11,10 +11,9 @@ import { Component } from '@angular/core'
             state(
                 'closed',
                 style({
-                    width: '0',
+                    width: '0rem',
                     opacity: 0,
-                    overflow: 'hidden',
-                    transform: 'skewX(30deg)',
+                    transform: 'skewX(60deg)',
                 })
             ),
             state(
@@ -25,7 +24,8 @@ import { Component } from '@angular/core'
                     transform: 'skewX(0deg)',
                 })
             ),
-            transition('closed <=> open', animate('200ms ease-in-out')),
+            transition('closed => open', animate('300ms ease-in')),
+            transition('open => close', animate('150ms ease-out')),
         ]),
     ],
     template: `<form action="/search" method="get" class="relative">
@@ -70,9 +70,11 @@ import { Component } from '@angular/core'
         <div
             [@searchAnimation]="isSearchVisible ? 'open' : 'closed'"
             class="absolute right-0 top-0 z-30 transition-all"
+            [ngStyle]="{ overflow: isSearchVisible ? 'visible' : 'hidden' }"
             #searchContainer>
             <div>
                 <input
+                    #searchInput
                     class="input w-full appearance-none border-base-content text-base-content outline-none"
                     type="search"
                     name="q"
@@ -85,15 +87,12 @@ import { Component } from '@angular/core'
 export class SearchComponent {
     isSearchVisible = false
     // @ViewChild('searchContainer') searchContainer: ElementRef | undefined
-    // @ViewChild('toggleInput') toggleInput: ElementRef | undefined
+    @ViewChild('searchInput') searchInput!: ElementRef
 
     handleChange() {
         this.isSearchVisible = !this.isSearchVisible
+        if (this.isSearchVisible) {
+            this.searchInput.nativeElement.focus()
+        }
     }
-    // ngAfterViewInit() {
-    //     if (!this.searchContainer) return
-    //     this.isSearchVisible
-    //         ? this.handleOpen(this.searchContainer)
-    //         : this.handleClose(this.searchContainer)
-    // }
 }
