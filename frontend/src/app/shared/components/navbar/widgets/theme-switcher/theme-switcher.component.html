@@ -14,12 +14,12 @@
     <ul
         dropdown-content
         tabindex="0"
-        class="left-[-0.25rem] z-10 mt-4 flex gap-2 rounded-box bg-base-200 p-1 shadow-md duration-500">
-        <ng-container *ngFor="let theme of themes; let i = index">
-            <ng-container *ngIf="theme.theme !== selectedTheme">
+        class="mt-4 flex gap-2 rounded-box bg-base-200 p-1 shadow-md duration-500">
+        @for (theme of themes; track themes) {
+            @if (theme.theme !== selectedTheme) {
                 <li>
                     <button
-                        (click)="setTheme(theme.theme)"
+                        (click)="setTheme($event, theme.theme)"
                         type="button"
                         class="btn btn-square flex content-center items-center justify-center bg-base-300">
                         <div class="" ngSwitch="{{ theme.theme }}">
@@ -35,7 +35,7 @@
                         </div>
                     </button>
                 </li>
-            </ng-container>
-        </ng-container>
+            }
+        }
     </ul>
 </app-dropdown>

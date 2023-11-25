@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
 import { UserToken } from '@core/dto/UserToken'
-import { DropdownComponent } from '@shared/components/utility/dropdown.component'
+import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
 import { CapitalizePipe } from '@shared/pipe/capitalize.pipe'
 
 @Component({

@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core'
 import { SvgMoonComponent } from '@shared/components/icons/moon.component'
 import { SvgSunComponent } from '@shared/components/icons/sun.component'
 import { SvgSystemComponent } from '@shared/components/icons/system.component'
-import { DropdownComponent } from '@shared/components/utility/dropdown.component'
+import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
 
 @Component({
     selector: 'app-theme-switcher',
@@ -38,7 +38,8 @@ export class ThemeSwitcherComponent implements OnInit {
         this.selectedTheme = this.themeService.getTheme()
     }
 
-    setTheme(theme: ThemeType): void {
+    setTheme(event: Event, theme: ThemeType): void {
+        event.stopPropagation()
         this.selectedTheme = theme
         this.themeService.setTheme(theme)
     }
