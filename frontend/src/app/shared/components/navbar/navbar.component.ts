@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
+import { LogoComponent } from '../logo/logo.component'
 import { MegaMenuComponent } from './mega-menu.component'
 import { WidgetsComponent } from './widgets/widgets.component'
 @Component({
@@ -13,6 +14,7 @@ import { WidgetsComponent } from './widgets/widgets.component'
         RouterLink,
         RouterLinkActive,
         WidgetsComponent,
+        LogoComponent,
     ],
 })
 export class NavbarComponent {}
