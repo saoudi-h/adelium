@@ -1,11 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonModule } from '@angular/common'
-import { Component, ElementRef, ViewChild } from '@angular/core'
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core'
+import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
+import { SearchIconComponent } from '@shared/components/icons/search-icon.component'
 
 @Component({
     selector: 'app-search',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, SearchIconComponent, CloseIconComponent],
     animations: [
         trigger('searchAnimation', [
             state(
@@ -19,17 +21,38 @@ import { Component, ElementRef, ViewChild } from '@angular/core'
             state(
                 'open',
                 style({
-                    width: '18rem',
+                    width: '{{ width }}',
                     opacity: 1,
                     transform: 'skewX(0deg)',
-                })
+                }),
+                { params: { width: '18rem' } }
             ),
             transition('closed => open', animate('300ms ease-in')),
-            transition('open => close', animate('150ms ease-out')),
+            transition('open => closed', animate('150ms ease-out')),
         ]),
     ],
-    template: `<form action="/search" method="get" class="relative">
-        <label class="btn btn-square btn-ghost swap swap-rotate z-40">
+    template: `<form
+        action="/search"
+        method="get"
+        class="relative"
+        [ngClass]="{ 'z-10': !alwaysOpen }">
+        <!-- input text block  -->
+        <div
+            [@searchAnimation]="{
+                value: isSearchVisible ? 'open' : 'closed',
+                params: { width: width }
+            }"
+            class=" absolute right-0 top-0 transition-all"
+            [ngStyle]="{ overflow: isSearchVisible ? 'visible' : 'hidden' }"
+            #searchContainer>
+            <input
+                #searchInput
+                class="input w-full appearance-none border-base-content text-base-content outline-none"
+                type="search"
+                name="q"
+                placeholder="Search" />
+        </div>
+        <label class="btn btn-square btn-ghost swap swap-rotate">
             <!-- this hidden checkbox controls the state -->
             <input
                 #toggleInput
@@ -37,59 +60,41 @@ import { Component, ElementRef, ViewChild } from '@angular/core'
                 [checked]="isSearchVisible"
                 (change)="handleChange()" />
 
-            <!-- search -->
-            <svg
-                class="swap-off h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor">
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
+            @if (alwaysOpen) {
+                <app-close-icon className="h-6 w-6" />
+            } @else {
+                <!-- search -->
+                <div class="swap-off">
+                    <app-search-icon className="h-6 w-6" />
+                </div>
 
-            <!-- close -->
-            <svg
-                class="swap-on h-6 w-6 fill-current"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor">
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12" />
-            </svg>
+                <!-- close -->
+                <div class="swap-on">
+                    <app-close-icon className="h-6 w-6" />
+                </div>
+            }
         </label>
-
-        <!-- input text block  -->
-        <div
-            [@searchAnimation]="isSearchVisible ? 'open' : 'closed'"
-            class="absolute right-0 top-0 z-30 transition-all"
-            [ngStyle]="{ overflow: isSearchVisible ? 'visible' : 'hidden' }"
-            #searchContainer>
-            <div>
-                <input
-                    #searchInput
-                    class="input w-full appearance-none border-base-content text-base-content outline-none"
-                    type="search"
-                    name="q"
-                    placeholder="Search" />
-            </div>
-        </div>
     </form>`,
     styles: [],
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
+    @Input() width = '18rem'
+    @Input() alwaysOpen: boolean = false
     isSearchVisible = false
-    // @ViewChild('searchContainer') searchContainer: ElementRef | undefined
     @ViewChild('searchInput') searchInput!: ElementRef
 
+    ngOnInit() {
+        // Si le mode toujours ouvert est activé, fixez l'état sur ouvert
+        if (this.alwaysOpen) {
+            this.isSearchVisible = true
+        }
+    }
     handleChange() {
+        console.log(this.width)
+        if (this.alwaysOpen) {
+            this.searchInput.nativeElement.value = ''
+            return
+        }
         this.isSearchVisible = !this.isSearchVisible
         if (this.isSearchVisible) {
             this.searchInput.nativeElement.focus()
