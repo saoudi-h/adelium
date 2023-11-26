@@ -5,7 +5,7 @@ import { Token } from '@core/dto/Token'
 import { UserLogin } from '@core/dto/UserLogin'
 import { UserRegister } from '@core/dto/UserRegister'
 import { UserToken } from '@core/dto/UserToken'
-import { Role } from '@core/models/role'
+import { Role } from '@core/utility/role'
 import {
     BehaviorSubject,
     Observable,
@@ -93,6 +93,11 @@ export class AuthService {
     hasTokenExpired(): boolean {
         this.withAuth()
         return this.user!.exp < Date.now() / 1000
+    }
+
+    isAdmin(): boolean {
+        this.withAuth()
+        return this.user!.roles.includes(Role.ADMIN)
     }
 
     setToken(token: Token) {
