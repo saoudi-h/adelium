@@ -49,7 +49,7 @@ export class NotificationService {
         this.saveToLocalStorage()
     }
     private maxHistorySize = 10
-    private dismissible = true
+    private dismissible = false
 
     constructor(private toastr: ToastrService) {
         this.loadFromLocalStorage()
@@ -184,16 +184,20 @@ export class NotificationService {
      * @param type The type of the notification
      * @param title The title of the notification
      * @param message The message of the notification
-     * @param duration The duration of the notification
-     * @param dismissible Whether the notification is dismissible or not
+     * @param options The options of the notification
+     * @param duration The duration of the notification in milliseconds (default: 5000) (optional)
+     * @param dismissible Whether the notification is dismissible or not (default: false) (optional)
      * */
     private showNotification(
         type: NoticeType,
         title: string,
         message: string,
-        duration: number = this.defaultDuration,
-        dismissible: boolean = this.dismissible
+        options: { duration?: number; dismissible?: boolean } = {}
     ) {
+        const {
+            duration = this.defaultDuration,
+            dismissible = this.dismissible,
+        } = options
         const notification = this.add(type, message, title)
         const toastrFunc = {
             success: this.toastr.success,
@@ -204,28 +208,34 @@ export class NotificationService {
 
         const active = toastrFunc.call(this.toastr, message, title, {
             timeOut: duration,
-            closeButton: dismissible,
+            closeButton: true,
         })
 
         active.onTap.subscribe(() => {
             this.delete(notification)
         })
+        if (dismissible) {
+            active.onHidden.subscribe(() => {
+                this.delete(notification)
+            })
+        }
     }
 
     /**
-     * Show a success notification
-     * @param message The message of the notification
-     * @param title The title of the notification
-     * @param duration The duration of the notification
-     * @param dismissible Whether the notification is dismissible or not
+     * Displays a success notification with the specified message, title, duration, and dismissible option.
+     *
+     * @param message - The success message to display.
+     * @param title - The title of the success notification.
+     * @param options - The options of the success notification.
+     * @param duration - The duration (in milliseconds) for which the success notification should be displayed. Optional.
+     * @param dismissible - Specifies whether the success notification can be dismissed by the user. Optional.
      */
     success(
-        message: string,
         title: string,
-        duration?: number,
-        dismissible?: boolean
+        message: string,
+        options: { duration?: number; dismissible?: boolean } = {}
     ) {
-        this.showNotification('success', title, message, duration, dismissible)
+        this.showNotification('success', title, message, options)
     }
 
     /**
@@ -233,16 +243,16 @@ export class NotificationService {
      *
      * @param message - The error message to display.
      * @param title - The title of the error notification.
+     * @param options - The options of the error notification.
      * @param duration - The duration (in milliseconds) for which the error notification should be displayed. Optional.
      * @param dismissible - Specifies whether the error notification can be dismissed by the user. Optional.
      */
     error(
-        message: string,
         title: string,
-        duration?: number,
-        dismissible?: boolean
+        message: string,
+        options: { duration?: number; dismissible?: boolean } = {}
     ) {
-        this.showNotification('error', title, message, duration, dismissible)
+        this.showNotification('error', title, message, options)
     }
 
     /**
@@ -250,16 +260,16 @@ export class NotificationService {
      *
      * @param message - The message to be displayed in the notification.
      * @param title - The title of the notification.
+     * @param options - The options of the notification.
      * @param duration - The duration in milliseconds for which the notification should be displayed. Optional.
      * @param dismissible - Specifies whether the notification can be dismissed by the user. Optional.
      */
     info(
-        message: string,
         title: string,
-        duration?: number,
-        dismissible?: boolean
+        message: string,
+        options: { duration?: number; dismissible?: boolean } = {}
     ) {
-        this.showNotification('info', title, message, duration, dismissible)
+        this.showNotification('info', title, message, options)
     }
 
     /**
@@ -267,15 +277,15 @@ export class NotificationService {
      *
      * @param message - The message to be displayed in the notification.
      * @param title - The title of the notification.
+     * @param options - The options of the notification.
      * @param duration - The duration of the notification in milliseconds. Optional.
      * @param dismissible - Specifies whether the notification can be dismissed. Optional.
      */
     warning(
-        message: string,
         title: string,
-        duration?: number,
-        dismissible?: boolean
+        message: string,
+        options: { duration?: number; dismissible?: boolean } = {}
     ) {
-        this.showNotification('warning', title, message, duration, dismissible)
+        this.showNotification('warning', title, message, options)
     }
 }
