@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common'
 import { Component, Input } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { LogoComponent } from '../../shared/components/logo/logo.component'
+import { NavUserWidgetComponent } from '@shared/components/navbar/widgets/nav-user/nav-user.component'
+import { NotificatorWidgetComponent } from '@shared/components/navbar/widgets/notificator/notificator.component'
+import { SearchWidgetComponent } from '@shared/components/navbar/widgets/search/search.component'
+import { ThemeSwitcherWidgetComponent } from '@shared/components/navbar/widgets/theme-switcher/theme-switcher.component'
 import { MegaMenuComponent } from '../../shared/components/navbar/mega-menu.component'
-import { WidgetsComponent } from '../../shared/components/navbar/widgets/widgets.component'
+import { LogoWidgetComponent } from '../../shared/components/navbar/widgets/logo/logo.component'
 
 @Component({
     selector: 'app-navbar-admin',
@@ -35,11 +38,14 @@ import { WidgetsComponent } from '../../shared/components/navbar/widgets/widgets
                     class="btn btn-ghost text-xl normal-case lg:hidden"
                     routerLink="/"
                     routerLinkActive="router-link-active"
-                    ><app-logo
-                /></a>
+                    ><div logo-widget></div>
+                </a>
             </div>
             <div class="navbar-end">
-                <app-widgets />
+                <div theme-switcher-widget></div>
+                <div search-widget></div>
+                <div notificator-widget></div>
+                <div nav-user-widget></div>
             </div>
         </div>
     </header>`,
@@ -48,8 +54,11 @@ import { WidgetsComponent } from '../../shared/components/navbar/widgets/widgets
         MegaMenuComponent,
         RouterLink,
         RouterLinkActive,
-        WidgetsComponent,
-        LogoComponent,
+        ThemeSwitcherWidgetComponent,
+        SearchWidgetComponent,
+        NotificatorWidgetComponent,
+        NavUserWidgetComponent,
+        LogoWidgetComponent,
     ],
 })
 export class NavbarAdminComponent {

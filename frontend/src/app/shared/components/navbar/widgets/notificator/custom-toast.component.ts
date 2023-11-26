@@ -22,7 +22,6 @@ import { Toast } from 'ngx-toastr'
         ErrorIconComponent,
         InfoIconComponent,
     ],
-    // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[custom-toast-component]',
     styles: `
             :host

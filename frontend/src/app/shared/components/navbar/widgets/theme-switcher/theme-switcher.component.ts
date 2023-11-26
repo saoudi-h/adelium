@@ -8,7 +8,7 @@ import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.
 import { Subscription } from 'rxjs'
 
 @Component({
-    selector: 'app-theme-switcher',
+    selector: '[theme-switcher-widget]',
     standalone: true,
     imports: [
         CommonModule,
@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs'
     ],
     templateUrl: './theme-switcher.component.html',
 })
-export class ThemeSwitcherComponent implements OnInit, OnDestroy {
+export class ThemeSwitcherWidgetComponent implements OnInit, OnDestroy {
     private themeSubscription!: Subscription
 
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent

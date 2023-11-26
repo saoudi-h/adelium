@@ -4,14 +4,14 @@ import { FacebookComponent } from '../icons/facebook.component'
 import { InstagramComponent } from '../icons/instagram.component'
 import { LinkedinComponent } from '../icons/linkedin.component'
 import { YoutubeComponent } from '../icons/youtube.component'
-import { LogoComponent } from '../logo/logo.component'
+import { LogoWidgetComponent } from '../navbar/widgets/logo/logo.component'
 
 @Component({
     selector: 'app-footer',
     standalone: true,
     imports: [
         CommonModule,
-        LogoComponent,
+        LogoWidgetComponent,
         FacebookComponent,
         InstagramComponent,
         YoutubeComponent,

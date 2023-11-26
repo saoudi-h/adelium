@@ -7,7 +7,7 @@ import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.
 import { CapitalizePipe } from '@shared/pipe/capitalize.pipe'
 
 @Component({
-    selector: 'app-nav-user',
+    selector: '[nav-user-widget]',
     standalone: true,
     imports: [
         CommonModule,
@@ -19,7 +19,7 @@ import { CapitalizePipe } from '@shared/pipe/capitalize.pipe'
     templateUrl: './nav-user.component.html',
     styles: [],
 })
-export class NavUserComponent implements OnInit {
+export class NavUserWidgetComponent implements OnInit {
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent
 
     public user: UserToken | null = null

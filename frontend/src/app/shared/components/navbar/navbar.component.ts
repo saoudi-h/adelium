@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common'
 import { Component, Input } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { LogoComponent } from '../logo/logo.component'
 import { MegaMenuComponent } from './mega-menu.component'
-import { WidgetsComponent } from './widgets/widgets.component'
+import { LogoWidgetComponent } from './widgets/logo/logo.component'
+import { NavUserWidgetComponent } from './widgets/nav-user/nav-user.component'
+import { NotificatorWidgetComponent } from './widgets/notificator/notificator.component'
+import { SearchWidgetComponent } from './widgets/search/search.component'
+import { ThemeSwitcherWidgetComponent } from './widgets/theme-switcher/theme-switcher.component'
 
 @Component({
     selector: 'app-navbar',
@@ -35,8 +38,8 @@ import { WidgetsComponent } from './widgets/widgets.component'
                     class="btn btn-ghost text-xl normal-case"
                     routerLink="/"
                     routerLinkActive="router-link-active"
-                    ><app-logo
-                /></a>
+                    ><div logo-widget></div>
+                </a>
             </div>
             <div class="navbar-center hidden lg:flex">
                 <ul class="menu menu-horizontal px-1">
@@ -54,7 +57,10 @@ import { WidgetsComponent } from './widgets/widgets.component'
                 </ul>
             </div>
             <div class="navbar-end">
-                <app-widgets />
+                <div theme-switcher-widget></div>
+                <div search-widget></div>
+                <div notificator-widget></div>
+                <div nav-user-widget></div>
             </div>
         </div>
     </header>`,
@@ -63,8 +69,11 @@ import { WidgetsComponent } from './widgets/widgets.component'
         MegaMenuComponent,
         RouterLink,
         RouterLinkActive,
-        WidgetsComponent,
-        LogoComponent,
+        ThemeSwitcherWidgetComponent,
+        SearchWidgetComponent,
+        NotificatorWidgetComponent,
+        NavUserWidgetComponent,
+        LogoWidgetComponent,
     ],
 })
 export class NavbarComponent {

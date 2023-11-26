@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
-import { LogoComponent } from '@shared/components/logo/logo.component'
-import { SearchComponent } from '@shared/components/navbar/widgets/search/search.component'
-import { ThemeSwitcherComponent } from '@shared/components/navbar/widgets/theme-switcher/theme-switcher.component'
+import { LogoWidgetComponent } from '@shared/components/navbar/widgets/logo/logo.component'
+import { SearchWidgetComponent } from '@shared/components/navbar/widgets/search/search.component'
+import { ThemeSwitcherWidgetComponent } from '@shared/components/navbar/widgets/theme-switcher/theme-switcher.component'
 
 @Component({
     standalone: true,
@@ -10,9 +10,9 @@ import { ThemeSwitcherComponent } from '@shared/components/navbar/widgets/theme-
     styleUrl: 'aside.component.sass',
     imports: [
         CommonModule,
-        LogoComponent,
-        ThemeSwitcherComponent,
-        SearchComponent,
+        LogoWidgetComponent,
+        ThemeSwitcherWidgetComponent,
+        SearchWidgetComponent,
     ],
     template: `
         <aside
@@ -23,17 +23,17 @@ import { ThemeSwitcherComponent } from '@shared/components/navbar/widgets/theme-
                         class="btn btn-ghost hidden text-xl normal-case lg:flex"
                         routerLink="/"
                         routerLinkActive="router-link-active">
-                        <app-logo />
+                        <div logo-widget></div>
                     </a>
                 </div>
                 <div class="navbar-end">
-                    <app-theme-switcher />
+                    <div theme-switcher-widget></div>
                 </div>
             </div>
             <div class="navbar">
                 <div class="navbar-end"></div>
                 <div class="navbar-end">
-                    <app-search [alwaysOpen]="true" width="19rem" />
+                    <div search-widget [alwaysOpen]="true" width="19rem"></div>
                 </div>
             </div>
 

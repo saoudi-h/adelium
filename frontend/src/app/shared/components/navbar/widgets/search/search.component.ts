@@ -7,7 +7,7 @@ import { CloseIconComponent } from '@shared/components/icons/close-icon.componen
 import { SearchIconComponent } from '@shared/components/icons/search-icon.component'
 
 @Component({
-    selector: 'app-search',
+    selector: '[search-widget]',
     standalone: true,
     imports: [
         CommonModule,
@@ -89,7 +89,7 @@ import { SearchIconComponent } from '@shared/components/icons/search-icon.compon
     </form>`,
     styles: [],
 })
-export class SearchComponent implements OnInit {
+export class SearchWidgetComponent implements OnInit {
     @Input() width = '18rem'
     @Input() alwaysOpen: boolean = false
     isSearchVisible = false

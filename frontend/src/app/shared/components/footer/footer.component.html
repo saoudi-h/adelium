@@ -1,12 +1,14 @@
 <footer class="footer bg-base-200 p-2 text-base-content md:p-10">
     <div class="container footer mx-auto justify-items-center gap-6">
-        @for(section of footer.main.sections; track section){
-        <nav class="justify-items-center md:justify-items-start">
-            <header class="footer-title">{{ section.title }}</header>
-            @for(link of section.links; track link){
-            <a class="link-hover link" [href]="link.url">{{ link.label }}</a>
-            }
-        </nav>
+        @for (section of footer.main.sections; track section) {
+            <nav class="justify-items-center md:justify-items-start">
+                <header class="footer-title">{{ section.title }}</header>
+                @for (link of section.links; track link) {
+                    <a class="link-hover link" [href]="link.url">{{
+                        link.label
+                    }}</a>
+                }
+            </nav>
         }
 
         <form>
@@ -39,23 +41,30 @@
 <footer
     class="footer border-t border-base-300 bg-base-200 px-10 py-4 text-base-content">
     <aside class="grid-flow-col items-center">
-        <app-logo className="" />
+        <div logo-widget className=""></div>
         <p>{{ footer.bottom.copyright }}</p>
     </aside>
     <nav class="md:place-self-center md:justify-self-end">
         <div class="grid grid-flow-col gap-4">
-            @for(social of footer.bottom.socials; track social){
-            <a class="link tooltip tooltip-top" [attr.data-tip]="social.name">
-                @switch(social.name){ @case('facebook'){
-                <app-facebook className="h-8 w-8" />
-                } @case('youtube'){
-                <app-youtube className="h-8 w-8" />
-                } @case('instagram'){
-                <app-instagram className="h-8 w-8" />
-                } @case('linkedin'){
-                <app-linkedin className="h-8 w-8" />
-                } }
-            </a>
+            @for (social of footer.bottom.socials; track social) {
+                <a
+                    class="link tooltip tooltip-top"
+                    [attr.data-tip]="social.name">
+                    @switch (social.name) {
+                        @case ('facebook') {
+                            <app-facebook className="h-8 w-8" />
+                        }
+                        @case ('youtube') {
+                            <app-youtube className="h-8 w-8" />
+                        }
+                        @case ('instagram') {
+                            <app-instagram className="h-8 w-8" />
+                        }
+                        @case ('linkedin') {
+                            <app-linkedin className="h-8 w-8" />
+                        }
+                    }
+                </a>
             }
         </div>
     </nav>

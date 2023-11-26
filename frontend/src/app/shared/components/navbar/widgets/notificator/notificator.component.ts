@@ -28,7 +28,7 @@ import { Subscription } from 'rxjs'
  * Displays notifications in a dropdown menu in the navbar.
  */
 @Component({
-    selector: 'app-notificator',
+    selector: '[notificator-widget]',
     standalone: true,
     imports: [
         CommonModule,
@@ -177,7 +177,7 @@ import { Subscription } from 'rxjs'
         ]),
     ],
 })
-export class NotificatorComponent implements OnInit, OnDestroy {
+export class NotificatorWidgetComponent implements OnInit, OnDestroy {
     private notificationSubscription!: Subscription
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent
     @ViewChild(ToastContainerDirective, { static: true })

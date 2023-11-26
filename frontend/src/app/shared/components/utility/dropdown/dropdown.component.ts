@@ -37,12 +37,10 @@ export class DropdownComponent {
 
     toggleDropdown() {
         this.isOpen = !this.isOpen
-        console.log('toggleDropdown:', this.isOpen)
     }
 
     closeDropdown() {
         this.isOpen = false
-        console.log('closeDropdown:', this.isOpen)
     }
 
     @HostListener('document:keydown.escape', ['$event'])
@@ -56,7 +54,6 @@ export class DropdownComponent {
             this.isOpen &&
             !this.dropdown.nativeElement.contains(targetElement)
         ) {
-            console.log('Clicked outside')
             this.closeDropdown()
         }
     }
