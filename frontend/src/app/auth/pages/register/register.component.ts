@@ -7,6 +7,7 @@ import {
     Validators,
 } from '@angular/forms'
 import { AuthService } from '@auth/services/auth.service'
+import { NotificationService } from '@core/services/notification.service'
 import { CustomValidators } from '@core/utility/CustomValidators'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { UserRegister } from './../../../core/dto/UserRegister'
@@ -73,29 +74,27 @@ export class RegisterComponent {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private notification: NotificationService
     ) {}
 
-    onClick() {
-        alert(JSON.stringify(this.registerForm.getRawValue()))
-    }
     onSubmit() {
         if (!this.registerForm.valid) return
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatPassword, ...userRegister } = this.registerForm.value
 
         this.authService.register(userRegister as UserRegister).subscribe({
             next: () => {
-                console.log('Bienvenue.')
+                this.notification.success(
+                    'Inscription : ',
+                    'Votre compte a bien été créé !'
+                )
             },
             error: error => {
-                if (error.status === 400) {
-                    alert('Erreur : ' + error.error)
-                } else {
-                    alert(
-                        "Erreur lors de l'enregistrement : " +
-                            JSON.stringify(error)
-                    )
-                }
+                this.notification.error(
+                    "Erreur lors de l'enregistrement",
+                    error.error
+                )
             },
         })
     }
