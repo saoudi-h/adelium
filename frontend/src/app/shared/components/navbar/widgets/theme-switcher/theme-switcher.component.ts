@@ -1,10 +1,11 @@
 import { ThemeService, ThemeType } from '@/core/services/theme.service'
 import { CommonModule } from '@angular/common'
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { SvgMoonComponent } from '@shared/components/icons/moon.component'
 import { SvgSunComponent } from '@shared/components/icons/sun.component'
 import { SvgSystemComponent } from '@shared/components/icons/system.component'
 import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
+import { Subscription } from 'rxjs'
 
 @Component({
     selector: 'app-theme-switcher',
@@ -18,7 +19,9 @@ import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.
     ],
     templateUrl: './theme-switcher.component.html',
 })
-export class ThemeSwitcherComponent implements OnInit {
+export class ThemeSwitcherComponent implements OnInit, OnDestroy {
+    private themeSubscription!: Subscription
+
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent
     selectedTheme: ThemeType = ThemeType.System
 
@@ -36,11 +39,22 @@ export class ThemeSwitcherComponent implements OnInit {
 
     ngOnInit(): void {
         this.selectedTheme = this.themeService.getTheme()
+        this.themeSubscription = this.themeService.themeChanges.subscribe(
+            theme => {
+                this.selectedTheme = theme
+            }
+        )
     }
 
     setTheme(event: Event, theme: ThemeType): void {
         event.stopPropagation()
         this.selectedTheme = theme
         this.themeService.setTheme(theme)
+    }
+
+    ngOnDestroy(): void {
+        if (this.themeSubscription) {
+            this.themeSubscription.unsubscribe()
+        }
     }
 }

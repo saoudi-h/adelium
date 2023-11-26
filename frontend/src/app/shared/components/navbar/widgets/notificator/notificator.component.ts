@@ -7,7 +7,7 @@ import {
     trigger,
 } from '@angular/animations'
 import { CommonModule } from '@angular/common'
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import {
     Notice,
     NotificationService,
@@ -21,6 +21,7 @@ import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.
 import { formatDistance } from 'date-fns'
 import fr from 'date-fns/locale/fr'
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr'
+import { Subscription } from 'rxjs'
 
 /**
  * Notificator component.
@@ -176,7 +177,8 @@ import { ToastContainerDirective, ToastrService } from 'ngx-toastr'
         ]),
     ],
 })
-export class NotificatorComponent implements OnInit {
+export class NotificatorComponent implements OnInit, OnDestroy {
+    private notificationSubscription!: Subscription
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent
     @ViewChild(ToastContainerDirective, { static: true })
     toastContainer: ToastContainerDirective | undefined
@@ -187,11 +189,25 @@ export class NotificatorComponent implements OnInit {
         private toastrService: ToastrService
     ) {}
 
+    /**
+     * Subscribe to the notification service
+     */
     ngOnInit() {
         this.toastrService.overlayContainer = this.toastContainer
-        this.notificationService.getNotifications().subscribe(notifications => {
-            this.notifications = notifications
-        })
+        this.notificationSubscription = this.notificationService
+            .getNotifications()
+            .subscribe(notifications => {
+                this.notifications = notifications
+            })
+    }
+
+    /**
+     * Unsubscribe from the notification service
+     */
+    ngOnDestroy(): void {
+        if (this.notificationSubscription) {
+            this.notificationSubscription.unsubscribe()
+        }
     }
 
     /**
