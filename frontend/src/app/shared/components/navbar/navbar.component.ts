@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common'
 import { Component, Input } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
+import { LogoWidgetComponent } from '../widgets/logo/logo.component'
+import { NavUserWidgetComponent } from '../widgets/nav-user/nav-user.component'
+import { NotificatorWidgetComponent } from '../widgets/notificator/notificator.component'
+import { SearchWidgetComponent } from '../widgets/search/search.component'
+import { ThemeSwitcherWidgetComponent } from '../widgets/theme-switcher/theme-switcher.component'
 import { MegaMenuComponent } from './mega-menu.component'
-import { LogoWidgetComponent } from './widgets/logo/logo.component'
-import { NavUserWidgetComponent } from './widgets/nav-user/nav-user.component'
-import { NotificatorWidgetComponent } from './widgets/notificator/notificator.component'
-import { SearchWidgetComponent } from './widgets/search/search.component'
-import { ThemeSwitcherWidgetComponent } from './widgets/theme-switcher/theme-switcher.component'
 
 @Component({
     selector: 'app-navbar',
