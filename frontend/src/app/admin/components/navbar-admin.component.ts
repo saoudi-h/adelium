@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common'
 import { Component, Input } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { NavUserWidgetComponent } from '@shared/components/navbar/widgets/nav-user/nav-user.component'
-import { NotificatorWidgetComponent } from '@shared/components/navbar/widgets/notificator/notificator.component'
-import { SearchWidgetComponent } from '@shared/components/navbar/widgets/search/search.component'
-import { ThemeSwitcherWidgetComponent } from '@shared/components/navbar/widgets/theme-switcher/theme-switcher.component'
+import { NavUserWidgetComponent } from '@shared/components/widgets/nav-user/nav-user.component'
+import { NotificatorWidgetComponent } from '@shared/components/widgets/notificator/notificator.component'
+import { SearchWidgetComponent } from '@shared/components/widgets/search/search.component'
+import { ThemeSwitcherWidgetComponent } from '@shared/components/widgets/theme-switcher/theme-switcher.component'
 import { MegaMenuComponent } from '../../shared/components/navbar/mega-menu.component'
-import { LogoWidgetComponent } from '../../shared/components/navbar/widgets/logo/logo.component'
+import { LogoWidgetComponent } from '../../shared/components/widgets/logo/logo.component'
 
 @Component({
     selector: 'app-navbar-admin',
@@ -42,8 +42,6 @@ import { LogoWidgetComponent } from '../../shared/components/navbar/widgets/logo
                 </a>
             </div>
             <div class="navbar-end">
-                <div theme-switcher-widget class="block lg:hidden"></div>
-                <div search-widget class="block lg:hidden"></div>
                 <div notificator-widget></div>
                 <div nav-user-widget></div>
             </div>
