@@ -35,15 +35,15 @@ import { LogoWidgetComponent } from '../../shared/components/navbar/widgets/logo
                     </label>
                 </div>
                 <a
+                    logo-widget
                     class="btn btn-ghost text-xl normal-case lg:hidden"
                     routerLink="/"
-                    routerLinkActive="router-link-active"
-                    ><div logo-widget></div>
+                    routerLinkActive="router-link-active">
                 </a>
             </div>
             <div class="navbar-end">
-                <div theme-switcher-widget></div>
-                <div search-widget></div>
+                <div theme-switcher-widget class="block lg:hidden"></div>
+                <div search-widget class="block lg:hidden"></div>
                 <div notificator-widget></div>
                 <div nav-user-widget></div>
             </div>

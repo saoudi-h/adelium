@@ -17,26 +17,31 @@ import { ThemeSwitcherWidgetComponent } from '@shared/components/navbar/widgets/
     template: `
         <aside
             class="block min-h-screen w-80 border-r border-base-content/10 bg-gradient-to-t from-base-100 to-base-300">
+            <!-- aside header -->
             <div class="navbar">
                 <div class="navbar-start">
                     <a
                         class="btn btn-ghost hidden text-xl normal-case lg:flex"
                         routerLink="/"
                         routerLinkActive="router-link-active">
+                        <!-- logo widget -->
                         <div logo-widget></div>
                     </a>
                 </div>
                 <div class="navbar-end">
+                    <!-- theme switcher widget -->
                     <div theme-switcher-widget></div>
                 </div>
             </div>
             <div class="navbar">
                 <div class="navbar-end"></div>
                 <div class="navbar-end">
+                    <!-- search widget -->
                     <div search-widget [alwaysOpen]="true" width="19rem"></div>
                 </div>
             </div>
 
+            <!-- aside body -->
             <ul class="menu menu-xs w-full">
                 <li>
                     <a>

@@ -3,7 +3,6 @@ import { NavbarAdminComponent } from '@admin/components/navbar-admin.component'
 import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
-import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component'
 
 @Component({
     selector: 'app-admin-layout',
@@ -51,7 +50,6 @@ import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component
         FooterComponent,
         NavbarAdminComponent,
         RouterModule,
-        MegaMenuComponent,
         AsideComponent,
     ],
 })
