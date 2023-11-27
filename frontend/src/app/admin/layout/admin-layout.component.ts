@@ -8,7 +8,7 @@ import { FooterComponent } from '@shared/components/footer/footer.component'
     selector: 'app-admin-layout',
     standalone: true,
     template: `
-        <div class="drawer bg-base-300 lg:drawer-open">
+        <div class="drawer bg-base-100 lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
             <!-- Page -->
             <div class="drawer-content flex flex-col">
@@ -20,7 +20,7 @@ import { FooterComponent } from '@shared/components/footer/footer.component'
                 <div
                     class="relative flex min-h-screen flex-col justify-between overflow-hidden">
                     <main
-                        class="relative flex h-max w-full flex-1 flex-row justify-center overflow-hidden bg-gradient-to-t from-base-100 to-base-300">
+                        class="relative flex h-max w-full flex-1 flex-row justify-center overflow-hidden bg-gradient-to-t from-base-100 to-base-200">
                         <main
                             class="relative flex max-w-full flex-1 flex-col items-start px-6 pb-16 pt-10 lg:px-16 ">
                             <router-outlet></router-outlet>

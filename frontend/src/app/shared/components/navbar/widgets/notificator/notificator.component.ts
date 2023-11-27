@@ -55,7 +55,7 @@ import { Subscription } from 'rxjs'
                 <app-notification-icon className="h-6 w-6" />
                 <span
                     *ngIf="count() > 0"
-                    class="countdown absolute right-2 top-2 inline-flex -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-primary px-2 py-1 text-xs font-thin leading-none text-white">
+                    class="countdown absolute right-2 top-2 inline-flex -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-primary px-2 py-1 text-xs font-thin leading-none text-primary-content">
                     <span style="--value: {{ count() }};" class=""></span>
                 </span>
             </button>
