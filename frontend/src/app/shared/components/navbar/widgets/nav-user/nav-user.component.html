@@ -24,60 +24,58 @@
                 </span>
                 <span class="text-xs font-light"> {{ user.sub }} </span>
             </li>
-            <li>
-                <a class="justify-between">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="h-5 w-5">
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                    </svg>
-                    <span> Profile </span>
-                </a>
-            </li>
-            <li>
-                <a class="justify-between">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="h-6 w-6">
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-                    </svg>
-                    <span> Settings </span>
-                </a>
-            </li>
-            <li>
-                <button class="justify-between" (click)="logout()">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="h-5 w-5">
-                        <path
-                            fill-rule="evenodd"
-                            d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z"
-                            clip-rule="evenodd" />
-                        <path
-                            fill-rule="evenodd"
-                            d="M19 10a.75.75 0 00-.75-.75H8.704l1.048-.943a.75.75 0 10-1.004-1.114l-2.5 2.25a.75.75 0 000 1.114l2.5 2.25a.75.75 0 101.004-1.114l-1.048-.943h9.546A.75.75 0 0019 10z"
-                            clip-rule="evenodd" />
-                    </svg>
-
-                    <span> Se déconnecter </span>
-                </button>
-            </li>
+            @for (item of dropdownItems; track item) {
+                @if (
+                    !item.adminOnly ||
+                    (item.adminOnly && isAdmin() && currentUrl !== '/admin')
+                ) {
+                    <li>
+                        @if (item.isButton) {
+                            <button
+                                (click)="item.action()"
+                                class="justify-between">
+                                @switch (item.id) {
+                                    @case ('admin') {
+                                        <div admin-icon class="h-5 w-5"></div>
+                                    }
+                                    @case ('logout') {
+                                        <div logout-icon class="h-5 w-5"></div>
+                                    }
+                                    @case ('profile') {
+                                        <div profile-icon class="h-5 w-5"></div>
+                                    }
+                                    @case ('settings') {
+                                        <div
+                                            settings-icon
+                                            class="h-5 w-5"></div>
+                                    }
+                                }
+                                <span> {{ item.text }} </span>
+                            </button>
+                        } @else {
+                            <a [routerLink]="item.link" class="justify-between">
+                                @switch (item.id) {
+                                    @case ('admin') {
+                                        <div admin-icon class="h-5 w-5"></div>
+                                    }
+                                    @case ('logout') {
+                                        <div logout-icon class="h-5 w-5"></div>
+                                    }
+                                    @case ('profile') {
+                                        <div profile-icon class="h-5 w-5"></div>
+                                    }
+                                    @case ('settings') {
+                                        <div
+                                            settings-icon
+                                            class="h-5 w-5"></div>
+                                    }
+                                }
+                                <span> {{ item.text }} </span>
+                            </a>
+                        }
+                    </li>
+                }
+            }
         </ul>
     </app-dropdown>
 } @else {
