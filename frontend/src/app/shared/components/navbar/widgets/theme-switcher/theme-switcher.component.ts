@@ -49,7 +49,7 @@ export class ThemeSwitcherWidgetComponent implements OnInit, OnDestroy {
     setTheme(event: Event, theme: ThemeType): void {
         event.stopPropagation()
         this.selectedTheme = theme
-        this.themeService.setTheme(theme)
+        this.themeService.setThemeWithoutRoute(theme)
     }
 
     ngOnDestroy(): void {

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core'
+import { NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
+import { filter } from 'rxjs/operators'
 
 /**
  * Theme type
@@ -8,6 +10,42 @@ export enum ThemeType {
     Dark = 'dark',
     Light = 'light',
     System = 'system',
+    AdminDark = 'admin-dark',
+    AdminLight = 'admin-light',
+    AdminSystem = 'admin-system',
+}
+
+/**
+ * Theme property.
+ */
+type ThemeProperty = {
+    type: 'dark' | 'light' | 'system'
+    name: string
+    route: string
+}
+
+/**
+ * Theme properties.
+ */
+export const ThemeProperties: Record<ThemeType, ThemeProperty> = {
+    [ThemeType.Dark]: { type: 'dark', name: 'dark', route: '*' },
+    [ThemeType.Light]: { type: 'light', name: 'light', route: '*' },
+    [ThemeType.System]: { type: 'system', name: 'system', route: '*' },
+    [ThemeType.AdminDark]: {
+        type: 'dark',
+        name: 'admin-dark',
+        route: '/admin',
+    },
+    [ThemeType.AdminLight]: {
+        type: 'light',
+        name: 'admin-light',
+        route: '/admin',
+    },
+    [ThemeType.AdminSystem]: {
+        type: 'system',
+        name: 'admin-system',
+        route: '/admin',
+    },
 }
 
 /**
@@ -23,6 +61,35 @@ export enum ThemeType {
     providedIn: 'root',
 })
 export class ThemeService {
+    isAdminRoute: boolean = false
+    constructor(private router: Router) {
+        this.listenToRouteChanges()
+    }
+
+    private listenToRouteChanges() {
+        this.router.events
+            .pipe(filter((event: any) => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                this.isAdminRoute = event.url.includes('/admin')
+                this.adjustThemeForRoute()
+            })
+    }
+
+    /**
+     * Adjust the theme for the current route.
+     *
+     * @returns The adjusted theme.
+     */
+    private adjustThemeForRoute() {
+        const currentTheme = this.getTheme()
+        const currentThemeProperties = ThemeProperties[currentTheme]
+        if (this.isAdminRoute && currentThemeProperties.route === '/admin')
+            return
+
+        // Route changed, adjust theme
+        this.setThemeWithoutRoute(currentTheme)
+    }
+
     /**
      * The key used to store the theme in the local storage.
      */
@@ -46,13 +113,71 @@ export class ThemeService {
      * @param theme The theme to set.
      */
     setTheme(theme: ThemeType): void {
-        // Résout le thème en fonction des préférences de l'utilisateur.
-        const resolvedTheme =
-            theme === ThemeType.System ? this.getSystemThemePreference() : theme
+        const resolvedTheme = this.themeSystemResolver(theme)
+        const resolvedThemeProperties: ThemeProperty =
+            ThemeProperties[resolvedTheme]
+
         document.documentElement.setAttribute('data-theme', resolvedTheme)
 
-        localStorage.setItem(this.THEME_KEY, theme)
-        this.themeSubject.next(theme)
+        localStorage.setItem(this.THEME_KEY, resolvedThemeProperties.type)
+        this.themeSubject.next(resolvedThemeProperties.type as ThemeType)
+    }
+
+    /**
+     * Defines the theme of the application without route.
+     *
+     * @param theme The theme to set.
+     */
+    setThemeWithoutRoute(theme: ThemeType): void {
+        theme = this.themeRouteResolver(theme)
+        this.setTheme(theme)
+    }
+
+    /**
+     * Resolves the theme to admin or not admin if the theme is set to system.
+     * @param theme The theme to resolve.
+     * @returns The resolved theme.
+     */
+    themeRouteResolver(theme: ThemeType): ThemeType {
+        console.log('themeRouteResolver', theme)
+        const currentThemeProperties = ThemeProperties[theme]
+        let newTheme: ThemeType
+
+        console.log((this.isAdminRoute ? 'admin' : 'not admin') + ' route')
+        if (this.isAdminRoute) {
+            newTheme =
+                currentThemeProperties.type === 'dark'
+                    ? ThemeType.AdminDark
+                    : currentThemeProperties.type === 'light'
+                      ? ThemeType.AdminLight
+                      : ThemeType.AdminSystem
+        } else {
+            newTheme =
+                currentThemeProperties.type === 'dark'
+                    ? ThemeType.Dark
+                    : currentThemeProperties.type === 'light'
+                      ? ThemeType.Light
+                      : ThemeType.System
+        }
+        return newTheme
+    }
+
+    /**
+     * Resolves the theme to dark or light if the theme is set to system.
+     * @param theme The theme to resolve.
+     * @returns The resolved theme.
+     */
+    themeSystemResolver(theme: ThemeType) {
+        let resolvedTheme: ThemeType =
+            theme === ThemeType.System ? this.getSystemThemePreference() : theme
+        if (theme === ThemeType.AdminSystem) {
+            const temp = this.getSystemThemePreference()
+            resolvedTheme =
+                temp === ThemeType.Dark
+                    ? ThemeType.AdminDark
+                    : ThemeType.AdminLight
+        }
+        return resolvedTheme
     }
 
     /**
