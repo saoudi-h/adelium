@@ -8,7 +8,7 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component'
     selector: 'app-default-layout',
     standalone: true,
     template: `
-        <div class="drawer">
+        <div class="drawer bg-base-300">
             <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
             <!-- Page -->
             <div class="drawer-content flex flex-col">

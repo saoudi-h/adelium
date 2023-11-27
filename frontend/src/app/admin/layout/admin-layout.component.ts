@@ -8,7 +8,7 @@ import { FooterComponent } from '@shared/components/footer/footer.component'
     selector: 'app-admin-layout',
     standalone: true,
     template: `
-        <div class="drawer lg:drawer-open">
+        <div class="drawer bg-base-300 lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
             <!-- Page -->
             <div class="drawer-content flex flex-col">

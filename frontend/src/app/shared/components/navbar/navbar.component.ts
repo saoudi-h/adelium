@@ -12,7 +12,7 @@ import { ThemeSwitcherWidgetComponent } from './widgets/theme-switcher/theme-swi
     selector: 'app-navbar',
     standalone: true,
     template: `<header
-        class="sticky top-0 z-30 flex h-16 w-full justify-center bg-base-300 text-base-content backdrop-blur transition-all duration-100 [transform:translate3d(0,0,0)]">
+        class="sticky top-0 z-30 flex h-16 w-full justify-center border-b border-base-300 bg-base-300/50 bg-hero-pattern text-base-content backdrop-blur-lg transition-all duration-100">
         <div [ngClass]="{ container: !headerWide }" class="navbar mx-auto">
             <div class="navbar-start">
                 <div class="dropdown">
