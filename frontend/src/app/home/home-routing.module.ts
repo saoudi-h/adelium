@@ -13,6 +13,11 @@ const routes: Routes = [
                     import('./pages/home/home.component').then(
                         mod => mod.HomeComponent
                     ),
+                data: {
+                    breadcrumb: 'Accueil',
+                    icon: 'home-icon',
+                    active: true,
+                },
             },
             {
                 path: '**',
@@ -20,6 +25,11 @@ const routes: Routes = [
                     import('./pages/not-found/not-found.component').then(
                         mod => mod.NotFoundComponent
                     ),
+                data: {
+                    breadcrumb: 'Page introuvable',
+                    icon: 'not-found-icon',
+                    active: true,
+                },
             },
         ],
     },

@@ -3,6 +3,7 @@ import { NavbarAdminComponent } from '@admin/components/navbar-admin.component'
 import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
+import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
 
 @Component({
     selector: 'app-admin-layout',
@@ -23,6 +24,7 @@ import { FooterComponent } from '@shared/components/footer/footer.component'
                         class="relative flex h-max w-full flex-1 flex-row justify-center overflow-hidden bg-gradient-to-t from-base-100 to-base-200">
                         <main
                             class="relative flex max-w-full flex-1 flex-col items-start px-6 pb-16 pt-10 lg:px-16 ">
+                            <div breadcrumb></div>
                             <router-outlet></router-outlet>
                         </main>
                     </main>
@@ -51,6 +53,7 @@ import { FooterComponent } from '@shared/components/footer/footer.component'
         NavbarAdminComponent,
         RouterModule,
         AsideComponent,
+        BreadcrumbsComponent,
     ],
 })
 export class AdminLayoutComponent {}

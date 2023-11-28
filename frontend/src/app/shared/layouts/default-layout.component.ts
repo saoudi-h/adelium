@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
 import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component'
 import { NavbarComponent } from '@shared/components/navbar/navbar.component'
+import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
 
 @Component({
     selector: 'app-default-layout',
@@ -17,6 +18,7 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component'
                 <!-- Page content -->
                 <div
                     class="relative flex min-h-screen flex-col justify-between overflow-hidden">
+                    <div breadcrumb></div>
                     <main
                         class="relative flex h-max w-full flex-1 content-center items-center justify-center overflow-hidden bg-gradient-to-t from-base-100 to-base-300">
                         <router-outlet></router-outlet>
@@ -47,6 +49,7 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component'
         NavbarComponent,
         RouterModule,
         MegaMenuComponent,
+        BreadcrumbsComponent,
     ],
 })
 export class DefaultLayoutComponent {}

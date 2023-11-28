@@ -15,6 +15,11 @@ const routes: Routes = [
                     import('./pages/home/home.component').then(
                         mod => mod.AdminHomeComponent
                     ),
+                data: {
+                    breadcrumb: 'Administration',
+                    icon: 'admin-icon',
+                    active: true,
+                },
             },
         ],
     },

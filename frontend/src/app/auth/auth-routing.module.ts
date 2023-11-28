@@ -15,6 +15,11 @@ const routes: Routes = [
                     import('./pages/login/login.component').then(
                         mod => mod.LoginComponent
                     ),
+                data: {
+                    breadcrumb: 'Authentication',
+                    icon: 'login-icon',
+                    active: true,
+                },
             },
             {
                 path: 'register',
@@ -22,6 +27,11 @@ const routes: Routes = [
                     import('./pages/register/register.component').then(
                         mod => mod.RegisterComponent
                     ),
+                data: {
+                    breadcrumb: 'Inscription',
+                    icon: 'register-icon',
+                    active: true,
+                },
             },
         ],
     },
