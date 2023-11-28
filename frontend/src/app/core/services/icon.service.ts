@@ -8,9 +8,13 @@ import { CloseIconComponent } from '@shared/components/icons/close-icon.componen
 import { CoursesIconComponent } from '@shared/components/icons/courses-icon.component'
 import { ErrorIconComponent } from '@shared/components/icons/error-icon.component'
 import { GroupsIconComponent } from '@shared/components/icons/groups-icon.component'
+import { HomeIconComponent } from '@shared/components/icons/home-icon.component'
 import { InfoIconComponent } from '@shared/components/icons/info-icon.component'
+import { LoginIconComponent } from '@shared/components/icons/login-icon.component'
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component'
+import { NotFoundIconComponent } from '@shared/components/icons/not-found-icon.component'
 import { ProfileIconComponent } from '@shared/components/icons/profile.component'
+import { RegisterIconComponent } from '@shared/components/icons/register-icon.component'
 import { ReportsComponent } from '@shared/components/icons/reports-icon.component'
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { SuccessIconComponent } from '@shared/components/icons/success-icon.component'
@@ -60,6 +64,14 @@ export class IconService {
                 return ReportsComponent
             case 'announcements-icon':
                 return AnnouncementsIconComponent
+            case 'home-icon':
+                return HomeIconComponent
+            case 'login-icon':
+                return LoginIconComponent
+            case 'register-icon':
+                return RegisterIconComponent
+            case 'not-found-icon':
+                return NotFoundIconComponent
             default:
                 return null
         }
