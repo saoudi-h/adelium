@@ -18,9 +18,9 @@ import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/bre
                 <!-- Page content -->
                 <div
                     class="relative flex min-h-screen flex-col justify-between overflow-hidden">
-                    <div breadcrumb></div>
                     <main
                         class="relative flex h-max w-full flex-1 content-center items-center justify-center overflow-hidden bg-gradient-to-t from-base-100 to-base-300">
+                        <!-- <div breadcrumb></div> -->
                         <router-outlet></router-outlet>
                     </main>
                     <app-footer></app-footer>
