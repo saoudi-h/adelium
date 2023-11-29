@@ -91,7 +91,6 @@ export class BreadcrumbsService {
             // Append route URL to URL
 
             url += routeURL === '' ? '' : `/${routeURL}`
-            console.log(url)
             if (!child.snapshot.data['active']) {
                 return this.getBreadcrumb(child, url, breadcrumbs)
             }

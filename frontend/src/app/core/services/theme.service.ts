@@ -139,11 +139,9 @@ export class ThemeService {
      * @returns The resolved theme.
      */
     themeRouteResolver(theme: ThemeType): ThemeType {
-        console.log('themeRouteResolver', theme)
         const currentThemeProperties = ThemeProperties[theme]
         let newTheme: ThemeType
 
-        console.log((this.isAdminRoute ? 'admin' : 'not admin') + ' route')
         if (this.isAdminRoute) {
             newTheme =
                 currentThemeProperties.type === 'dark'
