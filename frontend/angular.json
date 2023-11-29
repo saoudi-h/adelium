@@ -28,7 +28,10 @@
                             "src/assets",
                             "src/manifest.webmanifest"
                         ],
-                        "styles": ["src/styles.sass"],
+                        "styles": [
+                            "@angular/material/prebuilt-themes/indigo-pink.css",
+                            "src/styles.sass"
+                        ],
                         "scripts": [],
                         "serviceWorker": true,
                         "ngswConfigPath": "ngsw-config.json"
@@ -95,7 +98,10 @@
                             "src/assets",
                             "src/manifest.webmanifest"
                         ],
-                        "styles": ["src/styles.sass"],
+                        "styles": [
+                            "@angular/material/prebuilt-themes/indigo-pink.css",
+                            "src/styles.sass"
+                        ],
                         "scripts": []
                     }
                 },
