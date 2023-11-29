@@ -1,6 +1,7 @@
 /* (C)2023 */
 package com.adelium.web.authservice;
 
+import com.adelium.web.authservice.entity.Address;
 import com.adelium.web.authservice.entity.Authority;
 import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.authservice.entity.User;
@@ -19,8 +20,12 @@ import org.springframework.stereotype.Component;
 
 /**
  * This class is responsible for loading initial data into the database when the application starts.
- * It implements ApplicationListener<ContextRefreshedEvent> to listen to the ContextRefreshedEvent event.
+ * It implements ApplicationListener to listen to the ContextRefreshedEvent event.
  * It creates default roles, authorities, and a user with admin privileges if they do not exist in the database.
+ *
+ * @see ApplicationListener
+ * @see ContextRefreshedEvent
+ * @see Component
  */
 @Component
 @RequiredArgsConstructor
@@ -65,6 +70,14 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         user.setPassword(passwordEncoder.encode("password"));
         user.getRoles().add(adminRole);
         user.setEnabled(true);
+        user.setAddress(
+                Address.builder()
+                        .streetNumber("1")
+                        .street("Rue de la paix")
+                        .postalCode("01100")
+                        .city("Oyonnax")
+                        .country("France")
+                        .build());
         userRepository.save(user);
         alreadySetup = true;
     }
