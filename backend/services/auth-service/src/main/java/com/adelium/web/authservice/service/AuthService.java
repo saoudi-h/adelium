@@ -50,7 +50,6 @@ public class AuthService {
      * @param userDetailsDTO the user details
      * @return the response entity containing the generated tokens
      * @throws UsernameAlreadyExistsException if the username already exists
-     * @throws Exception                      if an error occurs
      */
     public TokensDTO register(UserDetailsDTO userDetailsDTO) {
         Role userRole =

@@ -33,7 +33,6 @@ public class AuthController {
      * @param userDetailsDTO the user details
      * @return the response entity containing the generated tokens
      * @throws UsernameAlreadyExistsException if the username already exists
-     * @throws Exception                      if an error occurs
      */
     @PostMapping(value = "/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDetailsDTO userDetailsDTO) {
