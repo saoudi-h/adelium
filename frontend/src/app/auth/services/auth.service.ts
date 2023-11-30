@@ -5,7 +5,7 @@ import { Token } from '@core/dto/Token'
 import { UserLogin } from '@core/dto/UserLogin'
 import { UserRegister } from '@core/dto/UserRegister'
 import { UserToken } from '@core/dto/UserToken'
-import { Role } from '@core/utility/role'
+import { Role } from '@core/utility/types'
 import {
     BehaviorSubject,
     Observable,
@@ -160,9 +160,8 @@ export class AuthService {
 
     refresh() {
         this.withAuth()
-        if (!this.isLoggedIn()) return
         return this.httpClient.get<Token>(`${this.url}/refresh`, {
-            headers: { Authorization: `Bearer ${this.token!.refreshToken}` },
+            headers: { Authorization: `Bearer ${this.getRefreshToken()}` },
         })
     }
 
