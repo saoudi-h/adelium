@@ -67,7 +67,7 @@ public class SecurityConfig {
                                         .requestMatchers(AUTH_URL)
                                         .authenticated()
                                         // admin routes should have admin role
-                                        .requestsMatchers(ADMIN_URL)
+                                        .requestMatchers(ADMIN_URL)
                                         .hasRole("ADMIN")
                                         .requestMatchers(HttpMethod.POST, ANONYMOUS_URL)
                                         .anonymous()
