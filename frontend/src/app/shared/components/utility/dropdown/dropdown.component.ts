@@ -13,11 +13,14 @@ import { dropdownAnimation } from './dropdown.animations'
     standalone: true,
     selector: 'app-dropdown',
     template: `
-        <div #dropdown class="dropdown-container" [style]="{ width: width }">
+        <div
+            #dropdown
+            class="dropdown-container relative"
+            [style]="{ width: width }">
             <ng-content select="[dropdown-button]"></ng-content>
             <div
                 [@dropdown]="isOpen ? 'open' : 'closed'"
-                class="dropdown-content"
+                class="dropdown-content absolute z-10"
                 [ngStyle]="{
                     left: left ? '0' : 'auto',
                     right: left ? 'auto' : '0'
@@ -26,7 +29,6 @@ import { dropdownAnimation } from './dropdown.animations'
             </div>
         </div>
     `,
-    styleUrls: ['./dropdown.component.sass'],
     animations: [dropdownAnimation],
 })
 export class DropdownComponent {

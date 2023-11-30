@@ -13,14 +13,14 @@ export const dropdownAnimation = trigger('dropdown', [
         style({
             opacity: 0,
             overflow: 'hidden',
-            zIndex: -1,
+            display: 'none',
         })
     ),
     state(
         'open',
         style({
             opacity: 1,
-            zIndex: 10,
+            display: 'block',
         })
     ),
     transition(
@@ -31,10 +31,12 @@ export const dropdownAnimation = trigger('dropdown', [
                 style({
                     transform: 'translate3d(0, -100%, 0) skewY(-30deg)',
                     opacity: 0,
+                    display: 'none',
                 }),
                 style({
                     transform: 'skewY(20deg)',
                     opacity: 1,
+                    display: 'block',
                 }),
                 style({
                     transform: 'skewY(-5deg)',
