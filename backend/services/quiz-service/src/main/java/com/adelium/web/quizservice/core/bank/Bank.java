@@ -38,10 +38,9 @@ public interface Bank<Q extends Question<M>, M extends Media> {
     Long getOwnerId();
 
     /**
-     * Returns the set of questions in the bank.
+     * Retrieves a set of questions.
      *
-     * @param <Q> the type of questions in the bank
-     * @return the set of questions in the bank
+     * @return a set (Set) of objects of type Q (Question)
      */
     Set<Q> getQuestions();
 

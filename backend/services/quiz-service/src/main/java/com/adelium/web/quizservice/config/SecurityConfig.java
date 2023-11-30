@@ -27,12 +27,16 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     private static final String[] WHITE_LIST_URL = {
-        "/auth-docs/**", "/actuator/**",
+        "/actuator",
+        "/actuator/**",
+        "/quiz-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/v3/api-docs/**",
+        "/swagger-resources/**",
     };
 
-    private static final String[] ADMIN_URLS = {
-        "/questions/**", "/quiz-mcq/**", "/quiz-mcq",
-    };
+    private static final String[] ADMIN_URLS = {};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
