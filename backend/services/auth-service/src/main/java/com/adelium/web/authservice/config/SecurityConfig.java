@@ -32,18 +32,18 @@ public class SecurityConfig {
     private final LogoutHandler logoutHandler;
     private final AuthenticationProvider authenticationProvider;
 
-    private static final String[] WHITE_LIST_URL = {
+    private static final String[] ADMIN_URL = {
+        "/users/**", "/roles/**", "/authorities/**", "/authorisations/**",
+    };
+
+    private static final String[] AUTH_URL = {
         "/logout", "/refresh",
     };
 
-    private static final String[] ADMIN_URL = {
+    private static final String[] WHITE_LIST_URL = {
         "/actuator",
         "/actuator/**",
         "/auth-docs/**",
-        "/users/**",
-        "/roles/**",
-        "/authorities/**",
-        "/authorisations",
         "/swagger-ui/**",
         "/swagger-ui.html",
         "/v3/api-docs/**",
@@ -64,7 +64,10 @@ public class SecurityConfig {
                                         // whitelist no permission needed
                                         .requestMatchers(WHITE_LIST_URL)
                                         .permitAll()
-                                        .requestMatchers(ADMIN_URL)
+                                        .requestMatchers(AUTH_URL)
+                                        .authenticated()
+                                        // admin routes should have admin role
+                                        .requestsMatchers(ADMIN_URL)
                                         .hasRole("ADMIN")
                                         .requestMatchers(HttpMethod.POST, ANONYMOUS_URL)
                                         .anonymous()
