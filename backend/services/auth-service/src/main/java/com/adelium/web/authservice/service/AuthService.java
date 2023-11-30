@@ -58,6 +58,7 @@ public class AuthService {
                         .orElseThrow(() -> new RoleNotFoundException("Role USER not found"));
         var user = userDetailsMapper.toEntity(userDetailsDTO);
         user.setRoles(Set.of(userRole));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             var savedUser = userRepository.save(user);
             var jwtToken = tokenService.generateToken(user);
