@@ -21,6 +21,18 @@ const routes: Routes = [
                     active: true,
                 },
             },
+            {
+                path: 'users',
+                loadComponent: () =>
+                    import('./pages/users/users.component').then(
+                        mod => mod.AdminUsersComponent
+                    ),
+                data: {
+                    breadcrumb: 'Utilisateurs',
+                    icon: 'users-icon',
+                    active: true,
+                },
+            },
         ],
     },
 ]

@@ -1,0 +1,346 @@
+<!-- Table Section -->
+<section class="flex w-full max-w-[100vw] grow py-10 lg:py-14">
+    <div class="w-full overflow-hidden">
+        <div
+            class="grid gap-3 border-b border-base-300 px-6 py-4 md:flex md:items-center md:justify-between">
+            <div>
+                <h1 class="text-xl font-semibold text-primary">
+                    {{ title }}
+                </h1>
+                <p class="text-sm text-base-content">
+                    {{ subtitle }}
+                </p>
+            </div>
+
+            <div>
+                <div class="join grid grid-cols-2">
+                    <button class="btn btn-outline join-item">Tout voir</button>
+                    <button class="btn btn-outline join-item">
+                        <svg
+                            class="h-3 w-3 flex-shrink-0"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none">
+                            <path
+                                d="M2.63452 7.50001L13.6345 7.5M8.13452 13V2"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        Ajouter un utilisateur
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- End Header -->
+        <!-- Table -->
+        <div class="w-full overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra-zebra">
+                    <!-- thead  -->
+                    <thead class="">
+                        <tr>
+                            <th>
+                                <label>
+                                    <input type="checkbox" class="checkbox" />
+                                </label>
+                            </th>
+                            @for (label of tableLabels; track label) {
+                                <th class="text-md capitalize text-primary">
+                                    {{ label }}
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+
+                    <!-- tbody -->
+                    <tbody class="">
+                        <ng-container
+                            *ngIf="data$ | async as data; else loadingOrError">
+                            @for (user of data._embedded['users']; track user) {
+                                <tr>
+                                    <td class="h-px w-px whitespace-nowrap">
+                                        <div class="py-3 ps-6">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    class="checkbox" />
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div
+                                            class="flex flex-wrap items-center gap-3">
+                                            <div class="avatar">
+                                                <div
+                                                    class="mask mask-hexagon h-12 w-12">
+                                                    <img
+                                                        [src]="
+                                                            user['avatar']
+                                                                ? user['avatar']
+                                                                : 'https://gravatar.com/avatar/205e460b479e2?d=wavatar'
+                                                        "
+                                                        alt="Avatar de l'utilisteur" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">
+                                                    {{
+                                                        user.firstname +
+                                                            ' ' +
+                                                            user.lastname
+                                                    }}
+                                                </div>
+
+                                                <div class="text-sm opacity-50">
+                                                    {{ user.username }}
+                                                </div>
+
+                                                <div class="text-sm opacity-50">
+                                                    {{ user.phone }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <!-- Address -->
+                                    <td>
+                                        <div class="flex flex-col">
+                                            <div>
+                                                {{
+                                                    user['address']
+                                                        .streetNumber +
+                                                        ' ' +
+                                                        user['address'].street
+                                                }}
+                                            </div>
+
+                                            @if (
+                                                user['address'].additionalInfo
+                                            ) {
+                                                <div>
+                                                    {{
+                                                        user['address']
+                                                            .additionalInfo
+                                                    }}
+                                                </div>
+                                            }
+                                            <div>
+                                                {{
+                                                    user['address'].postalCode +
+                                                        ' ' +
+                                                        user['address'].city
+                                                }}
+                                            </div>
+                                            <div>
+                                                {{ user['address'].country }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <!-- Autorisations -->
+                                    <td>
+                                        <div class="flex flex-col gap-1">
+                                            @for (
+                                                authority of user[
+                                                    'authorities'
+                                                ];
+                                                track authority
+                                            ) {
+                                                <span
+                                                    class="badge badge-outline badge-sm">
+                                                    {{ authority.authority }}
+                                                </span>
+                                            } @empty {
+                                                <span class="">
+                                                    Aucune autorisation
+                                                </span>
+                                            }
+                                        </div>
+                                    </td>
+                                    <!-- Status -->
+                                    <td>
+                                        <table class="table table-xs">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Compte non expiré :</td>
+                                                    <td>
+                                                        {{
+                                                            user.accountNonExpired
+                                                                ? '&#x2705;'
+                                                                : '&#x274C;'
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Compte non verrouillé :
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            user.accountNonLocked
+                                                                ? '&#x2705;'
+                                                                : '&#x274C;'
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Vérifié :</td>
+                                                    <td>
+                                                        {{
+                                                            user.verified
+                                                                ? '&#x2705;'
+                                                                : '&#x274C;'
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Mot de passe non expiré
+                                                        :
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            user.credentialsNonExpired
+                                                                ? '&#x2705;'
+                                                                : '&#x274C;'
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <!-- Securité-->
+                                    <td>
+                                        <table class="table table-xs text-xs">
+                                            <tr>
+                                                <td>
+                                                    Nombre de temptatives échoué
+                                                    :&nbsp;
+                                                </td>
+                                                <td>
+                                                    {{
+                                                        user.failedLoginAttempts
+                                                    }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Vérrouillé depuis :&nbsp;
+                                                </td>
+                                                <td>
+                                                    @if (user.lockTime) {
+                                                        {{
+                                                            user.lockTime | date
+                                                        }}
+                                                    } @else {
+                                                        Non vérrouillé
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Token de réinitialisation
+                                                    :&nbsp;
+                                                </td>
+                                                <td>
+                                                    @if (
+                                                        user.resetPasswordToken
+                                                    ) {
+                                                        {{
+                                                            user.resetPasswordToken
+                                                        }}
+                                                    } @else {
+                                                        Non défini
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Expiration du token de
+                                                    réinitialisation :&nbsp;
+                                                </td>
+                                                <td>
+                                                    @if (
+                                                        user.resetPasswordTokenExpiry
+                                                    ) {
+                                                        {{
+                                                            user.resetPasswordTokenExpiry
+                                                                | date
+                                                        }}
+                                                    } @else {
+                                                        Non expiré
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
+                        </ng-container>
+                        <ng-template #loadingOrError>
+                            <div *ngIf="errorMessage; else loading">
+                                {{ errorMessage }}
+                            </div>
+                            <ng-template #loading>
+                                Chargement des données...
+                            </ng-template>
+                        </ng-template>
+                    </tbody>
+                </table>
+            </div>
+            <!-- End Table -->
+
+            <!-- Footer -->
+            <div
+                class="grid gap-3 border-t border-gray-200 px-6 py-4 dark:border-gray-700 md:flex md:items-center md:justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        <span class="font-semibold">6</span>
+                        results
+                    </p>
+                </div>
+
+                <div>
+                    <div class="join grid grid-cols-2">
+                        <button class="btn btn-outline join-item">
+                            <svg
+                                class="h-4 w-4 flex-shrink-0"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                            Previous page
+                        </button>
+                        <button class="btn btn-outline join-item">
+                            Next
+                            <svg
+                                class="h-4 w-4 flex-shrink-0"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Footer -->
+        </div>
+    </div>
+    <!-- End Card -->
+</section>
+<!-- End Table Section -->
