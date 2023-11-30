@@ -1,0 +1,37 @@
+import { Base } from './base.model'
+
+/**
+ * Page model
+ * @param T extends Base
+ * @returns Page<T>
+ * @example
+ * ```ts
+ * import { Page } from '@core/models/page.model'
+ * import { Base } from '@core/models/base.model'
+ *
+ * export interface User extends Base {
+ *    firstname: string
+ *   lastname: string
+ *  username: string
+ * }
+ *
+ * export interface PageUser extends Page<User> {}
+ * ```
+ *
+ */
+export interface Page<T extends Base> {
+    page: {
+        size: number
+        totalElements: number
+        totalPages: number
+        number: number
+    }
+    _embedded: {
+        [key: string]: T[]
+    }
+    _links: {
+        [key: string]: {
+            href: string
+        }
+    }
+}
