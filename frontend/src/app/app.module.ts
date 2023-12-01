@@ -16,6 +16,8 @@ import { ToastrModule } from 'ngx-toastr'
 import { AdminModule } from './admin/admin.module'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { AppEffects } from './app.effects'
+import { metaReducers, reducers } from './reducers'
 
 @NgModule({
     declarations: [AppComponent],
@@ -38,8 +40,10 @@ import { AppComponent } from './app.component'
         }),
         StoreModule.forRoot({}, {}),
         StoreRouterConnectingModule.forRoot(),
-        EffectsModule.forRoot([]),
+        EffectsModule.forRoot([AppEffects]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+        StoreModule.forRoot(reducers, { metaReducers }),
+        StoreDevtoolsModule.instrument({ logOnly: isDevMode() }),
     ],
     providers: [
         ThemeService,
