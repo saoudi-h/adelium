@@ -97,7 +97,7 @@ export class AuthService {
 
     isAdmin(): boolean {
         this.withAuth()
-        return this.user!.roles.includes(Role.ADMIN)
+        return this.user!.authorities.includes(Role.ADMIN)
     }
 
     setToken(token: Token) {

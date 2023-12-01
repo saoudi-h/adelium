@@ -33,15 +33,15 @@ public class TokenService {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("firstname", user.getFirstname());
         extraClaims.put("lastname", user.getLastname());
+        extraClaims.put("avatar", user.getAvatar());
 
-        // convert roles to list of strings
-        List<String> roles =
+        List<String> authorities =
                 user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList());
 
         // add roles to JWT token
-        extraClaims.put("roles", roles);
+        extraClaims.put("authorities", authorities);
         return generateToken(extraClaims, user);
     }
 

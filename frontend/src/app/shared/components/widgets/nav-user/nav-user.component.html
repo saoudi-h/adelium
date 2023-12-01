@@ -9,7 +9,11 @@
             class="avatar btn btn-circle btn-ghost">
             <div class="w-10 rounded-full">
                 <img
-                    src="https://lh3.googleusercontent.com/ogw/AKPQZvx2-8ETRjKNJlKf1WFhX-L3h7VISKiuI7avlAD80w=s32-c-mo"
+                    [src]="
+                        user.avatar
+                            ? user.avatar
+                            : 'https://gravatar.com/avatar/205e460b479e2?d=wavatar'
+                    "
                     alt="profile image" />
             </div>
         </label>

@@ -1,6 +1,7 @@
 /**
  * Represents a User Token, typically used for JSON Web Tokens (JWTs).
  */
+
 /**
  * Represents a user token containing information about the user.
  */
@@ -21,9 +22,14 @@ export interface UserToken {
     sub: string
 
     /**
-     * The "roles" field represents the roles associated with the user.
+     * The authorities of the user.
      */
-    roles: string[]
+    authorities: string[]
+
+    /**
+     * The Url of the user's avatar.
+     */
+    avatar: string
 
     /**
      * The "exp" field represents the expiration date of the JWT as a number (timestamp).
