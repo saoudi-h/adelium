@@ -7,7 +7,10 @@ import { ServiceWorkerModule } from '@angular/service-worker'
 import { RequestInterceptor } from '@core/interceptors/request.interceptor'
 import { NotificationService } from '@core/services/notification.service'
 import { HomeModule } from '@home/home.module'
+import { EffectsModule } from '@ngrx/effects'
+import { StoreRouterConnectingModule } from '@ngrx/router-store'
 import { StoreModule } from '@ngrx/store'
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { CustomToastComponent } from '@shared/components/widgets/notificator/custom-toast.component'
 import { ToastrModule } from 'ngx-toastr'
 import { AdminModule } from './admin/admin.module'
@@ -34,6 +37,9 @@ import { AppComponent } from './app.component'
             registrationStrategy: 'registerWhenStable:30000',
         }),
         StoreModule.forRoot({}, {}),
+        StoreRouterConnectingModule.forRoot(),
+        EffectsModule.forRoot([]),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     ],
     providers: [
         ThemeService,
