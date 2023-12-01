@@ -16,7 +16,6 @@
                     "error",
                     {
                         "type": "attribute",
-                        // "prefix": "app",
                         "style": "camelCase"
                     }
                 ],
@@ -24,7 +23,6 @@
                     "error",
                     {
                         "type": "element",
-                        // "prefix": "app",
                         "style": "kebab-case"
                     }
                 ]
@@ -45,6 +43,10 @@
                     }
                 ]
             }
+        },
+        {
+            "files": ["*.ts"],
+            "extends": ["plugin:@ngrx/recommended"]
         }
     ],
     "extends": ["plugin:storybook/recommended"]

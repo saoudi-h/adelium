@@ -7,6 +7,7 @@ import { ServiceWorkerModule } from '@angular/service-worker'
 import { RequestInterceptor } from '@core/interceptors/request.interceptor'
 import { NotificationService } from '@core/services/notification.service'
 import { HomeModule } from '@home/home.module'
+import { StoreModule } from '@ngrx/store'
 import { CustomToastComponent } from '@shared/components/widgets/notificator/custom-toast.component'
 import { ToastrModule } from 'ngx-toastr'
 import { AdminModule } from './admin/admin.module'
@@ -32,6 +33,7 @@ import { AppComponent } from './app.component'
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000',
         }),
+        StoreModule.forRoot({}, {}),
     ],
     providers: [
         ThemeService,
