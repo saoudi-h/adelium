@@ -1,9 +1,10 @@
 import { ThemeService } from '@/core/services/theme.service'
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { NgModule, isDevMode } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ServiceWorkerModule } from '@angular/service-worker'
+import { RequestInterceptor } from '@core/interceptors/request.interceptor'
 import { NotificationService } from '@core/services/notification.service'
 import { HomeModule } from '@home/home.module'
 import { CustomToastComponent } from '@shared/components/widgets/notificator/custom-toast.component'
@@ -32,7 +33,15 @@ import { AppComponent } from './app.component'
             registrationStrategy: 'registerWhenStable:30000',
         }),
     ],
-    providers: [ThemeService, NotificationService],
+    providers: [
+        ThemeService,
+        NotificationService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: RequestInterceptor,
+            multi: true,
+        },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
