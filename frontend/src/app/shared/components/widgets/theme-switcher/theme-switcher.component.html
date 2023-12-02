@@ -6,7 +6,7 @@
         tabindex="0"
         for=""
         class="btn btn-square btn-ghost flex content-center items-center justify-center"
-        ngSwitch="{{ selectedTheme }}">
+        ngSwitch="{{ selectedCurrentTheme$ | async }}">
         <app-svg-sun *ngSwitchCase="'light'" className="h-6 w-6" />
         <app-svg-moon *ngSwitchCase="'dark'" className="h-6 w-6" />
         <app-svg-system *ngSwitchCase="'system'" className="h-6 w-6" />
@@ -16,7 +16,7 @@
         tabindex="0"
         class="mt-4 flex gap-2 rounded-box bg-base-200 p-1 shadow-md duration-500">
         @for (theme of themes; track themes) {
-            @if (theme.theme !== selectedTheme) {
+            @if (theme.theme !== (selectedCurrentTheme$ | async)) {
                 <li>
                     <button
                         (click)="setTheme($event, theme.theme)"
