@@ -1,4 +1,3 @@
-import { ThemeService } from '@/core/services/theme.service'
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { NgModule, isDevMode } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
@@ -12,6 +11,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store'
 import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { CustomToastComponent } from '@shared/components/widgets/notificator/custom-toast.component'
+import { ThemeEffects } from '@store/theme/theme.effects'
 import { ToastrModule } from 'ngx-toastr'
 import { AdminModule } from './admin/admin.module'
 import { AppRoutingModule } from './app-routing.module'
@@ -38,15 +38,13 @@ import { metaReducers, reducers } from './reducers'
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000',
         }),
-        StoreModule.forRoot({}, {}),
         StoreRouterConnectingModule.forRoot(),
-        EffectsModule.forRoot([AppEffects]),
+        EffectsModule.forRoot([AppEffects, ThemeEffects]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         StoreModule.forRoot(reducers, { metaReducers }),
         StoreDevtoolsModule.instrument({ logOnly: isDevMode() }),
     ],
     providers: [
-        ThemeService,
         NotificationService,
         {
             provide: HTTP_INTERCEPTORS,

@@ -1,8 +1,13 @@
 import { isDevMode } from '@angular/core'
 import { ActionReducerMap, MetaReducer } from '@ngrx/store'
+import { ThemeState, themeReducer } from '@store/theme/theme.reducer'
 
-export interface State {}
+export interface AppState {
+    theme: ThemeState
+}
 
-export const reducers: ActionReducerMap<State> = {}
+export const reducers: ActionReducerMap<AppState> = {
+    theme: themeReducer,
+}
 
-export const metaReducers: MetaReducer<State>[] = isDevMode() ? [] : []
+export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : []
