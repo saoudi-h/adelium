@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Directive, ViewChild } from '@angular/core'
+import { Directive } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Base } from '@core/models/base.model'
 import { Page } from '@core/models/page.model'
 import { RestService } from '@core/services/rest.service'
 import { EntityAttribute, TableData } from '@core/utility/types'
-import { DialogDeleteComponent } from '@shared/components/dialog-delete/dialog-delete.component'
-import { DialogFormComponent } from '@shared/components/dialog-form/dialog-form.component'
-import { TableComponent } from '@shared/components/table/table.component'
 import { EMPTY, Observable, catchError } from 'rxjs'
 
 @Directive()
@@ -23,8 +20,6 @@ export abstract class BaseAdminPageComponent<T extends Base> {
     data$!: Observable<Page<T>>
     selected!: T
     tableData!: TableData
-
-    @ViewChild(TableComponent) table!: TableComponent<T>
 
     findAttribute(key: string): EntityAttribute | undefined {
         return this.attributes.find(attribute => attribute.key === key)
@@ -67,14 +62,14 @@ export abstract class BaseAdminPageComponent<T extends Base> {
     }
 
     create() {
-        this.openForm()
+        // this.openForm()
     }
 
     edit(value: T) {
         const newValue = { ...value }
         this.format(newValue)
         this.selected = newValue
-        this.openForm(this.selected)
+        // this.openForm(this.selected)
     }
 
     format(value: any) {
@@ -94,22 +89,6 @@ export abstract class BaseAdminPageComponent<T extends Base> {
                 }
                 value[attribute.key] = formattedValue
             })
-    }
-
-    openForm(value?: T) {
-        const dialogRef = this.dialog.open(DialogFormComponent, {
-            data: {
-                name: this.name,
-                attributes: this.attributes,
-                value: value,
-            },
-        })
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.process(result)
-            }
-        })
     }
 
     process(value: T) {
@@ -133,20 +112,20 @@ export abstract class BaseAdminPageComponent<T extends Base> {
               })
     }
 
-    delete(ids: number[]) {
-        if (!ids.length) {
-            window.alert('No rows are selected!')
-            return
-        }
+    // delete(ids: number[]) {
+    //     if (!ids.length) {
+    //         window.alert('No rows are selected!')
+    //         return
+    //     }
 
-        const dialogRef = this.dialog.open(DialogDeleteComponent)
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.service.deleteSelection(ids).subscribe(() => {
-                    this.getPage()
-                    this.table.clearSelection()
-                })
-            }
-        })
-    }
+    //     const dialogRef = this.dialog.open(DialogDeleteComponent)
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         if (result) {
+    //             this.service.deleteSelection(ids).subscribe(() => {
+    //                 this.getPage()
+    //                 this.table.clearSelection()
+    //             })
+    //         }
+    //     })
+    // }
 }
