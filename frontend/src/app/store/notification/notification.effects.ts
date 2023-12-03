@@ -10,6 +10,10 @@ import * as NotificationActions from './notification.actions'
 import * as NotificationSelectors from './notification.selectors'
 import { Notice } from './notification.types'
 
+/**
+ * NotificationEffects class represents the effects for handling notifications in the application.
+ * It listens to specific actions and performs side effects such as loading and saving notifications.
+ */
 @Injectable()
 export class NotificationEffects {
     constructor(
@@ -18,6 +22,9 @@ export class NotificationEffects {
         private toastr: ToastrService
     ) {}
 
+    /**
+     * Effect for loading notifications from the session storage.
+     */
     loadNotifications$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(NotificationActions.loadNotifications, AppActions.appInit),
@@ -54,6 +61,9 @@ export class NotificationEffects {
         )
     })
 
+    /**
+     * Effect for saving notifications to the session storage.
+     */
     saveNotifications$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(
