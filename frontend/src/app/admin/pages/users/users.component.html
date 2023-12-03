@@ -60,16 +60,16 @@
                         <ng-container
                             *ngIf="data$ | async as data; else loadingOrError">
                             @for (user of data._embedded['users']; track user) {
-                                <tr>
+                                <tr class="hover">
+                                    <!-- Checkbox -->
                                     <td class="h-px w-px whitespace-nowrap">
-                                        <div class="py-3 ps-6">
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    class="checkbox" />
-                                            </label>
-                                        </div>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                class="checkbox" />
+                                        </label>
                                     </td>
+                                    <!-- Avatar -->
                                     <td>
                                         <div
                                             class="flex flex-wrap items-center gap-3">
@@ -294,21 +294,23 @@
                                             class="table-zebra-zbra table table-xs">
                                             <tbody>
                                                 <tr>
-                                                    <td>Créé le :&nbsp;</td>
+                                                    <td>Créer&nbsp;</td>
                                                     <td>
                                                         {{
                                                             user.createdAt
                                                                 | dateDistance
+                                                                    : true
                                                         }}
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Modifié le :&nbsp;</td>
+                                                    <td>Modifier&nbsp;</td>
                                                     <td>
                                                         <!-- date en francais  -->
                                                         {{
                                                             user.updatedAt
                                                                 | dateDistance
+                                                                    : true
                                                         }}
                                                     </td>
                                                 </tr>
@@ -335,48 +337,25 @@
             <div
                 class="grid gap-3 border-t border-base-300 px-6 py-4 md:flex md:items-center md:justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
-                        <span class="font-semibold">6</span>
-                        results
+                    <p
+                        class="text-sm text-base-content/50"
+                        *ngIf="data$ | async as data; else noTotal">
+                        {{
+                            data.page.totalElements +
+                                ' ' +
+                                (data.page.totalElements > 1
+                                    ? 'utilisateurs'
+                                    : 'utilisateur')
+                        }}
                     </p>
+                    <ng-template #noTotal></ng-template>
                 </div>
 
-                <div>
-                    <div class="join grid grid-cols-2">
-                        <button class="btn btn-outline join-item">
-                            <svg
-                                class="h-4 w-4 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="m15 18-6-6 6-6" />
-                            </svg>
-                            Previous page
-                        </button>
-                        <button class="btn btn-outline join-item">
-                            Next
-                            <svg
-                                class="h-4 w-4 flex-shrink-0"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="m9 18 6-6-6-6" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                <div
+                    paginator
+                    *ngIf="data$ | async as data"
+                    [currentPage]="data.page.number + 1"
+                    [totalPages]="data.page.totalPages"></div>
             </div>
             <!-- End Footer -->
         </div>

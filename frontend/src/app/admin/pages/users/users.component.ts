@@ -6,8 +6,6 @@ import { UserService } from '@core/services/user.service'
 import { EntityAttribute } from '@core/utility/types'
 import { BaseAdminPageComponent } from '@shared/directives/base-admin-page-component'
 import { SharedModule } from '@shared/shared.module'
-import { formatDistance } from 'date-fns'
-import { fr } from 'date-fns/locale'
 @Component({
     standalone: true,
     selector: '[admin-users]',
@@ -28,6 +26,7 @@ export class AdminUsersComponent
         'Status',
         'Securité',
         'Autres',
+        'Actions',
     ]
     subtitle = 'Ajouter, modifier et supprimer des utilisateurs'
     override attributes: EntityAttribute[] = [
@@ -118,15 +117,5 @@ export class AdminUsersComponent
     }
     ngOnInit(): void {
         this.getPage(this.tableData)
-    }
-
-    formatDateDistance(date: string | Date) {
-        if (typeof date === 'string') {
-            date = new Date(date)
-        }
-        return formatDistance(date, new Date(), {
-            addSuffix: false,
-            locale: fr,
-        })
     }
 }
