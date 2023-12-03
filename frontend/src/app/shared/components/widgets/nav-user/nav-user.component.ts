@@ -8,16 +8,16 @@ import { LogoutIconComponent } from '@shared/components/icons/logout-icon.compon
 import { ProfileIconComponent } from '@shared/components/icons/profile.component'
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
-import { CapitalizePipe } from '@shared/pipe/capitalize.pipe'
+import { SharedModule } from '@shared/shared.module'
 
 @Component({
     selector: '[nav-user-widget]',
     standalone: true,
     imports: [
         CommonModule,
+        SharedModule,
         RouterLink,
         RouterLinkActive,
-        CapitalizePipe,
         DropdownComponent,
         AdminIconComponent,
         ProfileIconComponent,

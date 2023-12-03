@@ -18,8 +18,7 @@ import { NotificationIconComponent } from '@shared/components/icons/notification
 import { SuccessIconComponent } from '@shared/components/icons/success-icon.component'
 import { WarningIconComponent } from '@shared/components/icons/warning-icon.component'
 import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
-import { formatDistance } from 'date-fns'
-import fr from 'date-fns/locale/fr'
+import { SharedModule } from '@shared/shared.module'
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr'
 import { Subscription } from 'rxjs'
 
@@ -32,6 +31,7 @@ import { Subscription } from 'rxjs'
     standalone: true,
     imports: [
         CommonModule,
+        SharedModule,
         NotificationIconComponent,
         SuccessIconComponent,
         WarningIconComponent,
@@ -103,7 +103,7 @@ import { Subscription } from 'rxjs'
                             </div>
                             <div
                                 class="justify-self-end text-xs font-semibold text-base-content/70">
-                                {{ formatDateDistance(notification.datetime) }}
+                                {{ notification.datetime | dateDistance }}
                             </div>
                         </div>
                     </li>
@@ -225,18 +225,6 @@ export class NotificatorWidgetComponent implements OnInit, OnDestroy {
      * */
     count() {
         return this.notifications.length
-    }
-
-    /**
-     * Format a date to a human readable distance
-     * @param date Date to format
-     * @returns Formatted date
-     */
-    formatDateDistance(date: Date) {
-        return formatDistance(date, new Date(), {
-            addSuffix: false,
-            locale: fr,
-        })
     }
 
     /**
