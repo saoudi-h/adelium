@@ -7,11 +7,9 @@ import {
     trigger,
 } from '@angular/animations'
 import { CommonModule } from '@angular/common'
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
-import {
-    Notice,
-    NotificationService,
-} from '@core/services/notification.service'
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { Store } from '@ngrx/store'
+import { AppState } from '@reducers'
 import { ErrorIconComponent } from '@shared/components/icons/error-icon.component'
 import { InfoIconComponent } from '@shared/components/icons/info-icon.component'
 import { NotificationIconComponent } from '@shared/components/icons/notification-icon.component'
@@ -19,12 +17,29 @@ import { SuccessIconComponent } from '@shared/components/icons/success-icon.comp
 import { WarningIconComponent } from '@shared/components/icons/warning-icon.component'
 import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
 import { SharedModule } from '@shared/shared.module'
+import * as NotificationActions from '@store/notification/notification.actions'
+import * as NotificationSelectors from '@store/notification/notification.selectors'
+import { Notice } from '@store/notification/notification.types'
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr'
-import { Subscription } from 'rxjs'
+import { Observable, map } from 'rxjs'
 
 /**
- * Notificator component.
- * Displays notifications in a dropdown menu in the navbar.
+ * Component for displaying notifications.
+ *
+ * @remarks
+ * This component is responsible for rendering a dropdown menu that displays notifications.
+ * It uses the ToastrService to show toast notifications and interacts with the Store to manage notifications.
+ *
+ * @example
+ * ```html
+ * <app-notificator-widget></app-notificator-widget>
+ * ```
+ *
+ * @selector [notificator-widget]
+ * @standalone true
+ * @imports CommonModule, SharedModule, NotificationIconComponent, SuccessIconComponent, WarningIconComponent, ErrorIconComponent, InfoIconComponent, ToastContainerDirective, DropdownComponent
+ * @template `<div class="relative">...</div>`
+ * @animations listAnimation
  */
 @Component({
     selector: '[notificator-widget]',
@@ -54,9 +69,11 @@ import { Subscription } from 'rxjs'
                 class="btn btn-square btn-ghost relative">
                 <app-notification-icon className="h-6 w-6" />
                 <span
-                    *ngIf="count() > 0"
+                    *ngIf="((notificationCount$ | async) ?? 0) > 0"
                     class="countdown absolute right-2 top-2 inline-flex -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-primary px-2 py-1 text-xs font-thin leading-none text-primary-content">
-                    <span style="--value: {{ count() }};" class=""></span>
+                    <span
+                        style="--value: {{ notificationCount$ | async }};"
+                        class=""></span>
                 </span>
             </button>
 
@@ -67,9 +84,9 @@ import { Subscription } from 'rxjs'
                 <!-- Toast -->
                 <ul
                     class="flex flex-col gap-2 py-2"
-                    [@listAnimation]="notifications.length">
+                    [@listAnimation]="(notificationCount$ | async) ?? 0">
                     <li
-                        *ngFor="let notification of notifications"
+                        *ngFor="let notification of notifications$ | async"
                         (click)="deleteById($event, notification.id)"
                         (keyup.enter)="deleteById($event, notification.id)"
                         tabindex="0"
@@ -107,7 +124,7 @@ import { Subscription } from 'rxjs'
                             </div>
                         </div>
                     </li>
-                    @if (count() > 0) {
+                    @if (((notificationCount$ | async) ?? 0) > 0) {
                         <div class="divider"></div>
 
                         <button
@@ -177,62 +194,37 @@ import { Subscription } from 'rxjs'
         ]),
     ],
 })
-export class NotificatorWidgetComponent implements OnInit, OnDestroy {
-    private notificationSubscription!: Subscription
+export class NotificatorWidgetComponent implements OnInit {
+    notifications$: Observable<Notice[]>
+    notificationCount$: Observable<number>
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent
     @ViewChild(ToastContainerDirective, { static: true })
     toastContainer: ToastContainerDirective | undefined
     notifications: Notice[] = []
 
     constructor(
-        private notificationService: NotificationService,
+        private store: Store<AppState>,
         private toastrService: ToastrService
-    ) {}
+    ) {
+        this.notifications$ = this.store.select(
+            NotificationSelectors.selectAllNotifications
+        )
+        this.notificationCount$ = this.notifications$.pipe(
+            map(notifications => notifications.length)
+        )
+    }
 
-    /**
-     * Subscribe to the notification service
-     */
     ngOnInit() {
         this.toastrService.overlayContainer = this.toastContainer
-        this.notificationSubscription = this.notificationService
-            .getNotifications()
-            .subscribe(notifications => {
-                this.notifications = notifications
-            })
     }
 
-    /**
-     * Unsubscribe from the notification service
-     */
-    ngOnDestroy(): void {
-        if (this.notificationSubscription) {
-            this.notificationSubscription.unsubscribe()
-        }
-    }
-
-    /**
-     * Clear all notifications
-     */
     clearAllNotifications(event: Event) {
         event.stopPropagation()
-        this.notificationService.reset()
-        this.notifications = []
+        this.store.dispatch(NotificationActions.resetNotifications())
     }
 
-    /**
-     * Get the number of notifications
-     * @returns Number of notifications
-     * */
-    count() {
-        return this.notifications.length
-    }
-
-    /**
-     * Delete a notification by its id
-     * @param id Id of the notification to delete
-     */
     deleteById(event: Event, id: string) {
         event.stopPropagation()
-        this.notificationService.deleteById(id)
+        this.store.dispatch(NotificationActions.deleteNotification({ id }))
     }
 }
