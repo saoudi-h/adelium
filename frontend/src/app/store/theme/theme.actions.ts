@@ -2,13 +2,6 @@ import { createAction, props } from '@ngrx/store'
 import { AppRoute, SystemTheme, ThemeChoice } from './theme.types'
 
 /**
- * Action to initialize the theme.
- * @example
- * // Initialize the theme
- * this.store.dispatch(initTheme())
- */
-export const initTheme = createAction('[Theme] Init Theme')
-/**
  * Sets the user theme choice.
  * @param choice The choice for the user theme.
  */

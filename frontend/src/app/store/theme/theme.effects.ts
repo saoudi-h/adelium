@@ -3,12 +3,12 @@ import { NavigationEnd, Router } from '@angular/router'
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects'
 import { Store } from '@ngrx/store'
 import { AppState } from '@reducers'
+import * as AppActions from '@store/app/app.actions'
 import { of } from 'rxjs'
 import { concatMap, filter, map, tap } from 'rxjs/operators'
 import * as themeActions from './theme.actions'
 import * as fromThemes from './theme.selectors'
 import { AppRoute, SystemTheme, ThemeChoice } from './theme.types'
-
 @Injectable()
 export class ThemeEffects {
     constructor(
@@ -20,7 +20,7 @@ export class ThemeEffects {
     // Effet pour initialiser le thème au démarrage de l'application
     initTheme$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(themeActions.initTheme),
+            ofType(AppActions.appInit),
             concatLatestFrom(() => [
                 this.store.select(fromThemes.selectUserThemeChoice),
                 this.store.select(fromThemes.selectSystemThemePreference),
