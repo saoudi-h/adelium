@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { initTheme } from '@store/theme/theme.actions'
+import { appInit } from '@store/app/app.actions'
 
 @Component({
     selector: 'app-root',
@@ -12,6 +12,6 @@ export class AppComponent implements OnInit {
     constructor(private store: Store) {}
 
     ngOnInit(): void {
-        this.store.dispatch(initTheme())
+        this.store.dispatch(appInit())
     }
 }
