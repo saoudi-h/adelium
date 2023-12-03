@@ -1,13 +1,12 @@
-import { createSelector } from '@ngrx/store'
-import { AppState } from '@reducers'
+import { createFeatureSelector, createSelector } from '@ngrx/store'
 import { NotificationState } from './notification.reducer'
 
 /**
- * Selects the notification state from the application state.
- * @param state - The application state.
- * @returns The notification state.
+ * Selects the notifications state from the store.
+ * @returns {MemoizedSelector<object, NotificationState>} The memoized selector function.
  */
-export const selectNotificationsState = (state: AppState) => state.notifications
+export const selectNotificationsState =
+    createFeatureSelector<NotificationState>('notifications')
 
 /**
  * Selects all notifications from the store.

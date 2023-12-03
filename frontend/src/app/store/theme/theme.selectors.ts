@@ -1,29 +1,51 @@
-import { createSelector } from '@ngrx/store'
-import { AppState } from '@reducers'
+import { createFeatureSelector, createSelector } from '@ngrx/store'
 import { ThemeState } from './theme.reducer'
 
-// Sélecteur pour accéder à l'état global du thème
-export const selectThemeState = (state: AppState) => state.theme
+/**
+ * Selects the theme state from the store.
+ * @returns {MemoizedSelector<object, ThemeState>} The memoized selector function.
+ */
+export const selectThemeState = createFeatureSelector<ThemeState>('theme')
 
-// Sélecteur pour obtenir le choix de thème actuel de l'utilisateur
+/**
+ * Selects the user theme choice from the theme state.
+ *
+ * @param state - The theme state.
+ * @returns The user theme choice.
+ */
 export const selectUserThemeChoice = createSelector(
     selectThemeState,
     (state: ThemeState) => state.userChoice
 )
 
-// Sélecteur pour obtenir la préférence de thème du système
+/**
+ * Selects the system theme preference from the theme state.
+ *
+ * @param state - The theme state.
+ * @returns The system theme preference.
+ */
 export const selectSystemThemePreference = createSelector(
     selectThemeState,
     (state: ThemeState) => state.systemPreference
 )
 
-// Sélecteur pour obtenir la route actuelle
+/**
+ * Selects the current route from the theme state.
+ *
+ * @param state - The theme state.
+ * @returns The current route.
+ */
 export const selectCurrentRoute = createSelector(
     selectThemeState,
     (state: ThemeState) => state.currentRoute
 )
 
-// Sélecteur pour obtenir le thème de DaisyUI actuellement actif
+/**
+ * Selects the Daisy UI theme from the theme state.
+ *
+ * @param state - The theme state.
+ * @returns The Daisy UI theme.
+ */
 export const selectDaisyUITheme = createSelector(
     selectThemeState,
     (state: ThemeState) => state.daisyUITheme
