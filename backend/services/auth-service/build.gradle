@@ -19,6 +19,7 @@ dependencies {
     implementation libs.springdoc.openapi.webmvc.ui
     implementation libs.spring.cloud.starter.openfeign
     implementation libs.mapstruct
+    implementation libs.javafaker
     annotationProcessor libs.mapstruct.processor
     annotationProcessor libs.mapstruct.lombok
     runtimeOnly libs.jjwt.impl
