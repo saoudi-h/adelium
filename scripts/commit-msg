@@ -3,7 +3,7 @@
 commit_msg_file=$1
 commit_msg=$(cat "$commit_msg_file")
 
-if [[ $commit_msg != "[front]"* && $commit_msg != "[back]"* && $commit_msg != "[docs]"* && $commit_msg != "[adelium]"* ]]; then
-	echo "Erreur : Le message de commit doit commencer par [front],[back] ou [adelium]."
+if [[ $commit_msg != "front:"* && $commit_msg != "back:"* && $commit_msg != "scripts:"* && $commit_msg != "docs:"* && $commit_msg != "adelium:"* ]]; then
+	echo "Erreur : Le message de commit doit commencer par front: , back: , scripts: , docs: ou adelium:"
 	exit 1
 fi
