@@ -38,7 +38,7 @@
         <!-- Table -->
         <div class="w-full overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="table table-zebra-zebra">
+                <table class="table">
                     <!-- thead  -->
                     <thead class="">
                         <tr>
@@ -106,37 +106,44 @@
                                     </td>
                                     <!-- Address -->
                                     <td>
-                                        <div class="flex flex-col">
-                                            <div>
-                                                {{
-                                                    user['address']
-                                                        .streetNumber +
-                                                        ' ' +
-                                                        user['address'].street
-                                                }}
-                                            </div>
+                                        @if (user.address) {
+                                            <div class="flex flex-col">
+                                                <div>
+                                                    {{
+                                                        user.address
+                                                            .streetNumber +
+                                                            ' ' +
+                                                            user['address']
+                                                                .street
+                                                    }}
+                                                </div>
 
-                                            @if (
-                                                user['address'].additionalInfo
-                                            ) {
+                                                @if (
+                                                    user['address']
+                                                        .additionalInfo
+                                                ) {
+                                                    <div>
+                                                        {{
+                                                            user['address']
+                                                                .additionalInfo
+                                                        }}
+                                                    </div>
+                                                }
                                                 <div>
                                                     {{
                                                         user['address']
-                                                            .additionalInfo
+                                                            .postalCode +
+                                                            ' ' +
+                                                            user['address'].city
                                                     }}
                                                 </div>
-                                            }
-                                            <div>
-                                                {{
-                                                    user['address'].postalCode +
-                                                        ' ' +
-                                                        user['address'].city
-                                                }}
+                                                <div>
+                                                    {{
+                                                        user['address'].country
+                                                    }}
+                                                </div>
                                             </div>
-                                            <div>
-                                                {{ user['address'].country }}
-                                            </div>
-                                        </div>
+                                        }
                                     </td>
                                     <!-- Autorisations -->
                                     <td>
@@ -160,7 +167,8 @@
                                     </td>
                                     <!-- Status -->
                                     <td>
-                                        <table class="table table-xs">
+                                        <table
+                                            class="table table-zebra-zebra table-xs">
                                             <tbody>
                                                 <tr>
                                                     <td>Compte non expiré :</td>
@@ -212,67 +220,99 @@
                                     </td>
                                     <!-- Securité-->
                                     <td>
-                                        <table class="table table-xs text-xs">
-                                            <tr>
-                                                <td>
-                                                    Nombre de temptatives échoué
-                                                    :&nbsp;
-                                                </td>
-                                                <td>
-                                                    {{
-                                                        user.failedLoginAttempts
-                                                    }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    Vérrouillé depuis :&nbsp;
-                                                </td>
-                                                <td>
-                                                    @if (user.lockTime) {
+                                        <table
+                                            class="table table-zebra-zebra table-xs">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        Nombre de temptatives
+                                                        échoué :&nbsp;
+                                                    </td>
+                                                    <td>
                                                         {{
-                                                            user.lockTime | date
+                                                            user.failedLoginAttempts
                                                         }}
-                                                    } @else {
-                                                        Non vérrouillé
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    Token de réinitialisation
-                                                    :&nbsp;
-                                                </td>
-                                                <td>
-                                                    @if (
-                                                        user.resetPasswordToken
-                                                    ) {
-                                                        {{
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Vérrouillé depuis
+                                                        :&nbsp;
+                                                    </td>
+                                                    <td>
+                                                        @if (user.lockTime) {
+                                                            {{
+                                                                user.lockTime
+                                                                    | date
+                                                            }}
+                                                        } @else {
+                                                            Non vérrouillé
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Token de
+                                                        réinitialisation :&nbsp;
+                                                    </td>
+                                                    <td>
+                                                        @if (
                                                             user.resetPasswordToken
-                                                        }}
-                                                    } @else {
-                                                        Non défini
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    Expiration du token de
-                                                    réinitialisation :&nbsp;
-                                                </td>
-                                                <td>
-                                                    @if (
-                                                        user.resetPasswordTokenExpiry
-                                                    ) {
-                                                        {{
+                                                        ) {
+                                                            {{
+                                                                user.resetPasswordToken
+                                                            }}
+                                                        } @else {
+                                                            Non défini
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Expiration du token de
+                                                        réinitialisation :&nbsp;
+                                                    </td>
+                                                    <td>
+                                                        @if (
                                                             user.resetPasswordTokenExpiry
-                                                                | date
+                                                        ) {
+                                                            {{
+                                                                user.resetPasswordTokenExpiry
+                                                                    | date
+                                                            }}
+                                                        } @else {
+                                                            Non défini
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <!-- Autres -->
+                                    <td>
+                                        <table
+                                            class="table-zebra-zbra table table-xs">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Créé le :&nbsp;</td>
+                                                    <td>
+                                                        {{
+                                                            user.createdAt
+                                                                | dateDistance
                                                         }}
-                                                    } @else {
-                                                        Non expiré
-                                                    }
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Modifié le :&nbsp;</td>
+                                                    <td>
+                                                        <!-- date en francais  -->
+                                                        {{
+                                                            user.updatedAt
+                                                                | dateDistance
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </td>
                                 </tr>
@@ -293,7 +333,7 @@
 
             <!-- Footer -->
             <div
-                class="grid gap-3 border-t border-gray-200 px-6 py-4 dark:border-gray-700 md:flex md:items-center md:justify-between">
+                class="grid gap-3 border-t border-base-300 px-6 py-4 md:flex md:items-center md:justify-between">
                 <div>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                         <span class="font-semibold">6</span>

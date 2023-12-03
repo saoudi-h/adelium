@@ -10,7 +10,7 @@ export interface User extends Base {
     phone: string
     authorities: Authority[]
     tokens: string[]
-    address: Address
+    address?: Address
     enabled: boolean
     verified: boolean
     failedLoginAttempts: number
