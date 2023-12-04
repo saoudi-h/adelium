@@ -46,5 +46,17 @@ export const notificationReducer = createReducer(
             ...state,
             notifications: [],
         })
+    ),
+    on(
+        NotificationActions.loadNotificationsSuccess,
+        (state, { notifications }): NotificationState => ({
+            notifications,
+        })
+    ),
+    on(
+        NotificationActions.loadNotificationsFailure,
+        (): NotificationState => ({
+            notifications: [],
+        })
     )
 )

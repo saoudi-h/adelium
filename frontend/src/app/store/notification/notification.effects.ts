@@ -29,7 +29,7 @@ export class NotificationEffects {
         return this.actions$.pipe(
             ofType(NotificationActions.loadNotifications, AppActions.appInit),
             switchMap(() => {
-                const storedData = sessionStorage.getItem('notificationHistory')
+                const storedData = localStorage.getItem('notificationHistory')
                 if (storedData) {
                     try {
                         const notifications = JSON.parse(storedData).map(
@@ -76,7 +76,7 @@ export class NotificationEffects {
             ),
             switchMap(([, notifications]) => {
                 try {
-                    sessionStorage.setItem(
+                    localStorage.setItem(
                         'notificationHistory',
                         JSON.stringify(notifications)
                     )
