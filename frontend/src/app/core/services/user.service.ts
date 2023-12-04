@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { User } from '@core/models/user.model'
+import { User } from '@core/entity/user.entity'
 import { environment } from 'src/environments/environment.development'
 import { RestService } from './rest.service'
 

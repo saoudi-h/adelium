@@ -1,4 +1,4 @@
-import { Base } from './base.model'
+import { BaseEntity } from './base.entity'
 
 /**
  * Page model
@@ -19,7 +19,7 @@ import { Base } from './base.model'
  * ```
  *
  */
-export interface Page<T extends Base> {
+export interface Page<T extends BaseEntity> {
     page: {
         size: number
         totalElements: number

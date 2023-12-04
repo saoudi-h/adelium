@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Directive } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
-import { Base } from '@core/models/base.model'
-import { Page } from '@core/models/page.model'
+import { BaseEntity } from '@core/entity/base.entity'
+import { Page } from '@core/entity/page.entity'
 import { RestService } from '@core/services/rest.service'
 import { EntityAttribute, TableData } from '@core/utility/types'
 import { EMPTY, Observable, catchError } from 'rxjs'
 
 @Directive()
-export abstract class BaseAdminPageComponent<T extends Base> {
+export abstract class BaseAdminPageComponent<T extends BaseEntity> {
     abstract title: string
     abstract name: string
     abstract attributes: EntityAttribute[]

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface Base {
-    id?: number
+export interface BaseEntity {
+    id: number
     [key: string]: any
 }

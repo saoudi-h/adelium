@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
-import { User } from '@core/models/user.model'
+import { User } from '@core/entity/user.entity'
 import { UserService } from '@core/services/user.service'
 import { EntityAttribute } from '@core/utility/types'
 import { BaseAdminPageComponent } from '@shared/directives/base-admin-page-component'
