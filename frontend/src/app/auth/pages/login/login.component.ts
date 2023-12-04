@@ -3,11 +3,10 @@ import { Component } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterLink } from '@angular/router'
 import { UserLogin } from '@core/dto/UserLogin'
-import { NotificationService } from '@core/services/notification.service'
+import { Store } from '@ngrx/store'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
-import { AuthService } from '../../services/auth.service'
+import * as AuthActions from '@store/auth/auth.actions'
 import { SvgLoginComponent } from './svg-login.component'
-
 @Component({
     selector: 'app-login',
     standalone: true,
@@ -37,38 +36,14 @@ export class LoginComponent {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService,
-        private notification: NotificationService
+        private store: Store
     ) {}
 
     onSubmit() {
         if (!this.loginForm.valid) return
+        console.log('loginComponent: onSubmit()')
+        console.log('loginForm.value : ', this.loginForm.value)
         const userLogin: UserLogin = this.loginForm.value as UserLogin
-        this.authService.login(userLogin).subscribe({
-            next: response => {
-                if (!response) {
-                    this.notification.error(
-                        'Une erreur est survenue lors de la connexion.',
-                        'Erreur de connexion',
-                        {
-                            dismissible: false,
-                        }
-                    )
-                    return
-                }
-                this.notification.success(
-                    'Vous êtes maintenant connecté.',
-                    'Bienvenue',
-                    {
-                        dismissible: true,
-                    }
-                )
-            },
-            error: error => {
-                this.notification.error(error.message, 'Erreur de connexion', {
-                    dismissible: true,
-                })
-            },
-        })
+        this.store.dispatch(AuthActions.login({ userLogin }))
     }
 }

@@ -6,8 +6,10 @@ import {
     HttpRequest,
 } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { AuthService } from '@auth/services/auth.service'
+import { Store } from '@ngrx/store'
+import * as AuthSelectors from '@store/auth/auth.selectors'
 import { Observable } from 'rxjs'
+import { first, mergeMap } from 'rxjs/operators'
 
 /**
  * Intercepts HTTP requests and adds an Authorization header with the access token if the user is logged in.
@@ -15,7 +17,7 @@ import { Observable } from 'rxjs'
  */
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
-    constructor(private authService: AuthService) {}
+    constructor(private store: Store) {}
 
     /**
      * intercept is called before the HTTP request is sent to the server.
@@ -30,19 +32,16 @@ export class RequestInterceptor implements HttpInterceptor {
         request: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
-        if (
-            this.authService.isLoggedIn() &&
-            !request.url.includes('/auth/refresh')
-        ) {
-            console.log(this.authService.getAccessToken())
-            const newRequest = request.clone({
-                headers: request.headers.set(
-                    'Authorization',
-                    `Bearer ${this.authService.getAccessToken()}`
-                ),
+        return this.store.select(AuthSelectors.selectAccessToken).pipe(
+            first(),
+            mergeMap(token => {
+                const authReq = token
+                    ? request.clone({
+                          setHeaders: { Authorization: 'Bearer ' + token },
+                      })
+                    : request
+                return next.handle(authReq)
             })
-            return next.handle(newRequest)
-        }
-        return next.handle(request)
+        )
     }
 }

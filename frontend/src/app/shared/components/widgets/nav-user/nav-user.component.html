@@ -1,87 +1,105 @@
-@if (user !== null) {
-    <app-dropdown>
-        <label
-            dropdown-button
-            (click)="dropdown.toggleDropdown()"
-            (keydown.enter)="dropdown.toggleDropdown()"
-            for=""
-            tabindex="0"
-            class="avatar btn btn-circle btn-ghost">
-            <div class="w-10 rounded-full">
-                <img
-                    [src]="
-                        user.avatar
-                            ? user.avatar
-                            : 'https://gravatar.com/avatar/205e460b479e2?d=wavatar'
-                    "
-                    alt="profile image" />
-            </div>
-        </label>
-        <ul
-            dropdown-content
-            tabindex="0"
-            class="menu menu-sm mt-4 w-52 rounded-2xl bg-base-300 p-2 shadow">
-            <li class="menu-title rounded-xl bg-base-200 text-base-content">
-                <span>
-                    {{ user.firstname | capitalize }}
-                    {{ user.lastname | uppercase }}
-                </span>
-                <span class="text-xs font-light"> {{ user.sub }} </span>
-            </li>
-            @for (item of dropdownItems; track item) {
-                @if (
-                    !item.adminOnly ||
-                    (item.adminOnly && isAdmin() && currentUrl !== '/admin')
-                ) {
-                    <li>
-                        @if (item.isButton) {
-                            <button
-                                (click)="item.action()"
-                                class="justify-between">
-                                @switch (item.id) {
-                                    @case ('admin') {
-                                        <div admin-icon class="h-5 w-5"></div>
+@if (user$ | async; as user) {
+    @if (user !== null) {
+        <app-dropdown>
+            <label
+                dropdown-button
+                (click)="dropdown.toggleDropdown()"
+                (keydown.enter)="dropdown.toggleDropdown()"
+                for=""
+                tabindex="0"
+                class="avatar btn btn-circle btn-ghost">
+                <div class="w-10 rounded-full">
+                    <img
+                        [src]="
+                            user.avatar
+                                ? user.avatar
+                                : 'https://gravatar.com/avatar/205e460b479e2?d=wavatar'
+                        "
+                        alt="profile image" />
+                </div>
+            </label>
+            <ul
+                dropdown-content
+                tabindex="0"
+                class="menu menu-sm mt-4 w-52 rounded-2xl bg-base-300 p-2 shadow">
+                <li class="menu-title rounded-xl bg-base-200 text-base-content">
+                    <span>
+                        {{ user.firstname | capitalize }}
+                        {{ user.lastname | uppercase }}
+                    </span>
+                    <span class="text-xs font-light"> {{ user.sub }} </span>
+                </li>
+                @for (item of dropdownItems; track item) {
+                    @if (
+                        !item.adminOnly ||
+                        (item.adminOnly &&
+                            (isAdmin$ | async) &&
+                            currentUrl !== '/admin')
+                    ) {
+                        <li>
+                            @if (item.isButton) {
+                                <button
+                                    (click)="item.action()"
+                                    class="justify-between">
+                                    @switch (item.id) {
+                                        @case ('admin') {
+                                            <div
+                                                admin-icon
+                                                class="h-5 w-5"></div>
+                                        }
+                                        @case ('logout') {
+                                            <div
+                                                logout-icon
+                                                class="h-5 w-5"></div>
+                                        }
+                                        @case ('profile') {
+                                            <div
+                                                profile-icon
+                                                class="h-5 w-5"></div>
+                                        }
+                                        @case ('settings') {
+                                            <div
+                                                settings-icon
+                                                class="h-5 w-5"></div>
+                                        }
                                     }
-                                    @case ('logout') {
-                                        <div logout-icon class="h-5 w-5"></div>
+                                    <span> {{ item.text }} </span>
+                                </button>
+                            } @else {
+                                <a
+                                    [routerLink]="item.link"
+                                    class="justify-between">
+                                    @switch (item.id) {
+                                        @case ('admin') {
+                                            <div
+                                                admin-icon
+                                                class="h-5 w-5"></div>
+                                        }
+                                        @case ('logout') {
+                                            <div
+                                                logout-icon
+                                                class="h-5 w-5"></div>
+                                        }
+                                        @case ('profile') {
+                                            <div
+                                                profile-icon
+                                                class="h-5 w-5"></div>
+                                        }
+                                        @case ('settings') {
+                                            <div
+                                                settings-icon
+                                                class="h-5 w-5"></div>
+                                        }
                                     }
-                                    @case ('profile') {
-                                        <div profile-icon class="h-5 w-5"></div>
-                                    }
-                                    @case ('settings') {
-                                        <div
-                                            settings-icon
-                                            class="h-5 w-5"></div>
-                                    }
-                                }
-                                <span> {{ item.text }} </span>
-                            </button>
-                        } @else {
-                            <a [routerLink]="item.link" class="justify-between">
-                                @switch (item.id) {
-                                    @case ('admin') {
-                                        <div admin-icon class="h-5 w-5"></div>
-                                    }
-                                    @case ('logout') {
-                                        <div logout-icon class="h-5 w-5"></div>
-                                    }
-                                    @case ('profile') {
-                                        <div profile-icon class="h-5 w-5"></div>
-                                    }
-                                    @case ('settings') {
-                                        <div
-                                            settings-icon
-                                            class="h-5 w-5"></div>
-                                    }
-                                }
-                                <span> {{ item.text }} </span>
-                            </a>
-                        }
-                    </li>
+                                    <span> {{ item.text }} </span>
+                                </a>
+                            }
+                        </li>
+                    }
                 }
-            }
-        </ul>
-    </app-dropdown>
+            </ul>
+        </app-dropdown>
+    }
 } @else {
     <a
         class="btn btn-ghost -md:btn-square"

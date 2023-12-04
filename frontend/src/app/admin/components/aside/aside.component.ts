@@ -1,12 +1,14 @@
+import * as AuthSelectors from '@/store/auth/auth.selectors'
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
 import { IconService } from '@core/services/icon.service'
+import { Store } from '@ngrx/store'
 import { LogoWidgetComponent } from '@shared/components/widgets/logo/logo.component'
 import { SearchWidgetComponent } from '@shared/components/widgets/search/search.component'
 import { ThemeSwitcherWidgetComponent } from '@shared/components/widgets/theme-switcher/theme-switcher.component'
-
+import { Observable } from 'rxjs'
 @Component({
     standalone: true,
     selector: 'app-aside',
@@ -47,7 +49,10 @@ import { ThemeSwitcherWidgetComponent } from '@shared/components/widgets/theme-s
             <ul class="menu menu-xs w-full">
                 <!-- aside body -->
                 @for (item of menuItems; track item) {
-                    @if (!item.adminOnly || (item.adminOnly && isAdmin())) {
+                    @if (
+                        !item.adminOnly ||
+                        (item.adminOnly && (isAdmin$ | async))
+                    ) {
                         <li>
                             @if (item.isButton) {
                                 <button
@@ -82,18 +87,19 @@ import { ThemeSwitcherWidgetComponent } from '@shared/components/widgets/theme-s
     `,
 })
 export class AsideComponent {
+    isAdmin$: Observable<boolean>
+
     constructor(
         private iconService: IconService,
+        private store: Store,
         private authSerivce: AuthService
-    ) {}
+    ) {
+        this.isAdmin$ = this.store.select(AuthSelectors.selectIsAdmin)
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getIconComponent(iconName: string): any {
         return this.iconService.getIconComponent(iconName)
-    }
-
-    isAdmin() {
-        return this.authSerivce.isAdmin()
     }
 
     menuItems = [

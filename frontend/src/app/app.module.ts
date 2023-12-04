@@ -11,6 +11,8 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store'
 import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { CustomToastComponent } from '@shared/components/widgets/notificator/custom-toast.component'
+import { AuthEffects } from '@store/auth/auth.effects'
+import { NotificationEffects } from '@store/notification/notification.effects'
 import { ThemeEffects } from '@store/theme/theme.effects'
 import { ToastrModule } from 'ngx-toastr'
 import { AdminModule } from './admin/admin.module'
@@ -39,7 +41,12 @@ import { metaReducers, reducers } from './reducers'
             registrationStrategy: 'registerWhenStable:30000',
         }),
         StoreRouterConnectingModule.forRoot(),
-        EffectsModule.forRoot([AppEffects, ThemeEffects]),
+        EffectsModule.forRoot([
+            AppEffects,
+            ThemeEffects,
+            NotificationEffects,
+            AuthEffects,
+        ]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         StoreModule.forRoot(reducers, { metaReducers }),
         StoreDevtoolsModule.instrument({ logOnly: isDevMode() }),

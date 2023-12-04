@@ -3,13 +3,15 @@ import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
 import { UserToken } from '@core/dto/UserToken'
+import { Store } from '@ngrx/store'
 import { AdminIconComponent } from '@shared/components/icons/admin-icon.component'
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component'
 import { ProfileIconComponent } from '@shared/components/icons/profile.component'
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
 import { SharedModule } from '@shared/shared.module'
-
+import * as AuthSelectors from '@store/auth/auth.selectors'
+import { Observable } from 'rxjs'
 @Component({
     selector: '[nav-user-widget]',
     standalone: true,
@@ -58,17 +60,19 @@ export class NavUserWidgetComponent implements OnInit {
     ]
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent
 
-    public user: UserToken | null = null
+    public user$: Observable<UserToken | null>
+    public isAdmin$: Observable<boolean>
 
     constructor(
-        private authService: AuthService,
-        private router: Router
-    ) {}
+        private store: Store,
+        private router: Router,
+        private authService: AuthService
+    ) {
+        this.user$ = this.store.select(AuthSelectors.selectCurrentUser)
+        this.isAdmin$ = this.store.select(AuthSelectors.selectIsAdmin)
+    }
 
     ngOnInit() {
-        this.authService.user$.subscribe(user => {
-            this.user = user
-        })
         this.router.events.subscribe(() => {
             this.currentUrl = this.router.url
         })
@@ -76,9 +80,5 @@ export class NavUserWidgetComponent implements OnInit {
 
     logout() {
         this.authService.logout()
-    }
-
-    isAdmin() {
-        return this.authService.isAdmin()
     }
 }
