@@ -1,201 +1,91 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { Token } from '@core/dto/Token'
 import { UserLogin } from '@core/dto/UserLogin'
 import { UserRegister } from '@core/dto/UserRegister'
-import { UserToken } from '@core/dto/UserToken'
-import { Role } from '@core/utility/types'
-import {
-    BehaviorSubject,
-    Observable,
-    catchError,
-    of,
-    tap,
-    throwError,
-} from 'rxjs'
+import { Store } from '@ngrx/store'
+import * as AuthActions from '@store/auth/auth.actions'
+import { Observable, catchError, switchMap, throwError } from 'rxjs'
 import { environment } from 'src/environments/environment.development'
-
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     private url = `${environment.baseUrl}/api/v1/auth`
-    private token: Token | null = null
-    private _user: UserToken | null = null
-    public get user(): UserToken | null {
-        return this._user
-    }
-    public set user(value: UserToken | null) {
-        this._user = value
-    }
-    private redirectUrl: string | null = null
-
-    /**
-     * IsLoggedIn subject
-     * */
-    private isLoggedInSubject: BehaviorSubject<boolean> =
-        new BehaviorSubject<boolean>(false)
-    public isLoggedIn$: Observable<boolean> =
-        this.isLoggedInSubject.asObservable()
-
-    /**
-     * User subject
-     * */
-    private userSubject: BehaviorSubject<UserToken | null> =
-        new BehaviorSubject<UserToken | null>(null)
-    public user$: Observable<UserToken | null> = this.userSubject.asObservable()
-
     constructor(
         private httpClient: HttpClient,
-        private router: Router
-    ) {
-        this.token = this.getToken()
-        if (this.isLoggedInSubject.value) this.updateUser()
-    }
+        private router: Router,
+        private store: Store
+    ) {}
 
-    private updateUser(): void {
-        this._user = this.getUserFromToken()
-        this.userSubject.next(this._user)
-        if (this.hasTokenExpired()) {
-            this.refresh()
-        }
-    }
+    // public get isLoggedIn(): boolean {
+    //     return this.authState.isLoggedIn
+    // }
 
-    private getUserFromToken(): UserToken | null {
-        if (!this.isLoggedIn()) return null
-        const accessToken = this.getAccessToken()
-        if (!accessToken) return null
-        const userData = JSON.parse(
-            atob(accessToken.split('.')[1])
-        ) as UserToken
-        return userData
-    }
-    getAccessToken() {
-        return localStorage.getItem('accessToken')
-    }
-    getRefreshToken() {
-        return localStorage.getItem('refreshToken')
-    }
-    getToken(): Token | null {
-        const accessToken = this.getAccessToken()
-        const refreshToken = this.getRefreshToken()
+    // public get isAdmin(): boolean {
+    //     return this.authState.user?.authorities.includes('ROLE_ADMIN') ?? false
+    // }
 
-        if (!accessToken || !refreshToken) {
-            this.isLoggedInSubject.next(false)
-            return null
-        }
-        this.isLoggedInSubject.next(true)
-        this.updateUser()
-        return { accessToken, refreshToken }
-    }
+    // public get currentUser(): UserToken | null {
+    //     return this.authState.user
+    // }
 
-    hasTokenExpired(): boolean {
-        this.withAuth()
-        return this.user!.exp < Date.now() / 1000
-    }
+    // public get accessToken(): string | null {
+    //     return this.authState.token?.accessToken ?? null
+    // }
+    // public get refreshToken(): string | null {
+    //     return this.authState.token?.refreshToken ?? null
+    // }
 
-    isAdmin(): boolean {
-        this.withAuth()
-        return this.user!.authorities.includes(Role.ADMIN)
-    }
-
-    setToken(token: Token) {
-        this.isLoggedInSubject.next(true)
-        localStorage.setItem('refreshToken', token.refreshToken)
-        localStorage.setItem('accessToken', token.accessToken)
-    }
-
-    isLoggedIn(): boolean {
-        return this.isLoggedInSubject.getValue()
-    }
-    register(userRegister: UserRegister): Observable<Token | null> {
-        if (this.isLoggedIn()) {
-            // observable vide
-            return of(null)
-        }
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                accept: 'application/json',
-            }),
-        }
-        const request = this.httpClient.post<Token>(
-            `${this.url}/register`,
-            userRegister,
-            httpOptions
-        )
-
-        return request.pipe(
-            tap(token => {
-                this.handleLoginSucess(token)
+    login(userLogin: UserLogin): Observable<Token> {
+        return this.httpClient.post<Token>(`${this.url}/login`, userLogin).pipe(
+            switchMap(token => {
+                if (token) {
+                    this.store.dispatch(AuthActions.loginSuccess({ token }))
+                    return [token]
+                } else {
+                    this.store.dispatch(
+                        AuthActions.loginFailure({ error: 'No token received' })
+                    )
+                    return throwError(() => new Error('No token received'))
+                }
             }),
             catchError(error => {
-                // Propager l'erreur au lieu de la remplacer
-                return throwError(() => error)
+                this.store.dispatch(AuthActions.loginFailure({ error }))
+                return throwError(() => new Error('La connexion a échoué'))
             })
         )
     }
 
-    login(userLogin: UserLogin): Observable<Token | null> {
-        if (this.isLoggedIn()) {
-            // observable vide
-            return of(null)
-        }
-
-        const request = this.httpClient.post<Token>(
-            `${this.url}/login`,
-            userLogin
-        )
-
-        return request.pipe(
-            tap(token => {
-                this.handleLoginSucess(token)
-            }),
-            catchError(error => {
-                throw new Error('La connexion a échoué : ', error)
-            })
-        )
+    logout(): void {
+        this.store.dispatch(AuthActions.logout())
     }
 
-    refresh() {
-        this.withAuth()
-        return this.httpClient.get<Token>(`${this.url}/refresh`, {
-            headers: { Authorization: `Bearer ${this.getRefreshToken()}` },
-        })
-    }
-
-    logout() {
-        this.token = null
-        this.user = null
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        this.userSubject.next(null)
-        this.isLoggedInSubject.next(false)
-        this.router.navigate(['/'])
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    validateRoles(roles: Role, _method = 'any') {
-        return false
-    }
-
-    withAuth() {
-        if (!this.isLoggedIn())
-            throw new Error(
-                'The method should not be called on an unauthenticated user.'
+    register(userRegister: UserRegister): Observable<Token> {
+        return this.httpClient
+            .post<Token>(`${this.url}/register`, userRegister)
+            .pipe(
+                switchMap(token => {
+                    if (token) {
+                        this.store.dispatch(
+                            AuthActions.registerSuccess({ token })
+                        )
+                        return [token]
+                    } else {
+                        // Dispatcher l'échec de l'inscription et émettre une erreur
+                        this.store.dispatch(
+                            AuthActions.registerFailure({
+                                error: 'No token received',
+                            })
+                        )
+                        return throwError(() => new Error('No token received'))
+                    }
+                }),
+                catchError(error => {
+                    this.store.dispatch(AuthActions.registerFailure({ error }))
+                    return throwError(() => new Error("L'inscription a échoué"))
+                })
             )
-    }
-
-    handleLoginSucess(token: Token): void {
-        this.setToken(token)
-        this.updateUser()
-
-        if (this.redirectUrl) {
-            this.router.navigate([this.redirectUrl])
-            this.redirectUrl = null
-        } else {
-            this.router.navigate(['/'])
-        }
     }
 }
