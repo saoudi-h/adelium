@@ -19,8 +19,6 @@ export abstract class RestService<T extends Base> {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getPage(params?: any): Observable<Page<T>> {
-        console.log('url : ', this.url)
-        console.log('get page : ', params)
         return this.http.get<Page<T>>(this.url, { params })
     }
 
