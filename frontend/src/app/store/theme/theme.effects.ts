@@ -7,7 +7,7 @@ import * as AppActions from '@store/app/app.actions'
 import { of } from 'rxjs'
 import { concatMap, filter, map, tap } from 'rxjs/operators'
 import * as themeActions from './theme.actions'
-import * as fromThemes from './theme.selectors'
+import * as ThemeSelectors from './theme.selectors'
 import { AppRoute, SystemTheme, ThemeChoice } from './theme.types'
 @Injectable()
 export class ThemeEffects {
@@ -22,20 +22,13 @@ export class ThemeEffects {
         return this.actions$.pipe(
             ofType(AppActions.appInit),
             concatLatestFrom(() => [
-                this.store.select(fromThemes.selectUserThemeChoice),
-                this.store.select(fromThemes.selectSystemThemePreference),
+                this.store.select(ThemeSelectors.selectUserThemeChoice),
+                this.store.select(ThemeSelectors.selectSystemThemePreference),
 
-                // this.store.select(fromThemes.selectUserThemeChoice),
-                // this.store.select(fromThemes.selectSystemThemePreference),
+                // this.store.select(ThemeSelectors.selectUserThemeChoice),
+                // this.store.select(ThemeSelectors.selectSystemThemePreference),
             ]),
             concatMap(([, userChoice, systemPreference]) => {
-                console.log(
-                    '\ninitTheme$ :\n',
-                    'userChoice : ',
-                    userChoice,
-                    '\nsystemPreference : ',
-                    systemPreference
-                )
                 const storedThemeChoice =
                     (localStorage.getItem(
                         'user-theme-choice'
@@ -45,14 +38,6 @@ export class ThemeEffects {
                         ? SystemTheme.Dark
                         : SystemTheme.Light) || systemPreference
 
-                console.log(
-                    'initTheme$ :\n',
-                    'storedThemeChoice : ',
-                    storedThemeChoice,
-                    '\nstoredSystemPreference : ',
-                    storedSystemPreference
-                )
-                console.log(storedThemeChoice)
                 return of(
                     themeActions.setSystemThemePreference({
                         preference: storedSystemPreference,
@@ -68,7 +53,6 @@ export class ThemeEffects {
     // Effet pour sauvegarder le choix du thème dans le localStorage
     saveThemeChoiceToLocalStorage$ = createEffect(
         () => {
-            console.log('ThemeEffects.saveThemeChoiceToLocalStorage$')
             return this.actions$.pipe(
                 ofType(themeActions.setUserThemeChoice),
                 tap(action =>
@@ -81,23 +65,16 @@ export class ThemeEffects {
 
     updateDaisyUITheme$ = createEffect(
         () => {
-            console.log('ThemeEffects.updateDaisyUITheme$')
             return this.actions$.pipe(
                 ofType(themeActions.setUserThemeChoice),
                 concatLatestFrom(() => [
-                    this.store.select(fromThemes.selectUserThemeChoice),
-                    this.store.select(fromThemes.selectSystemThemePreference),
-                    this.store.select(fromThemes.selectCurrentRoute),
+                    this.store.select(ThemeSelectors.selectUserThemeChoice),
+                    this.store.select(
+                        ThemeSelectors.selectSystemThemePreference
+                    ),
+                    this.store.select(ThemeSelectors.selectCurrentRoute),
                 ]),
                 tap(([, userChoice, systemPreference, currentRoute]) => {
-                    console.log(
-                        '\nuserChoice : ',
-                        userChoice,
-                        '\nsystemPreference : ',
-                        systemPreference,
-                        '\ncurrentRoute : ',
-                        currentRoute
-                    )
                     const resolvedTheme = this.resolveDaisyUITheme(
                         userChoice,
                         systemPreference,
@@ -128,7 +105,6 @@ export class ThemeEffects {
 
     // Effet pour ajuster le thème en fonction de la route
     adjustThemeForRoute$ = createEffect(() => {
-        console.log('ThemeEffects.adjustThemeForRoute$')
         return this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(event => {
