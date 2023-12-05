@@ -1,4 +1,4 @@
-import { BaseEntity } from './base.entity'
+import { Identifiable } from './identifiable.interface'
 
 /**
  * Page model
@@ -19,7 +19,7 @@ import { BaseEntity } from './base.entity'
  * ```
  *
  */
-export interface Page<T extends BaseEntity> {
+export interface Page<T extends Identifiable> {
     page: {
         size: number
         totalElements: number

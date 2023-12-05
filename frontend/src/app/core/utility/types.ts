@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ValidatorFn } from '@angular/forms'
-import { BaseEntity } from '@core/entity/base.entity'
+import { Identifiable } from '@core/entity/identifiable.interface'
 import { Observable } from 'rxjs'
 
 /**
@@ -88,7 +88,7 @@ export interface TableSelect {
  * @param attributes: EntityAttribute[]
  * @param value?: T
  */
-export interface DialogData<T extends BaseEntity> {
+export interface DialogData<T extends Identifiable> {
     name: string
     attributes: EntityAttribute[]
     value?: T

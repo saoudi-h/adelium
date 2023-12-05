@@ -1,8 +1,8 @@
 import { Address } from './address.entity'
 import { Authority } from './authority.entity'
-import { BaseEntity } from './base.entity'
+import { Identifiable } from './identifiable.interface'
 
-export interface User extends BaseEntity {
+export interface User extends Identifiable {
     firstname: string
     lastname: string
     username: string
@@ -11,6 +11,7 @@ export interface User extends BaseEntity {
     authorities: Authority[]
     tokens: string[]
     address?: Address
+    avatar?: string
     enabled: boolean
     verified: boolean
     failedLoginAttempts: number

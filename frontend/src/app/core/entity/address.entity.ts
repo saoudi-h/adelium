@@ -1,6 +1,6 @@
-import { BaseEntity } from './base.entity'
+import { Identifiable } from './identifiable.interface'
 
-export interface Address extends BaseEntity {
+export interface Address extends Identifiable {
     streetNumber: number
     street: string
     additionalInfo?: string

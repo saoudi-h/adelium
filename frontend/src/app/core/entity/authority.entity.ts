@@ -1,5 +1,5 @@
-import { BaseEntity } from './base.entity'
+import { Identifiable } from './identifiable.interface'
 
-export interface Authority extends BaseEntity {
+export interface Authority extends Identifiable {
     authority: string
 }
