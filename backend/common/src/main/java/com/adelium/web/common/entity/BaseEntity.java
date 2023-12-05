@@ -1,10 +1,7 @@
 /* (C)2023 */
 package com.adelium.web.common.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
