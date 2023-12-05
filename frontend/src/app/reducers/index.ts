@@ -5,18 +5,21 @@ import {
     notificationReducer,
 } from '@store/notification/notification.reducer'
 import { ThemeState, themeReducer } from '@store/theme/theme.reducer'
+import { UserState, userReducer } from '@store/user/user.reducer'
 import { AuthState, authReducer } from './../store/auth/auth.reducer'
 
 export interface AppState {
     theme: ThemeState
     notifications: NotificationState
     auth: AuthState
+    users: UserState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
     theme: themeReducer,
     notifications: notificationReducer,
     auth: authReducer,
+    users: userReducer,
 }
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : []

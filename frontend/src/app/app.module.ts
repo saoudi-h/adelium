@@ -14,6 +14,7 @@ import { CustomToastComponent } from '@shared/components/widgets/notificator/cus
 import { AuthEffects } from '@store/auth/auth.effects'
 import { NotificationEffects } from '@store/notification/notification.effects'
 import { ThemeEffects } from '@store/theme/theme.effects'
+import { UserEffects } from '@store/user/user.effects'
 import { ToastrModule } from 'ngx-toastr'
 import { AdminModule } from './admin/admin.module'
 import { AppRoutingModule } from './app-routing.module'
@@ -46,6 +47,7 @@ import { metaReducers, reducers } from './reducers'
             ThemeEffects,
             NotificationEffects,
             AuthEffects,
+            UserEffects,
         ]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         StoreModule.forRoot(reducers, { metaReducers }),
