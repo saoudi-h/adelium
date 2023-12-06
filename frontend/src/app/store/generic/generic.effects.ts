@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
-import { of } from 'rxjs'
-import { catchError, map, mergeMap } from 'rxjs/operators'
+import * as PaginationActions from '@store/pagination/pagination.actions'
+import { from, of } from 'rxjs'
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators'
 import { EntityActions } from './generic.actions'
 import { GenericService } from './generic.service'
-
 /**
  * Effects class for handling generic actions related to a specific type.
  * @template T - The type of the items being handled.
@@ -51,10 +51,15 @@ export abstract class GenericEffects<T extends Identifiable> {
             mergeMap(() => {
                 console.log('get items')
                 return this.genericService.getAll().pipe(
-                    map(page =>
-                        this.entityActions.getItemsSuccess({
-                            items: page._embedded[this.entityType],
-                        })
+                    switchMap(response =>
+                        from([
+                            this.entityActions.getPageSuccess({
+                                page: response,
+                            }),
+                            PaginationActions.loadPageSuccess({
+                                paginationInfo: response.page,
+                            }),
+                        ])
                     ),
                     catchError(error =>
                         of(this.entityActions.getItemsFailure({ error }))
@@ -73,11 +78,15 @@ export abstract class GenericEffects<T extends Identifiable> {
             ofType(this.entityActions.getPage),
             mergeMap(({ page, size }) =>
                 this.genericService.getPage(page, size).pipe(
-                    map(response =>
-                        this.entityActions.getPageSuccess({
-                            items: response.items,
-                            total: response.total,
-                        })
+                    switchMap(response =>
+                        from([
+                            this.entityActions.getPageSuccess({
+                                page: response,
+                            }),
+                            PaginationActions.loadPageSuccess({
+                                paginationInfo: response.page,
+                            }),
+                        ])
                     ),
                     catchError(error =>
                         of(this.entityActions.getPageFailure({ error }))

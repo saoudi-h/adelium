@@ -1,4 +1,5 @@
 import { Identifiable } from '@core/entity/identifiable.interface'
+import { Page } from '@core/entity/page.entity'
 import { createAction, props } from '@ngrx/store'
 
 export function createEntityActions<T extends Identifiable>(
@@ -20,7 +21,7 @@ export function createEntityActions<T extends Identifiable>(
         getItems: createAction(`[${entityType}] Get Items`),
         getItemsSuccess: createAction(
             `[${entityType}] Get Items Success`,
-            props<{ items: T[] }>()
+            props<{ page: Page<T> }>()
         ),
         getItemsFailure: createAction(
             `[${entityType}] Get Items Failure`,
@@ -32,7 +33,7 @@ export function createEntityActions<T extends Identifiable>(
         ),
         getPageSuccess: createAction(
             `[${entityType}] Get Page Success`,
-            props<{ items: T[]; total: number }>()
+            props<{ page: Page<T> }>()
         ),
         getPageFailure: createAction(
             `[${entityType}] Get Page Failure`,

@@ -41,11 +41,8 @@ export abstract class GenericService<T extends Identifiable> {
         return this.http.request('delete', `${this.apiUrl}`, { body: ids })
     }
 
-    getPage(
-        page: number,
-        size: number
-    ): Observable<{ items: T[]; total: number }> {
-        return this.http.get<{ items: T[]; total: number }>(
+    getPage(page: number, size: number): Observable<Page<T>> {
+        return this.http.get<Page<T>>(
             `${this.apiUrl}?page=${page}&size=${size}`
         )
     }

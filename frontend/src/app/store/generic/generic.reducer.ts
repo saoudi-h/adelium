@@ -12,7 +12,8 @@ export interface ExtendedState<T extends Identifiable> extends EntityState<T> {
 export function createGenericReducer<T extends Identifiable>(
     adapter: EntityAdapter<T>,
     initialState: ExtendedState<T>,
-    actions: EntityActions<T>
+    actions: EntityActions<T>,
+    entityType: string
 ): ActionReducer<ExtendedState<T>, Action> {
     return createReducer(
         initialState,
@@ -25,9 +26,10 @@ export function createGenericReducer<T extends Identifiable>(
         on(actions.deleteItemSuccess, (state, { id }) =>
             adapter.removeOne(id, state)
         ),
-        on(actions.getItemsSuccess, (state, { items }) =>
-            adapter.setAll(items, state)
-        ),
+        on(actions.getItemsSuccess, (state, { page }) => {
+            const items = page._embedded[entityType]
+            return adapter.setAll(items, { ...state, isLoading: false })
+        }),
         on(actions.getItemsFailure, (state, { error }): ExtendedState<T> => {
             return { ...state, error }
         }),
@@ -43,8 +45,9 @@ export function createGenericReducer<T extends Identifiable>(
             return adapter.removeMany(ids, state)
         }),
 
-        on(actions.getPageSuccess, (state, { items, total }) => {
-            return adapter.setAll(items, { ...state, total })
+        on(actions.getPageSuccess, (state, { page }) => {
+            const items = page._embedded[entityType] // Adaptez selon la clé de votre objet Page
+            return adapter.setAll(items, { ...state, isLoading: false })
         })
     )
 }
