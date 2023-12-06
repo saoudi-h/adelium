@@ -16,5 +16,6 @@ export const initialState: UserState = userAdapter.getInitialState({
 export const userReducer = createGenericReducer<User>(
     userAdapter,
     initialState,
-    UserActions
+    UserActions,
+    'users'
 )
