@@ -13,6 +13,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { CustomToastComponent } from '@shared/components/widgets/notificator/custom-toast.component'
 import { AuthEffects } from '@store/auth/auth.effects'
 import { NotificationEffects } from '@store/notification/notification.effects'
+import { PaginationEffects } from '@store/pagination/pagination.effects'
 import { ThemeEffects } from '@store/theme/theme.effects'
 import { UserEffects } from '@store/user/user.effects'
 import { ToastrModule } from 'ngx-toastr'
@@ -48,6 +49,7 @@ import { metaReducers, reducers } from './reducers'
             NotificationEffects,
             AuthEffects,
             UserEffects,
+            PaginationEffects,
         ]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         StoreModule.forRoot(reducers, { metaReducers }),
