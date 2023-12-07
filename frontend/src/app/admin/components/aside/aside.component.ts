@@ -1,7 +1,15 @@
 import * as AuthSelectors from '@/store/auth/auth.selectors'
+import {
+    animate,
+    query,
+    stagger,
+    style,
+    transition,
+    trigger,
+} from '@angular/animations'
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
-import { RouterLink } from '@angular/router'
+import { RouterLink, RouterLinkActive } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
 import { IconService } from '@core/services/icon.service'
 import { Store } from '@ngrx/store'
@@ -19,6 +27,7 @@ import { Observable } from 'rxjs'
         ThemeSwitcherWidgetComponent,
         SearchWidgetComponent,
         RouterLink,
+        RouterLinkActive,
     ],
     template: `
         <aside
@@ -46,14 +55,14 @@ import { Observable } from 'rxjs'
                     <div search-widget [alwaysOpen]="true" width="19rem"></div>
                 </div>
             </div>
-            <ul class="menu menu-xs w-full">
+            <ul class="menu menu-xs w-full" [@listAnimation]>
                 <!-- aside body -->
                 @for (item of menuItems; track item) {
                     @if (
                         !item.adminOnly ||
                         (item.adminOnly && (isAdmin$ | async))
                     ) {
-                        <li>
+                        <li class="">
                             @if (item.isButton) {
                                 <button
                                     (click)="item.action()"
@@ -69,6 +78,7 @@ import { Observable } from 'rxjs'
                             } @else {
                                 <a
                                     [routerLink]="item.link"
+                                    routerLinkActive="active"
                                     class="justify-between">
                                     <div class="h-9 w-9 p-2">
                                         <ng-container
@@ -85,6 +95,27 @@ import { Observable } from 'rxjs'
             </ul>
         </aside>
     `,
+    animations: [
+        trigger('listAnimation', [
+            transition('* => *', [
+                query(
+                    'li',
+                    style({ opacity: 0, transform: 'translateY(-200px)' }),
+                    { optional: true }
+                ),
+                query(
+                    'li',
+                    stagger('50ms', [
+                        animate(
+                            '300ms ease-out',
+                            style({ opacity: 1, transform: 'none' })
+                        ),
+                    ]),
+                    { optional: true }
+                ),
+            ]),
+        ]),
+    ],
 })
 export class AsideComponent {
     isAdmin$: Observable<boolean>
