@@ -33,11 +33,11 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     private static final String[] ADMIN_URL = {
-        "/users/**", "/roles/**", "/authorities/**", "/authorisations/**",
+        "/roles/**", "/authorities/**", "/authorisations/**",
     };
 
     private static final String[] AUTH_URL = {
-        "/logout", "/refresh",
+        "/logout", "/refresh", "/users/**",
     };
 
     private static final String[] WHITE_LIST_URL = {
