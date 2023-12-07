@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
-import { MatDialog } from '@angular/material/dialog'
+import { Component } from '@angular/core'
 import { User } from '@core/entity/user.entity'
-import { UserService } from '@core/services/user.service'
-import { EntityAttribute } from '@core/utility/types'
-import { BaseAdminPageComponent } from '@shared/directives/base-admin-page-component'
+import { ModalService } from '@core/services/modal.service'
+import { Store } from '@ngrx/store'
+import { AppState } from '@reducers'
 import { SharedModule } from '@shared/shared.module'
+import { Pagination } from '@store/pagination/pagination.reducer'
+import * as PaginationSelectors from '@store/pagination/pagination.selectors'
+import { UserActions } from '@store/user/user.actions'
+import { UserSelectors } from '@store/user/user.selectors'
+import { Observable } from 'rxjs'
 @Component({
     standalone: true,
     selector: '[admin-users]',
@@ -13,10 +17,12 @@ import { SharedModule } from '@shared/shared.module'
     templateUrl: 'users.component.html',
     styleUrl: 'users.component.sass',
 })
-export class AdminUsersComponent
-    extends BaseAdminPageComponent<User>
-    implements OnInit
-{
+export class AdminUsersComponent {
+    hover: boolean = false
+    users$!: Observable<User[]>
+    pagination$!: Observable<Pagination>
+    isLoading$!: Observable<boolean>
+    error$!: Observable<string | null>
     title = 'Utilisateurs'
     name = 'user'
     tableLabels = [
@@ -29,93 +35,32 @@ export class AdminUsersComponent
         'Actions',
     ]
     subtitle = 'Ajouter, modifier et supprimer des utilisateurs'
-    override attributes: EntityAttribute[] = [
-        {
-            key: 'id',
-            name: 'ID',
-            type: 'id',
-        },
-        {
-            key: 'firstname',
-            name: 'first name',
-            type: 'text',
-            required: true,
-        },
-        {
-            key: 'lastname',
-            name: 'last name',
-            type: 'string',
-            required: true,
-        },
-        {
-            key: 'username',
-            name: 'Email',
-            type: 'email',
-            required: true,
-        },
-        {
-            key: 'phone',
-            name: 'Phone',
-            type: 'phone',
-            required: true,
-        },
-        {
-            key: 'authorities',
-            name: 'authorities',
-            type: 'select',
-            required: true,
-        },
-        {
-            key: 'status',
-            name: 'status',
-            type: 'boolean',
-            required: true,
-        },
-        {
-            key: 'enabled',
-            name: 'enabled',
-            type: 'boolean',
-            required: true,
-        },
-        {
-            key: 'accountNonLocked',
-            name: 'accountNonLocked',
-            type: 'boolean',
-            required: true,
-        },
-        {
-            key: 'accountNonExpired',
-            name: 'accountNonExpired',
-            type: 'boolean',
-            required: true,
-        },
-        {
-            key: 'createdAt',
-            name: 'createdAt',
-            type: 'date',
-            required: true,
-        },
-        {
-            key: 'updatedAt',
-            name: 'updatedAt',
-            type: 'date',
-            required: true,
-        },
-        {
-            key: 'avatar',
-            name: 'avatar',
-            type: 'image',
-            required: false,
-        },
-    ]
 
     constructor(
-        public override dialog: MatDialog,
-        public override service: UserService
-    ) {
-        super()
+        private store: Store<AppState>,
+        private modalService: ModalService
+    ) {}
+
+    ngOnInit() {
+        this.store.dispatch(UserActions.getItems())
+        this.users$ = this.store.select(UserSelectors.selectAll)
+        this.pagination$ = this.store.select(
+            PaginationSelectors.selectPaginationInfo
+        )
+        this.isLoading$ = this.store.select(UserSelectors.selectIsLoading)
+        this.error$ = this.store.select(UserSelectors.selectError)
     }
-    ngOnInit(): void {
-        this.getPage(this.tableData)
+
+    onDeleteUser(id: number) {
+        console.log('onDeleteUser')
+        // Dispatcher l'action de suppression
+        this.modalService.openModal({
+            type: 'confirmation',
+            title: 'Confirmation nécessaire',
+            message: 'Êtes-vous sûr de vouloir continuer ?',
+            isClosable: true,
+            onConfirm: () =>
+                this.store.dispatch(UserActions.deleteItem({ id })),
+        })
     }
 }
