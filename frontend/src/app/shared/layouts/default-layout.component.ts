@@ -4,11 +4,15 @@ import { FooterComponent } from '@shared/components/footer/footer.component'
 import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component'
 import { NavbarComponent } from '@shared/components/navbar/navbar.component'
 import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
+import { SharedModule } from '@shared/shared.module'
 
 @Component({
     selector: 'app-default-layout',
     standalone: true,
     template: `
+        <!-- MODAL -->
+        <app-modal />
+        <!-- DRAWER -->
         <div class="drawer bg-base-300">
             <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
             <!-- Page -->
@@ -50,6 +54,7 @@ import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/bre
         RouterModule,
         MegaMenuComponent,
         BreadcrumbsComponent,
+        SharedModule,
     ],
 })
 export class DefaultLayoutComponent {}

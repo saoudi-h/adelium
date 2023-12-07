@@ -4,11 +4,15 @@ import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
 import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
+import { SharedModule } from '@shared/shared.module'
 
 @Component({
     selector: 'app-admin-layout',
     standalone: true,
     template: `
+        <!-- MODAL -->
+        <app-modal />
+        <!-- DRAWER -->
         <div class="drawer bg-base-100 lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
             <!-- Page -->
@@ -54,6 +58,7 @@ import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/bre
         RouterModule,
         AsideComponent,
         BreadcrumbsComponent,
+        SharedModule,
     ],
 })
 export class AdminLayoutComponent {}
