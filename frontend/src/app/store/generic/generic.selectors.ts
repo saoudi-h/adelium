@@ -1,6 +1,10 @@
 import { Identifiable } from '@core/entity/identifiable.interface'
-import { EntityAdapter } from '@ngrx/entity'
-import { createFeatureSelector, createSelector } from '@ngrx/store'
+import { Dictionary, EntityAdapter, EntityState } from '@ngrx/entity'
+import {
+    MemoizedSelector,
+    createFeatureSelector,
+    createSelector,
+} from '@ngrx/store'
 import { ExtendedState } from './generic.reducer'
 
 /**
@@ -12,7 +16,7 @@ import { ExtendedState } from './generic.reducer'
 export function createGenericSelectors<T extends Identifiable>(
     entityAdapter: EntityAdapter<T>,
     featureName: string
-) {
+): BaseSelectors<T> {
     /**
      * Selects the feature state.
      */
@@ -57,4 +61,44 @@ export function createGenericSelectors<T extends Identifiable>(
         selectIsLoading,
         selectError,
     }
+}
+
+export interface BaseSelectors<T extends Identifiable> {
+    selectIds: MemoizedSelector<
+        object,
+        string[] | number[],
+        (entityState: EntityState<T>) => string[] | number[]
+    >
+    selectEntities: MemoizedSelector<
+        object,
+        Dictionary<T>,
+        (entityState: EntityState<T>) => Dictionary<T>
+    >
+    selectAll: MemoizedSelector<
+        object,
+        T[],
+        (entityState: EntityState<T>) => T[]
+    >
+    selectTotal: MemoizedSelector<
+        object,
+        number,
+        (entityState: EntityState<T>) => number
+    >
+    selectEntityById: (
+        id: number
+    ) => MemoizedSelector<
+        object,
+        T | undefined,
+        (s1: Dictionary<T>) => T | undefined
+    >
+    selectIsLoading: MemoizedSelector<
+        object,
+        boolean,
+        (s1: ExtendedState<T>) => boolean
+    >
+    selectError: MemoizedSelector<
+        object,
+        string | null,
+        (s1: ExtendedState<T>) => string | null
+    >
 }
