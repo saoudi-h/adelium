@@ -6,6 +6,7 @@ import com.adelium.web.authservice.repository.UserRepository;
 import com.adelium.web.common.dto.UserDetailsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +30,12 @@ public class UserController {
      * @param username the username of the user
      * @return the ResponseEntity containing the UserDetailsDTO
      */
-    @GetMapping("/users/{username}")
+    @GetMapping("/users/by-username/{username}")
     public ResponseEntity<UserDetailsDTO> getUser(@PathVariable String username) {
-        return ResponseEntity.ok(
-                userDetailsMapper.toDTO(userRepository.findByUsername(username).orElse(null)));
+        return userRepository
+                .findByUsername(username)
+                .map(userDetailsMapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
