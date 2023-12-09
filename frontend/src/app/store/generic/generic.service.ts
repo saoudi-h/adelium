@@ -12,8 +12,6 @@ export abstract class GenericService<T extends Identifiable> {
     constructor(protected http: HttpClient) {}
 
     getAll(): Observable<Page<T>> {
-        console.log('get all')
-        console.log(this.apiUrl)
         return this.http.get<Page<T>>(`${this.apiUrl}`)
     }
 
