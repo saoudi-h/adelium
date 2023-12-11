@@ -43,3 +43,8 @@ export const selectRefreshToken = createSelector(
     selectAuthState,
     (state: AuthState) => state.token?.refreshToken ?? null
 )
+
+export const selectRefreshAttempts = createSelector(
+    selectAuthState,
+    (state: AuthState) => state.refreshAttempts
+)

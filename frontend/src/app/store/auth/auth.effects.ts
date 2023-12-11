@@ -2,14 +2,25 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
 import { NotificationService } from '@core/services/notification.service'
-import { Actions, createEffect, ofType } from '@ngrx/effects'
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects'
 import { Store } from '@ngrx/store'
 import * as AppActions from '@store/app/app.actions'
 import * as AuthActions from '@store/auth/auth.actions'
+import * as AuthSelectors from '@store/auth/auth.selectors'
 import { of } from 'rxjs'
-import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators'
+import {
+    catchError,
+    exhaustMap,
+    filter,
+    map,
+    switchMap,
+    tap,
+} from 'rxjs/operators'
+import { environment } from 'src/environments/environment.development'
 @Injectable()
 export class AuthEffects {
+    private maxRefreshAttempts = environment.maxRefreshAttempts
+
     constructor(
         private actions$: Actions,
         private authService: AuthService,
@@ -37,7 +48,8 @@ export class AuthEffects {
                 tap(() => {
                     localStorage.removeItem('accessToken')
                     localStorage.removeItem('refreshToken')
-                    this.router.navigate(['/login'])
+                    this.authService.logout()
+                    this.router.navigate(['/auth/login'])
                 })
             )
         },
@@ -49,6 +61,10 @@ export class AuthEffects {
             return this.actions$.pipe(
                 ofType(AuthActions.loginSuccess),
                 tap(({ token }) => {
+                    if (!token) {
+                        AuthActions.loginFailure({ error: 'No token' })
+                        return
+                    }
                     console.log('authEffects : authSuccess$')
                     console.log('token', token.accessToken)
                     localStorage.setItem('accessToken', token.accessToken)
@@ -59,6 +75,23 @@ export class AuthEffects {
                     this.notificationService.success(
                         'Bienvenue',
                         'Authentication réussi!'
+                    )
+                })
+            )
+        },
+        { dispatch: false }
+    )
+
+    authFailure$ = createEffect(
+        () => {
+            return this.actions$.pipe(
+                ofType(AuthActions.loginFailure),
+                tap(({ error }) => {
+                    console.log('authEffects : authFailure$')
+                    console.log('error', error)
+                    this.notificationService.error(
+                        'Erreur',
+                        "Erreur lors de l'authentification"
                     )
                 })
             )
@@ -100,6 +133,37 @@ export class AuthEffects {
                     )
 
                 return of(AuthActions.restoreSessionFailure())
+            })
+        )
+    })
+
+    refreshToken$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(AuthActions.refreshToken),
+            switchMap(() =>
+                this.authService.refreshToken().pipe(
+                    map(token => AuthActions.refreshTokenSuccess({ token })),
+                    catchError(error =>
+                        of(AuthActions.refreshTokenFailure({ error }))
+                    )
+                )
+            )
+        )
+    })
+
+    checkRefreshFailure$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(AuthActions.refreshTokenFailure),
+            concatLatestFrom(() =>
+                this.store.select(AuthSelectors.selectRefreshAttempts)
+            ),
+            filter(
+                ([, refreshAttempts]) =>
+                    refreshAttempts >= this.maxRefreshAttempts
+            ),
+            switchMap(() => {
+                console.log("L'utilisateur n'a pas pu être authentifié")
+                return of(AuthActions.logout())
             })
         )
     })

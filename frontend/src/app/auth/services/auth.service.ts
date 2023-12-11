@@ -19,52 +19,17 @@ export class AuthService {
         private store: Store
     ) {}
 
-    // public get isLoggedIn(): boolean {
-    //     return this.authState.isLoggedIn
-    // }
-
-    // public get isAdmin(): boolean {
-    //     return this.authState.user?.authorities.includes('ROLE_ADMIN') ?? false
-    // }
-
-    // public get currentUser(): UserToken | null {
-    //     return this.authState.user
-    // }
-
-    // public get accessToken(): string | null {
-    //     return this.authState.token?.accessToken ?? null
-    // }
-    // public get refreshToken(): string | null {
-    //     return this.authState.token?.refreshToken ?? null
-    // }
-
     login(userLogin: UserLogin): Observable<Token> {
-        return this.httpClient.post<Token>(`${this.url}/login`, userLogin).pipe(
-            switchMap(token => {
-                if (token) {
-                    this.store.dispatch(AuthActions.loginSuccess({ token }))
-                    return [token]
-                } else {
-                    this.store.dispatch(
-                        AuthActions.loginFailure({ error: 'No token received' })
-                    )
-                    return throwError(() => new Error('No token received'))
-                }
-            }),
-            catchError(error => {
-                this.store.dispatch(AuthActions.loginFailure({ error }))
-                return throwError(() => new Error('La connexion a échoué'))
-            })
-        )
+        return this.httpClient.post<Token>(`${this.url}/auth/login`, userLogin)
     }
 
-    logout(): void {
-        this.store.dispatch(AuthActions.logout())
+    logout(): Observable<void> {
+        return this.httpClient.post<void>(`${this.url}/auth/logout`, {})
     }
 
     register(userRegister: UserRegister): Observable<Token> {
         return this.httpClient
-            .post<Token>(`${this.url}/register`, userRegister)
+            .post<Token>(`${this.url}/auth/register`, userRegister)
             .pipe(
                 switchMap(token => {
                     if (token) {
@@ -73,7 +38,6 @@ export class AuthService {
                         )
                         return [token]
                     } else {
-                        // Dispatcher l'échec de l'inscription et émettre une erreur
                         this.store.dispatch(
                             AuthActions.registerFailure({
                                 error: 'No token received',
@@ -87,5 +51,9 @@ export class AuthService {
                     return throwError(() => new Error("L'inscription a échoué"))
                 })
             )
+    }
+
+    refreshToken(): Observable<Token> {
+        return this.httpClient.post<Token>(`${this.url}/auth/refresh`, {})
     }
 }

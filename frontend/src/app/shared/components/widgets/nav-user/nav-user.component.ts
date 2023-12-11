@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common'
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'
-import { AuthService } from '@auth/services/auth.service'
 import { UserToken } from '@core/dto/UserToken'
 import { Store } from '@ngrx/store'
 import { AdminIconComponent } from '@shared/components/icons/admin-icon.component'
@@ -10,6 +9,7 @@ import { ProfileIconComponent } from '@shared/components/icons/profile.component
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { DropdownComponent } from '@shared/components/utility/dropdown/dropdown.component'
 import { SharedModule } from '@shared/shared.module'
+import * as AuthActions from '@store/auth/auth.actions'
 import * as AuthSelectors from '@store/auth/auth.selectors'
 import { Observable } from 'rxjs'
 @Component({
@@ -65,8 +65,7 @@ export class NavUserWidgetComponent implements OnInit {
 
     constructor(
         private store: Store,
-        private router: Router,
-        private authService: AuthService
+        private router: Router
     ) {
         this.user$ = this.store.select(AuthSelectors.selectCurrentUser)
         this.isAdmin$ = this.store.select(AuthSelectors.selectIsAdmin)
@@ -79,6 +78,6 @@ export class NavUserWidgetComponent implements OnInit {
     }
 
     logout() {
-        this.authService.logout()
+        this.store.dispatch(AuthActions.logout())
     }
 }

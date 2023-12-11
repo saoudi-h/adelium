@@ -7,6 +7,7 @@ export interface AuthState {
     token: Token | null
     user: UserToken | null
     isLoggedIn: boolean
+    refreshAttempts: number
     loading: boolean
     error: string | null
 }
@@ -15,6 +16,7 @@ const initialState: AuthState = {
     token: null,
     user: null,
     isLoggedIn: false,
+    refreshAttempts: 0,
     loading: false,
     error: null,
 }
@@ -59,11 +61,19 @@ export const authReducer = createReducer(
             error: null,
         })
     ),
+    on(
+        AuthActions.refreshToken,
+        (state): AuthState => ({
+            ...state,
+            refreshAttempts: state.refreshAttempts + 1,
+        })
+    ),
     on(AuthActions.refreshTokenSuccess, (state, { token }) => ({
         ...state,
         token,
         user: getUserFromToken(token),
         isLoggedIn: true,
+        refreshAttempts: 0,
         loading: false,
         error: null,
     })),
