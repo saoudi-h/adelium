@@ -48,19 +48,16 @@ public class JwtService {
         }
 
         final Optional<TokenDTO> serverTokenOptional =
-                userDetails.getTokens().stream().filter(t -> t.token.equals(token)).findFirst();
+                tokens.stream().filter(t -> t.token.equals(token)).findFirst();
 
         if (serverTokenOptional.isEmpty()) {
             return false;
         }
 
-        TokenDTO serverToken = serverTokenOptional.get();
-
         final String username = extractUsername(token);
-
         return (username.equals(userDetails.getUsername()))
                 && !isTokenExpired(token)
-                && !serverToken.isRevoked();
+                && !serverTokenOptional.get().isRevoked();
     }
 
     private boolean isTokenExpired(String token) {
@@ -91,5 +88,29 @@ public class JwtService {
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public boolean isRefreshValid(String token, UserDetailsDTO userDetails) {
+        if (token == null || userDetails == null) {
+            return false;
+        }
+
+        Set<TokenDTO> tokens = userDetails.getTokens();
+        if (tokens == null) {
+            return false;
+        }
+
+        final Optional<TokenDTO> serverTokenOptional =
+                tokens.stream().filter(t -> t.token.equals(token)).findFirst();
+
+        if (serverTokenOptional.isEmpty()) {
+            return false;
+        }
+
+        final String username = extractUsername(token);
+
+        return (username.equals(userDetails.getUsername()))
+                && !isTokenExpired(token)
+                && !serverTokenOptional.get().isRevoked();
     }
 }
