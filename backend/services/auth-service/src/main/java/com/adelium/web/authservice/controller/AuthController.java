@@ -8,10 +8,14 @@ import com.adelium.web.common.dto.UserAuthDTO;
 import com.adelium.web.common.dto.UserDetailsDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -28,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     private final AuthService service;
 
     /**
@@ -39,12 +45,18 @@ public class AuthController {
      */
     @PostMapping(value = "/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDetailsDTO userDetailsDTO) {
+        if (service.isPresent(userDetailsDTO.getUsername())) {
+            throw new UsernameAlreadyExistsException("Le nom d'utilisateur existe déjà.");
+        }
         try {
             TokensDTO tokens = service.register(userDetailsDTO);
+            logger.info("Nouvel utilisateur enregistré : {}", userDetailsDTO.getUsername());
             return ResponseEntity.ok(tokens);
         } catch (UsernameAlreadyExistsException e) {
+            logger.error("Erreur lors de l'enregistrement d'un nouvel utilisateur", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
+            logger.error("Erreur interne du serveur", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erreur interne du serveur");
         }
@@ -58,6 +70,7 @@ public class AuthController {
      */
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<String> handleUsernameAlreadyExists(UsernameAlreadyExistsException e) {
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
@@ -69,6 +82,7 @@ public class AuthController {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception e) {
+        logger.error("Erreur interne du serveur", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Erreur interne du serveur.");
     }
@@ -81,6 +95,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<TokensDTO> login(@Valid @RequestBody UserAuthDTO userAuthDTO) {
+        logger.info("Authentification de l'utilisateur : {}", userAuthDTO.getUsername());
         return ResponseEntity.ok(service.login(userAuthDTO));
     }
 
@@ -97,6 +112,22 @@ public class AuthController {
                         .map(ObjectError::getDefaultMessage)
                         .collect(Collectors.joining("; "));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    /**
+     * Handles data integrity violation exceptions.
+     *
+     * @param e the exception
+     * @return the response entity containing the error message
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException e) {
+        if (e.getCause() instanceof ConstraintViolationException) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Le nom d'utilisateur est déjà utilisé.");
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erreur interne du serveur.");
     }
 
     /**

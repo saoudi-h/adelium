@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +45,7 @@ public class AuthService {
     private final UserDetailsMapper userDetailsMapper;
     private final TokenService tokenService;
     private final RoleRepository roleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     /**
      * Registers a new user.
@@ -64,12 +67,16 @@ public class AuthService {
             var jwtToken = tokenService.generateToken(user);
             var refreshToken = tokenService.generateRefreshToken(user);
             saveUserToken(savedUser, jwtToken);
+            logger.info("Nouvel utilisateur enregistré : {}", userDetailsDTO.getUsername());
             return TokensDTO.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
         } catch (DataIntegrityViolationException e) {
+            logger.error("Erreur lors de l'enregistrement d'un nouvel utilisateur", e);
             throw new UsernameAlreadyExistsException("Le nom d'utilisateur existe déjà.");
         } catch (RoleNotFoundException e) {
-            throw e;
+            logger.error("Erreur lors de l'enregistrement d'un nouvel utilisateur", e);
+            throw new RuntimeException("Erreur interne du serveur 1");
         } catch (Exception e) {
+            logger.error("Erreur interne du serveur", e);
             throw new RuntimeException("Erreur interne du serveur 2");
         }
     }
@@ -176,5 +183,9 @@ public class AuthService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    public boolean isPresent(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 }
