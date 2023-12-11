@@ -3,7 +3,9 @@ package com.adelium.web.quizservice.config;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import com.adelium.web.common.security.ForbiddenHandler;
 import com.adelium.web.common.security.JwtFilter;
+import com.adelium.web.common.security.UnauthorizedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final UnauthorizedHandler unauthorizedHandler;
+    private final ForbiddenHandler forbiddenHandler;
 
     private static final String[] WHITE_LIST_URL = {
         "/actuator",
@@ -41,6 +45,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(
+                        (exception) ->
+                                exception
+                                        .authenticationEntryPoint(unauthorizedHandler)
+                                        .accessDeniedHandler(forbiddenHandler))
                 .authorizeHttpRequests(
                         (requests) ->
                                 requests

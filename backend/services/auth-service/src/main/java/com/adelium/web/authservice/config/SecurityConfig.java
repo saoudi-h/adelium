@@ -3,6 +3,8 @@ package com.adelium.web.authservice.config;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import com.adelium.web.common.security.ForbiddenHandler;
+import com.adelium.web.common.security.UnauthorizedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,11 +29,10 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // private final AuthenticationProvider authenticationProvider;
-
     private final LogoutHandler logoutHandler;
     private final AuthenticationProvider authenticationProvider;
-
+    private final UnauthorizedHandler unauthorizedHandler;
+    private final ForbiddenHandler forbiddenHandler;
     private static final String[] ADMIN_URL = {
         "/roles/**", "/authorities/**", "/authorisations/**",
     };
@@ -58,6 +59,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter)
             throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                //                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(
+                        (exception) ->
+                                exception
+                                        .authenticationEntryPoint(unauthorizedHandler)
+                                        .accessDeniedHandler(forbiddenHandler))
                 .authorizeHttpRequests(
                         (requests) ->
                                 requests
@@ -74,9 +83,6 @@ public class SecurityConfig {
                                         // not in white list routes should be authenticated
                                         .anyRequest()
                                         .authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(
                         logout ->
                                 logout.logoutUrl("/auth/logout")
