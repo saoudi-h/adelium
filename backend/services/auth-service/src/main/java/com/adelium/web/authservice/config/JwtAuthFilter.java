@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtAuthFilter extends JwtFilter {
+    ;
     private final UserService userService;
 
     public JwtAuthFilter(
@@ -21,5 +22,15 @@ public class JwtAuthFilter extends JwtFilter {
     @Override
     protected UserDetailsDTO getUserDetails(String username) {
         return userService.loadUserByUsername(username);
+    }
+
+    @Override
+    protected boolean isAuthService() {
+        return true;
+    }
+
+    @Override
+    protected String getAuthenticationsUrl() {
+        return "/auth";
     }
 }

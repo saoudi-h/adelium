@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final AuthServiceClient authServiceClient;
 
-    private Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+    private final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
     /**
      * Custom filter logic for JWT authentication.
@@ -60,6 +60,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         try {
+            if (isAuthService() && request.getRequestURI().startsWith(getAuthenticationsUrl())) {
+                filterChain.doFilter(request, response);
+                return;
+            }
             if (authHeader == null || !authHeader.startsWith("Bearer")) {
                 filterChain.doFilter(request, response);
                 return;
@@ -119,5 +123,13 @@ public class JwtFilter extends OncePerRequestFilter {
      */
     protected UserDetailsDTO getUserDetails(String username) {
         return authServiceClient.getUser(username).getBody();
+    }
+
+    protected boolean isAuthService() {
+        return false;
+    }
+
+    protected String getAuthenticationsUrl() {
+        return "/auth";
     }
 }
