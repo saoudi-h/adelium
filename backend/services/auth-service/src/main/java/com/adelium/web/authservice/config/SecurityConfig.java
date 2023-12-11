@@ -37,11 +37,8 @@ public class SecurityConfig {
         "/roles/**", "/authorities/**", "/authorisations/**",
     };
 
-    private static final String[] AUTH_URL = {
-        "/logout", "/refresh", "/users/**",
-    };
-
     private static final String[] WHITE_LIST_URL = {
+        "/auth/refresh",
         "/actuator",
         "/actuator/**",
         "/auth-docs/**",
@@ -52,7 +49,7 @@ public class SecurityConfig {
     };
 
     private static final String[] ANONYMOUS_URL = {
-        "/login", "/register",
+        "/auth/login", "/auth/register",
     };
 
     @Bean
@@ -73,8 +70,6 @@ public class SecurityConfig {
                                         // whitelist no permission needed
                                         .requestMatchers(WHITE_LIST_URL)
                                         .permitAll()
-                                        .requestMatchers(AUTH_URL)
-                                        .authenticated()
                                         // admin routes should have admin role
                                         .requestMatchers(ADMIN_URL)
                                         .hasRole("ADMIN")

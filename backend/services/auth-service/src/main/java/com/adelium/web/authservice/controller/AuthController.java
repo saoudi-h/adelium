@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -141,5 +142,6 @@ public class AuthController {
     public void refreshToken(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         service.refreshToken(request, response);
+        // FIXME: it is possible to refresh the token even if the accessToken is not valid anymore
     }
 }
