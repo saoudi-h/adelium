@@ -3,6 +3,7 @@ import { NgModule, isDevMode } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ServiceWorkerModule } from '@angular/service-worker'
+import { RefreshInterceptor } from '@core/interceptors/refresh.interceptor'
 import { RequestInterceptor } from '@core/interceptors/request.interceptor'
 import { NotificationService } from '@core/services/notification.service'
 import { HomeModule } from '@home/home.module'
@@ -14,6 +15,7 @@ import { CustomToastComponent } from '@shared/components/widgets/notificator/cus
 import { AuthEffects } from '@store/auth/auth.effects'
 import { NotificationEffects } from '@store/notification/notification.effects'
 import { PaginationEffects } from '@store/pagination/pagination.effects'
+import { RequestQueueEffects } from '@store/request-queue/request-queue.effects'
 import { ThemeEffects } from '@store/theme/theme.effects'
 import { UserEffects } from '@store/user/user.effects'
 import { ToastrModule } from 'ngx-toastr'
@@ -50,6 +52,7 @@ import { metaReducers, reducers } from './reducers'
             AuthEffects,
             UserEffects,
             PaginationEffects,
+            RequestQueueEffects,
         ]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         StoreModule.forRoot(reducers, { metaReducers }),
@@ -60,6 +63,11 @@ import { metaReducers, reducers } from './reducers'
         {
             provide: HTTP_INTERCEPTORS,
             useClass: RequestInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: RefreshInterceptor,
             multi: true,
         },
     ],
