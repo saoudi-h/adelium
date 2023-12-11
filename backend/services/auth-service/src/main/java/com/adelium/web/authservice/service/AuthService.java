@@ -65,10 +65,11 @@ public class AuthService {
         try {
             var savedUser = userRepository.save(user);
             var jwtToken = tokenService.generateToken(user);
-            var refreshToken = tokenService.generateRefreshToken(user);
-            saveUserToken(savedUser, jwtToken);
+            var jwtRefreshToken = tokenService.generateRefreshToken(user);
+            var refreshToken = saveRefreshToken(savedUser, jwtRefreshToken);
+            saveUserToken(savedUser, jwtToken, refreshToken);
             logger.info("Nouvel utilisateur enregistré : {}", userDetailsDTO.getUsername());
-            return TokensDTO.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+            return TokensDTO.builder().accessToken(jwtToken).refreshToken(jwtRefreshToken).build();
         } catch (DataIntegrityViolationException e) {
             logger.error("Erreur lors de l'enregistrement d'un nouvel utilisateur", e);
             throw new UsernameAlreadyExistsException("Le nom d'utilisateur existe déjà.");
@@ -87,16 +88,30 @@ public class AuthService {
      * @param user    the user
      * @param jwtToken the JWT token to save
      */
-    private void saveUserToken(User user, String jwtToken) {
+    private void saveUserToken(User user, String jwtToken, Token refreshToken) {
         var token =
                 Token.builder()
                         .user(user)
                         .token(jwtToken)
+                        .refreshToken(refreshToken)
                         .tokenType(TokenType.BEARER)
                         .expired(false)
                         .revoked(false)
                         .build();
         tokenRepository.save(token);
+    }
+
+    private Token saveRefreshToken(User user, String refreshToken) {
+        var token =
+                Token.builder()
+                        .user(user)
+                        .token(refreshToken)
+                        .tokenType(TokenType.BEARER)
+                        .expired(false)
+                        .revoked(false)
+                        .build();
+        tokenRepository.save(token);
+        return token;
     }
 
     /**
@@ -121,10 +136,11 @@ public class AuthService {
 
         var jwtToken = tokenService.generateToken(user);
 
-        var refreshToken = tokenService.generateRefreshToken(user);
+        var jwtRefreshToken = tokenService.generateRefreshToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
-        return TokensDTO.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+        var refreshToken = saveRefreshToken(user, jwtRefreshToken);
+        saveUserToken(user, jwtToken, refreshToken);
+        return TokensDTO.builder().accessToken(jwtToken).refreshToken(jwtRefreshToken).build();
     }
 
     /**
@@ -134,6 +150,17 @@ public class AuthService {
      */
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserTokens.isEmpty()) return;
+        validUserTokens.forEach(
+                token -> {
+                    token.setExpired(true);
+                    token.setRevoked(true);
+                });
+        tokenRepository.saveAll(validUserTokens);
+    }
+
+    private void revokeAllUserAccessTokens(User user) {
+        var validUserTokens = tokenRepository.findAllValidAccessTokenByUser(user.getId());
         if (validUserTokens.isEmpty()) return;
         validUserTokens.forEach(
                 token -> {
@@ -154,7 +181,7 @@ public class AuthService {
             throws IOException {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
+        final String jwtRefreshToken;
         final String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -162,23 +189,22 @@ public class AuthService {
             return;
         }
 
-        refreshToken = authHeader.substring(7);
+        jwtRefreshToken = authHeader.substring(7);
 
-        username = jwtService.extractUsername(refreshToken);
+        username = jwtService.extractUsername(jwtRefreshToken);
 
         if (username != null) {
             User user = userRepository.findByUsername(username).orElse(null);
             if (user != null
-                    && jwtService.isTokenValid(refreshToken, userDetailsMapper.toDTO(user))) {
-                System.out.println("login user: " + user);
+                    && jwtService.isRefreshValid(jwtRefreshToken, userDetailsMapper.toDTO(user))) {
                 var accessToken = tokenService.generateToken(user);
-                System.out.println("access token: " + accessToken);
-                revokeAllUserTokens(user);
-                saveUserToken(user, accessToken);
+                revokeAllUserAccessTokens(user);
+                var refreshToken = tokenRepository.findByToken(jwtRefreshToken).orElse(null);
+                saveUserToken(user, accessToken, refreshToken);
                 var authResponse =
                         TokensDTO.builder()
                                 .accessToken(accessToken)
-                                .refreshToken(refreshToken)
+                                .refreshToken(jwtRefreshToken)
                                 .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }

@@ -13,8 +13,8 @@ public interface TokenRepository extends BaseRepository<Token, Long> {
 
     /**
      * Finds all valid tokens for a given user.
-     * @param id
-     * @return
+     * @param id the user id
+     * @return the list of valid tokens
      */
     @Query(
             value =
@@ -31,4 +31,19 @@ public interface TokenRepository extends BaseRepository<Token, Long> {
      * @return
      */
     Optional<Token> findByToken(String token);
+
+    /**
+     * Finds all valid access tokens for a given user.
+     * @param id the user id
+     * @return the list of valid tokens
+     */
+    @Query(
+            value =
+                    """
+      select t from Token t inner join User u\s
+      on t.user.id = u.id\s
+      where u.id = :id and t.refreshToken != null and (t.expired = false or t.revoked = false)\s
+      and t.tokenType = 'BEARER'\s
+      """)
+    List<Token> findAllValidAccessTokenByUser(Long id);
 }

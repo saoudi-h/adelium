@@ -40,6 +40,10 @@ public class Token extends BaseEntity<Long> {
      */
     public boolean expired;
 
+    @ManyToOne
+    @JoinColumn(name = "refresh_token_id")
+    private Token refreshToken;
+
     /**
      * The time to live of the token in seconds.
      */
