@@ -49,6 +49,7 @@ export class AuthEffects {
                     localStorage.removeItem('accessToken')
                     localStorage.removeItem('refreshToken')
                     this.authService.logout()
+                    this.notificationService.reset()
                     this.router.navigate(['/auth/login'])
                 })
             )
@@ -65,8 +66,6 @@ export class AuthEffects {
                         AuthActions.loginFailure({ error: 'No token' })
                         return
                     }
-                    console.log('authEffects : authSuccess$')
-                    console.log('token', token.accessToken)
                     localStorage.setItem('accessToken', token.accessToken)
                     localStorage.setItem('refreshToken', token.refreshToken)
                     this.router.navigate(['/'])

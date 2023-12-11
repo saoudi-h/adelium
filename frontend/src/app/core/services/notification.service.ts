@@ -130,4 +130,11 @@ export class NotificationService {
     ) {
         this.showNotification('warning', title, message, options)
     }
+
+    /**
+     * Resets the notifications in the store.
+     */
+    reset() {
+        this.store.dispatch(NotificationActions.resetNotifications())
+    }
 }
