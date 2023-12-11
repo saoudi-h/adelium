@@ -4,6 +4,9 @@ package com.adelium.web.common.security;
 import com.adelium.web.common.client.AuthServiceClient;
 import com.adelium.web.common.dto.UserDetailsDTO;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -32,6 +37,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final AuthServiceClient authServiceClient;
 
+    private Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+
     /**
      * Custom filter logic for JWT authentication.
      *
@@ -49,29 +56,57 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
+        System.out.println("JwtFilter.doFilterInternal : " + request.getRequestURI());
+
         final String authHeader = request.getHeader("Authorization");
-        final String jwtToken;
-        final String username;
-
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        // TODO: try final String jwtToken = authHeader.split(" ")[1].trim();
-        jwtToken = authHeader.substring(7);
-        username = jwtService.extractUsername(jwtToken);
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // user not connected
-            UserDetailsDTO userDetails = getUserDetails(username);
-
-            if (userDetails != null && jwtService.isTokenValid(jwtToken, userDetails)) {
-                Claims claims = jwtService.extractAllClaims(jwtToken);
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, claims, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer")) {
+                filterChain.doFilter(request, response);
+                return;
             }
+            final String jwtToken = authHeader.split(" ")[1].trim();
+            final String username = jwtService.extractUsername(jwtToken);
+
+            if (username != null
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+                // user not connected
+                UserDetailsDTO userDetails = getUserDetails(username);
+
+                if (userDetails != null && jwtService.isTokenValid(jwtToken, userDetails)) {
+                    Claims claims = jwtService.extractAllClaims(jwtToken);
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, claims, userDetails.getAuthorities());
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else {
+                    logger.error(
+                            "Erreur lors de l'authentification d'un utilisateur : Token JWT"
+                                    + " invalide. username : "
+                                    + username);
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token JWT invalide");
+                    return;
+                }
+            }
+        } catch (ExpiredJwtException e) {
+            logger.error("Erreur d'authentification d'un utilisateur : Token JWT expiré", e);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Le Token JWT est expiré");
+            return;
+        } catch (MalformedJwtException e) {
+            logger.error("Erreur d'authentification d'un utilisateur : Token JWT malformé", e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Le Token JWT est malformé");
+            return;
+        } catch (JwtException e) {
+            logger.error("Erreur d'authentification d'un utilisateur : Erreur de Token", e);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Erreur de Token JWT");
+            return;
+        } catch (Exception e) {
+            logger.error(
+                    "Erreur d'authentification d'un utilisateur : Erreur interne du serveur", e);
+            response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur interne du serveur");
+            return;
         }
         filterChain.doFilter(request, response);
     }
