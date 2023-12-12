@@ -171,20 +171,38 @@ export class AuthEffects {
         )
     })
 
-    checkRefreshFailure$ = createEffect(() => {
-        return this.actions$.pipe(
-            ofType(AuthActions.refreshTokenFailure),
-            concatLatestFrom(() =>
-                this.store.select(AuthSelectors.selectRefreshAttempts)
-            ),
-            filter(
-                ([, refreshTokenAttempts]) =>
-                    refreshTokenAttempts >= this.maxRefreshAttempts
-            ),
-            switchMap(() => {
-                console.log("L'utilisateur n'a pas pu être authentifié")
-                return of(AuthActions.logout())
-            })
-        )
-    })
+    checkRefreshFailure$ = createEffect(
+        () => {
+            return this.actions$.pipe(
+                ofType(AuthActions.refreshTokenFailure),
+                concatLatestFrom(() =>
+                    this.store.select(AuthSelectors.selectRefreshAttempts)
+                ),
+                filter(
+                    ([, refreshTokenAttempts]) =>
+                        refreshTokenAttempts >= this.maxRefreshAttempts
+                ),
+                switchMap(() => [
+                    AuthActions.logout(),
+                    AuthActions.notifyLogoutAfterRefreshFailure(),
+                ])
+            )
+        },
+        { dispatch: true }
+    )
+
+    notifyLogoutAfterRefreshFailure$ = createEffect(
+        () => {
+            return this.actions$.pipe(
+                ofType(AuthActions.notifyLogoutAfterRefreshFailure),
+                tap(() => {
+                    this.notificationService.warning(
+                        'Déconnexion',
+                        'Déconnexion en raison de tentatives de rafraîchissement échouées.'
+                    )
+                })
+            )
+        },
+        { dispatch: false }
+    )
 }

@@ -206,3 +206,7 @@ export const checkPermission = createAction(
     props<{ permission: string }>()
     // TODO: Remplacer 'string[]' par un type approprié pour les permissions.
 )
+
+export const notifyLogoutAfterRefreshFailure = createAction(
+    '[Auth] Notify Logout After Refresh Failure'
+)
