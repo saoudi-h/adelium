@@ -16,6 +16,8 @@ import { catchError } from 'rxjs/operators'
 
 @Injectable()
 export class RefreshInterceptor implements HttpInterceptor {
+    private readonly refreshEndpoint = '/auth/refresh'
+
     constructor(
         private requestQueueService: RequestQueueService,
         private store: Store<AppState>
@@ -26,15 +28,13 @@ export class RefreshInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
-            catchError(error => {
+            catchError((error: HttpErrorResponse) => {
                 if (
-                    error instanceof HttpErrorResponse &&
-                    error.status === 401
+                    error.status === 401 &&
+                    !request.url.endsWith(this.refreshEndpoint)
                 ) {
                     this.requestQueueService.enqueueRequest(request, next)
-
                     this.store.dispatch(AuthActions.refreshToken())
-
                     return throwError(
                         () =>
                             new Error(
@@ -42,7 +42,7 @@ export class RefreshInterceptor implements HttpInterceptor {
                             )
                     )
                 }
-                return throwError(() => new Error(error))
+                return throwError(() => error)
             })
         )
     }
