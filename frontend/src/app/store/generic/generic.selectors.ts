@@ -48,12 +48,30 @@ export function createGenericSelectors<T extends Identifiable>(
     const selectEntityById = (id: number) =>
         createSelector(selectEntities, entities => entities[id])
 
+    /**
+     * Selects the pagination parameters.
+     */
+    const selectPaginationParams = createSelector(
+        selectEntityState,
+        state => state.paginationInfo.params
+    )
+
+    /**
+     * Selects the pagination results.
+     */
+    const selectPaginationResult = createSelector(
+        selectEntityState,
+        state => state.paginationInfo.result
+    )
+
     return {
         selectIds,
         selectEntities,
         selectAll,
         selectTotal,
         selectEntityById,
+        selectPaginationParams,
+        selectPaginationResult,
         selectIsLoading,
         selectError,
     }

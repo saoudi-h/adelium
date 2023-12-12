@@ -1,19 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Page } from '@core/entity/page.entity'
 import { Observable } from 'rxjs'
+import { PaginationParams } from './generic.reducer'
 
 @Injectable()
 export abstract class GenericService<T extends Identifiable> {
     protected abstract apiUrl: string
 
     constructor(protected http: HttpClient) {}
-
-    getAll(): Observable<Page<T>> {
-        return this.http.get<Page<T>>(`${this.apiUrl}`)
-    }
 
     getById(id: string | number): Observable<T> {
         return this.http.get<T>(`${this.apiUrl}/${id}`)
@@ -39,9 +36,16 @@ export abstract class GenericService<T extends Identifiable> {
         return this.http.request('delete', `${this.apiUrl}`, { body: ids })
     }
 
-    getPage(page: number, size: number): Observable<Page<T>> {
-        return this.http.get<Page<T>>(
-            `${this.apiUrl}?page=${page}&size=${size}`
-        )
+    getPage(params: PaginationParams): Observable<Page<T>> {
+        let queryParams = new HttpParams()
+            .set('page', params.page.toString())
+            .set('size', params.size.toString())
+
+        params.sort.forEach(sortCriterion => {
+            const sortParam = `${sortCriterion.property},${sortCriterion.direction}`
+            queryParams = queryParams.append('sort', sortParam)
+        })
+
+        return this.http.get<Page<T>>(`${this.apiUrl}`, { params: queryParams })
     }
 }

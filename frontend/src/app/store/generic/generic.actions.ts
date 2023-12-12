@@ -1,6 +1,7 @@
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Page } from '@core/entity/page.entity'
 import { createAction, props } from '@ngrx/store'
+import { PaginationParams } from './generic.reducer'
 
 export function createEntityActions<T extends Identifiable>(
     entityType: string
@@ -18,18 +19,9 @@ export function createEntityActions<T extends Identifiable>(
             `[${entityType}] Get Item By ID Failure`,
             props<{ error: string | null }>()
         ),
-        getItems: createAction(`[${entityType}] Get Items`),
-        getItemsSuccess: createAction(
-            `[${entityType}] Get Items Success`,
-            props<{ page: Page<T> }>()
-        ),
-        getItemsFailure: createAction(
-            `[${entityType}] Get Items Failure`,
-            props<{ error: string | null }>()
-        ),
         getPage: createAction(
             `[${entityType}] Get Page`,
-            props<{ page: number; size: number }>()
+            props<{ params: PaginationParams }>()
         ),
         getPageSuccess: createAction(
             `[${entityType}] Get Page Success`,

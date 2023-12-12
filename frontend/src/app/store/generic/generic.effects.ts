@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
-import * as PaginationActions from '@store/pagination/pagination.actions'
 import { from, of } from 'rxjs'
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators'
 import { EntityActions } from './generic.actions'
@@ -42,49 +41,18 @@ export abstract class GenericEffects<T extends Identifiable> {
     })
 
     /**
-     * Effect for getting items.
-     * @returns An observable of the action to get items.
-     */
-    getItems$ = createEffect(() => {
-        return this.actions$.pipe(
-            ofType(this.entityActions.getItems),
-            mergeMap(() => {
-                console.log('get items')
-                return this.genericService.getAll().pipe(
-                    switchMap(response =>
-                        from([
-                            this.entityActions.getPageSuccess({
-                                page: response,
-                            }),
-                            PaginationActions.loadPageSuccess({
-                                paginationInfo: response.page,
-                            }),
-                        ])
-                    ),
-                    catchError(error =>
-                        of(this.entityActions.getItemsFailure({ error }))
-                    )
-                )
-            })
-        )
-    })
-
-    /**
      * Effect for getting a page of items.
      * @returns An observable of the action to get a page of items.
      */
     getPage$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(this.entityActions.getPage),
-            mergeMap(({ page, size }) =>
-                this.genericService.getPage(page, size).pipe(
+            mergeMap(({ params }) =>
+                this.genericService.getPage(params).pipe(
                     switchMap(response =>
                         from([
                             this.entityActions.getPageSuccess({
                                 page: response,
-                            }),
-                            PaginationActions.loadPageSuccess({
-                                paginationInfo: response.page,
                             }),
                         ])
                     ),

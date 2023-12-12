@@ -3,12 +3,33 @@ import { EntityAdapter, EntityState } from '@ngrx/entity'
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store'
 import { EntityActions } from './generic.actions'
 
+export interface SortCriterion {
+    property: string
+    direction: 'asc' | 'desc'
+}
+export interface PaginationParams {
+    page: number
+    size: number
+    sort: SortCriterion[]
+}
+export interface PaginationResult {
+    size: number
+    totalElements: number
+    totalPages: number
+    number: number
+}
+
+export interface PaginationInfo {
+    params: PaginationParams
+    result: PaginationResult
+}
+
 export interface ExtendedState<T extends Identifiable> extends EntityState<T> {
+    paginationInfo: PaginationInfo
     isLoading: boolean
     error: string | null
 }
 
-// Crée un reducer générique pour une entité de type T
 export function createGenericReducer<T extends Identifiable>(
     adapter: EntityAdapter<T>,
     initialState: ExtendedState<T>,
@@ -26,13 +47,6 @@ export function createGenericReducer<T extends Identifiable>(
         on(actions.deleteItemSuccess, (state, { id }) =>
             adapter.removeOne(id, state)
         ),
-        on(actions.getItemsSuccess, (state, { page }) => {
-            const items = page._embedded[entityType]
-            return adapter.setAll(items, { ...state, isLoading: false })
-        }),
-        on(actions.getItemsFailure, (state, { error }): ExtendedState<T> => {
-            return { ...state, error }
-        }),
         on(actions.getItemByIdSuccess, (state, { item }) => {
             return adapter.upsertOne(item, state)
         }),
@@ -46,8 +60,15 @@ export function createGenericReducer<T extends Identifiable>(
         }),
 
         on(actions.getPageSuccess, (state, { page }) => {
-            const items = page._embedded[entityType] // Adaptez selon la clé de votre objet Page
-            return adapter.setAll(items, { ...state, isLoading: false })
+            const items = page._embedded[entityType]
+            return adapter.setAll(items, {
+                ...state,
+                paginationInfo: {
+                    ...state.paginationInfo,
+                    result: page.page,
+                },
+                isLoading: false,
+            })
         })
     )
 }
