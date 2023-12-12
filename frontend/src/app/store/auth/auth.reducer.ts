@@ -51,7 +51,7 @@ export const authReducer = createReducer(
         })
     ),
     on(
-        AuthActions.logout,
+        AuthActions.logoutSuccess,
         (state): AuthState => ({
             ...state,
             token: null,
@@ -78,23 +78,17 @@ export const authReducer = createReducer(
         error: null,
     })),
     on(
-        AuthActions.refreshTokenFailure,
-        (state): AuthState => ({
+        AuthActions.restoreSessionSuccess,
+        (state, { token, refreshAttempts }) => ({
             ...state,
-            isLoggedIn: false,
-            user: null,
-            token: null,
+            token,
+            user: getUserFromToken(token),
+            refreshAttempts,
+            isLoggedIn: true,
+            loading: false,
             error: null,
         })
     ),
-    on(AuthActions.restoreSessionSuccess, (state, { token }) => ({
-        ...state,
-        token,
-        user: getUserFromToken(token),
-        isLoggedIn: true,
-        loading: false,
-        error: null,
-    })),
     on(
         AuthActions.restoreSessionFailure,
         (state): AuthState => ({
@@ -103,6 +97,7 @@ export const authReducer = createReducer(
             loading: false,
             token: null,
             user: null,
+            refreshAttempts: 0,
             isLoggedIn: false,
         })
     )

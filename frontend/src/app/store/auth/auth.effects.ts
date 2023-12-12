@@ -10,10 +10,12 @@ import * as AuthSelectors from '@store/auth/auth.selectors'
 import { of } from 'rxjs'
 import {
     catchError,
+    concatMap,
     exhaustMap,
     filter,
     map,
     switchMap,
+    take,
     tap,
 } from 'rxjs/operators'
 import { environment } from 'src/environments/environment.development'
@@ -41,21 +43,20 @@ export class AuthEffects {
         )
     })
 
-    logout$ = createEffect(
-        () => {
-            return this.actions$.pipe(
-                ofType(AuthActions.logout),
-                tap(() => {
-                    localStorage.removeItem('accessToken')
-                    localStorage.removeItem('refreshToken')
-                    this.authService.logout()
-                    this.notificationService.reset()
-                    this.router.navigate(['/auth/login'])
-                })
-            )
-        },
-        { dispatch: false }
-    )
+    logout$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(AuthActions.logout),
+            switchMap(() => {
+                this.notificationService.reset()
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('refreshToken')
+                localStorage.removeItem('refreshAttempts')
+                this.authService.logout()
+                this.router.navigate(['/auth/login'])
+                return of(AuthActions.logoutSuccess())
+            })
+        )
+    })
 
     authSuccess$ = createEffect(
         () => {
@@ -68,6 +69,7 @@ export class AuthEffects {
                     }
                     localStorage.setItem('accessToken', token.accessToken)
                     localStorage.setItem('refreshToken', token.refreshToken)
+                    localStorage.setItem('refreshAttempts', '0')
                     this.router.navigate(['/'])
 
                     // Notifier l'utilisateur du succès de l'authentification
@@ -122,12 +124,17 @@ export class AuthEffects {
             exhaustMap(() => {
                 const accessToken = localStorage.getItem('accessToken')
                 const refreshToken = localStorage.getItem('refreshToken')
-                console.log('accessToken', accessToken)
-                console.log('refreshToken', refreshToken)
-                if (accessToken && refreshToken)
+                const refreshAttempts = localStorage.getItem('refreshAttempts')
+                console.log('refreshAttempts', refreshAttempts)
+
+                if (accessToken && refreshToken && refreshAttempts)
                     return of(
                         AuthActions.restoreSessionSuccess({
-                            token: { accessToken, refreshToken },
+                            token: {
+                                accessToken,
+                                refreshToken,
+                            },
+                            refreshAttempts: parseInt(refreshAttempts),
                         })
                     )
 
@@ -139,6 +146,20 @@ export class AuthEffects {
     refreshToken$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(AuthActions.refreshToken),
+            concatMap(action =>
+                this.store.select(AuthSelectors.selectRefreshAttempts).pipe(
+                    take(1),
+                    tap(refreshAttempts => {
+                        if (refreshAttempts) {
+                            localStorage.setItem(
+                                'refreshAttempts',
+                                refreshAttempts.toString()
+                            )
+                        }
+                    }),
+                    map(() => action)
+                )
+            ),
             switchMap(() =>
                 this.authService.refreshToken().pipe(
                     map(token => AuthActions.refreshTokenSuccess({ token })),
@@ -157,8 +178,8 @@ export class AuthEffects {
                 this.store.select(AuthSelectors.selectRefreshAttempts)
             ),
             filter(
-                ([, refreshAttempts]) =>
-                    refreshAttempts >= this.maxRefreshAttempts
+                ([, refreshTokenAttempts]) =>
+                    refreshTokenAttempts >= this.maxRefreshAttempts
             ),
             switchMap(() => {
                 console.log("L'utilisateur n'a pas pu être authentifié")

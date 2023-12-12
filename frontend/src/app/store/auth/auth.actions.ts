@@ -40,7 +40,7 @@ export const loginFailure = createAction(
  */
 export const restoreSessionSuccess = createAction(
     '[Auth] Restore Session Success',
-    props<{ token: Token }>()
+    props<{ token: Token; refreshAttempts: number }>()
 )
 
 /**
@@ -88,6 +88,12 @@ export const registerFailure = createAction(
  * @returns {Action} - The logout action.
  */
 export const logout = createAction('[Auth] Logout')
+
+/**
+ * Action creator for logout success.
+ * @returns {Action} - The logout success action.
+ */
+export const logoutSuccess = createAction('[Auth] Logout Success')
 
 /**
  * Action creator for refresh token.
