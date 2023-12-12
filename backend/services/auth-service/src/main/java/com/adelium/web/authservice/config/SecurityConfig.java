@@ -34,7 +34,7 @@ public class SecurityConfig {
     private final UnauthorizedHandler unauthorizedHandler;
     private final ForbiddenHandler forbiddenHandler;
     private static final String[] ADMIN_URL = {
-        "/roles/**", "/authorities/**", "/authorisations/**",
+        "/users", "/roles/**", "/authorities/**", "/authorisations/**",
     };
 
     private static final String[] WHITE_LIST_URL = {
