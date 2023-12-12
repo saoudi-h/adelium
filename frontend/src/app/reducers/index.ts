@@ -5,10 +5,6 @@ import {
     notificationReducer,
 } from '@store/notification/notification.reducer'
 import {
-    PaginationState,
-    paginationReducer,
-} from '@store/pagination/pagination.reducer'
-import {
     RequestQueueState,
     requestQueueReducer,
 } from '@store/request-queue/request-queue.reducer'
@@ -21,7 +17,6 @@ export interface AppState {
     notifications: NotificationState
     auth: AuthState
     users: UserState
-    pagination: PaginationState
     requestQueue: RequestQueueState
 }
 
@@ -30,7 +25,6 @@ export const reducers: ActionReducerMap<AppState> = {
     notifications: notificationReducer,
     auth: authReducer,
     users: userReducer,
-    pagination: paginationReducer,
     requestQueue: requestQueueReducer,
 }
 
