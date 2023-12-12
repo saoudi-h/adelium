@@ -179,35 +179,45 @@ public class AuthService {
      */
     public void refreshToken(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String jwtRefreshToken;
-        final String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid refresh token");
+            response.sendError(
+                    HttpServletResponse.SC_UNAUTHORIZED, "Invalid Authorization header format.");
             return;
         }
 
-        jwtRefreshToken = authHeader.substring(7);
+        final String jwtRefreshToken = authHeader.substring(7);
+        final String username = jwtService.extractUsername(jwtRefreshToken);
 
-        username = jwtService.extractUsername(jwtRefreshToken);
+        if (username == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid refresh token.");
+            return;
+        }
 
-        if (username != null) {
-            User user = userRepository.findByUsername(username).orElse(null);
-            if (user != null
-                    && jwtService.isRefreshValid(jwtRefreshToken, userDetailsMapper.toDTO(user))) {
-                var accessToken = tokenService.generateToken(user);
-                revokeAllUserAccessTokens(user);
-                var refreshToken = tokenRepository.findByToken(jwtRefreshToken).orElse(null);
-                saveUserToken(user, accessToken, refreshToken);
-                var authResponse =
-                        TokensDTO.builder()
-                                .accessToken(accessToken)
-                                .refreshToken(jwtRefreshToken)
-                                .build();
-                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
-            }
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null
+                || !jwtService.isRefreshValid(jwtRefreshToken, userDetailsMapper.toDTO(user))) {
+            response.sendError(
+                    HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired refresh token.");
+            return;
+        }
+
+        try {
+            var accessToken = tokenService.generateToken(user);
+            revokeAllUserAccessTokens(user);
+            var refreshToken = tokenRepository.findByToken(jwtRefreshToken).orElse(null);
+            saveUserToken(user, accessToken, refreshToken);
+
+            var authResponse =
+                    TokensDTO.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(jwtRefreshToken)
+                            .build();
+            new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+        } catch (Exception e) {
+            response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating access token.");
         }
     }
 
