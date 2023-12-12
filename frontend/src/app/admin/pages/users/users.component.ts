@@ -23,7 +23,10 @@ import { UserAdminTbodyComponent } from './user-admin-tbody.component'
             (click)="loadFirst = !loadFirst">
             test
         </button>
-        <section view-layout [config]="config" [pagination$]="pagination$">
+        <section
+            view-layout
+            [config]="config"
+            [paginationResult$]="paginationResult$">
             <!-- tbody -->
             <tbody
                 *ngIf="entities$"

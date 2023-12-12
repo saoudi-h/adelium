@@ -46,9 +46,7 @@ import { ActionEntityComponent } from '../../components/base-admin/action-entity
     ],
     template: `
         @if (error$ | async; as errorMessage) {
-            <div>
-                {{ errorMessage }}
-            </div>
+            <div>error : {{ errorMessage }}</div>
         } @else if (isLoading$ | async) {
             <div>Chargement des données...</div>
         } @else {

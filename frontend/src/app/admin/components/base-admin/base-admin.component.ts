@@ -6,9 +6,8 @@ import { Store } from '@ngrx/store'
 import { AppState } from '@reducers'
 import { SharedModule } from '@shared/shared.module'
 import { EntityActions } from '@store/generic/generic.actions'
+import { PaginationResult } from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
-import { Pagination } from '@store/pagination/pagination.reducer'
-import * as PaginationSelectors from '@store/pagination/pagination.selectors'
 import { Observable } from 'rxjs'
 import { AdminConfig } from './admin-config.types'
 import { ViewLayoutComponent } from './view-layout.component'
@@ -20,7 +19,7 @@ import { ViewLayoutComponent } from './view-layout.component'
     template: `<section
         view-layout
         [config]="config"
-        [pagination$]="pagination$">
+        [paginationResult$]="paginationResult$">
         <!-- tbody -->
         <!-- <tbody
             user-admin-tbody
@@ -45,16 +44,18 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     isLoading$!: Observable<boolean>
     error$!: Observable<string | null>
     config!: AdminConfig
-    pagination$!: Observable<Pagination>
+    paginationResult$!: Observable<PaginationResult>
 
     constructor(
         private store: Store<AppState>,
         private modalService: ModalService
     ) {}
     ngOnInit(): void {
-        this.store.dispatch(this.actions.getItems())
-        this.pagination$ = this.store.select(
-            PaginationSelectors.selectPaginationInfo
+        this.store.dispatch(
+            this.actions.getPage({ params: { page: 1, size: 10, sort: [] } })
+        )
+        this.paginationResult$ = this.store.select(
+            this.selectors.selectPaginationResult
         )
         this.entities$ = this.store.select(this.selectors.selectAll)
         this.isLoading$ = this.store.select(this.selectors.selectIsLoading)

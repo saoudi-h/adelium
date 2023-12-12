@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component, Input } from '@angular/core'
 import { SharedModule } from '@shared/shared.module'
-import { Pagination } from '@store/pagination/pagination.reducer'
+import { PaginationResult } from '@store/generic/generic.reducer'
 import { Observable } from 'rxjs'
 import { AdminConfig } from './admin-config.types'
 
@@ -86,7 +86,7 @@ import { AdminConfig } from './admin-config.types'
                             <p
                                 class="text-sm text-base-content/50"
                                 *ngIf="
-                                    pagination$ | async as pagination;
+                                    paginationResult$ | async as pagination;
                                     else noTotal
                                 ">
                                 {{
@@ -102,7 +102,7 @@ import { AdminConfig } from './admin-config.types'
 
                         <div
                             paginator
-                            *ngIf="pagination$ | async as pagination"
+                            *ngIf="paginationResult$ | async as pagination"
                             [currentPage]="pagination.number + 1"
                             [totalPages]="pagination.totalPages"></div>
                     </div>
@@ -115,5 +115,5 @@ import { AdminConfig } from './admin-config.types'
 })
 export class ViewLayoutComponent {
     @Input() config!: AdminConfig
-    @Input() pagination$!: Observable<Pagination>
+    @Input() paginationResult$!: Observable<PaginationResult>
 }
