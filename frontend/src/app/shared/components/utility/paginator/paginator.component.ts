@@ -11,7 +11,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
                 @if (currentPage > 1) {
                     <button
                         class="btn btn-outline join-item"
-                        (click)="selectPage(1)">
+                        (click)="selectPage(currentPage - 1)">
                         <svg
                             class="h-4 w-4 flex-shrink-0"
                             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
                 @if (currentPage < totalPages) {
                     <button
                         class="btn btn-outline join-item"
-                        (click)="selectPage(totalPages)">
+                        (click)="selectPage(currentPage + 1)">
                         Suivant
                         <svg
                             class="h-4 w-4 flex-shrink-0"
@@ -90,7 +90,7 @@ export class PaginatorComponent {
      * @param page - The page number or string.
      */
     selectPage(page: number | string): void {
-        this.pageChange.emit(Number(page))
+        this.pageChange.emit(Number(page) - 1)
     }
 
     /**
