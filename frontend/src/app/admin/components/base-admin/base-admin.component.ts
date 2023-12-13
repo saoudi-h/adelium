@@ -8,7 +8,7 @@ import { SharedModule } from '@shared/shared.module'
 import { EntityActions } from '@store/generic/generic.actions'
 import { PaginationResult } from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
-import { Observable } from 'rxjs'
+import { Observable, map } from 'rxjs'
 import { AdminConfig } from './admin-config.types'
 import { ViewLayoutComponent } from './view-layout.component'
 
@@ -19,7 +19,8 @@ import { ViewLayoutComponent } from './view-layout.component'
     template: `<section
         view-layout
         [config]="config"
-        [paginationResult$]="paginationResult$">
+        [paginationResult$]="paginationResult$"
+        (pageChange)="onPageChange($event)">
         <!-- tbody -->
         <!-- <tbody
             user-admin-tbody
@@ -52,7 +53,7 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     ) {}
     ngOnInit(): void {
         this.store.dispatch(
-            this.actions.getPage({ params: { page: 1, size: 10, sort: [] } })
+            this.actions.getPage({ params: { page: 0, size: 10, sort: [] } })
         )
         this.paginationResult$ = this.store.select(
             this.selectors.selectPaginationResult
@@ -63,6 +64,16 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     }
 
     onDelete(id: number) {
+        this.entities$ = this.entities$.pipe(
+            map(entities =>
+                entities.map(entity => {
+                    if (entity.id === id) {
+                        return { ...entity, isDeleting: true }
+                    }
+                    return entity
+                })
+            )
+        )
         // Dispatcher l'action de suppression
         this.modalService.openModal({
             type: 'confirmation',
@@ -76,5 +87,14 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
 
     onEdit(id: number) {
         console.log('edit', id)
+    }
+
+    onPageChange(page: number) {
+        console.log('base admin : ', page)
+        this.store.dispatch(
+            this.actions.getPage({
+                params: { page: page, size: 10, sort: [] },
+            })
+        )
     }
 }
