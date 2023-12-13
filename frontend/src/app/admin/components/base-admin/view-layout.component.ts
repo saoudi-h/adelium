@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, Input } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { SharedModule } from '@shared/shared.module'
 import { PaginationResult } from '@store/generic/generic.reducer'
 import { Observable } from 'rxjs'
@@ -104,7 +104,8 @@ import { AdminConfig } from './admin-config.types'
                             paginator
                             *ngIf="paginationResult$ | async as pagination"
                             [currentPage]="pagination.number + 1"
-                            [totalPages]="pagination.totalPages"></div>
+                            [totalPages]="pagination.totalPages"
+                            (pageChange)="onPageChange($event)"></div>
                     </div>
                     <!-- End Footer -->
                 </div>
@@ -114,6 +115,12 @@ import { AdminConfig } from './admin-config.types'
         <!-- End Table Section -->`,
 })
 export class ViewLayoutComponent {
+    @Output() pageChange = new EventEmitter<number>()
+
     @Input() config!: AdminConfig
     @Input() paginationResult$!: Observable<PaginationResult>
+
+    onPageChange($event: number) {
+        this.pageChange.emit($event)
+    }
 }
