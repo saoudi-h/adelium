@@ -16,6 +16,7 @@ import { NotFoundIconComponent } from '@shared/components/icons/not-found-icon.c
 import { ProfileIconComponent } from '@shared/components/icons/profile.component'
 import { RegisterIconComponent } from '@shared/components/icons/register-icon.component'
 import { ReportsComponent } from '@shared/components/icons/reports-icon.component'
+import { SaveIconComponent } from '@shared/components/icons/save-icon.component'
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { SuccessIconComponent } from '@shared/components/icons/success-icon.component'
 import { TrainingManagementIconComponent } from '@shared/components/icons/training-management-icon.component'
@@ -72,6 +73,8 @@ export class IconService {
                 return RegisterIconComponent
             case 'not-found-icon':
                 return NotFoundIconComponent
+            case 'save-icon':
+                return SaveIconComponent
             default:
                 return null
         }
