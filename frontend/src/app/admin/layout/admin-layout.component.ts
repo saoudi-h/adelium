@@ -12,6 +12,7 @@ import { SharedModule } from '@shared/shared.module'
     template: `
         <!-- MODAL -->
         <app-modal />
+        <app-form-modal />
         <!-- DRAWER -->
         <div class="drawer bg-base-100 lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
