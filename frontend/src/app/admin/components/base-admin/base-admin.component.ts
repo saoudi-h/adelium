@@ -1,6 +1,8 @@
+import { EntityFormModel } from '@admin/forms/forms.types'
 import { CommonModule } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
+import { FormModalService } from '@core/services/formModal.service'
 import { ModalService } from '@core/services/modal.service'
 import { Store } from '@ngrx/store'
 import { AppState } from '@reducers'
@@ -8,7 +10,7 @@ import { SharedModule } from '@shared/shared.module'
 import { EntityActions } from '@store/generic/generic.actions'
 import { PaginationResult } from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
-import { Observable, map } from 'rxjs'
+import { Observable, catchError, first, map, of } from 'rxjs'
 import { AdminConfig } from './admin-config.types'
 import { ViewLayoutComponent } from './view-layout.component'
 
@@ -18,6 +20,7 @@ import { ViewLayoutComponent } from './view-layout.component'
     standalone: true,
     template: `<section
         view-layout
+        (add)="onAdd()"
         [config]="config"
         [paginationResult$]="paginationResult$"
         (pageChange)="onPageChange($event)">
@@ -46,10 +49,12 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     error$!: Observable<string | null>
     config!: AdminConfig
     paginationResult$!: Observable<PaginationResult>
+    entityFormModel!: EntityFormModel<T>
 
     constructor(
         private store: Store<AppState>,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private formModalService: FormModalService<T>
     ) {}
     ngOnInit(): void {
         this.store.dispatch(
@@ -86,15 +91,38 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     }
 
     onEdit(id: number) {
-        console.log('edit', id)
+        this.store
+            .select(this.selectors.selectEntityById(id))
+            .pipe(
+                first(),
+                catchError(error => {
+                    console.log(
+                        "Erreur lors de la récupération de l'entité",
+                        error
+                    )
+                    return of(undefined)
+                })
+            )
+            .subscribe(entity => {
+                this.formModalService.openFormModal({
+                    ...this.entityFormModel,
+                    initialValue: entity,
+                })
+            })
     }
 
     onPageChange(page: number) {
-        console.log('base admin : ', page)
+        console.log('onPageChange base-admin', page)
+        console.log(page)
         this.store.dispatch(
             this.actions.getPage({
                 params: { page: page, size: 10, sort: [] },
             })
         )
+    }
+
+    onAdd() {
+        console.log('handleAdd base-admin')
+        this.formModalService.openFormModal(this.entityFormModel)
     }
 }

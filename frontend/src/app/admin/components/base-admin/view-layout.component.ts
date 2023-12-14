@@ -9,7 +9,7 @@ import { AdminConfig } from './admin-config.types'
     selector: '[view-layout]',
     imports: [CommonModule, SharedModule],
     standalone: true,
-    template: `<!-- Table Section -->
+    template: ` <!-- Table Section -->
         <section class="flex w-full max-w-[100vw] grow py-10 lg:py-14">
             <div class="w-full overflow-hidden">
                 <div
@@ -26,9 +26,11 @@ import { AdminConfig } from './admin-config.types'
                     <div>
                         <div class="join grid grid-cols-2">
                             <button class="btn btn-outline join-item">
-                                Tout voir
+                                Exporter
                             </button>
-                            <button class="btn btn-outline join-item">
+                            <button
+                                class="btn btn-outline join-item"
+                                (click)="onAdd()">
                                 <svg
                                     class="h-3 w-3 flex-shrink-0"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -115,6 +117,7 @@ import { AdminConfig } from './admin-config.types'
         <!-- End Table Section -->`,
 })
 export class ViewLayoutComponent {
+    @Output() add = new EventEmitter<void>()
     @Output() pageChange = new EventEmitter<number>()
 
     @Input() config!: AdminConfig
@@ -122,5 +125,10 @@ export class ViewLayoutComponent {
 
     onPageChange($event: number) {
         this.pageChange.emit($event)
+    }
+
+    onAdd(): void {
+        console.log('view add ')
+        this.add.emit()
     }
 }
