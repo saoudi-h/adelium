@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { PaginatorComponent } from '@shared/components/utility/paginator/paginator.component'
 import { SharedModule } from '@shared/shared.module'
 import { PaginationResult } from '@store/generic/generic.reducer'
 import { Observable } from 'rxjs'
@@ -7,7 +8,7 @@ import { AdminConfig } from './admin-config.types'
 
 @Component({
     selector: '[view-layout]',
-    imports: [CommonModule, SharedModule],
+    imports: [CommonModule, SharedModule, PaginatorComponent],
     standalone: true,
     template: ` <!-- Table Section -->
         <section class="flex w-full max-w-[100vw] grow py-10 lg:py-14">
@@ -104,9 +105,7 @@ import { AdminConfig } from './admin-config.types'
 
                         <div
                             paginator
-                            *ngIf="paginationResult$ | async as pagination"
-                            [currentPage]="pagination.number + 1"
-                            [totalPages]="pagination.totalPages"
+                            [pagination$]="paginationResult$"
                             (pageChange)="onPageChange($event)"></div>
                     </div>
                     <!-- End Footer -->
