@@ -7,6 +7,7 @@ import { RefreshInterceptor } from '@core/interceptors/refresh.interceptor'
 import { RequestInterceptor } from '@core/interceptors/request.interceptor'
 import { NotificationService } from '@core/services/notification.service'
 import { HomeModule } from '@home/home.module'
+import { NgSelectModule } from '@ng-select/ng-select'
 import { EffectsModule } from '@ngrx/effects'
 import { StoreRouterConnectingModule } from '@ngrx/router-store'
 import { StoreModule } from '@ngrx/store'
@@ -23,7 +24,6 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { AppEffects } from './app.effects'
 import { metaReducers, reducers } from './reducers'
-
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -33,6 +33,7 @@ import { metaReducers, reducers } from './reducers'
         AdminModule,
         HomeModule,
         BrowserAnimationsModule,
+        NgSelectModule,
         ToastrModule.forRoot({
             toastComponent: CustomToastComponent,
             positionClass: 'inline',
