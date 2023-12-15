@@ -1,8 +1,8 @@
 import {
     CheckboxForm,
     EmailInput,
+    MultiSelectForm,
     PasswordInput,
-    SelectForm,
     TelInput,
     TextInput,
     UrlInput,
@@ -257,10 +257,10 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 ],
             },
             {
-                id: 'role',
-                type: SelectForm,
+                id: 'roles',
+                type: MultiSelectForm,
                 label: 'Role',
-                placeholder: 'Utilisateur',
+                placeholder: 'Selectionnez les Roles',
                 options: [
                     {
                         label: 'Utilisateur',
@@ -271,7 +271,7 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                         value: 'admin',
                     },
                 ],
-                validators: [Validators.required, Validators.maxLength(50)],
+                validators: [Validators.required],
             },
             {
                 id: 'accountNonExpired',
