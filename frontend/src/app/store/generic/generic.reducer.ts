@@ -44,9 +44,17 @@ export function createGenericReducer<T extends Identifiable>(
         on(actions.updateItemSuccess, (state, { item }) =>
             adapter.updateOne({ id: item.id, changes: item }, state)
         ),
-        on(actions.deleteItemSuccess, (state, { id }) =>
-            adapter.removeOne(id, state)
-        ),
+        on(actions.deleteItemSuccess, (state, { id }) => ({
+            ...adapter.removeOne(id, state),
+            paginationInfo: {
+                ...state.paginationInfo,
+                result: {
+                    ...state.paginationInfo.result,
+                    totalElements:
+                        state.paginationInfo.result.totalElements - 1,
+                },
+            },
+        })),
         on(actions.getItemByIdSuccess, (state, { item }) => {
             return adapter.upsertOne(item, state)
         }),
