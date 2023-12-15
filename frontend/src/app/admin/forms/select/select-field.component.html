@@ -1,0 +1,16 @@
+<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+<label class="form-control w-full max-w-xs">
+    <div class="label">
+        <span class="label-text" [attr.for]="field.id">{{ field.label }}</span>
+    </div>
+    <ng-select
+        class="ad-custom-select"
+        [labelForId]="field.label"
+        [items]="field.options || null"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="field.type.option === 'multiple'"
+        placeholder="{{ field.placeholder }}"
+        [(ngModel)]="selected">
+    </ng-select>
+</label>
