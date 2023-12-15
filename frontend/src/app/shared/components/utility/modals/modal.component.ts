@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common'
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     animate,
@@ -10,12 +11,15 @@ import {
 } from '@angular/animations'
 import { Component, HostListener } from '@angular/core'
 import { ModalData, ModalService } from '@core/services/modal.service'
+import { SharedModule } from '@shared/shared.module'
 import { Observable } from 'rxjs'
 
 /**
  * Represents a modal component that displays a modal dialog.
  */
 @Component({
+    standalone: true,
+    imports: [CommonModule, SharedModule],
     selector: 'app-modal',
     template: ` @if (modalData$ | async; as modalData) {
         <dialog

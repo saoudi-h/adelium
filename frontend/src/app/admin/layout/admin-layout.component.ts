@@ -3,6 +3,8 @@ import { NavbarAdminComponent } from '@admin/components/navbar-admin.component'
 import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
+import { FormModalComponent } from '@shared/components/utility/modals/form-modal.component'
+import { ModalComponent } from '@shared/components/utility/modals/modal.component'
 import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
 import { SharedModule } from '@shared/shared.module'
 
@@ -60,6 +62,8 @@ import { SharedModule } from '@shared/shared.module'
         AsideComponent,
         BreadcrumbsComponent,
         SharedModule,
+        FormModalComponent,
+        ModalComponent,
     ],
 })
 export class AdminLayoutComponent {}
