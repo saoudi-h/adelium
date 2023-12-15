@@ -38,6 +38,11 @@ export interface ImageForm extends FormType {
     option: 'url' | 'file'
 }
 
+export interface SelectForm extends FormType {
+    name: 'select'
+    option?: 'multiple' | 'single'
+}
+
 export interface InputForm extends FormType {
     name: 'input'
     option:
@@ -57,7 +62,7 @@ export interface FormFieldConfig {
     label: string
     placeholder?: string
     helpText?: string
-    options?: Array<{ label: string; value: any }>
+    options?: Array<{ label: string; value: any; disabled?: boolean }>
     validators?: ValidatorFn[]
     dynamicOptions$?: Observable<Array<{ label: string; value: any }>>
 }

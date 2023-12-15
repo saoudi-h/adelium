@@ -1,7 +1,13 @@
-import { FormType, ImageForm, InputForm } from './forms.types'
+import { FormType, ImageForm, InputForm, SelectForm } from './forms.types'
 
-export const SelectForm: FormType = {
+export const MultiSelectForm: SelectForm = {
     name: 'select',
+    option: 'multiple',
+}
+
+export const SingleSelectForm: SelectForm = {
+    name: 'select',
+    option: 'single',
 }
 
 export const CheckboxForm: FormType = {
