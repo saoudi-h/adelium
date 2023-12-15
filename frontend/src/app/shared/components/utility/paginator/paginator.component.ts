@@ -1,17 +1,22 @@
+import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { PaginationResult } from '@store/generic/generic.reducer'
+import { Observable } from 'rxjs'
 
 /**
  * Component for displaying a pagination control.
  */
 @Component({
+    standalone: true,
+    imports: [CommonModule],
     selector: '[paginator]',
     template: `
-        @if (totalPages > 1) {
+        @if (pagination$ | async; as pagination) {
             <div class="join">
-                @if (currentPage > 1) {
+                @if (pagination.number > 0) {
                     <button
                         class="btn btn-outline join-item"
-                        (click)="selectPage(currentPage - 1)">
+                        (click)="selectPage(pagination.number)">
                         <svg
                             class="h-4 w-4 flex-shrink-0"
                             xmlns="http://www.w3.org/2000/svg"
@@ -28,19 +33,25 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
                         Precedent
                     </button>
                 }
-                @for (page of paginationElements; track page) {
+                @for (
+                    page of generatePagination(
+                        pagination.number + 1,
+                        pagination.totalPages
+                    );
+                    track page
+                ) {
                     <button
                         (click)="selectPage(page)"
-                        [disabled]="page === currentPage"
+                        [disabled]="page === pagination.number + 1"
                         class="btn btn-square btn-outline join-item">
                         {{ page }}
                     </button>
                 }
 
-                @if (currentPage < totalPages) {
+                @if (pagination.number + 1 < pagination.totalPages) {
                     <button
                         class="btn btn-outline join-item"
-                        (click)="selectPage(currentPage + 1)">
+                        (click)="selectPage(pagination.number)">
                         Suivant
                         <svg
                             class="h-4 w-4 flex-shrink-0"
@@ -62,28 +73,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
     `,
 })
 export class PaginatorComponent {
-    /**
-     * The current page number.
-     */
-    @Input() currentPage: number = 1
-
-    /**
-     * The total number of pages.
-     */
-    @Input() totalPages: number = 1
+    @Input() pagination$: Observable<PaginationResult> | undefined
 
     /**
      * Event emitter for page change.
      */
     @Output() pageChange = new EventEmitter<number>()
-
-    /**
-     * Generates the pagination elements.
-     * @returns An array of numbers or strings representing the pagination elements.
-     */
-    get paginationElements(): (number | string)[] {
-        return this.generatePagination(this.currentPage, this.totalPages)
-    }
 
     /**
      * Selects a page.
