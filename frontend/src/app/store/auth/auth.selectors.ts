@@ -1,4 +1,4 @@
-import { Role } from '@core/utility/types'
+import { RoleEnum } from '@core/utility/types'
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 import { AuthState } from './auth.reducer'
 
@@ -31,7 +31,8 @@ export const selectAuthError = createSelector(
 
 export const selectIsAdmin = createSelector(
     selectAuthState,
-    (state: AuthState) => state.user?.authorities.includes(Role.ADMIN) ?? false
+    (state: AuthState) =>
+        state.user?.authorities.includes(RoleEnum.ADMIN) ?? false
 )
 
 export const selectAccessToken = createSelector(
