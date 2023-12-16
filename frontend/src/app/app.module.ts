@@ -14,8 +14,10 @@ import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { CustomToastComponent } from '@shared/components/widgets/notificator/custom-toast.component'
 import { AuthEffects } from '@store/auth/auth.effects'
+import { AuthorityEffects } from '@store/authority/authority.effects'
 import { NotificationEffects } from '@store/notification/notification.effects'
 import { RequestQueueEffects } from '@store/request-queue/request-queue.effects'
+import { RoleEffects } from '@store/role/role.effects'
 import { ThemeEffects } from '@store/theme/theme.effects'
 import { UserEffects } from '@store/user/user.effects'
 import { ToastrModule } from 'ngx-toastr'
@@ -51,6 +53,8 @@ import { metaReducers, reducers } from './reducers'
             NotificationEffects,
             AuthEffects,
             UserEffects,
+            RoleEffects,
+            AuthorityEffects,
             RequestQueueEffects,
         ]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
