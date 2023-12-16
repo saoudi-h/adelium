@@ -1,22 +1,23 @@
-import * as AuthSelectors from '@/store/auth/auth.selectors'
-import {
-    animate,
-    query,
-    stagger,
-    style,
-    transition,
-    trigger,
-} from '@angular/animations'
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
-import { IconService } from '@core/services/icon.service'
-import { Store } from '@ngrx/store'
 import { LogoWidgetComponent } from '@shared/components/widgets/logo/logo.component'
 import { SearchWidgetComponent } from '@shared/components/widgets/search/search.component'
 import { ThemeSwitcherWidgetComponent } from '@shared/components/widgets/theme-switcher/theme-switcher.component'
-import { Observable } from 'rxjs'
+import { MenuAsideComponent } from './menu.component'
+
+export interface MenuItem {
+    type: 'menu' | 'link' | 'button'
+    id: string
+    text: string
+    adminOnly: boolean
+    icon: string
+    link?: string
+    subMenuItems?: MenuItem[]
+    action?: () => void
+}
+
 @Component({
     standalone: true,
     selector: 'app-aside',
@@ -28,6 +29,7 @@ import { Observable } from 'rxjs'
         SearchWidgetComponent,
         RouterLink,
         RouterLinkActive,
+        MenuAsideComponent,
     ],
     template: `
         <aside
@@ -55,93 +57,51 @@ import { Observable } from 'rxjs'
                     <div search-widget [alwaysOpen]="true" width="19rem"></div>
                 </div>
             </div>
-            <ul class="menu menu-xs w-full" [@listAnimation]>
-                <!-- aside body -->
-                @for (item of menuItems; track item) {
-                    @if (
-                        !item.adminOnly ||
-                        (item.adminOnly && (isAdmin$ | async))
-                    ) {
-                        <li class="">
-                            @if (item.isButton) {
-                                <button
-                                    (click)="item.action()"
-                                    class="justify-between">
-                                    <div class="h-10 w-10 p-2">
-                                        <ng-container
-                                            *ngComponentOutlet="
-                                                getIconComponent(item.icon)
-                                            " />
-                                    </div>
-                                    <span> {{ item.text }} </span>
-                                </button>
-                            } @else {
-                                <a
-                                    [routerLink]="item.link"
-                                    routerLinkActive="active"
-                                    class="justify-between">
-                                    <div class="h-9 w-9 p-2">
-                                        <ng-container
-                                            *ngComponentOutlet="
-                                                getIconComponent(item.icon)
-                                            " />
-                                    </div>
-                                    <span> {{ item.text }} </span>
-                                </a>
-                            }
-                        </li>
-                    }
-                }
-            </ul>
+            <ul
+                menu-aside
+                [menuItems]="menuItems"
+                class="menu menu-xs w-full"></ul>
         </aside>
     `,
-    animations: [
-        trigger('listAnimation', [
-            transition('* => *', [
-                query(
-                    'li',
-                    style({ opacity: 0, transform: 'translateY(-200px)' }),
-                    { optional: true }
-                ),
-                query(
-                    'li',
-                    stagger('50ms', [
-                        animate(
-                            '300ms ease-out',
-                            style({ opacity: 1, transform: 'none' })
-                        ),
-                    ]),
-                    { optional: true }
-                ),
-            ]),
-        ]),
-    ],
 })
 export class AsideComponent {
-    isAdmin$: Observable<boolean>
-
-    constructor(
-        private iconService: IconService,
-        private store: Store,
-        private authSerivce: AuthService
-    ) {
-        this.isAdmin$ = this.store.select(AuthSelectors.selectIsAdmin)
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getIconComponent(iconName: string): any {
-        return this.iconService.getIconComponent(iconName)
-    }
-
-    menuItems = [
+    constructor(private authSerivce: AuthService) {}
+    menuItems: MenuItem[] = [
         {
-            id: 'userManagement',
-            link: '/admin/users',
-            text: 'Gestion des utilisateurs',
+            type: 'menu',
+            id: 'AuthManagement',
+            text: "Gestion de l'authentification",
             adminOnly: true,
-            icon: 'users-icon', // Exemple de nom d'icône, à remplacer par vos propres icônes
+            icon: 'auth-icon',
+            subMenuItems: [
+                {
+                    type: 'link',
+                    id: 'users',
+                    link: '/admin/users',
+                    text: 'Utilisateurs',
+                    adminOnly: true,
+                    icon: 'users-icon',
+                },
+                {
+                    type: 'link',
+                    id: 'roles',
+                    link: '/admin/roles',
+                    text: 'Rôles',
+                    adminOnly: true,
+                    icon: 'role-icon',
+                },
+                {
+                    type: 'link',
+                    id: 'authorities',
+                    link: '/admin/authorities',
+                    text: 'Permissions',
+                    adminOnly: true,
+                    icon: 'authority-icon',
+                },
+            ],
         },
         {
+            type: 'link',
             id: 'courseManagement',
             link: '/admin/course-management',
             text: 'Gestion des cours',
@@ -149,6 +109,7 @@ export class AsideComponent {
             icon: 'courses-icon',
         },
         {
+            type: 'link',
             id: 'categories',
             link: '/admin/categories',
             text: 'Catégories',
@@ -156,6 +117,7 @@ export class AsideComponent {
             icon: 'categories-icon',
         },
         {
+            type: 'link',
             id: 'groups',
             link: '/admin/groups',
             text: 'Groupes',
@@ -163,6 +125,7 @@ export class AsideComponent {
             icon: 'groups-icon',
         },
         {
+            type: 'link',
             id: 'assessment',
             link: '/admin/assessment',
             text: 'Évaluations',
@@ -170,6 +133,7 @@ export class AsideComponent {
             icon: 'assessment-icon',
         },
         {
+            type: 'link',
             id: 'questionBank',
             link: '/admin/question-bank',
             text: 'Banque de questions',
@@ -177,6 +141,7 @@ export class AsideComponent {
             icon: 'bank-icon',
         },
         {
+            type: 'link',
             id: 'trainingManagement',
             link: '/admin/training-management',
             text: 'Gestion des formations',
@@ -184,6 +149,7 @@ export class AsideComponent {
             icon: 'training-management-icon',
         },
         {
+            type: 'link',
             id: 'reports',
             link: '/admin/reports',
             text: 'Rapports',
@@ -191,6 +157,7 @@ export class AsideComponent {
             icon: 'reports-icon',
         },
         {
+            type: 'link',
             id: 'announcements',
             link: '/admin/announcements',
             text: 'Annonces',
@@ -198,6 +165,7 @@ export class AsideComponent {
             icon: 'announcements-icon',
         },
         {
+            type: 'link',
             id: 'settings',
             link: '/admin/settings',
             text: 'Paramètres',
@@ -205,8 +173,8 @@ export class AsideComponent {
             icon: 'settings-icon',
         },
         {
+            type: 'button',
             id: 'logout',
-            isButton: true,
             action: () => this.authSerivce.logout(),
             text: 'Se déconnecter',
             adminOnly: true,
