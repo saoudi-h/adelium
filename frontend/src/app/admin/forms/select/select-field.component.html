@@ -6,11 +6,12 @@
     <ng-select
         class="ad-custom-select"
         [labelForId]="field.label"
-        [items]="field.options || null"
+        [items]="field.staticOptions || null"
         bindLabel="label"
         bindValue="value"
         [multiple]="field.type.option === 'multiple'"
         placeholder="{{ field.placeholder }}"
+        [addTag]="field.addTag || false"
         [(ngModel)]="selected">
     </ng-select>
 </label>

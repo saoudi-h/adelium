@@ -2,7 +2,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { NgSelectModule } from '@ng-select/ng-select'
-import { FormFieldConfig } from '../forms.types'
+import { FormField } from '../forms.types'
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -14,6 +14,6 @@ import { FormFieldConfig } from '../forms.types'
 })
 export class SelectFieldComponent {
     selected: any
-    @Input() field!: FormFieldConfig
+    @Input() field!: FormField
     @Input() initialValue?: any
 }

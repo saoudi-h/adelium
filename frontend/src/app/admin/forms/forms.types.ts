@@ -5,7 +5,7 @@ import { Observable } from 'rxjs'
 
 export interface EntityFormModel<T extends Identifiable> {
     title: string
-    fields: FormFieldConfig[]
+    fields: FormField[]
     id?: number | string
     actions?: FormAction[]
     additionalInfo?: string
@@ -14,7 +14,7 @@ export interface EntityFormModel<T extends Identifiable> {
     onFormSubmit: (formValue: any) => void
 }
 
-export type FormType = {
+export type FieldType = {
     name:
         | 'input'
         | 'select'
@@ -33,17 +33,17 @@ export type FormType = {
     option?: string
 }
 
-export interface ImageForm extends FormType {
+export interface ImageForm extends FieldType {
     name: 'image'
     option: 'url' | 'file'
 }
 
-export interface SelectForm extends FormType {
+export interface SelectForm extends FieldType {
     name: 'select'
     option?: 'multiple' | 'single'
 }
 
-export interface InputForm extends FormType {
+export interface InputForm extends FieldType {
     name: 'input'
     option:
         | 'text'
@@ -56,15 +56,18 @@ export interface InputForm extends FormType {
         | 'tel'
 }
 
-export interface FormFieldConfig {
+export interface FormField {
     id: number | string
-    type: FormType
+    type: FieldType
     label: string
     placeholder?: string
     helpText?: string
-    options?: Array<{ label: string; value: any; disabled?: boolean }>
     validators?: ValidatorFn[]
-    dynamicOptions$?: Observable<Array<{ label: string; value: any }>>
+    staticOptions?: Array<{ label: string; value: any; disabled?: boolean }>
+    dynamicOptions?: () => Observable<
+        Array<{ label: string; value: any; disabled?: boolean }>
+    >
+    addTag?: boolean
 }
 
 export interface FormAction {

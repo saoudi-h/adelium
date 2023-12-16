@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input } from '@angular/core'
-import { FormFieldConfig } from '../forms.types'
+import { FormField } from '../forms.types'
 
 @Component({
     standalone: true,
@@ -25,6 +25,6 @@ import { FormFieldConfig } from '../forms.types'
     `,
 })
 export class InputFieldComponent {
-    @Input() field!: FormFieldConfig
+    @Input() field!: FormField
     @Input() initialValue?: any
 }

@@ -1,4 +1,4 @@
-import { FormType, ImageForm, InputForm, SelectForm } from './forms.types'
+import { FieldType, ImageForm, InputForm, SelectForm } from './forms.types'
 
 export const MultiSelectForm: SelectForm = {
     name: 'select',
@@ -10,47 +10,47 @@ export const SingleSelectForm: SelectForm = {
     option: 'single',
 }
 
-export const CheckboxForm: FormType = {
+export const CheckboxForm: FieldType = {
     name: 'checkbox',
 }
 
-export const RadioForm: FormType = {
+export const RadioForm: FieldType = {
     name: 'radio',
 }
 
-export const DateForm: FormType = {
+export const DateForm: FieldType = {
     name: 'date',
 }
 
-export const DatetimeForm: FormType = {
+export const DatetimeForm: FieldType = {
     name: 'datetime',
 }
 
-export const TimeForm: FormType = {
+export const TimeForm: FieldType = {
     name: 'time',
 }
 
-export const FileForm: FormType = {
+export const FileForm: FieldType = {
     name: 'file',
 }
 
-export const EntityForm: FormType = {
+export const EntityForm: FieldType = {
     name: 'entity',
 }
 
-export const DynamicSelectForm: FormType = {
+export const DynamicSelectForm: FieldType = {
     name: 'dynamic-select',
 }
 
-export const SearchForm: FormType = {
+export const SearchForm: FieldType = {
     name: 'search',
 }
 
-export const RangeForm: FormType = {
+export const RangeForm: FieldType = {
     name: 'range',
 }
 
-export const ColorForm: FormType = {
+export const ColorForm: FieldType = {
     name: 'color',
 }
 export const ImageFormFile: ImageForm = {
