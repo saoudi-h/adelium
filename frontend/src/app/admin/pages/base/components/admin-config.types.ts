@@ -3,6 +3,6 @@ export interface AdminConfig {
     name: string
     plural: string
     masculin: boolean
-    tableLabels: string[]
+    tableLabels?: string[]
     subtitle: string
 }

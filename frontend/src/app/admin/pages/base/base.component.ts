@@ -11,35 +11,18 @@ import { EntityActions } from '@store/generic/generic.actions'
 import { PaginationResult } from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
 import { Observable, catchError, first, map, of } from 'rxjs'
-import { AdminConfig } from './admin-config.types'
-import { ViewLayoutComponent } from './view-layout.component'
+import { baseAnimations } from './base-animations.animation'
+import { BaseTrComponent } from './base-tr.component'
+import { AdminConfig } from './components/admin-config.types'
+import { ViewLayoutComponent } from './components/view-layout.component'
 
 @Component({
-    selector: '[base-admin-layout]',
-    imports: [CommonModule, SharedModule, ViewLayoutComponent],
+    selector: '[base-layout]',
+    imports: [CommonModule, SharedModule, ViewLayoutComponent, BaseTrComponent],
     standalone: true,
-    template: `<section
-        view-layout
-        (add)="onAdd()"
-        [config]="config"
-        [paginationResult$]="paginationResult$"
-        (pageChange)="onPageChange($event)">
-        <!-- tbody -->
-        <!-- <tbody
-            user-admin-tbody
-            [entities$]="entities$"
-            [isLoading$]="isLoading$"
-            [error$]="errors$"></tbody> -->
-        // TODO : add base tbody component
-    </section>`,
-    styles: [
-        `
-            :host
-                max-width: 100vw
-                width: 100%
-                flex-grow: 1
-        `,
-    ],
+    templateUrl: './base.component.html',
+    styleUrl: './base.component.sass',
+    animations: baseAnimations,
 })
 export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     selectors!: EntitySelectors<T>

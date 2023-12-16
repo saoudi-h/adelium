@@ -1,0 +1,41 @@
+<section
+    view-layout
+    (add)="onAdd()"
+    [config]="config"
+    [fields]="entityFormModel.fields"
+    [paginationResult$]="paginationResult$"
+    (pageChange)="onPageChange($event)">
+    <!-- tbody -->
+    @if (entities$ | async; as entities) {
+        @if (paginationResult$ | async; as pagination) {
+            <tbody [@bodyAnimation]="pagination.number">
+                @for (entity of entities; track entity) {
+                    <tr
+                        base-tr
+                        [@.disabled]="!entity['isDeleting']"
+                        @rowAnimation
+                        (delete)="onDelete($event)"
+                        (edit)="onEdit($event)"
+                        [entity]="entity"
+                        [fields]="entityFormModel.fields"></tr>
+                }
+            </tbody>
+        }
+    } @else if (isLoading$ | async) {
+        <tbody>
+            <tr>
+                <td colspan="100%" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    } @else {
+        @if (error$ | async; as errorMessage) {
+            <div>error : {{ errorMessage }}</div>
+        } @else {
+            <div>Erreur Inatendue.</div>
+        }
+    }
+</section>

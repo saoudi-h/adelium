@@ -1,5 +1,8 @@
+import { FormField } from '@admin/forms/forms.types'
 import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { AddIconComponent } from '@shared/components/icons/add-icon.component'
+import { ExportIconComponent } from '@shared/components/icons/export-icon.component'
 import { PaginatorComponent } from '@shared/components/utility/paginator/paginator.component'
 import { SharedModule } from '@shared/shared.module'
 import { PaginationResult } from '@store/generic/generic.reducer'
@@ -8,7 +11,14 @@ import { AdminConfig } from './admin-config.types'
 
 @Component({
     selector: '[view-layout]',
-    imports: [CommonModule, SharedModule, PaginatorComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        PaginatorComponent,
+        AddIconComponent,
+        AddIconComponent,
+        ExportIconComponent,
+    ],
     standalone: true,
     template: ` <!-- Table Section -->
         <section class="flex w-full max-w-[100vw] grow py-10 lg:py-14">
@@ -27,26 +37,20 @@ import { AdminConfig } from './admin-config.types'
                     <div>
                         <div class="join grid grid-cols-2">
                             <button class="btn btn-outline join-item">
-                                Exporter
+                                <div export-icon className="h-6 w-6"></div>
+                                <div class="hidden sm:flex md:hidden xl:flex">
+                                    Exporter
+                                </div>
                             </button>
                             <button
                                 class="btn btn-outline join-item"
                                 (click)="onAdd()">
-                                <svg
-                                    class="h-3 w-3 flex-shrink-0"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 16 16"
-                                    fill="none">
-                                    <path
-                                        d="M2.63452 7.50001L13.6345 7.5M8.13452 13V2"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round" />
-                                </svg>
-                                Ajouter {{ config.masculin ? ' un ' : ' une ' }}
-                                {{ config.name }}
+                                <div add-icon className="h-6 w-6"></div>
+                                <div class="hidden sm:flex md:hidden xl:flex">
+                                    Ajouter
+                                    {{ config.masculin ? ' un ' : ' une ' }}
+                                    {{ config.name }}
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -55,9 +59,9 @@ import { AdminConfig } from './admin-config.types'
                 <!-- Table -->
                 <div class="w-full overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="table">
+                        <table class="table table-zebra-zebra">
                             <!-- thead  -->
-                            <thead class="">
+                            <thead class="bg-base-300">
                                 <tr>
                                     <th>
                                         <label>
@@ -66,15 +70,28 @@ import { AdminConfig } from './admin-config.types'
                                                 class="checkbox" />
                                         </label>
                                     </th>
-                                    @for (
-                                        label of config.tableLabels;
-                                        track label
-                                    ) {
-                                        <th
-                                            class="text-md capitalize text-primary">
-                                            {{ label }}
-                                        </th>
+                                    @if (config.tableLabels) {
+                                        @for (
+                                            label of config.tableLabels;
+                                            track label
+                                        ) {
+                                            <th
+                                                class="text-md capitalize text-primary">
+                                                {{ label }}
+                                            </th>
+                                        }
+                                    } @else {
+                                        @for (field of fields; track field) {
+                                            <th
+                                                class="text-md capitalize text-primary">
+                                                {{ field.label }}
+                                            </th>
+                                        }
                                     }
+                                    <th
+                                        class="text-md text-right capitalize text-primary">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <ng-content></ng-content>
@@ -120,6 +137,7 @@ export class ViewLayoutComponent {
     @Output() pageChange = new EventEmitter<number>()
 
     @Input() config!: AdminConfig
+    @Input() fields: FormField[] | undefined
     @Input() paginationResult$!: Observable<PaginationResult>
 
     onPageChange($event: number) {
