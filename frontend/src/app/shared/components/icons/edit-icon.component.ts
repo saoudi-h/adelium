@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core'
 
 @Component({
-    selector: '[modify-icon]',
+    selector: '[edit-icon]',
     standalone: true,
     template: `<svg
         viewBox="0 0 24 24"
@@ -24,6 +24,6 @@ import { Component, Input } from '@angular/core'
         </g>
     </svg>`,
 })
-export class ModifyIconComponent {
+export class EditIconComponent {
     @Input() className = ''
 }

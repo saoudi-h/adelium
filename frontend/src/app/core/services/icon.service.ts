@@ -1,12 +1,18 @@
 import { Injectable, Type } from '@angular/core'
+import { AddIconComponent } from '@shared/components/icons/add-icon.component'
 import { AdminIconComponent } from '@shared/components/icons/admin-icon.component'
 import { AnnouncementsIconComponent } from '@shared/components/icons/announcements-icon.component'
 import { AssessmentIconComponent } from '@shared/components/icons/assessment-icon.component'
+import { AuthIconComponent } from '@shared/components/icons/auth-icon.component'
+import { AuthorityIconComponent } from '@shared/components/icons/authority-icon.component'
 import { BankIconComponent } from '@shared/components/icons/bank-icon.component'
 import { CategoriesIconComponent } from '@shared/components/icons/categories-icon.component'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { CoursesIconComponent } from '@shared/components/icons/courses-icon.component'
+import { DeleteIconComponent } from '@shared/components/icons/delete-icon.component'
+import { EditIconComponent } from '@shared/components/icons/edit-icon.component'
 import { ErrorIconComponent } from '@shared/components/icons/error-icon.component'
+import { ExportIconComponent } from '@shared/components/icons/export-icon.component'
 import { GroupsIconComponent } from '@shared/components/icons/groups-icon.component'
 import { HomeIconComponent } from '@shared/components/icons/home-icon.component'
 import { InfoIconComponent } from '@shared/components/icons/info-icon.component'
@@ -16,6 +22,7 @@ import { NotFoundIconComponent } from '@shared/components/icons/not-found-icon.c
 import { ProfileIconComponent } from '@shared/components/icons/profile.component'
 import { RegisterIconComponent } from '@shared/components/icons/register-icon.component'
 import { ReportsComponent } from '@shared/components/icons/reports-icon.component'
+import { RoleIconComponent } from '@shared/components/icons/role-icon.component'
 import { SaveIconComponent } from '@shared/components/icons/save-icon.component'
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { SuccessIconComponent } from '@shared/components/icons/success-icon.component'
@@ -75,6 +82,20 @@ export class IconService {
                 return NotFoundIconComponent
             case 'save-icon':
                 return SaveIconComponent
+            case 'role-icon':
+                return RoleIconComponent
+            case 'auth-icon':
+                return AuthIconComponent
+            case 'authority-icon':
+                return AuthorityIconComponent
+            case 'add-icon':
+                return AddIconComponent
+            case 'edit-icon':
+                return EditIconComponent
+            case 'delete-icon':
+                return DeleteIconComponent
+            case 'export-icon':
+                return ExportIconComponent
             default:
                 return null
         }
