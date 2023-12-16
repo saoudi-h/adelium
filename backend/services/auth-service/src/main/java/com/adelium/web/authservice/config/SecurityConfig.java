@@ -33,9 +33,7 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final UnauthorizedHandler unauthorizedHandler;
     private final ForbiddenHandler forbiddenHandler;
-    private static final String[] ADMIN_URL = {
-        "/users", "/roles/**", "/authorities/**", "/authorisations/**",
-    };
+    private static final String[] ADMIN_URL = {"/users/**", "/roles/**", "/authorities/**"};
 
     private static final String[] WHITE_LIST_URL = {
         "/auth/refresh",
