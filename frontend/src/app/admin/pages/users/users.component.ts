@@ -8,9 +8,9 @@ import {
     UrlInput,
 } from '@admin/forms/Forms'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AdminConfig } from '@admin/components/base-admin/admin-config.types'
-import { BaseAdminComponent } from '@admin/components/base-admin/base-admin.component'
-import { ViewLayoutComponent } from '@admin/components/base-admin/view-layout.component'
+import { BaseAdminComponent } from '@admin/pages/base/base.component'
+import { AdminConfig } from '@admin/pages/base/components/admin-config.types'
+import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.component'
 import {
     animate,
     keyframes,
@@ -189,7 +189,6 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
             'Status',
             'Securité',
             'Autres',
-            'Actions',
         ],
         subtitle: 'Ajouter, modifier et supprimer des utilisateurs',
     }
@@ -261,7 +260,7 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 type: MultiSelectForm,
                 label: 'Role',
                 placeholder: 'Selectionnez les Roles',
-                options: [
+                staticOptions: [
                     {
                         label: 'Utilisateur',
                         value: 'user',

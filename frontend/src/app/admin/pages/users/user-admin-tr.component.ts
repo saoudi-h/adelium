@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { User } from '@core/entity/user.entity'
 import { SharedModule } from '@shared/shared.module'
-import { ActionEntityComponent } from '../../components/base-admin/action-entity.component'
+import { ActionEntityComponent } from '../base/components/action-entity.component'
 @Component({
     selector: '[user-admin-tr]',
     standalone: true,

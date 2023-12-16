@@ -33,6 +33,30 @@ const routes: Routes = [
                     active: true,
                 },
             },
+            {
+                path: 'roles',
+                loadComponent: () =>
+                    import('./pages/roles/roles.component').then(
+                        mod => mod.AdminRolesComponent
+                    ),
+                data: {
+                    breadcrumb: 'Utilisateurs',
+                    icon: 'role-icon',
+                    active: true,
+                },
+            },
+            {
+                path: 'authorities',
+                loadComponent: () =>
+                    import('./pages/authorities/authorities.component').then(
+                        mod => mod.AdminAuthoritiesComponent
+                    ),
+                data: {
+                    breadcrumb: 'Autorités',
+                    icon: 'authority-icon',
+                    active: true,
+                },
+            },
         ],
     },
 ]
