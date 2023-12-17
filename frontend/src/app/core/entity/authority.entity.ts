@@ -1,5 +1,10 @@
 import { Identifiable } from './identifiable.interface'
 
-export interface Authority extends Identifiable {
-    authority: string
+export class Authority implements Identifiable {
+    id!: number
+    isDeleting?: boolean
+    authority!: string
+    toString(): string {
+        return this.authority
+    }
 }

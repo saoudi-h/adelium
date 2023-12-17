@@ -1,11 +1,20 @@
 import { Identifiable } from './identifiable.interface'
 
-export interface Address extends Identifiable {
-    streetNumber: number
-    street: string
+export class Address implements Identifiable {
+    id!: number
+    streetNumber!: number
+    street!: string
     additionalInfo?: string
-    postalCode: string
-    city: string
+    postalCode!: string
+    city!: string
     departmentNumber?: string
-    country: string
+    country!: string
+
+    constructor(data: Partial<Address>) {
+        Object.assign(this, data)
+    }
+
+    toString(): string {
+        return `${this.streetNumber} ${this.street}, ${this.postalCode} ${this.city}, ${this.country}`
+    }
 }
