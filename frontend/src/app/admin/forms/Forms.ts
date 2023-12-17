@@ -40,6 +40,11 @@ export const EntityForm: FieldType = {
 
 export const DynamicSelectForm: FieldType = {
     name: 'dynamic-select',
+    option: 'single',
+}
+export const MultiDynamicSelectForm: FieldType = {
+    name: 'dynamic-select',
+    option: 'multiple',
 }
 
 export const SearchForm: FieldType = {

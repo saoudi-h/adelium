@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
     EmailInput,
-    MultiSelectForm,
+    MultiDynamicSelectForm,
     PasswordInput,
     TelInput,
     TextInput,
     UrlInput,
 } from '@admin/forms/Forms'
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
 import { AdminConfig } from '@admin/pages/base/components/admin-config.types'
 import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.component'
@@ -24,9 +24,10 @@ import { Validators } from '@angular/forms'
 import { User } from '@core/entity/user.entity'
 import { CustomValidators } from '@core/utility/CustomValidators'
 import { SharedModule } from '@shared/shared.module'
+import { RoleSelectors } from '@store/role/role.selectors'
 import { UserActions } from '@store/user/user.actions'
 import { UserSelectors } from '@store/user/user.selectors'
-import { Observable } from 'rxjs'
+import { Observable, map } from 'rxjs'
 import { EntityFormModel } from './../../forms/forms.types'
 import { UserAdminTrComponent } from './user-admin-tr.component'
 @Component({
@@ -257,19 +258,18 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
             },
             {
                 id: 'roles',
-                type: MultiSelectForm,
+                type: MultiDynamicSelectForm,
                 label: 'Role',
                 placeholder: 'Selectionnez les Roles',
-                staticOptions: [
-                    {
-                        label: 'Utilisateur',
-                        value: 'user',
-                    },
-                    {
-                        label: 'Administrateur',
-                        value: 'admin',
-                    },
-                ],
+                dynamicOptions: () =>
+                    this.store.select(RoleSelectors.selectAll).pipe(
+                        map(roles =>
+                            roles.map(role => ({
+                                label: role.name,
+                                value: role.id,
+                            }))
+                        )
+                    ),
                 validators: [Validators.required],
             },
             {

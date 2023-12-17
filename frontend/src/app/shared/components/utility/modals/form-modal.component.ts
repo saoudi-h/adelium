@@ -1,6 +1,6 @@
-import { FormModalService } from '@core/services/formModal.service'
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CheckBoxFieldComponent } from '@admin/forms/checkbox/checkbox-field.component'
+import { DynamicSelectFieldComponent } from '@admin/forms/dynamic-select/dynamic-select-field.component'
 import { EntityFormModel } from '@admin/forms/forms.types'
 import { InputFieldComponent } from '@admin/forms/input/input-field.component'
 import { SelectFieldComponent } from '@admin/forms/select/select-field.component'
@@ -16,6 +16,7 @@ import {
 import { CommonModule } from '@angular/common'
 import { Component, HostListener, Type } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
+import { FormModalService } from '@core/services/formModal.service'
 import { IconService } from '@core/services/icon.service'
 import { SharedModule } from '@shared/shared.module'
 import { Observable } from 'rxjs'
@@ -28,6 +29,7 @@ import { Observable } from 'rxjs'
         InputFieldComponent,
         CheckBoxFieldComponent,
         SelectFieldComponent,
+        DynamicSelectFieldComponent,
     ],
     selector: 'app-form-modal',
     template: ` @for (
@@ -67,6 +69,14 @@ import { Observable } from 'rxjs'
                         } @else if (field.type.name === 'select') {
                             <div
                                 select-field
+                                class="form-control w-full max-w-xs"
+                                [field]="field"
+                                [initialValue]="
+                                    modalConfig?.initialValue?.[field.id]
+                                "></div>
+                        } @else if (field.type.name === 'dynamic-select') {
+                            <div
+                                dynamic-select-field
                                 class="form-control w-full max-w-xs"
                                 [field]="field"
                                 [initialValue]="
@@ -168,6 +178,9 @@ import { Observable } from 'rxjs'
     ],
 })
 export class FormModalComponent<T extends Identifiable> {
+    test(data: unknown) {
+        console.log(data)
+    }
     formModalStack$: Observable<EntityFormModel<T>[]>
     constructor(
         private formModalService: FormModalService<T>,
