@@ -145,7 +145,6 @@ export class ViewLayoutComponent {
     }
 
     onAdd(): void {
-        console.log('view add ')
         this.add.emit()
     }
 }
