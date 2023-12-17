@@ -35,9 +35,9 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     entityFormModel!: EntityFormModel<T>
 
     constructor(
-        private store: Store<AppState>,
-        private modalService: ModalService,
-        private formModalService: FormModalService<T>
+        protected store: Store<AppState>,
+        protected modalService: ModalService,
+        protected formModalService: FormModalService<T>
     ) {}
     ngOnInit(): void {
         this.store.dispatch(
@@ -105,7 +105,6 @@ export class BaseAdminComponent<T extends Identifiable> implements OnInit {
     }
 
     onAdd() {
-        console.log('handleAdd base-admin')
         this.formModalService.openFormModal(this.entityFormModel)
     }
 }
