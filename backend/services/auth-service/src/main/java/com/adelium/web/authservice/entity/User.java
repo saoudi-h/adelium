@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -267,7 +266,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * @return the authorities granted to the user
      */
     @Override
-    public Collection<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         Set<Authority> authorities = new HashSet<>();
         for (Role role : roles) {
             authorities.add(Authority.builder().authority(role.getName()).build());
