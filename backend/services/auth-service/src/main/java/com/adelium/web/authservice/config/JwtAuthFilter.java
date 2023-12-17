@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtAuthFilter extends JwtFilter {
-    ;
+
     private final UserService userService;
 
     public JwtAuthFilter(
