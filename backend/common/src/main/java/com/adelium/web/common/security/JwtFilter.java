@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
@@ -29,7 +28,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * responsible for
  * intercepting HTTP requests and handling JWT-based authentication.
  */
-@Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -56,33 +54,47 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        System.out.println("JwtFilter.doFilterInternal : " + request.getRequestURI());
-
+        logger.info("request url : " + request.getRequestURL().toString());
+        logger.info("doFilterInternal");
         final String authHeader = request.getHeader("Authorization");
         try {
+            logger.info("authHeader : " + authHeader);
             if (isAuthService() && request.getRequestURI().startsWith(getAuthenticationsUrl())) {
+                logger.info("isAuthService");
                 filterChain.doFilter(request, response);
                 return;
             }
             if (authHeader == null || !authHeader.startsWith("Bearer")) {
+                logger.info("authHeader null or not starts with Bearer");
                 filterChain.doFilter(request, response);
                 return;
             }
             final String jwtToken = authHeader.split(" ")[1].trim();
             final String username = jwtService.extractUsername(jwtToken);
+            logger.info("username : " + username);
 
             if (username != null
                     && SecurityContextHolder.getContext().getAuthentication() == null) {
+                logger.info("SecurityContextHolder.getContext().getAuthentication() == null");
                 // user not connected
+                System.out.println("before getting user details");
+                logger.info("before getting user details");
                 UserDetailsDTO userDetails = getUserDetails(username);
+                logger.info("userDetails : " + userDetails);
+                logger.info("after getting user details");
+                System.out.println("after getting user details");
 
                 if (userDetails != null && jwtService.isTokenValid(jwtToken, userDetails)) {
+                    logger.info("userDetails != null && jwtService.isTokenValid");
                     Claims claims = jwtService.extractAllClaims(jwtToken);
+                    logger.info("claims : " + claims);
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails, claims, userDetails.getAuthorities());
+                    logger.info("authToken : " + authToken);
                     authToken.setDetails(
                             new WebAuthenticationDetailsSource().buildDetails(request));
+                    logger.info("authToken : " + authToken);
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 } else {
                     logger.error(
