@@ -1,0 +1,45 @@
+.ng-select
+    &.ad-custom-select
+        width: 100%
+        .ng-select-container
+            @apply input select-bordered w-full max-w-xs
+        ::ng-deep
+            .ng-select-container
+                @apply input select-bordered w-full max-w-xs
+
+        &.ng-select-single
+            .ng-select-container
+                .ng-value-container
+                    .ng-placeholder
+                        top: calc(50% - 0.8rem) #{!important}
+                        @apply text-sm text-base-content
+                    .ng-value
+                        @apply text-sm text-base-content
+                    .ng-input
+                        top: calc(50% - 0.8rem) #{!important}
+                        @apply text-sm text-base-content
+
+        &.ng-select-multiple
+            .ng-select-container
+                .ng-value-container
+                    .ng-placeholder
+                        top: calc(50% - 0.8rem) #{!important}
+                        @apply text-sm text-base-content/50
+                        line-height: 1.75rem
+                    .ng-value
+                        @apply text-sm text-base-content
+                    .ng-input
+                        top: calc(50% - 0.8rem) #{!important}
+                        @apply text-sm text-base-content
+
+        .ng-dropdown-panel
+            &.ng-star-inserted
+                &.ng-select-bottom
+                    border-radius: 0 0 var(--rounded-btn, 0.5rem) var(--rounded-btn, 0.5rem)
+                    @apply bg-base-100 border input-bordered overflow-hidden
+                    .ng-dropdown-panel-items
+                        .ng-option
+                            &.ng-option-selected
+                            &.ng-option-marked
+                            &.ng-star-inserted
+                                @apply bg-base-100 text-base-content hover:bg-base-200 hover:text-base-content
