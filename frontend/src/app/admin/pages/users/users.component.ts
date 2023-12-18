@@ -24,6 +24,8 @@ import { Validators } from '@angular/forms'
 import { User } from '@core/entity/user.entity'
 import { CustomValidators } from '@core/utility/CustomValidators'
 import { SharedModule } from '@shared/shared.module'
+import { PaginationParams } from '@store/generic/generic.reducer'
+import { RoleActions } from '@store/role/role.actions'
 import { RoleSelectors } from '@store/role/role.selectors'
 import { UserActions } from '@store/user/user.actions'
 import { UserSelectors } from '@store/user/user.selectors'
@@ -261,15 +263,27 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 type: MultiDynamicSelectForm,
                 label: 'Role',
                 placeholder: 'Selectionnez les Roles',
-                dynamicOptions: () =>
-                    this.store.select(RoleSelectors.selectAll).pipe(
-                        map(roles =>
-                            roles.map(role => ({
-                                label: role.name,
-                                value: role.id,
-                            }))
+                dynamicOptions: {
+                    all: () =>
+                        this.store.select(RoleSelectors.selectAll).pipe(
+                            map(roles =>
+                                roles.map(role => ({
+                                    label: role.name,
+                                    value: role.id,
+                                }))
+                            )
+                        ),
+                    getNextPage: (params: PaginationParams) => {
+                        return this.store.dispatch(
+                            RoleActions.getPage({ params: params })
                         )
-                    ),
+                    },
+                    getInitialById: (id: number) => {
+                        console.log(id)
+                        throw new Error('Method not implemented.')
+                        // return this.store.select()
+                    },
+                },
                 validators: [Validators.required],
             },
             {
