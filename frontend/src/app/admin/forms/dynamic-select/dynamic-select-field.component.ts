@@ -17,34 +17,55 @@ import { FormField } from '../forms.types'
     templateUrl: './dynamic-select-field.component.html',
 })
 export class DynamicSelectFieldComponent implements OnInit {
-    ngOnInit(): void {
-        console.log('field : ', this.field)
-        console.log('initialValue : ', this.initialValue)
-        if (this.field.dynamicOptions) {
-            this.items$ = this.field.dynamicOptions()
-        }
-        if (this.initialValue) {
-            if (Array.isArray(this.initialValue)) {
-                this.selected = this.initialValue.map((item: Identifiable) => ({
-                    label: item.toString(),
-                    value: item.id,
-                    disabled: false,
-                }))
-            } else {
-                this.selected = [
-                    {
-                        label: this.initialValue.toString(),
-                        value: this.initialValue.id,
-                        disabled: false,
-                    },
-                ]
-            }
-        }
-    }
+    @Input() fetchMoreEntities!: () => void
+    loading: boolean = false
+    numberOfItemsFromEndBeforeFetchingMore = 10
+
     items$!: Observable<
         { label: string; value: any; disabled?: boolean | undefined }[]
     >
     selected!: { label: string; value: any; disabled?: boolean | undefined }[]
     @Input() field!: FormField
     @Input() initialValue?: Identifiable | Identifiable[]
+
+    ngOnInit(): void {
+        if (this.field.dynamicOptions) {
+            this.items$ = this.field.dynamicOptions.all()
+        }
+        // if (this.initialValue) {
+        //     if (Array.isArray(this.initialValue)) {
+        //         this.selected = this.initialValue.map((item: Identifiable) => ({
+        //             label: item.toString(),
+        //             value: item.id,
+        //             disabled: false,
+        //         }))
+        //     } else {
+        //         this.selected = [
+        //             {
+        //                 label: this.initialValue.toString(),
+        //                 value: this.initialValue.id,
+        //                 disabled: false,
+        //             },
+        //         ]
+        //     }
+        // }
+    }
+
+    onScroll({ end }: { start: number; end: number }): void {
+        if (this.loading || !this.fetchMore) {
+            return
+        }
+        if (end && this.fetchMore) {
+            this.fetchMore()
+        }
+    }
+    onScrollToEnd(): void {
+        this.fetchMore()
+    }
+
+    fetchMore(): void {
+        this.loading = true
+        this.fetchMoreEntities()
+        this.loading = false
+    }
 }

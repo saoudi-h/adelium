@@ -11,6 +11,9 @@
         bindValue="value"
         [multiple]="field.type.option === 'multiple'"
         placeholder="{{ field.placeholder }}"
-        [(ngModel)]="selected">
+        [(ngModel)]="selected"
+        [loading]="loading"
+        (scroll)="onScroll($event)"
+        (scrollToEnd)="onScrollToEnd()">
     </ng-select>
 </label>
