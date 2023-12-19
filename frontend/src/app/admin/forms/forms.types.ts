@@ -1,6 +1,8 @@
+import { PaginationResult } from '@store/generic/generic.reducer'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ValidatorFn } from '@angular/forms'
 import { Identifiable } from '@core/entity/identifiable.interface'
+import { PaginationParams } from '@store/generic/generic.reducer'
 import { Observable } from 'rxjs'
 
 export interface EntityFormModel<T extends Identifiable> {
@@ -64,9 +66,16 @@ export interface FormField {
     helpText?: string
     validators?: ValidatorFn[]
     staticOptions?: Array<{ label: string; value: any; disabled?: boolean }>
-    dynamicOptions?: () => Observable<
-        Array<{ label: string; value: any; disabled?: boolean }>
-    >
+    dynamicOptions?: {
+        all: () => Observable<
+            Array<{ label: string; value: any; disabled?: boolean }>
+        >
+        getNextPage: (params: PaginationParams) => void
+        getInitialById?: (
+            id: number
+        ) => Observable<{ label: string; value: any; disabled?: boolean }[]>
+        paginationResult: () => Observable<PaginationResult>
+    }
     addTag?: boolean
 }
 
