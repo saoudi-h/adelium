@@ -12,63 +12,65 @@ import { Observable } from 'rxjs'
     selector: '[paginator]',
     template: `
         @if (pagination$ | async; as pagination) {
-            <div class="join">
-                @if (pagination.number > 0) {
-                    <button
-                        class="btn btn-outline join-item"
-                        (click)="selectPage(pagination.number)">
-                        <svg
-                            class="h-4 w-4 flex-shrink-0"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="m15 18-6-6 6-6" />
-                        </svg>
-                        Precedent
-                    </button>
-                }
-                @for (
-                    page of generatePagination(
-                        pagination.number + 1,
-                        pagination.totalPages
-                    );
-                    track page
-                ) {
-                    <button
-                        (click)="selectPage(page)"
-                        [disabled]="page === pagination.number + 1"
-                        class="btn btn-square btn-outline join-item">
-                        {{ page }}
-                    </button>
-                }
+            @if (pagination.totalPages > 1) {
+                <div class="join">
+                    @if (pagination.number > 0) {
+                        <button
+                            class="btn btn-outline join-item"
+                            (click)="selectPage(pagination.number - 2)">
+                            <svg
+                                class="h-4 w-4 flex-shrink-0"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                            Precedent
+                        </button>
+                    }
+                    @for (
+                        page of generatePagination(
+                            pagination.number + 1,
+                            pagination.totalPages
+                        );
+                        track page
+                    ) {
+                        <button
+                            (click)="selectPage(page)"
+                            [disabled]="page === pagination.number + 1"
+                            class="btn btn-square btn-outline join-item">
+                            {{ page }}
+                        </button>
+                    }
 
-                @if (pagination.number + 1 < pagination.totalPages) {
-                    <button
-                        class="btn btn-outline join-item"
-                        (click)="selectPage(pagination.number)">
-                        Suivant
-                        <svg
-                            class="h-4 w-4 flex-shrink-0"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="m9 18 6-6-6-6" />
-                        </svg>
-                    </button>
-                }
-            </div>
+                    @if (pagination.number + 1 < pagination.totalPages) {
+                        <button
+                            class="btn btn-outline join-item"
+                            (click)="selectPage(pagination.number + 2)">
+                            Suivant
+                            <svg
+                                class="h-4 w-4 flex-shrink-0"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </button>
+                    }
+                </div>
+            }
         }
     `,
 })
@@ -85,6 +87,7 @@ export class PaginatorComponent {
      * @param page - The page number or string.
      */
     selectPage(page: number | string): void {
+        console.log(Number(page) - 1)
         this.pageChange.emit(Number(page) - 1)
     }
 
