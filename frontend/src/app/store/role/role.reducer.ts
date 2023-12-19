@@ -6,7 +6,11 @@ import {
 import { RoleActions } from './role.actions'
 import { roleAdapter } from './role.adapter'
 
-export interface RoleState extends ExtendedState<Role> {}
+export interface RoleState extends ExtendedState<Role> {
+    relatedEntities: {
+        [id: number]: { users?: number[] }
+    }
+}
 
 export const initialState: RoleState = roleAdapter.getInitialState({
     paginationInfo: {
@@ -21,7 +25,9 @@ export const initialState: RoleState = roleAdapter.getInitialState({
             totalPages: 0,
             number: 0,
         },
+        pageIds: [],
     },
+    relatedEntities: {},
     isLoading: false,
     error: null,
 })

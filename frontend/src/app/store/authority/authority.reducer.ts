@@ -6,7 +6,9 @@ import {
 import { AuthorityActions } from './authority.actions'
 import { authorityAdapter } from './authority.adapter'
 
-export interface AuthorityState extends ExtendedState<Authority> {}
+export interface AuthorityState extends ExtendedState<Authority> {
+    relatedEntities: { [id: number]: { roles?: number[] } }
+}
 
 export const initialState: AuthorityState = authorityAdapter.getInitialState({
     paginationInfo: {
@@ -21,7 +23,9 @@ export const initialState: AuthorityState = authorityAdapter.getInitialState({
             totalPages: 0,
             number: 0,
         },
+        pageIds: [],
     },
+    relatedEntities: {},
     isLoading: false,
     error: null,
 })

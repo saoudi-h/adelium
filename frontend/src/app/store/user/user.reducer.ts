@@ -6,13 +6,15 @@ import {
 import { UserActions } from './user.actions'
 import { userAdapter } from './user.adapter'
 
-export interface UserState extends ExtendedState<User> {}
+export interface UserState extends ExtendedState<User> {
+    relatedEntities: { [id: number]: { roles?: number[] } }
+}
 
 export const initialState: UserState = userAdapter.getInitialState({
     paginationInfo: {
         params: {
             page: 0,
-            size: 20,
+            size: 5,
             sort: [],
         },
         result: {
@@ -21,7 +23,9 @@ export const initialState: UserState = userAdapter.getInitialState({
             totalPages: 0,
             number: 0,
         },
+        pageIds: [],
     },
+    relatedEntities: {},
     isLoading: false,
     error: null,
 })
