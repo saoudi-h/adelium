@@ -79,8 +79,8 @@ import { Observable } from 'rxjs'
                                 dynamic-select-field
                                 class="form-control w-full max-w-xs"
                                 [field]="field"
-                                [initialValue]="
-                                    modalConfig?.initialValue?.[field.id]
+                                [entityId]="
+                                    modalConfig?.initialValue?.id
                                 "></div>
                         } @else if (field.type.name === 'checkbox') {
                             <label class="form-control w-full max-w-xs">
