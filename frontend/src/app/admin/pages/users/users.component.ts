@@ -29,7 +29,7 @@ import { RoleActions } from '@store/role/role.actions'
 import { RoleSelectors } from '@store/role/role.selectors'
 import { UserActions } from '@store/user/user.actions'
 import { UserSelectors } from '@store/user/user.selectors'
-import { Observable, map } from 'rxjs'
+import { Observable, map, switchMap } from 'rxjs'
 import { EntityFormModel } from './../../forms/forms.types'
 import { UserAdminTrComponent } from './user-admin-tr.component'
 @Component({
@@ -279,10 +279,43 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                         )
                     },
                     getInitialById: (id: number) => {
-                        console.log(id)
-                        throw new Error('Method not implemented.')
-                        // return this.store.select()
+                        this.store.dispatch(
+                            UserActions.getRelatedEntities({
+                                id: id,
+                                relation: 'roles',
+                            })
+                        )
+
+                        return this.store
+                            .select(
+                                UserSelectors.selectRelatedEntities({
+                                    id: id,
+                                    relation: 'roles',
+                                })
+                            )
+                            .pipe(
+                                switchMap((rolesId: number[]) =>
+                                    this.store
+                                        .select(RoleSelectors.selectAll)
+                                        .pipe(
+                                            map(roles =>
+                                                roles
+                                                    .filter(role =>
+                                                        rolesId.includes(
+                                                            role.id
+                                                        )
+                                                    )
+                                                    .map(role => ({
+                                                        label: role.name,
+                                                        value: role.id,
+                                                    }))
+                                            )
+                                        )
+                                )
+                            )
                     },
+                    paginationResult: () =>
+                        this.store.select(RoleSelectors.selectPaginationResult),
                 },
                 validators: [Validators.required],
             },
