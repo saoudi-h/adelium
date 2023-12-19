@@ -142,6 +142,6 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     protected String getAuthenticationsUrl() {
-        return "/auth";
+        return "/auth/";
     }
 }

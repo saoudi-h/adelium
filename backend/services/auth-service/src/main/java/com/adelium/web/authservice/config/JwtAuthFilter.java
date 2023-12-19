@@ -31,6 +31,6 @@ public class JwtAuthFilter extends JwtFilter {
 
     @Override
     protected String getAuthenticationsUrl() {
-        return "/auth";
+        return "/auth/";
     }
 }
