@@ -1,7 +1,7 @@
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Page } from '@core/entity/page.entity'
 import { createAction, props } from '@ngrx/store'
-import { PaginationParams } from './generic.reducer'
+import { PaginationParams, SortCriterion } from './generic.reducer'
 
 export function createEntityActions<T extends Identifiable>(
     entityType: string
@@ -87,6 +87,82 @@ export function createEntityActions<T extends Identifiable>(
         deleteSelectionFailure: createAction(
             `[${entityType}] Delete Selection Failure`,
             props<{ error: string | null }>()
+        ),
+
+        // pagination
+        updatePaginationParams: createAction(
+            `[${entityType}] Update Pagination Params`,
+            props<{
+                page?: number
+                size?: number
+                sort?: SortCriterion[]
+            }>()
+        ),
+
+        resetPaginationParams: createAction(
+            `[${entityType}] Reset Pagination Params`
+        ),
+
+        // Related entities
+        getRelatedEntities: createAction(
+            `[${entityType}] Get Related Entities`,
+            props<{ id: number; relation: string }>()
+        ),
+        getRelatedEntitiesSuccess: createAction(
+            `[${entityType}] Get Related Entities Success`,
+            props<{ id: number; relation: string; entities: Identifiable[] }>()
+        ),
+        getRelatedEntitiesFailure: createAction(
+            `[${entityType}] Get Related Entities Failure`,
+            props<{ error: string }>()
+        ),
+        addRelatedEntity: createAction(
+            `[${entityType}] Add Related Entity`,
+            props<{
+                entityId: number
+                relation: string
+                relatedEntity: Identifiable
+            }>()
+        ),
+        addRelatedEntitySuccess: createAction(
+            `[${entityType}] Add Related Entity Success`,
+            props<{ relation: string; relatedEntity: Identifiable }>()
+        ),
+        addRelatedEntityFailure: createAction(
+            `[${entityType}] Add Related Entity Failure`,
+            props<{ error: string }>()
+        ),
+        updateRelatedEntity: createAction(
+            `[${entityType}] Update Related Entity`,
+            props<{
+                entityId: number
+                relation: string
+                relatedEntity: Identifiable
+            }>()
+        ),
+        updateRelatedEntitySuccess: createAction(
+            `[${entityType}] Update Related Entity Success`,
+            props<{ relation: string; relatedEntity: Identifiable }>()
+        ),
+        updateRelatedEntityFailure: createAction(
+            `[${entityType}] Update Related Entity Failure`,
+            props<{ error: string }>()
+        ),
+        removeRelatedEntity: createAction(
+            `[${entityType}] Remove Related Entity`,
+            props<{
+                entityId: number
+                relation: string
+                relatedEntityId: number
+            }>()
+        ),
+        removeRelatedEntitySuccess: createAction(
+            `[${entityType}] Remove Related Entity Success`,
+            props<{ relation: string; relatedEntityId: number }>()
+        ),
+        removeRelatedEntityFailure: createAction(
+            `[${entityType}] Remove Related Entity Failure`,
+            props<{ error: string }>()
         ),
     }
 }

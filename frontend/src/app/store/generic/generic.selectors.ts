@@ -64,16 +64,46 @@ export function createGenericSelectors<T extends Identifiable>(
         state => state.paginationInfo.result
     )
 
+    /**
+     * Selects the related entities.
+     * @param entityType - The type of the related entities.
+     * @returns The related entities.
+     */
+    // const selectRelatedEntities = (entityType: string, id: number) =>
+    //     createSelector(
+    //         selectEntityStateByName(entityType),
+    //         state => state.entities
+    //     )
+
+    const selectRelatedEntities = ({
+        id,
+        relation,
+    }: {
+        id: number
+        relation: string
+    }) =>
+        createSelector(selectEntityState, state => {
+            return state.relatedEntities[id]?.[relation]
+        })
+
+    const selectCurrentPage = createSelector(selectEntityState, state => {
+        return state.paginationInfo.pageIds
+            .map(id => state.entities[id])
+            .filter((entity): entity is T => entity !== undefined)
+    })
+
     return {
         selectIds,
         selectEntities,
         selectAll,
+        selectCurrentPage,
         selectTotal,
         selectEntityById,
         selectPaginationParams,
         selectPaginationResult,
         selectIsLoading,
         selectError,
+        selectRelatedEntities,
     }
 }
 

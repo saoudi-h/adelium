@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
+import { entityConfig } from '@store/entity-config'
 import { from, of } from 'rxjs'
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators'
 import { EntityActions } from './generic.actions'
@@ -167,4 +168,55 @@ export abstract class GenericEffects<T extends Identifiable> {
             )
         )
     })
+
+    getRelatedEntities$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.entityActions.getRelatedEntities),
+            mergeMap(({ id, relation }) =>
+                this.genericService.getRelatedEntities(id, relation).pipe(
+                    map(entitiesPage =>
+                        this.entityActions.getRelatedEntitiesSuccess({
+                            id: id,
+                            relation: relation,
+                            entities: entitiesPage._embedded[relation],
+                        })
+                    ),
+                    catchError(error =>
+                        of(
+                            this.entityActions.getRelatedEntitiesFailure({
+                                error,
+                            })
+                        )
+                    )
+                )
+            )
+        )
+    })
+
+    updateRelatedEntityOnSuccess$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.entityActions.getRelatedEntitiesSuccess),
+            map(action => {
+                const actionType = this.determineUpdateAction(
+                    action.relation,
+                    action.entities
+                )
+                if (actionType) {
+                    return actionType
+                }
+                return { type: '[No Operation]' }
+            })
+        )
+    })
+
+    private determineUpdateAction(relation: string, entities: Identifiable[]) {
+        const relationConfig = entityConfig[relation]
+        if (relationConfig && relationConfig.actions) {
+            const updateAction = relationConfig.actions['updateRelatedEntities']
+            if (updateAction) {
+                return updateAction({ entities })
+            }
+        }
+        return { type: '[No Operation]' }
+    }
 }

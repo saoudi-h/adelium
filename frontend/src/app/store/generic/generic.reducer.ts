@@ -22,10 +22,14 @@ export interface PaginationResult {
 export interface PaginationInfo {
     params: PaginationParams
     result: PaginationResult
+    pageIds: number[]
 }
 
 export interface ExtendedState<T extends Identifiable> extends EntityState<T> {
     paginationInfo: PaginationInfo
+    relatedEntities: {
+        [entityId: number]: { [relation: string]: number[] }
+    }
     isLoading: boolean
     error: string | null
 }
@@ -69,14 +73,63 @@ export function createGenericReducer<T extends Identifiable>(
 
         on(actions.getPageSuccess, (state, { page }) => {
             const items = page._embedded[entityType]
-            return adapter.setAll(items, {
+            return adapter.upsertMany(items, {
                 ...state,
                 paginationInfo: {
                     ...state.paginationInfo,
                     result: page.page,
+                    pageIds: items.map(item => item.id),
                 },
                 isLoading: false,
             })
+        }),
+        on(
+            actions.getRelatedEntitiesSuccess,
+            (state, { id, relation, entities }) => {
+                return {
+                    ...state,
+                    relatedEntities: {
+                        ...state.relatedEntities,
+                        [id]: {
+                            ...state.relatedEntities[id],
+                            [relation]: entities.map(entity => entity.id),
+                        },
+                    },
+                }
+            }
+        ),
+        on(
+            actions.updatePaginationParams,
+            (state, { page, size, sort }): ExtendedState<T> => {
+                return {
+                    ...state,
+                    paginationInfo: {
+                        ...state.paginationInfo,
+                        params: {
+                            ...state.paginationInfo.params,
+                            page:
+                                page !== undefined
+                                    ? page
+                                    : state.paginationInfo.params.page,
+                            size:
+                                size !== undefined
+                                    ? size
+                                    : state.paginationInfo.params.size,
+                            sort: sort || state.paginationInfo.params.sort,
+                        },
+                    },
+                }
+            }
+        ),
+
+        on(actions.resetPaginationParams, (state): ExtendedState<T> => {
+            return {
+                ...state,
+                paginationInfo: {
+                    ...state.paginationInfo,
+                    params: initialState.paginationInfo.params,
+                },
+            }
         })
     )
 }
