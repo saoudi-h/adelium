@@ -63,6 +63,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createRoleIfNotFound("ROLE_ADMIN", Arrays.asList(readAuthority, writeAuthority));
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readAuthority));
 
+        for (int i = 0; i < 30; i++) {
+            createRoleIfNotFound(
+                    faker.job().field().toUpperCase() + "_ROLE", Arrays.asList(readAuthority));
+        }
+
         Role adminRole = null;
 
         try {
