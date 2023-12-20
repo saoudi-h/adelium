@@ -20,6 +20,7 @@ import { FormModalService } from '@core/services/formModal.service'
 import { IconService } from '@core/services/icon.service'
 import { SharedModule } from '@shared/shared.module'
 import { Observable } from 'rxjs'
+import { FormFieldComponent } from './form-fields.component'
 
 @Component({
     standalone: true,
@@ -30,6 +31,7 @@ import { Observable } from 'rxjs'
         CheckBoxFieldComponent,
         SelectFieldComponent,
         DynamicSelectFieldComponent,
+        FormFieldComponent,
     ],
     selector: 'app-form-modal',
     template: ` @for (
@@ -46,65 +48,21 @@ import { Observable } from 'rxjs'
             tabindex="0"
             class="fixed inset-0 left-0 top-0 z-[1000] m-0 flex h-screen w-screen items-center justify-center overflow-hidden overflow-y-hidden bg-base-300/20 p-0 backdrop-blur-sm">
             <div
-                class="modal-box transform-none "
+                class="modal-box max-w-none transform-none "
                 (click)="onModalClick($event)"
                 (keyup.enter)="onModalClick($event)"
                 tabindex="0">
                 <div class="modal-content">
-                    <!-- Votre contenu de modal ici -->
                     <h3 class="text-3xl font-bold">{{ modalConfig.title }}</h3>
                     <p class="text-sm">{{ modalConfig.additionalInfo }}</p>
                     <!-- Formulaires et autres éléments -->
 
                     <!-- Champs de formulaire -->
-                    @for (field of modalConfig.fields; track field) {
-                        @if (field.type.name === 'input') {
-                            <div
-                                input-field
-                                class="form-control w-full max-w-xs"
-                                [field]="field"
-                                [initialValue]="
-                                    modalConfig?.initialValue?.[field.id]
-                                "></div>
-                        } @else if (field.type.name === 'select') {
-                            <div
-                                select-field
-                                class="form-control w-full max-w-xs"
-                                [field]="field"
-                                [initialValue]="
-                                    modalConfig?.initialValue?.[field.id]
-                                "></div>
-                        } @else if (field.type.name === 'dynamic-select') {
-                            <div
-                                dynamic-select-field
-                                class="form-control w-full max-w-xs"
-                                [field]="field"
-                                [entityId]="
-                                    modalConfig?.initialValue?.id
-                                "></div>
-                        } @else if (field.type.name === 'checkbox') {
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span
-                                        class="label-text"
-                                        [attr.for]="field.id"
-                                        >{{ field.label }}</span
-                                    >
-                                </div>
-                                <input
-                                    [id]="field.id"
-                                    type="checkbox"
-                                    [checked]="
-                                        modalConfig?.initialValue?.[field.id]
-                                            ? modalConfig?.initialValue?.[
-                                                  field.id
-                                              ]
-                                            : false
-                                    "
-                                    class="checkbox-primary checkbox" />
-                            </label>
-                        }
-                    }
+                    <div
+                        form-field
+                        [fields]="modalConfig.fields"
+                        [initialValue]="modalConfig.initialValue"
+                        class="flex flex-row flex-wrap gap-4"></div>
 
                     <!-- Boutons pour fermer ou confirmer -->
                     <div class="modal-action">
