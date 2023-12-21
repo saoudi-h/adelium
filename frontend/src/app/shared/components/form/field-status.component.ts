@@ -4,7 +4,7 @@ import { AbstractControl } from '@angular/forms'
 
 @Component({
     standalone: true,
-    selector: 'app-field-status',
+    selector: '[field-status]',
     template: `
         <div class="flex flex-row items-center gap-2">
             <div class="h-6 w-6">

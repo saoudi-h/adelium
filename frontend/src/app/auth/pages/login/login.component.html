@@ -64,7 +64,8 @@
                     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                         <div class="form-control">
                             <!-- email -->
-                            <app-field-status
+                            <div
+                                field-status
                                 class="mb-6 w-full"
                                 [control]="loginForm.get('username')!">
                                 <div class="group relative z-0 w-full">
@@ -82,12 +83,13 @@
                                         >Adresse Email</label
                                     >
                                 </div>
-                            </app-field-status>
+                            </div>
                         </div>
 
                         <!-- password -->
                         <div class="form-control">
-                            <app-field-status
+                            <div
+                                field-status
                                 class="w-full"
                                 [control]="loginForm.get('password')!">
                                 <div class="group relative z-0 w-full">
@@ -105,7 +107,7 @@
                                         >Mot de passe
                                     </label>
                                 </div>
-                            </app-field-status>
+                            </div>
                         </div>
                         <label for="" class="label">
                             <a

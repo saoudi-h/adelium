@@ -69,7 +69,8 @@
                     <!-- /divider -->
                     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                         <!-- email -->
-                        <app-field-status
+                        <div
+                            field-status
                             class="mb-6 block w-full"
                             [control]="registerForm.get('username')!">
                             <div class="group relative z-0 w-full">
@@ -87,9 +88,10 @@
                                     >Adresse Email</label
                                 >
                             </div>
-                        </app-field-status>
+                        </div>
                         <!-- password -->
-                        <app-field-status
+                        <div
+                            field-status
                             class="mb-6 block w-full"
                             [control]="registerForm.get('password')!"
                             info="Le mot de passe doit comporter au moins 8 caractères.
@@ -110,9 +112,10 @@
                                     >Mot de passe
                                 </label>
                             </div>
-                        </app-field-status>
+                        </div>
                         <!-- repeat password -->
-                        <app-field-status
+                        <div
+                            field-status
                             class="mb-6 block w-full"
                             [control]="registerForm.get('repeatPassword')!">
                             <div class="group relative z-0 w-full">
@@ -130,9 +133,10 @@
                                     >Confirmez le mot de passe</label
                                 >
                             </div>
-                        </app-field-status>
+                        </div>
                         <!-- first name -->
-                        <app-field-status
+                        <div
+                            field-status
                             [control]="registerForm.get('firstname')!"
                             class="mb-6 block w-full">
                             <div class="group relative z-0 w-full">
@@ -150,9 +154,10 @@
                                     >Prénom</label
                                 >
                             </div>
-                        </app-field-status>
+                        </div>
                         <!-- last name -->
-                        <app-field-status
+                        <div
+                            field-status
                             class="mb-6 block w-full"
                             [control]="registerForm.get('lastname')!">
                             <div class="group relative z-0 w-full">
@@ -170,9 +175,10 @@
                                     >Nom</label
                                 >
                             </div>
-                        </app-field-status>
+                        </div>
                         <!-- phone -->
-                        <app-field-status
+                        <div
+                            field-status
                             class="mb-6 block w-full"
                             [control]="registerForm.get('phone')!">
                             <div class="group relative z-0 w-full">
@@ -190,7 +196,7 @@
                                     >Téléphone</label
                                 >
                             </div>
-                        </app-field-status>
+                        </div>
 
                         <!-- submit button  -->
                         <div class="form-control">

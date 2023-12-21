@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core'
 
 @Component({
-    selector: 'app-close-icon',
+    selector: '[close-icon]',
     standalone: true,
     template: `<svg
         fill="none"
