@@ -120,6 +120,10 @@ export class BaseAdminComponent<T extends Identifiable>
         )
     }
 
+    editOne(formValue: T) {
+        this.store.dispatch(this.actions.updateItem({ item: formValue }))
+    }
+
     onPageChange(page: number) {
         this.store.dispatch(this.actions.updatePaginationParams({ page }))
     }

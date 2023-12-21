@@ -2,8 +2,9 @@
 import {
     CheckboxForm,
     EmailInput,
+    EntityForm,
     MultiDynamicSelectForm,
-    PasswordInput,
+    NumberInput,
     TelInput,
     TextInput,
     UrlInput,
@@ -22,7 +23,6 @@ import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
 import { User } from '@core/entity/user.entity'
-import { CustomValidators } from '@core/utility/CustomValidators'
 import { SharedModule } from '@shared/shared.module'
 import { PaginationParams } from '@store/generic/generic.reducer'
 import { RoleActions } from '@store/role/role.actions'
@@ -196,8 +196,9 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
         subtitle: 'Ajouter, modifier et supprimer des utilisateurs',
     }
     override entityFormModel: EntityFormModel<User> = {
-        onFormSubmit: (formValue: any) => {
-            console.log(formValue)
+        onFormSubmit: (formUser: User) => {
+            console.log('onFormSubmit', formUser)
+            this.editOne(formUser)
         },
         title: 'Utilisateur',
         id: 'user',
@@ -247,18 +248,6 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 validators: [Validators.required, Validators.maxLength(50)],
             },
             {
-                id: 'password',
-                type: PasswordInput,
-                label: 'Mot de passe',
-                placeholder: '********',
-                validators: [
-                    Validators.required,
-                    Validators.maxLength(50),
-                    Validators.minLength(8),
-                    CustomValidators.password,
-                ],
-            },
-            {
                 id: 'roles',
                 type: MultiDynamicSelectForm,
                 label: 'Role',
@@ -294,16 +283,18 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                                 })
                             )
                             .pipe(
-                                switchMap((rolesId: number[]) =>
+                                switchMap(rolesId =>
                                     this.store
                                         .select(RoleSelectors.selectAll)
                                         .pipe(
                                             map(roles =>
                                                 roles
                                                     .filter(role =>
-                                                        rolesId.includes(
-                                                            role.id
-                                                        )
+                                                        rolesId
+                                                            ? rolesId.includes(
+                                                                  role.id
+                                                              )
+                                                            : false
                                                     )
                                                     .map(role => ({
                                                         label: role.name,
@@ -316,6 +307,12 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                     },
                     paginationResult: () =>
                         this.store.select(RoleSelectors.selectPaginationResult),
+                    reverseSelection: (selected: any[]) => {
+                        return selected.map(role => ({
+                            name: role.label,
+                            id: role.value,
+                        }))
+                    },
                 },
                 validators: [Validators.required],
             },
@@ -329,31 +326,68 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 id: 'accountNonLocked',
                 type: CheckboxForm,
                 label: 'Compte non verrouillé',
-                validators: [Validators.required],
             },
             {
                 id: 'credentialsNonExpired',
                 type: CheckboxForm,
                 label: 'Mot de passe non expiré',
-                validators: [Validators.required],
             },
             {
                 id: 'enabled',
                 type: CheckboxForm,
                 label: 'Activé',
-                validators: [Validators.required],
             },
             {
                 id: 'isVerified',
                 type: CheckboxForm,
                 label: 'vérifié',
-                validators: [Validators.required],
             },
             {
                 id: 'address',
-                type: TextInput,
+                type: EntityForm,
+                fields: [
+                    {
+                        id: 'streetNumber',
+                        type: NumberInput,
+                        label: 'Numéro de rue',
+                        validators: [Validators.required, Validators.max(9999)],
+                    },
+                    {
+                        id: 'street',
+                        type: TextInput,
+                        label: 'Rue',
+                        validators: [Validators.required],
+                    },
+                    {
+                        id: 'additionalInfo',
+                        type: TextInput,
+                        label: "Complément d'addresse",
+                    },
+                    {
+                        id: 'city',
+                        type: TextInput,
+                        label: 'Ville',
+                        validators: [Validators.required],
+                    },
+                    {
+                        id: 'postalCode',
+                        type: NumberInput,
+                        label: 'Code postal',
+                        validators: [Validators.required],
+                    },
+                    {
+                        id: 'country',
+                        type: TextInput,
+                        label: 'Pays',
+                        validators: [Validators.required],
+                    },
+                    {
+                        id: 'departmentNumber',
+                        type: NumberInput,
+                        label: 'Numéro de département',
+                    },
+                ],
                 label: 'Addresse',
-                validators: [Validators.required],
             },
             {
                 id: 'avatar',
