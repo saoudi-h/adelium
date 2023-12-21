@@ -2,27 +2,46 @@ import { OnDestroy, OnInit } from '@angular/core'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common'
 import { Component, Input, ViewEncapsulation } from '@angular/core'
-import { FormsModule } from '@angular/forms'
+import {
+    FormControl,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms'
 import { NgSelectModule } from '@ng-select/ng-select'
-import { PaginationParams } from '@store/generic/generic.reducer'
-import { Observable, Subscription } from 'rxjs'
+import { FieldStatusComponent } from '@shared/components/form/field-status.component'
+import {
+    PaginationParams,
+    PaginationResult,
+} from '@store/generic/generic.reducer'
+import { Observable, Subscription, tap, withLatestFrom } from 'rxjs'
 import { FormField } from '../forms.types'
 
+type itemsType = {
+    label: string
+    value: any
+    disabled?: boolean
+}
 @Component({
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, NgSelectModule, FormsModule],
+    imports: [
+        CommonModule,
+        NgSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FieldStatusComponent,
+    ],
     selector: '[dynamic-select-field]',
     styleUrl: './dynamic-select-field.component.sass',
     templateUrl: './dynamic-select-field.component.html',
 })
 export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
+    @Input() group!: FormGroup
     subscription = new Subscription()
-    itemsBuffer: {
-        label: string
-        value: any
-        disabled?: boolean | undefined
-    }[] = []
+    itemsBuffer: itemsType[] = []
+    items$!: Observable<itemsType[]> | undefined
+    paginationResult$!: Observable<PaginationResult> | undefined
     loading: boolean = false
     allDataLoaded: boolean = false
     paginationParams: PaginationParams = {
@@ -38,57 +57,42 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
         | undefined
     numberOfItemsFromEndBeforeFetchingMore = 2
 
-    items$!: Observable<
-        { label: string; value: any; disabled?: boolean | undefined }[]
-    >
     selected!: { label: string; value: any; disabled?: boolean | undefined }[]
     @Input() field!: FormField
     @Input() entityId?: number
 
     ngOnInit(): void {
         if (this.field.dynamicOptions) {
-            this.subscription.add(
-                this.field.dynamicOptions.all().subscribe(items => {
-                    this.itemsBuffer = [
-                        ...this.itemsBuffer,
-                        ...items.map(item => ({
-                            label: item.label,
-                            value: item.value,
-                        })),
-                    ]
-                    this.loading = false
-                })
-            )
+            this.items$ = this.field.dynamicOptions.all()
+            this.paginationResult$ =
+                this.field.dynamicOptions.paginationResult()
 
             this.subscription.add(
-                this.field.dynamicOptions
-                    .paginationResult()
-                    .subscribe(result => {
-                        console.log(result)
-                        if (
-                            this.itemsBuffer.length > 0 &&
-                            result.number >= result.totalPages - 1
-                        ) {
-                            this.allDataLoaded = true
-                        }
-                    })
+                this.items$
+                    .pipe(
+                        withLatestFrom(this.paginationResult$),
+                        tap(([items, paginationResult]) => {
+                            console.log('items: ', items.length)
+                            console.log('paginationResult: ', paginationResult)
+                            if (
+                                items.length > 0 &&
+                                paginationResult.number >=
+                                    paginationResult.totalPages - 1
+                            ) {
+                                console.log('allDataLoaded')
+                                this.allDataLoaded = true
+                            }
+                            this.loading = false // Définir loading sur false après la réception des données
+                        })
+                    )
+                    .subscribe()
             )
+
             if (this.entityId && this.field.dynamicOptions.getInitialById) {
-                console.log('entityId', this.entityId)
                 this.subscription.add(
                     this.field.dynamicOptions
                         .getInitialById(this.entityId)
                         .subscribe(initialValues => {
-                            console.log('init', initialValues)
-                            this.itemsBuffer = [
-                                ...this.itemsBuffer,
-                                ...initialValues.map(item => ({
-                                    label: item.label,
-                                    value: item.value,
-                                })),
-                            ]
-                            console.log('initial values ', this.itemsBuffer)
-                            console.log('selected', this.selected)
                             this.selected = initialValues
                         })
                 )
@@ -97,12 +101,6 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
             this.getNextPage = this.field.dynamicOptions.getNextPage
 
             this.getNextPage(this.paginationParams)
-            // if (this.initialValue && this.field.dynamicOptions.getInitialById) {
-            //     this.initialRelatedValue =
-            //         this.field.dynamicOptions.getInitialById(
-            //             this.initialValue.id
-            //         )
-            // }
         }
     }
 
@@ -120,6 +118,7 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
     }
 
     fetchMore(): void {
+        console.log('fetchMore')
         if (this.loading || this.allDataLoaded) return
 
         this.loading = true
@@ -134,5 +133,8 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe()
+    }
+    getControl(fildName: string): FormControl {
+        return this.group.get(fildName) as FormControl
     }
 }

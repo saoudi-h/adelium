@@ -1,19 +1,25 @@
 <!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
-<label class="form-control w-full max-w-xs">
-    <div class="label">
-        <span class="label-text" [attr.for]="field.id">{{ field.label }}</span>
-    </div>
-    <ng-select
-        class="ad-custom-select"
-        [labelForId]="field.label"
-        [items]="itemsBuffer"
-        bindLabel="label"
-        [multiple]="field.type.option === 'multiple'"
-        placeholder="{{ field.placeholder }}"
-        [(ngModel)]="selected"
-        [loading]="loading"
-        [virtualScroll]="true"
-        (scroll)="onScroll($event)"
-        (scrollToEnd)="onScrollToEnd()">
-    </ng-select>
-</label>
+<div field-status [control]="getControl(field.id)">
+    <label class="form-control w-full max-w-xs" [formGroup]="group">
+        <div class="label">
+            <span class="label-text" [attr.for]="field.id">{{
+                field.label
+            }}</span>
+        </div>
+        <ng-select
+            class="ad-custom-select"
+            [labelForId]="field.label"
+            [selectOnTab]="true"
+            [items]="items$ | async"
+            bindLabel="label"
+            [multiple]="field.type.option === 'multiple'"
+            placeholder="{{ field.placeholder }}"
+            [formControlName]="field.id"
+            [(ngModel)]="selected"
+            [loading]="loading"
+            [virtualScroll]="true"
+            (scroll)="onScroll($event)"
+            (scrollToEnd)="onScrollToEnd()">
+        </ng-select>
+    </label>
+</div>

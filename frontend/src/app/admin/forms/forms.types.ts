@@ -59,7 +59,7 @@ export interface InputForm extends FieldType {
 }
 
 export interface FormField {
-    id: number | string
+    id: string
     type: FieldType
     label: string
     placeholder?: string
@@ -75,8 +75,10 @@ export interface FormField {
             id: number
         ) => Observable<{ label: string; value: any; disabled?: boolean }[]>
         paginationResult: () => Observable<PaginationResult>
+        reverseSelection?: (value: any) => any
     }
     addTag?: boolean
+    fields?: FormField[]
 }
 
 export interface FormAction {
