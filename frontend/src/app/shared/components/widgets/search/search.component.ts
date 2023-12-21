@@ -73,7 +73,7 @@ import { SearchIconComponent } from '@shared/components/icons/search-icon.compon
                 (change)="handleChange()" />
 
             @if (alwaysOpen) {
-                <app-close-icon className="h-6 w-6" />
+                <div icon-close className="h-6 w-6"></div>
             } @else {
                 <!-- search -->
                 <div class="swap-off">
@@ -82,7 +82,7 @@ import { SearchIconComponent } from '@shared/components/icons/search-icon.compon
 
                 <!-- close -->
                 <div class="swap-on">
-                    <app-close-icon className="h-6 w-6" />
+                    <div icon-close className="h-6 w-6"></div>
                 </div>
             }
         </label>
