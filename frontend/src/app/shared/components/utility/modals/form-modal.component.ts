@@ -14,13 +14,14 @@ import {
     trigger,
 } from '@angular/animations'
 import { CommonModule } from '@angular/common'
-import { Component, HostListener, Type } from '@angular/core'
+import { Component, HostListener } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { FormModalService } from '@core/services/formModal.service'
-import { IconService } from '@core/services/icon.service'
+import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { SharedModule } from '@shared/shared.module'
 import { Observable } from 'rxjs'
-import { FormFieldComponent } from './form-fields.component'
+import { AdminFormComponent } from './admin-form.component'
+import { FormFieldsComponent } from './form-fields.component'
 
 @Component({
     standalone: true,
@@ -31,7 +32,9 @@ import { FormFieldComponent } from './form-fields.component'
         CheckBoxFieldComponent,
         SelectFieldComponent,
         DynamicSelectFieldComponent,
-        FormFieldComponent,
+        FormFieldsComponent,
+        CloseIconComponent,
+        AdminFormComponent,
     ],
     selector: 'app-form-modal',
     template: ` @for (
@@ -46,46 +49,17 @@ import { FormFieldComponent } from './form-fields.component'
             (click)="onOverlayClick($event)"
             (keyup.enter)="onKeyEnterPress($event)"
             tabindex="0"
-            class="fixed inset-0 left-0 top-0 z-[1000] m-0 flex h-screen w-screen items-center justify-center overflow-hidden overflow-y-hidden bg-base-300/20 p-0 backdrop-blur-sm">
+            class="fixed inset-0 left-0 top-0 z-[1000] m-0 flex h-screen w-screen items-center justify-center overflow-hidden overflow-y-hidden bg-base-100/70 p-0 backdrop-blur-sm">
             <div
-                class="modal-box max-w-none transform-none "
+                class="container modal-box max-w-none transform-none rounded-none bg-base-100/70 p-0 shadow-xl sm:rounded-lg md:rounded-xl lg:rounded-2xl xl:rounded-3xl"
                 (click)="onModalClick($event)"
                 (keyup.enter)="onModalClick($event)"
                 tabindex="0">
-                <div class="modal-content">
-                    <h3 class="text-3xl font-bold">{{ modalConfig.title }}</h3>
-                    <p class="text-sm">{{ modalConfig.additionalInfo }}</p>
-                    <!-- Formulaires et autres éléments -->
-
-                    <!-- Champs de formulaire -->
-                    <div
-                        form-field
-                        [fields]="modalConfig.fields"
-                        [initialValue]="modalConfig.initialValue"
-                        class="flex flex-row flex-wrap gap-4"></div>
-
-                    <!-- Boutons pour fermer ou confirmer -->
-                    <div class="modal-action">
-                        @for (action of modalConfig.actions; track action) {
-                            <button
-                                [type]="action.type"
-                                (click)="action.action()"
-                                class="btn"
-                                [ngClass]="getColorClass(action.color)">
-                                @if (action.icon) {
-                                    <div class="mr-2 h-6 w-6">
-                                        <ng-container
-                                            *ngComponentOutlet="
-                                                getIconComponent(action.icon)
-                                            " />
-                                    </div>
-                                }
-                                <span>{{ action.label }}</span>
-                            </button>
-                        }
-                        <button (click)="close()">Fermer</button>
-                    </div>
-                </div>
+                <div
+                    admin-form
+                    [modalConfig]="modalConfig"
+                    class="modal-content bg-base-200 bg-hero-pattern"
+                    (closeModal)="close()"></div>
             </div>
         </div>
     }`,
@@ -136,14 +110,8 @@ import { FormFieldComponent } from './form-fields.component'
     ],
 })
 export class FormModalComponent<T extends Identifiable> {
-    test(data: unknown) {
-        console.log(data)
-    }
     formModalStack$: Observable<EntityFormModel<T>[]>
-    constructor(
-        private formModalService: FormModalService<T>,
-        private iconService: IconService
-    ) {
+    constructor(private formModalService: FormModalService<T>) {
         this.formModalStack$ = formModalService.formModalStack$
     }
 
@@ -190,17 +158,5 @@ export class FormModalComponent<T extends Identifiable> {
      */
     onModalClick(event: Event): void {
         event.stopPropagation()
-    }
-
-    /**
-     * Returns the color class for the button.
-     * @param color string
-     * @returns string
-     */
-    getColorClass(color: string | undefined): string {
-        return color ? `btn-${color}` : 'btn-primary'
-    }
-    getIconComponent(iconName: string): Type<unknown> | null {
-        return this.iconService.getIconComponent(iconName)
     }
 }
