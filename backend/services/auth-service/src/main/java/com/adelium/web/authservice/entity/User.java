@@ -2,6 +2,7 @@
 package com.adelium.web.authservice.entity;
 
 import com.adelium.web.common.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +41,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * The password of the user.
      */
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     /**
@@ -92,6 +94,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      */
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date lockTime;
 
     /**
@@ -99,6 +102,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      */
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date lastFailedLoginTime;
 
     /**
@@ -133,6 +137,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * It is deleted when the user resets his password.
      */
     @Column(nullable = true)
+    @JsonIgnore
     private String resetPasswordToken;
 
     /**
@@ -145,6 +150,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      */
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date resetPasswordTokenExpiry;
 
     /**
@@ -166,7 +172,9 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * @see Token
      */
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private Set<Token> tokens;
+    @Builder.Default
+    @JsonIgnore
+    private Set<Token> tokens = new HashSet<>();
 
     /**
      * The address of the user.
@@ -266,6 +274,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * @return the authorities granted to the user
      */
     @Override
+    @JsonIgnore
     public Set<Authority> getAuthorities() {
         Set<Authority> authorities = new HashSet<>();
         for (Role role : roles) {
