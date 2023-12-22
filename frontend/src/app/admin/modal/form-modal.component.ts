@@ -4,6 +4,7 @@ import { DynamicSelectFieldComponent } from '@admin/forms/dynamic-select/dynamic
 import { EntityFormModel } from '@admin/forms/forms.types'
 import { InputFieldComponent } from '@admin/forms/input/input-field.component'
 import { SelectFieldComponent } from '@admin/forms/select/select-field.component'
+import { FormModalService } from '@admin/modal/formModal.service'
 import {
     animate,
     group,
@@ -16,7 +17,6 @@ import {
 import { CommonModule } from '@angular/common'
 import { Component, HostListener } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
-import { FormModalService } from '@core/services/formModal.service'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { SharedModule } from '@shared/shared.module'
 import { Observable } from 'rxjs'

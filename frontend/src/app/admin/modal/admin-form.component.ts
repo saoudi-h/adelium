@@ -14,7 +14,7 @@ import { Identifiable } from '@core/entity/identifiable.interface'
 import { IconService } from '@core/services/icon.service'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { SharedModule } from '@shared/shared.module'
-import { EntityForm } from './../../../../admin/forms/Forms'
+import { EntityForm } from '../forms/Forms'
 import { FormFieldsComponent } from './form-fields.component'
 
 @Component({
@@ -187,6 +187,6 @@ export class AdminFormComponent<T extends Identifiable> implements OnInit {
             }
         })
         form.id = this.modalConfig.initialValue?.id
-        this.modalConfig.onFormSubmit(form)
+        this.modalConfig.onFormSubmit(form, this.modalConfig.actionType)
     }
 }
