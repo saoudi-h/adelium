@@ -1,9 +1,9 @@
+import { FormModalComponent } from '@admin/modal/form-modal.component'
 import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
 import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component'
 import { NavbarComponent } from '@shared/components/navbar/navbar.component'
-import { FormModalComponent } from '@shared/components/utility/modals/form-modal.component'
 import { ModalComponent } from '@shared/components/utility/modals/modal.component'
 import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
 import { SharedModule } from '@shared/shared.module'
@@ -14,7 +14,6 @@ import { SharedModule } from '@shared/shared.module'
     template: `
         <!-- MODAL -->
         <app-modal />
-        <app-form-modal />
         <!-- DRAWER -->
         <div class="drawer bg-base-300">
             <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
