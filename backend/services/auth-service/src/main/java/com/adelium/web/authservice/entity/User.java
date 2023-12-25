@@ -3,6 +3,7 @@ package com.adelium.web.authservice.entity;
 
 import com.adelium.web.common.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -196,12 +197,14 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * The date of creation of the user.
      */
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createdAt;
 
     /**
      * The date of the last update of the user.
      */
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updatedAt;
 
     /**
@@ -274,7 +277,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * @return the authorities granted to the user
      */
     @Override
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Set<Authority> getAuthorities() {
         Set<Authority> authorities = new HashSet<>();
         for (Role role : roles) {
