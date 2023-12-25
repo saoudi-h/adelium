@@ -1,4 +1,3 @@
-import { FormModalComponent } from '@admin/modal/form-modal.component'
 import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
@@ -58,7 +57,6 @@ import { SharedModule } from '@shared/shared.module'
         BreadcrumbsComponent,
         SharedModule,
         ModalComponent,
-        FormModalComponent,
     ],
 })
 export class DefaultLayoutComponent {}
