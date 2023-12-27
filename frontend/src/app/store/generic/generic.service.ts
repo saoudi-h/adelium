@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Page } from '@core/entity/page.entity'
@@ -100,6 +100,21 @@ export abstract class GenericService<T extends Identifiable> {
     ): Observable<Page<Identifiable>> {
         return this.http.get<Page<Identifiable>>(
             `${this.apiUrl}/${entityId}/${relation}`
+        )
+    }
+
+    updateRelatedEntities(
+        entityId: number,
+        relation: string,
+        relatedEntityIds: number[]
+    ): Observable<Identifiable[]> {
+        const headers = new HttpHeaders().set('Content-Type', 'text/uri-list')
+        const relatedEntities = relatedEntityIds.join('\n')
+
+        return this.http.put<Identifiable[]>(
+            `${this.apiUrl}/${entityId}/${relation}`,
+            relatedEntities,
+            { headers }
         )
     }
 }

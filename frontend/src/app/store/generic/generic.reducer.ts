@@ -45,6 +45,9 @@ export function createGenericReducer<T extends Identifiable>(
         on(actions.addItemSuccess, (state: ExtendedState<T>, { item }) =>
             adapter.addOne(item, state)
         ),
+        on(actions.addSelectionSuccess, (state: ExtendedState<T>, { items }) =>
+            adapter.upsertMany(items, state)
+        ),
         on(actions.updateItemSuccess, (state, { item }) =>
             adapter.updateOne({ id: item.id, changes: item }, state)
         ),
@@ -93,6 +96,21 @@ export function createGenericReducer<T extends Identifiable>(
                         [id]: {
                             ...state.relatedEntities[id],
                             [relation]: entities.map(entity => entity.id),
+                        },
+                    },
+                }
+            }
+        ),
+        on(
+            actions.updateRelatedEntitiesSuccess,
+            (state, { id, relation, relatedEntityIds }): ExtendedState<T> => {
+                return {
+                    ...state,
+                    relatedEntities: {
+                        ...state.relatedEntities,
+                        [id]: {
+                            ...state.relatedEntities[id],
+                            [relation]: relatedEntityIds,
                         },
                     },
                 }

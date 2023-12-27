@@ -193,30 +193,62 @@ export abstract class GenericEffects<T extends Identifiable> {
         )
     })
 
-    updateRelatedEntityOnSuccess$ = createEffect(() => {
+    updateRelatedEntities$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.entityActions.updateRelatedEntities),
+            mergeMap(({ id, relation, relatedEntityIds }) => {
+                console.log(
+                    'updateRelatedEntities',
+                    id,
+                    relation,
+                    relatedEntityIds
+                )
+                return this.genericService
+                    .updateRelatedEntities(id, relation, relatedEntityIds)
+                    .pipe(
+                        map(() =>
+                            this.entityActions.updateRelatedEntitiesSuccess({
+                                id,
+                                relation,
+                                relatedEntityIds,
+                            })
+                        ),
+                        catchError(error =>
+                            of(
+                                this.entityActions.updateRelatedEntitiesFailure(
+                                    {
+                                        error,
+                                    }
+                                )
+                            )
+                        )
+                    )
+            })
+        )
+    })
+
+    updateChildrenEntitySuccess$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(this.entityActions.getRelatedEntitiesSuccess),
-            map(action => {
-                const actionType = this.determineUpdateAction(
-                    action.relation,
-                    action.entities
-                )
+            map(({ relation, entities }) => {
+                const actionType = this.determineUpdateAction(relation)
+
                 if (actionType) {
-                    return actionType
+                    return actionType({ items: entities })
                 }
                 return { type: '[No Operation]' }
             })
         )
     })
 
-    private determineUpdateAction(relation: string, entities: Identifiable[]) {
+    private determineUpdateAction = (relation: string) => {
         const relationConfig = entityConfig[relation]
         if (relationConfig && relationConfig.actions) {
-            const updateAction = relationConfig.actions['updateRelatedEntities']
+            const updateAction = relationConfig.actions['addSelectionSuccess']
             if (updateAction) {
-                return updateAction({ entities })
+                return updateAction
             }
         }
-        return { type: '[No Operation]' }
+        return undefined
     }
 }

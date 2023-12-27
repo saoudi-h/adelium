@@ -92,6 +92,17 @@ export function createGenericSelectors<T extends Identifiable>(
             .filter((entity): entity is T => entity !== undefined)
     })
 
+    const selectSelection = (ids: number[]) =>
+        createSelector(selectAll, entities => {
+            return entities.filter(entity => ids.includes(entity.id))
+        })
+
+    const selectRelatedEntitiesLoaded = (id: number, relation: string) =>
+        createSelector(selectEntityState, state => {
+            const related = state.relatedEntities[id]
+            return related && related[relation] ? related[relation] : null
+        })
+
     return {
         selectIds,
         selectEntities,
@@ -104,6 +115,8 @@ export function createGenericSelectors<T extends Identifiable>(
         selectIsLoading,
         selectError,
         selectRelatedEntities,
+        selectSelection,
+        selectRelatedEntitiesLoaded,
     }
 }
 

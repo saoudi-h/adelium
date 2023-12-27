@@ -88,6 +88,18 @@ export function createEntityActions<T extends Identifiable>(
             `[${entityType}] Delete Selection Failure`,
             props<{ error: string | null }>()
         ),
+        addSelection: createAction(
+            `[${entityType}] Add Selection`,
+            props<{ ids: number[] }>()
+        ),
+        addSelectionSuccess: createAction(
+            `[${entityType}] Add Selection Success`,
+            props<{ items: T[] }>()
+        ),
+        addSelectionFailure: createAction(
+            `[${entityType}] Add Selection Failure`,
+            props<{ error: string | null }>()
+        ),
 
         // pagination
         updatePaginationParams: createAction(
@@ -116,54 +128,58 @@ export function createEntityActions<T extends Identifiable>(
             `[${entityType}] Get Related Entities Failure`,
             props<{ error: string }>()
         ),
-        addRelatedEntity: createAction(
-            `[${entityType}] Add Related Entity`,
-            props<{
-                entityId: number
-                relation: string
-                relatedEntity: Identifiable
-            }>()
-        ),
-        addRelatedEntitySuccess: createAction(
-            `[${entityType}] Add Related Entity Success`,
-            props<{ relation: string; relatedEntity: Identifiable }>()
-        ),
-        addRelatedEntityFailure: createAction(
-            `[${entityType}] Add Related Entity Failure`,
-            props<{ error: string }>()
-        ),
-        updateRelatedEntity: createAction(
+        // addRelatedEntity: createAction(
+        //     `[${entityType}] Add Related Entity`,
+        //     props<{
+        //         entityId: number
+        //         relation: string
+        //         relatedEntity: Identifiable
+        //     }>()
+        // ),
+        // addRelatedEntitySuccess: createAction(
+        //     `[${entityType}] Add Related Entity Success`,
+        //     props<{ relation: string; relatedEntity: Identifiable }>()
+        // ),
+        // addRelatedEntityFailure: createAction(
+        //     `[${entityType}] Add Related Entity Failure`,
+        //     props<{ error: string }>()
+        // ),
+        updateRelatedEntities: createAction(
             `[${entityType}] Update Related Entity`,
             props<{
-                entityId: number
+                id: number
                 relation: string
-                relatedEntity: Identifiable
+                relatedEntityIds: number[]
             }>()
         ),
-        updateRelatedEntitySuccess: createAction(
+        updateRelatedEntitiesSuccess: createAction(
             `[${entityType}] Update Related Entity Success`,
-            props<{ relation: string; relatedEntity: Identifiable }>()
+            props<{
+                id: number
+                relation: string
+                relatedEntityIds: number[]
+            }>()
         ),
-        updateRelatedEntityFailure: createAction(
+        updateRelatedEntitiesFailure: createAction(
             `[${entityType}] Update Related Entity Failure`,
             props<{ error: string }>()
         ),
-        removeRelatedEntity: createAction(
-            `[${entityType}] Remove Related Entity`,
-            props<{
-                entityId: number
-                relation: string
-                relatedEntityId: number
-            }>()
-        ),
-        removeRelatedEntitySuccess: createAction(
-            `[${entityType}] Remove Related Entity Success`,
-            props<{ relation: string; relatedEntityId: number }>()
-        ),
-        removeRelatedEntityFailure: createAction(
-            `[${entityType}] Remove Related Entity Failure`,
-            props<{ error: string }>()
-        ),
+        // removeRelatedEntity: createAction(
+        //     `[${entityType}] Remove Related Entity`,
+        //     props<{
+        //         entityId: number
+        //         relation: string
+        //         relatedEntityId: number
+        //     }>()
+        // ),
+        // removeRelatedEntitySuccess: createAction(
+        //     `[${entityType}] Remove Related Entity Success`,
+        //     props<{ relation: string; relatedEntityId: number }>()
+        // ),
+        // removeRelatedEntityFailure: createAction(
+        //     `[${entityType}] Remove Related Entity Failure`,
+        //     props<{ error: string }>()
+        // ),
     }
 }
 
