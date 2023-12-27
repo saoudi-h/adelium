@@ -14,7 +14,7 @@ import {
     PaginationParams,
     PaginationResult,
 } from '@store/generic/generic.reducer'
-import { Observable, Subscription, tap, withLatestFrom } from 'rxjs'
+import { Observable, Subscription, tap } from 'rxjs'
 import { FormField } from '../forms.types'
 
 type itemsType = {
@@ -57,50 +57,51 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
         | undefined
     numberOfItemsFromEndBeforeFetchingMore = 2
 
-    selected!: { label: string; value: any; disabled?: boolean | undefined }[]
     @Input() field!: FormField
     @Input() entityId?: number
 
     ngOnInit(): void {
         if (this.field.dynamicOptions) {
-            this.items$ = this.field.dynamicOptions.all()
-            this.paginationResult$ =
-                this.field.dynamicOptions.paginationResult()
+            this.initializeItemsStream()
+            this.initializePagination()
+            this.loadInitialValuesIfNeeded()
+        }
+    }
 
-            this.subscription.add(
-                this.items$
-                    .pipe(
-                        withLatestFrom(this.paginationResult$),
-                        tap(([items, paginationResult]) => {
-                            console.log('items: ', items.length)
-                            console.log('paginationResult: ', paginationResult)
-                            if (
-                                items.length > 0 &&
-                                paginationResult.number >=
-                                    paginationResult.totalPages - 1
-                            ) {
-                                console.log('allDataLoaded')
-                                this.allDataLoaded = true
-                            }
-                            this.loading = false // Définir loading sur false après la réception des données
-                        })
-                    )
-                    .subscribe()
-            )
+    private initializeItemsStream(): void {
+        this.items$ = this.field.dynamicOptions!.all()
+        this.paginationResult$ = this.field.dynamicOptions!.paginationResult()
 
-            if (this.entityId && this.field.dynamicOptions.getInitialById) {
-                this.subscription.add(
-                    this.field.dynamicOptions
-                        .getInitialById(this.entityId)
-                        .subscribe(initialValues => {
-                            this.selected = initialValues
-                        })
+        this.subscription.add(
+            this.paginationResult$
+                .pipe(
+                    tap(paginationResult => {
+                        this.loading = false
+                        this.allDataLoaded =
+                            paginationResult.number >=
+                            paginationResult.totalPages - 1
+                    })
                 )
-            }
+                .subscribe()
+        )
+    }
 
-            this.getNextPage = this.field.dynamicOptions.getNextPage
+    private initializePagination(): void {
+        this.getNextPage = this.field.dynamicOptions!.getNextPage
+        this.getNextPage(this.paginationParams)
+    }
 
-            this.getNextPage(this.paginationParams)
+    private loadInitialValuesIfNeeded(): void {
+        if (this.entityId && this.field.dynamicOptions!.getInitialById) {
+            this.subscription.add(
+                this.field
+                    .dynamicOptions!.getInitialById(this.entityId)
+                    .subscribe(initialValues => {
+                        this.group.patchValue({
+                            [this.field.id]: initialValues,
+                        })
+                    })
+            )
         }
     }
 
@@ -118,16 +119,15 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
     }
 
     fetchMore(): void {
-        console.log('fetchMore')
-        if (this.loading || this.allDataLoaded) return
+        if (this.loading || this.allDataLoaded) {
+            return
+        }
 
         this.loading = true
-
         this.paginationParams = {
             ...this.paginationParams,
             page: this.paginationParams.page + 1,
         }
-
         this.getNextPage(this.paginationParams)
     }
 

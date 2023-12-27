@@ -15,7 +15,6 @@
             [multiple]="field.type.option === 'multiple'"
             placeholder="{{ field.placeholder }}"
             [formControlName]="field.id"
-            [(ngModel)]="selected"
             [loading]="loading"
             [virtualScroll]="true"
             (scroll)="onScroll($event)"
