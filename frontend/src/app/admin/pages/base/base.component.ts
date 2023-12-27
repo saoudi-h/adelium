@@ -1,8 +1,8 @@
 import { EntityFormModel } from '@admin/forms/forms.types'
+import { FormModalService } from '@admin/modal/formModal.service'
 import { CommonModule } from '@angular/common'
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
-import { FormModalService } from '@core/services/formModal.service'
 import { ModalService } from '@core/services/modal.service'
 import { Store } from '@ngrx/store'
 import { AppState } from '@reducers'
@@ -115,6 +115,7 @@ export class BaseAdminComponent<T extends Identifiable>
                     this.formModalService.openFormModal({
                         ...this.entityFormModel,
                         initialValue: entity,
+                        actionType: 'edit',
                     })
                 })
         )
@@ -130,5 +131,9 @@ export class BaseAdminComponent<T extends Identifiable>
 
     onAdd() {
         this.formModalService.openFormModal(this.entityFormModel)
+    }
+
+    addOne(formValue: T) {
+        this.store.dispatch(this.actions.addItem({ item: formValue }))
     }
 }
