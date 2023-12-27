@@ -29,7 +29,7 @@ import { RoleActions } from '@store/role/role.actions'
 import { RoleSelectors } from '@store/role/role.selectors'
 import { UserActions } from '@store/user/user.actions'
 import { UserSelectors } from '@store/user/user.selectors'
-import { Observable, map, switchMap } from 'rxjs'
+import { Observable, filter, map, switchMap } from 'rxjs'
 import { EntityFormModel } from './../../forms/forms.types'
 import { UserAdminTrComponent } from './user-admin-tr.component'
 @Component({
@@ -126,14 +126,17 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
             ]),
         ]),
     ],
-    template: ` <section
-        view-layout
-        [config]="config"
-        [paginationResult$]="paginationResult$"
-        (add)="onAdd()"
-        (pageChange)="onPageChange($event)">
-        <!-- tbody -->
-        <!-- <tbody
+    template: ` <button (click)="getRoles(1)" class="btn btn-primary">
+            getRoles
+        </button>
+        <section
+            view-layout
+            [config]="config"
+            [paginationResult$]="paginationResult$"
+            (add)="onAdd()"
+            (pageChange)="onPageChange($event)">
+            <!-- tbody -->
+            <!-- <tbody
             *ngIf="entities$"
             class=""
             user-admin-tbody
@@ -143,27 +146,28 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
             (delete)="onDelete($event)"
             (edit)="onEdit($event)"></tbody> -->
 
-        @if (error$ | async; as errorMessage) {
-            <div>error : {{ errorMessage }}</div>
-        }
-        @if (entities$ | async; as entities) {
-            @if (paginationResult$ | async; as pagination) {
-                <tbody [@bodyAnimation]="pagination.number">
-                    @for (entity of entities; track entity) {
-                        <tr
-                            user-admin-tr
-                            @rowAnimation
-                            [@.disabled]="!entity['isDeleting']"
-                            (delete)="onDelete($event)"
-                            (edit)="onEdit($event)"
-                            [entity]="entity"></tr>
-                    }
-                </tbody>
+            @if (error$ | async; as errorMessage) {
+                <div>error : {{ errorMessage }}</div>
             }
-        } @else {
-            <div>Chargement des données...</div>
-        }
-    </section>`,
+            @if (entities$ | async; as entities) {
+                @if (paginationResult$ | async; as pagination) {
+                    <tbody [@bodyAnimation]="pagination.number">
+                        @for (entity of entities; track entity) {
+                            <tr
+                                user-admin-tr
+                                @rowAnimation
+                                [@.disabled]="!entity['isDeleting']"
+                                (delete)="onDelete($event)"
+                                (edit)="onEdit($event)"
+                                [getRoles]="this.getRoles"
+                                [entity]="entity"></tr>
+                        }
+                    </tbody>
+                }
+            } @else {
+                <div>Chargement des données...</div>
+            }
+        </section>`,
 
     styles: [
         `
@@ -188,7 +192,7 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
         tableLabels: [
             'Utilisateur',
             'Addresse',
-            'Autorisations',
+            'Roles',
             'Status',
             'Securité',
             'Autres',
@@ -196,10 +200,9 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
         subtitle: 'Ajouter, modifier et supprimer des utilisateurs',
     }
     override entityFormModel: EntityFormModel<User> = {
-        onFormSubmit: (formUser: User) => {
-            console.log('onFormSubmit', formUser)
-            this.editOne(formUser)
-        },
+        onEdit: (form: User) => this.editOne(form),
+        onAdd: (form: User) => this.addOne(form),
+        actionType: 'add',
         title: 'Utilisateur',
         id: 'user',
         actions: [
@@ -267,10 +270,10 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                             RoleActions.getPage({ params: params })
                         )
                     },
-                    getInitialById: (id: number) => {
+                    getInitialById: (userId: number) => {
                         this.store.dispatch(
                             UserActions.getRelatedEntities({
-                                id: id,
+                                id: userId,
                                 relation: 'roles',
                             })
                         )
@@ -278,7 +281,7 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                         return this.store
                             .select(
                                 UserSelectors.selectRelatedEntities({
-                                    id: id,
+                                    id: userId,
                                     relation: 'roles',
                                 })
                             )
@@ -307,11 +310,18 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                     },
                     paginationResult: () =>
                         this.store.select(RoleSelectors.selectPaginationResult),
-                    reverseSelection: (selected: any[]) => {
-                        return selected.map(role => ({
-                            name: role.label,
-                            id: role.value,
-                        }))
+                    setRelations: (
+                        id: number,
+                        relation: string,
+                        relatedEntityIds: number[]
+                    ) => {
+                        this.store.dispatch(
+                            UserActions.updateRelatedEntities({
+                                id,
+                                relation,
+                                relatedEntityIds,
+                            })
+                        )
                     },
                 },
                 validators: [Validators.required],
@@ -397,5 +407,22 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 validators: [Validators.required],
             },
         ],
+    }
+
+    getRoles = (id: number) => {
+        this.store.dispatch(
+            UserActions.getRelatedEntities({ id: id, relation: 'roles' })
+        )
+
+        return this.store
+            .select(UserSelectors.selectRelatedEntitiesLoaded(id, 'roles'))
+            .pipe(
+                filter(ids => ids !== null),
+                switchMap(ids => {
+                    return this.store.select(
+                        RoleSelectors.selectSelection(ids as number[])
+                    )
+                })
+            )
     }
 }
