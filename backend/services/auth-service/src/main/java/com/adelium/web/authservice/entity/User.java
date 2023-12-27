@@ -41,7 +41,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
     /**
      * The password of the user.
      */
-    @Column(nullable = false)
+    @Column(nullable = true)
     @JsonIgnore
     private String password;
 
@@ -87,6 +87,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
      */
     @Column(nullable = false)
     @Builder.Default
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int failedLoginAttempts = 0;
 
     /**
