@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common'
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Role } from '@core/entity/role.entity'
 import { User } from '@core/entity/user.entity'
 import { SharedModule } from '@shared/shared.module'
+import { Observable } from 'rxjs'
 import { ActionEntityComponent } from '../base/components/action-entity.component'
 @Component({
     selector: '[user-admin-tr]',
@@ -76,12 +78,12 @@ import { ActionEntityComponent } from '../base/components/action-entity.componen
         <!-- Autorisations -->
         <td>
             <div class="flex flex-col gap-1">
-                @for (authority of entity['authorities']; track authority) {
+                @for (role of roles$ | async; track role) {
                     <span class="badge badge-outline badge-sm">
-                        {{ authority.authority }}
+                        {{ role.name }}
                     </span>
                 } @empty {
-                    <span class=""> Aucune autorisation </span>
+                    <span class=""> Aucun Role </span>
                 }
             </div>
         </td>
@@ -205,8 +207,10 @@ import { ActionEntityComponent } from '../base/components/action-entity.componen
             (edit)="onEdit($event)"></td>
     `,
 })
-export class UserAdminTrComponent {
+export class UserAdminTrComponent implements OnInit {
     @Input() entity!: User
+    @Input() getRoles!: (id: number) => Observable<Role[]>
+    roles$!: Observable<Role[]>
     @Output() delete = new EventEmitter<number>()
     @Output() edit = new EventEmitter<number>()
 
@@ -216,5 +220,8 @@ export class UserAdminTrComponent {
 
     onEdit(id: number) {
         this.edit.emit(id)
+    }
+    ngOnInit(): void {
+        this.roles$ = this.getRoles(this.entity.id)
     }
 }
