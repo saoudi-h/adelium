@@ -88,7 +88,6 @@ export class AuthEffects {
             return this.actions$.pipe(
                 ofType(AuthActions.loginFailure),
                 tap(({ error }) => {
-                    console.log('authEffects : authFailure$')
                     console.log('error', error)
                     this.notificationService.error(
                         'Erreur',
@@ -125,7 +124,6 @@ export class AuthEffects {
                 const accessToken = localStorage.getItem('accessToken')
                 const refreshToken = localStorage.getItem('refreshToken')
                 const refreshAttempts = localStorage.getItem('refreshAttempts')
-                console.log('refreshAttempts', refreshAttempts)
 
                 if (accessToken && refreshToken && refreshAttempts)
                     return of(

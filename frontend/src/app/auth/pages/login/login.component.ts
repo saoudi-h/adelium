@@ -41,8 +41,7 @@ export class LoginComponent {
 
     onSubmit() {
         if (!this.loginForm.valid) return
-        console.log('loginComponent: onSubmit()')
-        console.log('loginForm.value : ', this.loginForm.value)
+
         const userLogin: UserLogin = this.loginForm.value as UserLogin
         this.store.dispatch(AuthActions.login({ userLogin }))
     }
