@@ -164,7 +164,7 @@ export class AdminFormComponent<T extends Identifiable> implements OnInit {
         return color ? `btn-${color}` : 'btn-primary'
     }
 
-    onSubmit(callback: () => void) {
+    onSubmit(callback?: () => void) {
         if (callback) {
             callback()
         }
@@ -175,18 +175,50 @@ export class AdminFormComponent<T extends Identifiable> implements OnInit {
             }
         }
 
+        const formValue = { ...form }
         this.modalConfig.fields.forEach(field => {
-            if (
-                field.type.name === 'dynamic-select' &&
-                field.dynamicOptions?.reverseSelection &&
-                form[field.id]
-            ) {
-                form[field.id] = field.dynamicOptions.reverseSelection(
-                    form[field.id]
+            if (field.type.name === 'dynamic-select') {
+                formValue[field.id] = this.selectionToUris(
+                    formValue[field.id],
+                    field.id
                 )
             }
         })
-        form.id = this.modalConfig.initialValue?.id
-        this.modalConfig.onFormSubmit(form, this.modalConfig.actionType)
+
+        if (
+            this.modalConfig.actionType === 'edit' &&
+            this.modalConfig.initialValue
+        ) {
+            // edit
+            formValue.id = this.modalConfig.initialValue.id
+            this.modalConfig.onEdit(formValue)
+            this.updateRelations(form)
+        } else if (this.modalConfig.actionType === 'add') {
+            this.modalConfig.onAdd(formValue)
+        }
+    }
+    updateRelations(form: any) {
+        // check if there is a dynamic select field and set the relations
+        this.modalConfig.fields.forEach(field => {
+            if (
+                field.type.name === 'dynamic-select' &&
+                field.dynamicOptions?.setRelations &&
+                form[field.id] &&
+                this.modalConfig.initialValue
+            ) {
+                form[field.id] = field.dynamicOptions.setRelations(
+                    this.modalConfig.initialValue.id,
+                    field.id,
+                    this.selectionToIds(form[field.id])
+                )
+            }
+        })
+    }
+
+    selectionToUris(selection: any[], relation: string): string[] {
+        return selection.map(item => `/api/v1/auth/${relation}/${item.value}`)
+    }
+    selectionToIds(selection: any[]): number[] {
+        return selection.map(item => item.value)
     }
 }
