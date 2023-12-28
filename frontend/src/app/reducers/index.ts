@@ -5,6 +5,10 @@ import {
     authorityReducer,
 } from '@store/authority/authority.reducer'
 import {
+    QuizDefaultState,
+    quizDefaultReducer,
+} from '@store/evaluation/quiz/quiz-default/quiz-default.reducer'
+import {
     NotificationState,
     notificationReducer,
 } from '@store/notification/notification.reducer'
@@ -25,6 +29,7 @@ export interface AppState {
     roles: RoleState
     authorities: AuthorityState
     requestQueue: RequestQueueState
+    quizDefaults: QuizDefaultState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -35,6 +40,7 @@ export const reducers: ActionReducerMap<AppState> = {
     roles: roleReducer,
     authorities: authorityReducer,
     requestQueue: requestQueueReducer,
+    quizDefaults: quizDefaultReducer,
 }
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : []

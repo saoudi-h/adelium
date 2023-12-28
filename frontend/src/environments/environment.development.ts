@@ -5,4 +5,7 @@ export const environment = {
     roleEndPoint: '/api/v1/auth/roles',
     authorityEndPoint: '/api/v1/auth/authorities',
     maxRefreshAttempts: 3,
+
+    // Quiz
+    quizDefaultUrl: '/api/v1/quiz/quiz-defaults',
 }

@@ -24,7 +24,7 @@ const routes: Routes = [
             {
                 path: 'users',
                 loadComponent: () =>
-                    import('./pages/users/users.component').then(
+                    import('./pages/auth/users/users.component').then(
                         mod => mod.AdminUsersComponent
                     ),
                 data: {
@@ -36,7 +36,7 @@ const routes: Routes = [
             {
                 path: 'roles',
                 loadComponent: () =>
-                    import('./pages/roles/roles.component').then(
+                    import('./pages/auth/roles/roles.component').then(
                         mod => mod.AdminRolesComponent
                     ),
                 data: {
@@ -48,12 +48,24 @@ const routes: Routes = [
             {
                 path: 'authorities',
                 loadComponent: () =>
-                    import('./pages/authorities/authorities.component').then(
-                        mod => mod.AdminAuthoritiesComponent
-                    ),
+                    import(
+                        './pages/auth/authorities/authorities.component'
+                    ).then(mod => mod.AdminAuthoritiesComponent),
                 data: {
                     breadcrumb: 'Autorités',
                     icon: 'authority-icon',
+                    active: true,
+                },
+            },
+            {
+                path: 'quiz-default',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/quiz/quiz-default/quiz-default.component'
+                    ).then(mod => mod.AdminQuizDefaultComponent),
+                data: {
+                    breadcrumb: 'Quiz généraux',
+                    icon: 'quiz-icon',
                     active: true,
                 },
             },
