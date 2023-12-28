@@ -1,5 +1,5 @@
 /* (C)2023 */
-package com.adelium.web.authservice.config;
+package com.adelium.web.common.config;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.Type;
