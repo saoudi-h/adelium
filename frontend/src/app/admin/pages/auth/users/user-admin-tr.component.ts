@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { Role } from '@core/entity/role.entity'
-import { User } from '@core/entity/user.entity'
+import { Role } from '@core/entity/auth/role.entity'
+import { User } from '@core/entity/auth/user.entity'
 import { SharedModule } from '@shared/shared.module'
 import { Observable } from 'rxjs'
-import { ActionEntityComponent } from '../base/components/action-entity.component'
+import { ActionEntityComponent } from '../../base/components/action-entity.component'
 @Component({
     selector: '[user-admin-tr]',
     standalone: true,

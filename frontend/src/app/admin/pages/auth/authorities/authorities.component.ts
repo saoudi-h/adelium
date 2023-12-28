@@ -1,48 +1,47 @@
 import { TextInput } from '@admin/forms/Forms'
+import { AuthoritySelectors } from '../../../../store/authority/authority.selectors'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
+import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
+import { BaseAdminComponent } from '@admin/pages/base/base.component'
 import { AdminConfig } from '@admin/pages/base/components/admin-config.types'
 import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.component'
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
-import { Role } from '@core/entity/role.entity'
+import { Authority } from '@core/entity/auth/authority.entity'
 import { SharedModule } from '@shared/shared.module'
-import { RoleActions } from '@store/role/role.actions'
-import { RoleSelectors } from '@store/role/role.selectors'
+import { AuthorityActions } from '@store/authority/authority.actions'
 import { Observable } from 'rxjs'
-import { EntityFormModel } from '../../forms/forms.types'
-import { BaseTrComponent } from '../base/base-tr.component'
-import { BaseAdminComponent } from '../base/base.component'
-
+import { EntityFormModel } from '../../../forms/forms.types'
 @Component({
-    selector: '[admin-roles]',
+    selector: '[admin-authorities]',
     imports: [CommonModule, SharedModule, ViewLayoutComponent, BaseTrComponent],
     standalone: true,
-    templateUrl: '../base/base.component.html',
-    styleUrl: '../base/base.component.sass',
+    templateUrl: '../../base/base.component.html',
+    styleUrl: '../../base/base.component.sass',
     animations: baseAnimations,
 })
-export class AdminRolesComponent extends BaseAdminComponent<Role> {
-    override selectors = RoleSelectors
-    override actions = RoleActions
-    override entities$!: Observable<Role[]>
+export class AdminAuthoritiesComponent extends BaseAdminComponent<Authority> {
+    override selectors = AuthoritySelectors
+    override actions = AuthorityActions
+    override entities$!: Observable<Authority[]>
     override isLoading$!: Observable<boolean>
     override error$!: Observable<string | null>
     override config: AdminConfig = {
-        title: 'Rôles',
-        name: 'role',
-        plural: 'roles',
+        title: 'Autorisation',
+        name: 'authorisation',
+        plural: 'autorisations',
         masculin: true,
-        subtitle: 'Ajouter, modifier et supprimer des rôles',
+        subtitle: 'Ajouter, modifier et supprimer des autorisations',
     }
-    override entityFormModel: EntityFormModel<Role> = {
+    override entityFormModel: EntityFormModel<Authority> = {
         onEdit: this.editOne,
         onAdd: this.addOne,
         selectTransactionStatus: this.selectTransactionStatus,
         actionType: 'add',
         title: 'Rôle',
-        id: 'role',
+        id: 'authority',
         actions: [
             {
                 label: 'Enregistrer',
@@ -57,8 +56,7 @@ export class AdminRolesComponent extends BaseAdminComponent<Role> {
         additionalInfo: 'Veuillez remplir les champs suivants',
         fields: [
             {
-                id: 'name',
-                sortable: true,
+                id: 'authority',
                 type: TextInput,
                 label: 'Nom',
                 placeholder: 'Administrateur',

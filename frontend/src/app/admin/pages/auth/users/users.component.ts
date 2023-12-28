@@ -22,7 +22,7 @@ import {
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
-import { User } from '@core/entity/user.entity'
+import { User } from '@core/entity/auth/user.entity'
 import { SharedModule } from '@shared/shared.module'
 import { PaginationParams } from '@store/generic/generic.reducer'
 import { RoleActions } from '@store/role/role.actions'
@@ -30,7 +30,7 @@ import { RoleSelectors } from '@store/role/role.selectors'
 import { UserActions } from '@store/user/user.actions'
 import { UserSelectors } from '@store/user/user.selectors'
 import { Observable, filter, map, switchMap } from 'rxjs'
-import { EntityFormModel } from './../../forms/forms.types'
+import { EntityFormModel } from '../../../forms/forms.types'
 import { UserAdminTrComponent } from './user-admin-tr.component'
 @Component({
     standalone: true,
