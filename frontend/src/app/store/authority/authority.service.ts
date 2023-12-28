@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Authority } from '@core/entity/authority.entity'
+import { Authority } from '@core/entity/auth/authority.entity'
 import { GenericService } from '@store/generic/generic.service'
 import { environment } from 'src/environments/environment.development'
 

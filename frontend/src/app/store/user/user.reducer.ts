@@ -1,4 +1,4 @@
-import { User } from '@core/entity/user.entity'
+import { User } from '@core/entity/auth/user.entity'
 import {
     ExtendedState,
     createGenericReducer,

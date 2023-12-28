@@ -1,4 +1,4 @@
-import { Authority } from '@core/entity/authority.entity'
+import { Authority } from '@core/entity/auth/authority.entity'
 import {
     ExtendedState,
     createGenericReducer,

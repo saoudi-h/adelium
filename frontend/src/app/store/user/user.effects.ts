@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { User } from '@core/entity/user.entity'
+import { User } from '@core/entity/auth/user.entity'
 import { Actions } from '@ngrx/effects'
 import { GenericEffects } from '@store/generic/generic.effects'
 import { UserActions } from './user.actions'

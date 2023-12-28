@@ -1,4 +1,4 @@
-import { Role } from '@core/entity/role.entity'
+import { Role } from '@core/entity/auth/role.entity'
 import {
     ExtendedState,
     createGenericReducer,

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Role } from '@core/entity/role.entity'
+import { Role } from '@core/entity/auth/role.entity'
 import { GenericService } from '@store/generic/generic.service'
 import { environment } from 'src/environments/environment.development'
 

@@ -1,4 +1,4 @@
-import { User } from '@core/entity/user.entity'
+import { User } from '@core/entity/auth/user.entity'
 import { createGenericSelectors } from '@store/generic/generic.selectors'
 import { userAdapter } from './user.adapter'
 

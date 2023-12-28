@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Role } from '@core/entity/role.entity'
+import { Role } from '@core/entity/auth/role.entity'
 import { Actions } from '@ngrx/effects'
 import { GenericEffects } from '@store/generic/generic.effects'
 import { RoleActions } from './role.actions'
