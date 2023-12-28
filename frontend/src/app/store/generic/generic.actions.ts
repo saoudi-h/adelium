@@ -183,6 +183,8 @@ export function createEntityActions<T extends Identifiable>(
         //     `[${entityType}] Remove Related Entity Failure`,
         //     props<{ error: string }>()
         // ),
+
+        resetEntities: createAction(`[${entityType}] Reset Entities`),
     }
 }
 

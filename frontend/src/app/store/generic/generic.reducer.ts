@@ -182,6 +182,16 @@ export function createGenericReducer<T extends Identifiable>(
                     params: initialState.paginationInfo.params,
                 },
             }
+        }),
+        on(actions.resetEntities, state => {
+            return {
+                ...state,
+                ...adapter.removeAll(state),
+                paginationInfo: {
+                    ...state.paginationInfo,
+                    pageIds: [],
+                },
+            }
         })
     )
 }
