@@ -19,7 +19,10 @@ import { InfoIconComponent } from '@shared/components/icons/info-icon.component'
 import { LoginIconComponent } from '@shared/components/icons/login-icon.component'
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component'
 import { NotFoundIconComponent } from '@shared/components/icons/not-found-icon.component'
+import { OptionIconComponent } from '@shared/components/icons/option-icon.component'
 import { ProfileIconComponent } from '@shared/components/icons/profile.component'
+import { QuestionIconComponent } from '@shared/components/icons/question-icon.component'
+import { QuizIconComponent } from '@shared/components/icons/quiz-icon.component'
 import { RegisterIconComponent } from '@shared/components/icons/register-icon.component'
 import { ReportsComponent } from '@shared/components/icons/reports-icon.component'
 import { RoleIconComponent } from '@shared/components/icons/role-icon.component'
@@ -96,6 +99,12 @@ export class IconService {
                 return DeleteIconComponent
             case 'export-icon':
                 return ExportIconComponent
+            case 'question-icon':
+                return QuestionIconComponent
+            case 'option-icon':
+                return OptionIconComponent
+            case 'quiz-icon':
+                return QuizIconComponent
             default:
                 return null
         }
