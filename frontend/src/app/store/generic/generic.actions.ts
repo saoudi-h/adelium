@@ -31,26 +31,29 @@ export function createEntityActions<T extends Identifiable>(
             `[${entityType}] Get Page Failure`,
             props<{ error: string | null }>()
         ),
-        addItem: createAction(`[${entityType}] Add Item`, props<{ item: T }>()),
+        addItem: createAction(
+            `[${entityType}] Add Item`,
+            props<{ item: T; transactionId: string }>()
+        ),
         addItemSuccess: createAction(
             `[${entityType}] Add Item Success`,
-            props<{ item: T }>()
+            props<{ item: T; transactionId: string }>()
         ),
         addItemFailure: createAction(
             `[${entityType}] Add Item Failure`,
-            props<{ error: string | null }>()
+            props<{ error: string | null; transactionId: string }>()
         ),
         updateItem: createAction(
             `[${entityType}] Update Item`,
-            props<{ item: T }>()
+            props<{ item: T; transactionId: string }>()
         ),
         updateItemSuccess: createAction(
             `[${entityType}] Update Item Success`,
-            props<{ item: T }>()
+            props<{ item: T; transactionId: string }>()
         ),
         updateItemFailure: createAction(
             `[${entityType}] Update Item Failure`,
-            props<{ error: string | null }>()
+            props<{ error: string | null; transactionId: string }>()
         ),
         patchItem: createAction(
             `[${entityType}] Patch Item`,

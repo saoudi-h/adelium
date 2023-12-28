@@ -103,6 +103,13 @@ export function createGenericSelectors<T extends Identifiable>(
             return related && related[relation] ? related[relation] : null
         })
 
+    const selectTransactionStatus = (transactionId: string) =>
+        createSelector(selectEntityState, state => {
+            return {
+                status: state.transactions[transactionId],
+            }
+        })
+
     return {
         selectIds,
         selectEntities,
@@ -117,6 +124,7 @@ export function createGenericSelectors<T extends Identifiable>(
         selectRelatedEntities,
         selectSelection,
         selectRelatedEntitiesLoaded,
+        selectTransactionStatus,
     }
 }
 

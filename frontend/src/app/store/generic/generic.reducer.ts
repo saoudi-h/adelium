@@ -25,11 +25,17 @@ export interface PaginationInfo {
     pageIds: number[]
 }
 
+export enum TransactionStatus {
+    SUCCESS = 'success',
+    FAILURE = 'failure',
+}
+
 export interface ExtendedState<T extends Identifiable> extends EntityState<T> {
     paginationInfo: PaginationInfo
     relatedEntities: {
         [entityId: number]: { [relation: string]: number[] }
     }
+    transactions: { [transactionId: string]: TransactionStatus }
     isLoading: boolean
     error: string | null
 }
@@ -42,14 +48,42 @@ export function createGenericReducer<T extends Identifiable>(
 ): ActionReducer<ExtendedState<T>, Action> {
     return createReducer(
         initialState,
-        on(actions.addItemSuccess, (state: ExtendedState<T>, { item }) =>
-            adapter.addOne(item, state)
+        on(actions.addItemSuccess, (state, { item, transactionId }) => ({
+            ...adapter.addOne(item, state),
+            transactions: {
+                ...state.transactions,
+                [transactionId]: TransactionStatus.SUCCESS,
+            },
+        })),
+        on(
+            actions.addItemFailure,
+            (state, { transactionId }): ExtendedState<T> => ({
+                ...state,
+                transactions: {
+                    ...state.transactions,
+                    [transactionId]: TransactionStatus.FAILURE,
+                },
+            })
         ),
         on(actions.addSelectionSuccess, (state: ExtendedState<T>, { items }) =>
             adapter.upsertMany(items, state)
         ),
-        on(actions.updateItemSuccess, (state, { item }) =>
-            adapter.updateOne({ id: item.id, changes: item }, state)
+        on(actions.updateItemSuccess, (state, { item, transactionId }) => ({
+            ...adapter.updateOne({ id: item.id, changes: item }, state),
+            transactions: {
+                ...state.transactions,
+                [transactionId]: TransactionStatus.SUCCESS,
+            },
+        })),
+        on(
+            actions.updateItemFailure,
+            (state, { transactionId }): ExtendedState<T> => ({
+                ...state,
+                transactions: {
+                    ...state.transactions,
+                    [transactionId]: TransactionStatus.FAILURE,
+                },
+            })
         ),
         on(actions.deleteItemSuccess, (state, { id }) => ({
             ...adapter.removeOne(id, state),

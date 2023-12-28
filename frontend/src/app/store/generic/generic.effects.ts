@@ -72,15 +72,21 @@ export abstract class GenericEffects<T extends Identifiable> {
     addItem$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(this.entityActions.addItem),
-            mergeMap(({ item }) =>
+            mergeMap(({ item, transactionId }) =>
                 this.genericService.create(item).pipe(
-                    map(newItem =>
+                    map(item =>
                         this.entityActions.addItemSuccess({
-                            item: newItem,
+                            item,
+                            transactionId,
                         })
                     ),
                     catchError(error =>
-                        of(this.entityActions.addItemFailure({ error }))
+                        of(
+                            this.entityActions.addItemFailure({
+                                error,
+                                transactionId,
+                            })
+                        )
                     )
                 )
             )
@@ -94,15 +100,21 @@ export abstract class GenericEffects<T extends Identifiable> {
     updateItem$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(this.entityActions.updateItem),
-            mergeMap(({ item }) =>
+            mergeMap(({ item, transactionId }) =>
                 this.genericService.update(item).pipe(
-                    map(updatedItem =>
+                    map(item =>
                         this.entityActions.updateItemSuccess({
-                            item: updatedItem,
+                            item,
+                            transactionId,
                         })
                     ),
                     catchError(error =>
-                        of(this.entityActions.updateItemFailure({ error }))
+                        of(
+                            this.entityActions.updateItemFailure({
+                                error,
+                                transactionId,
+                            })
+                        )
                     )
                 )
             )
