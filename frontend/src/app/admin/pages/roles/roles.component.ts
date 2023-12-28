@@ -37,8 +37,9 @@ export class AdminRolesComponent extends BaseAdminComponent<Role> {
         subtitle: 'Ajouter, modifier et supprimer des rôles',
     }
     override entityFormModel: EntityFormModel<Role> = {
-        onEdit: (form: Role) => this.editOne(form),
-        onAdd: (form: Role) => this.addOne(form),
+        onEdit: this.editOne,
+        onAdd: this.addOne,
+        selectTransactionStatus: this.selectTransactionStatus,
         actionType: 'add',
         title: 'Rôle',
         id: 'role',

@@ -197,8 +197,9 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
         subtitle: 'Ajouter, modifier et supprimer des utilisateurs',
     }
     override entityFormModel: EntityFormModel<User> = {
-        onEdit: (form: User) => this.editOne(form),
-        onAdd: (form: User) => this.addOne(form),
+        onEdit: this.editOne,
+        onAdd: this.addOne,
+        selectTransactionStatus: this.selectTransactionStatus,
         actionType: 'add',
         title: 'Utilisateur',
         id: 'user',

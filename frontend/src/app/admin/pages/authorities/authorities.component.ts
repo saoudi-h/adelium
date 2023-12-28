@@ -36,8 +36,9 @@ export class AdminAuthoritiesComponent extends BaseAdminComponent<Authority> {
         subtitle: 'Ajouter, modifier et supprimer des autorisations',
     }
     override entityFormModel: EntityFormModel<Authority> = {
-        onEdit: (form: Authority) => this.editOne(form),
-        onAdd: (form: Authority) => this.addOne(form),
+        onEdit: this.editOne,
+        onAdd: this.addOne,
+        selectTransactionStatus: this.selectTransactionStatus,
         actionType: 'add',
         title: 'Rôle',
         id: 'authority',

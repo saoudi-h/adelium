@@ -121,8 +121,10 @@ export class BaseAdminComponent<T extends Identifiable>
         )
     }
 
-    editOne(formValue: T) {
-        this.store.dispatch(this.actions.updateItem({ item: formValue }))
+    editOne = (formValue: T, transactionId: string) => {
+        this.store.dispatch(
+            this.actions.updateItem({ item: formValue, transactionId })
+        )
     }
 
     onPageChange(page: number) {
@@ -133,7 +135,14 @@ export class BaseAdminComponent<T extends Identifiable>
         this.formModalService.openFormModal(this.entityFormModel)
     }
 
-    addOne(formValue: T) {
-        this.store.dispatch(this.actions.addItem({ item: formValue }))
+    addOne = (formValue: T, transactionId: string) => {
+        this.store.dispatch(
+            this.actions.addItem({ item: formValue, transactionId })
+        )
+    }
+    selectTransactionStatus = (transactionId: string) => {
+        return this.store.select(
+            this.selectors.selectTransactionStatus(transactionId)
+        )
     }
 }
