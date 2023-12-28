@@ -1,4 +1,7 @@
-import { PaginationResult } from '@store/generic/generic.reducer'
+import {
+    PaginationResult,
+    TransactionStatus,
+} from '@store/generic/generic.reducer'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ValidatorFn } from '@angular/forms'
 import { Identifiable } from '@core/entity/identifiable.interface'
@@ -16,8 +19,11 @@ export interface EntityFormModel<T extends Identifiable> {
     formValidators?: ValidatorFn[]
     actions?: FormAction[]
     actionType: ActionType
-    onEdit: (form: T) => void
-    onAdd: (form: T) => void
+    onEdit: (form: T, transactionId: string) => void
+    onAdd: (form: T, transactionId: string) => void
+    selectTransactionStatus: (transactionId: string) => Observable<{
+        status: TransactionStatus
+    }>
 }
 
 export type FieldType = {
