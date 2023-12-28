@@ -25,6 +25,7 @@ export const initialState: AuthorityState = authorityAdapter.getInitialState({
         },
         pageIds: [],
     },
+    transactions: {},
     relatedEntities: {},
     isLoading: false,
     error: null,
