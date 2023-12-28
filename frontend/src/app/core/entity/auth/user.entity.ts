@@ -1,6 +1,6 @@
+import { Identifiable } from '../identifiable.interface'
 import { Address } from './address.entity'
 import { Authority } from './authority.entity'
-import { Identifiable } from './identifiable.interface'
 import { Role } from './role.entity'
 
 export class User implements Identifiable {

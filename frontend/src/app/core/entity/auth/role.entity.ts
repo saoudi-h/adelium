@@ -1,4 +1,4 @@
-import { Identifiable } from './identifiable.interface'
+import { Identifiable } from '../identifiable.interface'
 
 export class Role implements Identifiable {
     id!: number
