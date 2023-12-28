@@ -21,44 +21,41 @@ import { SharedModule } from '@shared/shared.module'
     ],
     template: `
         @for (field of fields; track field.id) {
-            @switch (field.type.name) {
-                @case ('input') {
-                    <div
-                        input-field
-                        class="form-control w-full max-w-xs"
-                        [field]="field"
-                        [group]="group"></div>
-                }
-                @case ('checkbox') {
-                    <div
-                        checkbox-field
-                        class="form-control w-full max-w-xs"
-                        [field]="field"
-                        [group]="group"></div>
-                }
-                @case ('entity') {
-                    <div class="form-control w-full max-w-xs">
-                        <div class="label">
-                            <h4 class="text-xl font-bold text-secondary">
-                                {{ field.label }}
-                            </h4>
-                        </div>
+            <div class="form-control w-full max-w-xs px-4 py-2">
+                @switch (field.type.name) {
+                    @case ('input') {
+                        <div input-field [field]="field" [group]="group"></div>
+                    }
+                    @case ('checkbox') {
                         <div
-                            *ngIf="field.fields"
-                            form-fields
-                            [fields]="field.fields"
-                            [group]="asFormGroup(group.get(field.id))"></div>
-                    </div>
-                }
-                @case ('dynamic-select') {
-                    <div
-                        dynamic-select-field
-                        class="form-control w-full max-w-xs"
-                        [field]="field"
-                        [group]="group"
-                        [entityId]="id ?? undefined"></div>
-                }
-                <!-- 
+                            checkbox-field
+                            [field]="field"
+                            [group]="group"></div>
+                    }
+                    @case ('entity') {
+                        <div>
+                            <div class="label">
+                                <h4 class="text-xl font-bold text-secondary">
+                                    {{ field.label }}
+                                </h4>
+                            </div>
+                            <div
+                                *ngIf="field.fields"
+                                form-fields
+                                [fields]="field.fields"
+                                [group]="
+                                    asFormGroup(group.get(field.id))
+                                "></div>
+                        </div>
+                    }
+                    @case ('dynamic-select') {
+                        <div
+                            dynamic-select-field
+                            [field]="field"
+                            [group]="group"
+                            [entityId]="id ?? undefined"></div>
+                    }
+                    <!-- 
                 @case ('select') {
                     <div
                         select-field
@@ -70,7 +67,6 @@ import { SharedModule } from '@shared/shared.module'
                 @case ('date') {
                     <div
                         select-field
-                        class="form-control w-full max-w-xs"
                         [field]="field"
                         [formControlName]="field.id"
                         [initialValue]="initialValue?.[field.id]"></div>
@@ -78,35 +74,32 @@ import { SharedModule } from '@shared/shared.module'
                 @case ('datetime') {
                     <div
                         select-field
-                        class="form-control w-full max-w-xs"
                         [field]="field"
                         [initialValue]="initialValue?.[field.id]"></div>
                 }
                 @case ('time') {
                     <div
                         select-field
-                        class="form-control w-full max-w-xs"
                         [field]="field"
                         [initialValue]="initialValue?.[field.id]"></div>
                 }
                 @case ('file') {
                     <div
                         select-field
-                        class="form-control w-full max-w-xs"
                         [field]="field"
                         [initialValue]="initialValue?.[field.id]"></div>
                 }
                 @case ('image') {
                     <div
                         select-field
-                        class="form-control w-full max-w-xs"
                         [field]="field"
                         [initialValue]="initialValue?.[field.id]"></div>
                 } -->
-                @default {
-                    <div>Unknown field type</div>
+                    @default {
+                        <div>Unknown field type</div>
+                    }
                 }
-            }
+            </div>
         }
     `,
 })
