@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 @Transactional
-@RepositoryRestResource(collectionResourceRel = "quizzesDefault", path = "quiz_default")
+@RepositoryRestResource(collectionResourceRel = "quizDefaults", path = "quiz-defaults")
 public interface QuizDefaultRepository extends BaseRepository<QuizDefault, Long> {
 
     Optional<QuizDefault> findByName(@Param("name") String name);
