@@ -5,6 +5,7 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnDestroy,
     OnInit,
     Output,
     Type,
@@ -12,8 +13,11 @@ import {
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { IconService } from '@core/services/icon.service'
+import { NotificationService } from '@core/services/notification.service'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { SharedModule } from '@shared/shared.module'
+import { Subscription } from 'rxjs'
+import { v4 as uuidv4 } from 'uuid'
 import { EntityForm } from '../forms/Forms'
 import { FormFieldsComponent } from './form-fields.component'
 
@@ -109,14 +113,18 @@ import { FormFieldsComponent } from './form-fields.component'
             </div>
         </form>`,
 })
-export class AdminFormComponent<T extends Identifiable> implements OnInit {
+export class AdminFormComponent<T extends Identifiable>
+    implements OnInit, OnDestroy
+{
+    private transactionSubscription: Subscription | null = null
     @Input() modalConfig!: EntityFormModel<T>
     @Output() closeModal = new EventEmitter<void>()
     group!: FormGroup
 
     constructor(
         private formBuilder: FormBuilder,
-        private iconService: IconService
+        private iconService: IconService,
+        private notification: NotificationService
     ) {}
 
     ngOnInit(): void {
@@ -191,10 +199,46 @@ export class AdminFormComponent<T extends Identifiable> implements OnInit {
         ) {
             // edit
             formValue.id = this.modalConfig.initialValue.id
-            this.modalConfig.onEdit(formValue)
+            const transactionId = uuidv4()
+            this.modalConfig.onEdit(formValue, transactionId)
             this.updateRelations(form)
+            this.transactionSubscription = this.modalConfig
+                .selectTransactionStatus(transactionId)
+                .subscribe(status => {
+                    if (status.status === 'success') {
+                        this.onCloseModal()
+                        this.notification.success(
+                            'Modifié avec succès',
+                            `Le ${this.modalConfig.title} a été modifié avec succès`
+                        )
+                    } else if (status.status === 'failure') {
+                        console.log('error')
+                        this.notification.error(
+                            'Erreur',
+                            `Une erreur est survenue lors de la modification du ${this.modalConfig.title}`
+                        )
+                    }
+                })
         } else if (this.modalConfig.actionType === 'add') {
-            this.modalConfig.onAdd(formValue)
+            const transactionId = uuidv4()
+            this.modalConfig.onAdd(formValue, transactionId)
+            this.transactionSubscription = this.modalConfig
+                .selectTransactionStatus(transactionId)
+                .subscribe(status => {
+                    if (status.status === 'success') {
+                        this.onCloseModal()
+                        this.notification.success(
+                            'Ajouté avec succès',
+                            `Le ${this.modalConfig.title} a été ajouté avec succès`
+                        )
+                    } else if (status.status === 'failure') {
+                        console.log('error')
+                        this.notification.error(
+                            'Erreur',
+                            `Une erreur est survenue lors de l'ajout du ${this.modalConfig.title}`
+                        )
+                    }
+                })
         }
     }
     updateRelations(form: any) {
@@ -220,5 +264,11 @@ export class AdminFormComponent<T extends Identifiable> implements OnInit {
     }
     selectionToIds(selection: any[]): number[] {
         return selection.map(item => item.value)
+    }
+
+    ngOnDestroy() {
+        if (this.transactionSubscription) {
+            this.transactionSubscription.unsubscribe()
+        }
     }
 }
