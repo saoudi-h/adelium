@@ -1,3 +1,4 @@
+/* eslint-disable @ngrx/avoid-dispatching-multiple-actions-sequentially */
 import { EntityFormModel } from '@admin/forms/forms.types'
 import { FormModalService } from '@admin/modal/formModal.service'
 import { CommonModule } from '@angular/common'
@@ -11,6 +12,7 @@ import { EntityActions } from '@store/generic/generic.actions'
 import {
     PaginationParams,
     PaginationResult,
+    SortCriterion,
 } from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
 import { Observable, Subscription, catchError, first, map, of, tap } from 'rxjs'
@@ -40,6 +42,10 @@ export class BaseAdminComponent<T extends Identifiable>
     config!: AdminConfig
     paginationResult$!: Observable<PaginationResult>
     entityFormModel!: EntityFormModel<T>
+    sortState: SortCriterion = {
+        property: '',
+        direction: 'asc',
+    }
 
     constructor(
         protected store: Store<AppState>,
@@ -144,5 +150,19 @@ export class BaseAdminComponent<T extends Identifiable>
         return this.store.select(
             this.selectors.selectTransactionStatus(transactionId)
         )
+    }
+
+    onSortChange(property: string) {
+        if (this.sortState.property === property) {
+            this.sortState = {
+                ...this.sortState,
+                direction: this.sortState.direction === 'asc' ? 'desc' : 'asc',
+            }
+        } else {
+            this.sortState = { property, direction: 'asc' }
+        }
+        const sort: SortCriterion[] = [this.sortState]
+        this.store.dispatch(this.actions.resetEntities())
+        this.store.dispatch(this.actions.updatePaginationParams({ sort }))
     }
 }

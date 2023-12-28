@@ -5,7 +5,7 @@ import { AddIconComponent } from '@shared/components/icons/add-icon.component'
 import { ExportIconComponent } from '@shared/components/icons/export-icon.component'
 import { PaginatorComponent } from '@shared/components/utility/paginator/paginator.component'
 import { SharedModule } from '@shared/shared.module'
-import { PaginationResult } from '@store/generic/generic.reducer'
+import { PaginationResult, SortCriterion } from '@store/generic/generic.reducer'
 import { Observable } from 'rxjs'
 import { AdminConfig } from './admin-config.types'
 
@@ -72,19 +72,57 @@ import { AdminConfig } from './admin-config.types'
                                     </th>
                                     @if (config.tableLabels) {
                                         @for (
-                                            label of config.tableLabels;
-                                            track label
+                                            column of config.tableLabels;
+                                            track column
                                         ) {
                                             <th
+                                                (click)="
+                                                    column.sortable
+                                                        ? onSortChange(
+                                                              column.sortField
+                                                          )
+                                                        : null
+                                                "
                                                 class="text-md capitalize text-primary">
-                                                {{ label }}
+                                                {{ column.label }}
+                                                <span
+                                                    *ngIf="
+                                                        column.sortable &&
+                                                        sortState.property ===
+                                                            column.sortField
+                                                    ">
+                                                    {{
+                                                        sortState.direction ===
+                                                        'asc'
+                                                            ? '▲'
+                                                            : '▼'
+                                                    }}
+                                                </span>
                                             </th>
                                         }
                                     } @else {
                                         @for (field of fields; track field) {
                                             <th
+                                                (click)="
+                                                    field.sortable
+                                                        ? onSortChange(field.id)
+                                                        : null
+                                                "
                                                 class="text-md capitalize text-primary">
                                                 {{ field.label }}
+                                                <span
+                                                    *ngIf="
+                                                        field.sortable &&
+                                                        sortState.property ===
+                                                            field.id
+                                                    ">
+                                                    {{
+                                                        sortState.direction ===
+                                                        'asc'
+                                                            ? '▲'
+                                                            : '▼'
+                                                    }}
+                                                </span>
                                             </th>
                                         }
                                     }
@@ -135,6 +173,8 @@ import { AdminConfig } from './admin-config.types'
 export class ViewLayoutComponent {
     @Output() add = new EventEmitter<void>()
     @Output() pageChange = new EventEmitter<number>()
+    @Output() sortChange = new EventEmitter<string>()
+    @Input() sortState!: SortCriterion
 
     @Input() config!: AdminConfig
     @Input() fields: FormField[] | undefined
@@ -146,5 +186,10 @@ export class ViewLayoutComponent {
 
     onAdd(): void {
         this.add.emit()
+    }
+
+    onSortChange(column: string): void {
+        console.log('column : ', column)
+        this.sortChange.emit(column)
     }
 }

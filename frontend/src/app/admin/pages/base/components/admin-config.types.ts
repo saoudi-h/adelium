@@ -3,6 +3,10 @@ export interface AdminConfig {
     name: string
     plural: string
     masculin: boolean
-    tableLabels?: string[]
+    tableLabels?: {
+        label: string
+        sortable: boolean
+        sortField: string
+    }[]
     subtitle: string
 }

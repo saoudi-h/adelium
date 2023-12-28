@@ -131,7 +131,9 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
         [config]="config"
         [paginationResult$]="paginationResult$"
         (add)="onAdd()"
-        (pageChange)="onPageChange($event)">
+        (pageChange)="onPageChange($event)"
+        (sortChange)="onSortChange($event)"
+        [sortState]="sortState">
         <!-- tbody -->
         <!-- <tbody
             *ngIf="entities$"
@@ -187,12 +189,12 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
         plural: 'utilisateurs',
         masculin: true,
         tableLabels: [
-            'Utilisateur',
-            'Addresse',
-            'Roles',
-            'Status',
-            'Securité',
-            'Autres',
+            { label: 'Utilisateur', sortable: true, sortField: 'username' },
+            { label: 'Addresse', sortable: false, sortField: 'address' },
+            { label: 'Roles', sortable: false, sortField: 'roles' },
+            { label: 'Status', sortable: false, sortField: 'status' },
+            { label: 'Securité', sortable: false, sortField: 'security' },
+            { label: 'Autres', sortable: true, sortField: 'enabled' },
         ],
         subtitle: 'Ajouter, modifier et supprimer des utilisateurs',
     }

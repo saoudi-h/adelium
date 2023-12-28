@@ -72,6 +72,7 @@ export interface FormField {
     id: string
     type: FieldType
     label: string
+    sortable?: boolean
     placeholder?: string
     helpText?: string
     validators?: ValidatorFn[]

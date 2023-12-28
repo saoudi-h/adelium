@@ -58,6 +58,7 @@ export class AdminRolesComponent extends BaseAdminComponent<Role> {
         fields: [
             {
                 id: 'name',
+                sortable: true,
                 type: TextInput,
                 label: 'Nom',
                 placeholder: 'Administrateur',

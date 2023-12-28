@@ -4,6 +4,8 @@
     [config]="config"
     [fields]="entityFormModel.fields"
     [paginationResult$]="paginationResult$"
+    (sortChange)="onSortChange($event)"
+    [sortState]="sortState"
     (pageChange)="onPageChange($event)">
     <!-- tbody -->
     @if (entities$ | async; as entities) {
