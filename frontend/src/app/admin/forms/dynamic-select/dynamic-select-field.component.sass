@@ -27,7 +27,11 @@
                         @apply text-sm text-base-content/50
                         line-height: 1.75rem
                     .ng-value
-                        @apply text-sm text-base-content
+                        @apply text-sm text-primary-content bg-primary bg-opacity-50 border border-primary
+                        .ng-value-icon
+                            @apply border-primary
+                            &:hover
+                                @apply bg-primary
                     .ng-input
                         top: calc(50% - 0.8rem) #{!important}
                         @apply text-sm text-base-content
@@ -40,6 +44,6 @@
                     .ng-dropdown-panel-items
                         .ng-option
                             &.ng-option-selected
-                            &.ng-option-marked
-                            &.ng-star-inserted
-                                @apply bg-base-100 text-base-content hover:bg-base-200 hover:text-base-content
+                              &.ng-option-marked
+                                &.ng-star-inserted
+                                  @apply bg-base-100 text-base-content hover:bg-base-200 hover:text-base-content
