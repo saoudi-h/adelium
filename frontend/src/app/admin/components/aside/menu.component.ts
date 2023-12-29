@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as AuthSelectors from '@/store/auth/auth.selectors'
 import {
     animate,
     query,
@@ -14,6 +13,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router'
 import { AuthService } from '@auth/services/auth.service'
 import { IconService } from '@core/services/icon.service'
 import { Store } from '@ngrx/store'
+import * as AuthSelectors from '@store/auth/auth.selectors'
 import { Observable } from 'rxjs'
 import { MenuItem } from './aside.component'
 

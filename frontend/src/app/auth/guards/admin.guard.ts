@@ -1,7 +1,7 @@
-import * as AuthSelectors from '@/store/auth/auth.selectors'
 import { inject } from '@angular/core'
 import { CanActivateFn, Router } from '@angular/router'
 import { Store } from '@ngrx/store'
+import * as AuthSelectors from '@store/auth/auth.selectors'
 import { map, take } from 'rxjs'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RoleActions } from './role/role.actions'
-import { UserActions } from './user/user.actions'
+import { RoleActions } from './entities/auth/role/role.actions'
+import { UserActions } from './entities/auth/user/user.actions'
 
 export const entityConfig: { [key: string]: { actions: any; relations: any } } =
     {

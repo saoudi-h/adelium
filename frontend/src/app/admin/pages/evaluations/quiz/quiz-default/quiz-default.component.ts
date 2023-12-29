@@ -12,8 +12,8 @@ import { Validators } from '@angular/forms'
 import { QuizDefault } from '@core/entity/evaluation/quiz-default.entity'
 import { Quiz } from '@core/entity/evaluation/quiz.entity'
 import { SharedModule } from '@shared/shared.module'
-import { QuizDefaultActions } from '@store/evaluation/quiz/quiz-default/quiz-default.actions'
-import { QuizDefaultSelectors } from '@store/evaluation/quiz/quiz-default/quiz-default.selectors'
+import { QuizDefaultActions } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.actions'
+import { QuizDefaultSelectors } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.selectors'
 import { Observable } from 'rxjs'
 
 @Component({

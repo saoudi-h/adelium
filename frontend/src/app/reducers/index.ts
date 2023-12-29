@@ -3,11 +3,13 @@ import { ActionReducerMap, MetaReducer } from '@ngrx/store'
 import {
     AuthorityState,
     authorityReducer,
-} from '@store/authority/authority.reducer'
+} from '@store/entities/auth/authority/authority.reducer'
+import { RoleState, roleReducer } from '@store/entities/auth/role/role.reducer'
+import { UserState, userReducer } from '@store/entities/auth/user/user.reducer'
 import {
     QuizDefaultState,
     quizDefaultReducer,
-} from '@store/evaluation/quiz/quiz-default/quiz-default.reducer'
+} from '@store/entities/evaluation/quiz/quiz-default/quiz-default.reducer'
 import {
     NotificationState,
     notificationReducer,
@@ -16,10 +18,8 @@ import {
     RequestQueueState,
     requestQueueReducer,
 } from '@store/request-queue/request-queue.reducer'
-import { RoleState, roleReducer } from '@store/role/role.reducer'
 import { ThemeState, themeReducer } from '@store/theme/theme.reducer'
-import { UserState, userReducer } from '@store/user/user.reducer'
-import { AuthState, authReducer } from './../store/auth/auth.reducer'
+import { AuthState, authReducer } from '../store/auth/auth.reducer'
 
 export interface AppState {
     theme: ThemeState

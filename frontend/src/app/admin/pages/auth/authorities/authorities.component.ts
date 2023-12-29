@@ -1,5 +1,5 @@
 import { TextInput } from '@admin/forms/Forms'
-import { AuthoritySelectors } from '../../../../store/authority/authority.selectors'
+import { AuthoritySelectors } from '../../../../store/entities/auth/authority/authority.selectors'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
@@ -11,7 +11,7 @@ import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
 import { Authority } from '@core/entity/auth/authority.entity'
 import { SharedModule } from '@shared/shared.module'
-import { AuthorityActions } from '@store/authority/authority.actions'
+import { AuthorityActions } from '@store/entities/auth/authority/authority.actions'
 import { Observable } from 'rxjs'
 import { EntityFormModel } from '../../../forms/forms.types'
 @Component({
