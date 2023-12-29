@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Transactional
-@RepositoryRestResource(collectionResourceRel = "banksDefault", path = "banks_default")
+@RepositoryRestResource(collectionResourceRel = "bankDefaults", path = "bank-defaults")
 public interface BankDefaultRepository extends BaseRepository<BankDefault, Long> {
 
     /**
