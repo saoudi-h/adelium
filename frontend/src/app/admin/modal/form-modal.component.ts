@@ -4,7 +4,6 @@ import { DynamicSelectFieldComponent } from '@admin/forms/dynamic-select/dynamic
 import { EntityFormModel } from '@admin/forms/forms.types'
 import { InputFieldComponent } from '@admin/forms/input/input-field.component'
 import { SelectFieldComponent } from '@admin/forms/select/select-field.component'
-import { FormModalService } from '@admin/modal/formModal.service'
 import {
     animate,
     group,
@@ -15,11 +14,19 @@ import {
     trigger,
 } from '@angular/animations'
 import { CommonModule } from '@angular/common'
-import { Component, HostListener } from '@angular/core'
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output,
+    ViewChild,
+} from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { SharedModule } from '@shared/shared.module'
-import { Observable } from 'rxjs'
 import { AdminFormComponent } from './admin-form.component'
 import { FormFieldsComponent } from './form-fields.component'
 
@@ -36,33 +43,30 @@ import { FormFieldsComponent } from './form-fields.component'
         CloseIconComponent,
         AdminFormComponent,
     ],
-    selector: 'app-form-modal',
-    template: ` @for (
-        modalConfig of formModalStack$ | async;
-        track modalConfig;
-        let i = $index
-    ) {
-        <div
+    selector: '[form-modal]',
+    template: `
+        <dialog
+            #dialogRef
             @formDialog
             class="modal-overlay"
-            [class.active]="i === ((formModalStack$ | async)?.length || 0 - 1)"
+            [class.active]="active"
             (click)="onOverlayClick($event)"
             (keyup.enter)="onKeyEnterPress($event)"
-            tabindex="0"
-            class="fixed inset-0 left-0 top-0 z-[1000] m-0 flex h-screen w-screen items-center justify-center overflow-hidden overflow-y-hidden bg-base-100/70 p-0 backdrop-blur-sm">
+            role="dialog"
+            class="fixed inset-0 left-0 top-0 z-[1000] m-0 flex h-screen max-h-[100vh] w-screen max-w-[100vw] items-center justify-center overflow-hidden overflow-y-hidden bg-base-100/70 p-0 backdrop-blur-sm">
             <div
                 class="container modal-box max-w-none transform-none rounded-none bg-base-100/70 p-0 shadow-xl sm:rounded-lg md:rounded-xl lg:rounded-2xl xl:rounded-3xl"
                 (click)="onModalClick($event)"
                 (keyup.enter)="onModalClick($event)"
-                tabindex="0">
+                role="document">
                 <div
                     admin-form
                     [modalConfig]="modalConfig"
                     class="modal-content bg-base-200 bg-hero-pattern"
                     (closeModal)="close()"></div>
             </div>
-        </div>
-    }`,
+        </dialog>
+    `,
     animations: [
         trigger('formDialog', [
             transition(':enter', [
@@ -109,18 +113,32 @@ import { FormFieldsComponent } from './form-fields.component'
         ]),
     ],
 })
-export class FormModalComponent<T extends Identifiable> {
-    formModalStack$: Observable<EntityFormModel<T>[]>
-    constructor(private formModalService: FormModalService<T>) {
-        this.formModalStack$ = formModalService.formModalStack$
-    }
+export class FormModalComponent<T extends Identifiable>
+    implements AfterViewInit
+{
+    @ViewChild('dialogRef') dialogRef!: ElementRef
+    @Output() closeModal = new EventEmitter<void>()
+    @Input() modalConfig!: EntityFormModel<T>
+    @Input() active = false
+    @Input() closeOnEscape = false
+    @Input() closeOnOverlayClick = false
+    @Input() closeOnEnter = false
 
     close() {
-        this.formModalService.closeFormModal()
+        if (this.dialogRef && this.dialogRef.nativeElement) {
+            this.dialogRef.nativeElement.close()
+        }
+        this.closeModal.emit()
     }
 
-    closeAllModals() {
-        this.formModalService.closeAllFormModals()
+    /**
+     * Shows the modal.
+     * @returns void
+     * */
+    ngAfterViewInit() {
+        if (this.dialogRef && this.dialogRef.nativeElement) {
+            this.dialogRef.nativeElement.showModal()
+        }
     }
 
     /**
@@ -130,6 +148,8 @@ export class FormModalComponent<T extends Identifiable> {
      **/
     @HostListener('document:keydown.escape', ['$event'])
     onKeydownHandler(event: KeyboardEvent) {
+        event.preventDefault()
+        if (!this.closeOnEscape) return
         this.close()
     }
 
@@ -139,6 +159,8 @@ export class FormModalComponent<T extends Identifiable> {
      * @returns void
      */
     onOverlayClick(event: Event): void {
+        event.preventDefault()
+        if (!this.closeOnOverlayClick) return
         this.close()
     }
 
@@ -148,6 +170,8 @@ export class FormModalComponent<T extends Identifiable> {
      * @returns void
      */
     onKeyEnterPress(event: Event): void {
+        event.preventDefault()
+        if (!this.closeOnEnter) return
         this.close()
     }
 
