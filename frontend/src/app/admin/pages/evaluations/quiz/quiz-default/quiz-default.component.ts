@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
 import { QuizDefault } from '@core/entity/evaluation/quiz-default.entity'
-import { Quiz } from '@core/entity/evaluation/quiz.entity'
 import { SharedModule } from '@shared/shared.module'
 import { QuizDefaultActions } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.actions'
 import { QuizDefaultSelectors } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.selectors'
@@ -37,7 +36,7 @@ export class AdminQuizDefaultComponent extends BaseAdminComponent<QuizDefault> {
         masculin: true,
         subtitle: 'Ajouter, modifier et supprimer des quiz généraux',
     }
-    override entityFormModel: EntityFormModel<Quiz> = {
+    override entityFormModel: EntityFormModel<QuizDefault> = {
         onEdit: this.editOne,
         onAdd: this.addOne,
         selectTransactionStatus: this.selectTransactionStatus,
