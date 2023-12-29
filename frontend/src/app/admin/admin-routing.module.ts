@@ -81,6 +81,18 @@ const routes: Routes = [
                     active: true,
                 },
             },
+            {
+                path: 'bank-default',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/bank/bank-default/bank-default.component'
+                    ).then(mod => mod.AdminBankDefaultComponent),
+                data: {
+                    breadcrumb: 'Bank généraux',
+                    icon: 'bank-icon',
+                    active: true,
+                },
+            },
         ],
     },
 ]

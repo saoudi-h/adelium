@@ -7,6 +7,10 @@ import {
 import { RoleState, roleReducer } from '@store/entities/auth/role/role.reducer'
 import { UserState, userReducer } from '@store/entities/auth/user/user.reducer'
 import {
+    BankDefaultState,
+    bankDefaultReducer,
+} from '@store/entities/evaluation/bank/bank-default/bank-default.reducer'
+import {
     QuizDefaultState,
     quizDefaultReducer,
 } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.reducer'
@@ -35,6 +39,7 @@ export interface AppState {
     requestQueue: RequestQueueState
     quizDefaults: QuizDefaultState
     quizMcqs: QuizMcqState
+    bankDefaults: BankDefaultState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -47,6 +52,7 @@ export const reducers: ActionReducerMap<AppState> = {
     requestQueue: requestQueueReducer,
     quizDefaults: quizDefaultReducer,
     quizMcqs: quizMcqReducer,
+    bankDefaults: bankDefaultReducer,
 }
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : []

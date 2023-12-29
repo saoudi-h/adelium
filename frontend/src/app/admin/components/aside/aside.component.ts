@@ -133,6 +133,23 @@ export class AsideComponent {
                     ],
                 },
                 {
+                    type: 'menu',
+                    id: 'bank',
+                    text: 'Bank',
+                    adminOnly: false,
+                    icon: 'bank-icon',
+                    subMenuItems: [
+                        {
+                            type: 'link',
+                            id: 'bankDefault',
+                            link: '/admin/bank-default',
+                            text: 'Bank généraux',
+                            adminOnly: false,
+                            icon: 'bank-icon',
+                        },
+                    ],
+                },
+                {
                     type: 'link',
                     id: 'questions',
                     link: '/admin/questions',
