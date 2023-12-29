@@ -45,7 +45,8 @@ public abstract class BaseBank<Q extends Question<M>, M extends Media> extends B
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private Set<Tag> tags;
 
-    @Column private String name;
+    @Column(unique = true)
+    private String name;
 
     @Column private String description;
 

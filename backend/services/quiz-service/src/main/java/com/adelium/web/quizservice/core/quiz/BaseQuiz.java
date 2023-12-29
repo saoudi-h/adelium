@@ -35,7 +35,8 @@ import lombok.experimental.SuperBuilder;
 public abstract class BaseQuiz<Q extends Question<M>, M extends Media> extends BaseEntity<Long>
         implements Quiz<Q, M> {
 
-    @Column private String name;
+    @Column(unique = true)
+    private String name;
 
     @Column private String description;
 
