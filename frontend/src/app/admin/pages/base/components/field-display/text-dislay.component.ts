@@ -7,7 +7,5 @@ import { Component, Input } from '@angular/core'
 })
 export class TextDisplayComponent {
     @Input() content!: string
-    constructor() {
-        console.log('TextDisplayComponent')
-    }
+    constructor() {}
 }
