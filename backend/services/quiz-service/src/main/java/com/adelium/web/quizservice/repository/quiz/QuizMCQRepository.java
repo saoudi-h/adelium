@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 @Transactional
-@RepositoryRestResource(collectionResourceRel = "quizzesMQS", path = "quiz-mcq")
+@RepositoryRestResource(collectionResourceRel = "quizMcqs", path = "quiz-mcqs")
 public interface QuizMCQRepository extends BaseRepository<QuizMCQ, Long> {
 
     /**
