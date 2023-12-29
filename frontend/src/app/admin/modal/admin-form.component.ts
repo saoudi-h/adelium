@@ -207,12 +207,14 @@ export class AdminFormComponent<T extends Identifiable>
                 .subscribe(status => {
                     if (status.status === 'success') {
                         this.onCloseModal()
+                        if (this.modalConfig.onSuccess) {
+                            this.modalConfig.onSuccess()
+                        }
                         this.notification.success(
                             'Modifié avec succès',
                             `Le ${this.modalConfig.title} a été modifié avec succès`
                         )
                     } else if (status.status === 'failure') {
-                        console.log('error')
                         this.notification.error(
                             'Erreur',
                             `Une erreur est survenue lors de la modification du ${this.modalConfig.title}`
@@ -227,12 +229,14 @@ export class AdminFormComponent<T extends Identifiable>
                 .subscribe(status => {
                     if (status.status === 'success') {
                         this.onCloseModal()
+                        if (this.modalConfig.onSuccess !== undefined) {
+                            this.modalConfig.onSuccess()
+                        }
                         this.notification.success(
                             'Ajouté avec succès',
                             `Le ${this.modalConfig.title} a été ajouté avec succès`
                         )
                     } else if (status.status === 'failure') {
-                        console.log('error')
                         this.notification.error(
                             'Erreur',
                             `Une erreur est survenue lors de l'ajout du ${this.modalConfig.title}`

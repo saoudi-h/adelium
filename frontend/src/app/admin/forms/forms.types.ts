@@ -21,6 +21,7 @@ export interface EntityFormModel<T extends Identifiable> {
     actionType: ActionType
     onEdit: (form: T, transactionId: string) => void
     onAdd: (form: T, transactionId: string) => void
+    onSuccess?: () => void
     selectTransactionStatus: (transactionId: string) => Observable<{
         status: TransactionStatus
     }>

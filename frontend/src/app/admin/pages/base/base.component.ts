@@ -60,6 +60,17 @@ export class BaseAdminComponent<T extends Identifiable>
             this.selectors.selectPaginationParams
         )
 
+        this.getCurrentPage()
+
+        this.paginationResult$ = this.store.select(
+            this.selectors.selectPaginationResult
+        )
+        this.entities$ = this.store.select(this.selectors.selectCurrentPage)
+        this.isLoading$ = this.store.select(this.selectors.selectIsLoading)
+        this.error$ = this.store.select(this.selectors.selectError)
+    }
+
+    getCurrentPage() {
         this.subscription.add(
             this.paginationParams$
                 .pipe(
@@ -69,13 +80,6 @@ export class BaseAdminComponent<T extends Identifiable>
                 )
                 .subscribe()
         )
-
-        this.paginationResult$ = this.store.select(
-            this.selectors.selectPaginationResult
-        )
-        this.entities$ = this.store.select(this.selectors.selectCurrentPage)
-        this.isLoading$ = this.store.select(this.selectors.selectIsLoading)
-        this.error$ = this.store.select(this.selectors.selectError)
     }
 
     onDelete(id: number) {
@@ -138,13 +142,20 @@ export class BaseAdminComponent<T extends Identifiable>
     }
 
     onAdd() {
-        this.formModalService.openFormModal(this.entityFormModel)
+        this.formModalService.openFormModal({
+            ...this.entityFormModel,
+            onSuccess: this.refresh,
+        })
     }
 
     addOne = (formValue: T, transactionId: string) => {
         this.store.dispatch(
             this.actions.addItem({ item: formValue, transactionId })
         )
+    }
+    refresh = () => {
+        console.log('refresh')
+        this.getCurrentPage()
     }
     selectTransactionStatus = (transactionId: string) => {
         return this.store.select(
