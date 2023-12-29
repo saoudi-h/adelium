@@ -122,6 +122,14 @@ export class AsideComponent {
                             adminOnly: false,
                             icon: 'quiz-icon',
                         },
+                        {
+                            type: 'link',
+                            id: 'quizMcq',
+                            link: '/admin/quiz-mcq',
+                            text: 'Quiz QCM',
+                            adminOnly: false,
+                            icon: 'quiz-icon',
+                        },
                     ],
                 },
                 {

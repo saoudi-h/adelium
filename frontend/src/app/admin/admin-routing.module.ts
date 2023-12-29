@@ -69,6 +69,18 @@ const routes: Routes = [
                     active: true,
                 },
             },
+            {
+                path: 'quiz-mcq',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/quiz/quiz-mcq/quiz-mcq.component'
+                    ).then(mod => mod.AdminQuizMcqComponent),
+                data: {
+                    breadcrumb: 'Quiz à choix multiples',
+                    icon: 'quiz-icon',
+                    active: true,
+                },
+            },
         ],
     },
 ]

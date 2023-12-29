@@ -8,4 +8,5 @@ export const environment = {
 
     // Quiz
     quizDefaultUrl: '/api/v1/quiz/quiz-defaults',
+    quizMcqUrl: '/api/v1/quiz/quiz-mcqs',
 }
