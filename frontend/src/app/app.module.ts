@@ -20,6 +20,7 @@ import { UserEffects } from '@store/entities/auth/user/user.effects'
 import { BankDefaultEffects } from '@store/entities/evaluation/bank/bank-default/bank-default.effects'
 import { QuizDefaultEffects } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.effects'
 import { QuizMcqEffects } from '@store/entities/evaluation/quiz/quiz-mcq/quiz-mcq.effects'
+import { TagEffects } from '@store/entities/evaluation/tag/tag.effects'
 import { NotificationEffects } from '@store/notification/notification.effects'
 import { RequestQueueEffects } from '@store/request-queue/request-queue.effects'
 import { ThemeEffects } from '@store/theme/theme.effects'
@@ -62,6 +63,7 @@ import { metaReducers, reducers } from './reducers'
             QuizDefaultEffects,
             QuizMcqEffects,
             BankDefaultEffects,
+            TagEffects,
         ]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         StoreModule.forRoot(reducers, { metaReducers }),

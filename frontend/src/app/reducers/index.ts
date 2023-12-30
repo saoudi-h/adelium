@@ -19,6 +19,10 @@ import {
     quizMcqReducer,
 } from '@store/entities/evaluation/quiz/quiz-mcq/quiz-mcq.reducer'
 import {
+    TagState,
+    tagReducer,
+} from '@store/entities/evaluation/tag/tag.reducer'
+import {
     NotificationState,
     notificationReducer,
 } from '@store/notification/notification.reducer'
@@ -40,6 +44,7 @@ export interface AppState {
     quizDefaults: QuizDefaultState
     quizMcqs: QuizMcqState
     bankDefaults: BankDefaultState
+    tags: TagState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -53,6 +58,7 @@ export const reducers: ActionReducerMap<AppState> = {
     quizDefaults: quizDefaultReducer,
     quizMcqs: quizMcqReducer,
     bankDefaults: bankDefaultReducer,
+    tags: tagReducer,
 }
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : []

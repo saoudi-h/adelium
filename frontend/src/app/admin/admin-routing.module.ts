@@ -93,6 +93,18 @@ const routes: Routes = [
                     active: true,
                 },
             },
+            {
+                path: 'tag',
+                loadComponent: () =>
+                    import('./pages/evaluations/tag/tag.component').then(
+                        mod => mod.AdminTagComponent
+                    ),
+                data: {
+                    breadcrumb: 'Tags',
+                    icon: 'tag-icon',
+                    active: true,
+                },
+            },
         ],
     },
 ]

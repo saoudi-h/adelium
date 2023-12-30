@@ -11,4 +11,6 @@ export const environment = {
     quizMcqUrl: '/api/v1/quiz/quiz-mcqs',
     // Bank
     bankDefaultUrl: '/api/v1/quiz/bank-defaults',
+    // Tag
+    tagUrl: '/api/v1/quiz/tags',
 }
