@@ -12,6 +12,9 @@
             [selectOnTab]="true"
             [items]="items$ | async"
             bindLabel="label"
+            [notFoundText]="
+                'Aucun ' + field.label.toLocaleLowerCase() + ' trouvé'
+            "
             [multiple]="field.type.option === 'multiple'"
             placeholder="{{ field.placeholder }}"
             [formControlName]="field.id"
