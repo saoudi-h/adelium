@@ -154,7 +154,6 @@ export class BaseAdminComponent<T extends Identifiable>
         )
     }
     refresh = () => {
-        console.log('refresh')
         this.getCurrentPage()
     }
     selectTransactionStatus = (transactionId: string) => {

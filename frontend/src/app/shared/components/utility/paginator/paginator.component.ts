@@ -87,7 +87,6 @@ export class PaginatorComponent {
      * @param page - The page number or string.
      */
     selectPage(page: number | string): void {
-        console.log(Number(page) - 1)
         this.pageChange.emit(Number(page) - 1)
     }
 

@@ -88,7 +88,7 @@ export class AuthEffects {
             return this.actions$.pipe(
                 ofType(AuthActions.loginFailure),
                 tap(({ error }) => {
-                    console.log('error', error)
+                    console.error('error', error)
                     this.notificationService.error(
                         'Erreur',
                         "Erreur lors de l'authentification"

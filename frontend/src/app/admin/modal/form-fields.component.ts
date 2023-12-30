@@ -107,9 +107,7 @@ export class FormFieldsComponent {
     @Input() group!: FormGroup
     @Input() fields!: FormField[]
     @Input() id!: number | undefined
-    constructor() {
-        console.log(this.group)
-    }
+    constructor() {}
 
     isFormControl(control: AbstractControl | null): control is FormControl {
         return control instanceof FormControl

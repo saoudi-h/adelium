@@ -189,7 +189,6 @@ export class ViewLayoutComponent {
     }
 
     onSortChange(column: string): void {
-        console.log('column : ', column)
         this.sortChange.emit(column)
     }
 }

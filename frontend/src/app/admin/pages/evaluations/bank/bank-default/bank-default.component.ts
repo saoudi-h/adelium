@@ -15,7 +15,6 @@ import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
 import { BankDefault } from '@core/entity/evaluation/bank-default.entity'
-import { QuizDefault } from '@core/entity/evaluation/quiz-default.entity'
 import { Tag } from '@core/entity/evaluation/tag.entity'
 import { SharedModule } from '@shared/shared.module'
 import { BankDefaultActions } from '@store/entities/evaluation/bank/bank-default/bank-default.actions'
@@ -93,7 +92,7 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
                 type: MultiDynamicSelectForm,
                 label: 'Tag',
                 placeholder: 'Selectionnez les Tags',
-                dynamicOptions: createDynamicOptions<QuizDefault, Tag>(
+                dynamicOptions: createDynamicOptions<BankDefault, Tag>(
                     this.store,
                     this.selectors,
                     this.actions,
