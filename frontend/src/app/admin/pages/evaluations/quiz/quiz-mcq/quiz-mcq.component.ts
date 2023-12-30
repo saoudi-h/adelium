@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CheckboxForm, TextInput } from '@admin/forms/Forms'
+import {
+    CheckboxForm,
+    MultiDynamicSelectForm,
+    TextInput,
+} from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
+import { createDynamicOptions } from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
@@ -10,9 +15,12 @@ import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
 import { QuizMcq } from '@core/entity/evaluation/quiz-mcq.entity'
+import { Tag } from '@core/entity/evaluation/tag.entity'
 import { SharedModule } from '@shared/shared.module'
 import { QuizMcqActions } from '@store/entities/evaluation/quiz/quiz-mcq/quiz-mcq.actions'
 import { QuizMcqSelectors } from '@store/entities/evaluation/quiz/quiz-mcq/quiz-mcq.selectors'
+import { TagActions } from '@store/entities/evaluation/tag/tag.actions'
+import { TagSelectors } from '@store/entities/evaluation/tag/tag.selectors'
 import { Observable } from 'rxjs'
 
 @Component({
@@ -78,6 +86,23 @@ export class AdminQuizMcqComponent extends BaseAdminComponent<QuizMcq> {
                 type: CheckboxForm,
                 label: 'Actif',
             },
+            {
+                id: 'tags',
+                sortable: false,
+                type: MultiDynamicSelectForm,
+                label: 'Tag',
+                placeholder: 'Selectionnez les Tags',
+                dynamicOptions: createDynamicOptions<QuizMcq, Tag>(
+                    this.store,
+                    this.selectors,
+                    this.actions,
+                    TagSelectors,
+                    TagActions,
+                    'name',
+                    'tags'
+                ),
+            },
+
             // {
             //     id: 'questions',
             //     sortable: true,

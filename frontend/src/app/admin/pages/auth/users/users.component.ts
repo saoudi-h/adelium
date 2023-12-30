@@ -9,6 +9,7 @@ import {
     TextInput,
     UrlInput,
 } from '@admin/forms/Forms'
+import { createDynamicOptions } from '@admin/forms/forms.utility'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
 import { AdminConfig } from '@admin/pages/base/components/admin-config.types'
 import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.component'
@@ -22,14 +23,14 @@ import {
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
+import { Role } from '@core/entity/auth/role.entity'
 import { User } from '@core/entity/auth/user.entity'
 import { SharedModule } from '@shared/shared.module'
 import { RoleActions } from '@store/entities/auth/role/role.actions'
 import { RoleSelectors } from '@store/entities/auth/role/role.selectors'
 import { UserActions } from '@store/entities/auth/user/user.actions'
 import { UserSelectors } from '@store/entities/auth/user/user.selectors'
-import { PaginationParams } from '@store/generic/generic.reducer'
-import { Observable, filter, map, switchMap } from 'rxjs'
+import { Observable, filter, switchMap } from 'rxjs'
 import { EntityFormModel } from '../../../forms/forms.types'
 import { UserAdminTrComponent } from './user-admin-tr.component'
 @Component({
@@ -255,75 +256,15 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 type: MultiDynamicSelectForm,
                 label: 'Role',
                 placeholder: 'Selectionnez les Roles',
-                dynamicOptions: {
-                    all: () =>
-                        this.store.select(RoleSelectors.selectAll).pipe(
-                            map(roles =>
-                                roles.map(role => ({
-                                    label: role.name,
-                                    value: role.id,
-                                }))
-                            )
-                        ),
-                    getNextPage: (params: PaginationParams) => {
-                        return this.store.dispatch(
-                            RoleActions.getPage({ params: params })
-                        )
-                    },
-                    getInitialById: (userId: number) => {
-                        this.store.dispatch(
-                            UserActions.getRelatedEntities({
-                                id: userId,
-                                relation: 'roles',
-                            })
-                        )
-
-                        return this.store
-                            .select(
-                                UserSelectors.selectRelatedEntities({
-                                    id: userId,
-                                    relation: 'roles',
-                                })
-                            )
-                            .pipe(
-                                switchMap(rolesId =>
-                                    this.store
-                                        .select(RoleSelectors.selectAll)
-                                        .pipe(
-                                            map(roles =>
-                                                roles
-                                                    .filter(role =>
-                                                        rolesId
-                                                            ? rolesId.includes(
-                                                                  role.id
-                                                              )
-                                                            : false
-                                                    )
-                                                    .map(role => ({
-                                                        label: role.name,
-                                                        value: role.id,
-                                                    }))
-                                            )
-                                        )
-                                )
-                            )
-                    },
-                    paginationResult: () =>
-                        this.store.select(RoleSelectors.selectPaginationResult),
-                    setRelations: (
-                        id: number,
-                        relation: string,
-                        relatedEntityIds: number[]
-                    ) => {
-                        this.store.dispatch(
-                            UserActions.updateRelatedEntities({
-                                id,
-                                relation,
-                                relatedEntityIds,
-                            })
-                        )
-                    },
-                },
+                dynamicOptions: createDynamicOptions<User, Role>(
+                    this.store,
+                    this.selectors,
+                    this.actions,
+                    RoleSelectors,
+                    RoleActions,
+                    'name',
+                    'roles'
+                ),
                 validators: [Validators.required],
             },
             {
