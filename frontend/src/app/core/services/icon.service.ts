@@ -29,6 +29,7 @@ import { RoleIconComponent } from '@shared/components/icons/role-icon.component'
 import { SaveIconComponent } from '@shared/components/icons/save-icon.component'
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { SuccessIconComponent } from '@shared/components/icons/success-icon.component'
+import { TagIconComponent } from '@shared/components/icons/tag-icon.component'
 import { TrainingManagementIconComponent } from '@shared/components/icons/training-management-icon.component'
 import { UsersIconComponent } from '@shared/components/icons/users-icon.component'
 import { WarningIconComponent } from '@shared/components/icons/warning-icon.component'
@@ -105,6 +106,8 @@ export class IconService {
                 return OptionIconComponent
             case 'quiz-icon':
                 return QuizIconComponent
+            case 'tag-icon':
+                return TagIconComponent
             default:
                 return null
         }
