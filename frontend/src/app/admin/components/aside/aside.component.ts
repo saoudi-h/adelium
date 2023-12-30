@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { AuthService } from '@auth/services/auth.service'
+import { Store } from '@ngrx/store'
 import { LogoWidgetComponent } from '@shared/components/widgets/logo/logo.component'
 import { SearchWidgetComponent } from '@shared/components/widgets/search/search.component'
 import { ThemeSwitcherWidgetComponent } from '@shared/components/widgets/theme-switcher/theme-switcher.component'
-import { MenuAsideComponent } from './menu.component'
+import * as AuthActions from '@store/auth/auth.actions'
+import { MenuAsideComponent } from './menu-aside.component'
 
 export interface MenuItem {
     type: 'menu' | 'link' | 'button'
@@ -62,7 +63,7 @@ export interface MenuItem {
     `,
 })
 export class AsideComponent {
-    constructor(private authSerivce: AuthService) {}
+    constructor(private store: Store) {}
     menuItems: MenuItem[] = [
         {
             type: 'menu',
@@ -239,7 +240,7 @@ export class AsideComponent {
         {
             type: 'button',
             id: 'logout',
-            action: () => this.authSerivce.logout(),
+            action: () => this.store.dispatch(AuthActions.logout()),
             text: 'Se déconnecter',
             adminOnly: true,
             icon: 'logout-icon',

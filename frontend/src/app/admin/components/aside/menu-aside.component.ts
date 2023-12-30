@@ -3,6 +3,7 @@ import {
     animate,
     query,
     stagger,
+    state,
     style,
     transition,
     trigger,
@@ -10,12 +11,12 @@ import {
 import { CommonModule } from '@angular/common'
 import { Component, HostBinding, Input } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { AuthService } from '@auth/services/auth.service'
 import { IconService } from '@core/services/icon.service'
 import { Store } from '@ngrx/store'
 import * as AuthSelectors from '@store/auth/auth.selectors'
 import { Observable } from 'rxjs'
 import { MenuItem } from './aside.component'
+import { MenuService } from './menu-aside.service'
 
 @Component({
     standalone: true,
@@ -52,18 +53,30 @@ import { MenuItem } from './aside.component'
                             <span> {{ item.text }} </span>
                         </a>
                     } @else if (item.type === 'menu' && item.subMenuItems) {
-                        <details>
-                            <summary>
-                                <div class="h-10 w-10 p-2">
-                                    <ng-container
-                                        *ngComponentOutlet="
-                                            getIconComponent(item.icon)
-                                        " />
-                                </div>
-                                {{ item.text }}
-                            </summary>
-                            <ul menu-aside [menuItems]="item.subMenuItems"></ul>
-                        </details>
+                        <span
+                            class="menu-dropdown-toggle"
+                            [ngClass]="
+                                menuService.isOpen(item.id)
+                                    ? 'menu-dropdown-show'
+                                    : ''
+                            "
+                            (click)="toggleDropdown($event, item.id)"
+                            (keyup)="toggleDropdown($event, item.id)"
+                            role="none">
+                            <div class="h-10 w-10 p-2">
+                                <ng-container
+                                    *ngComponentOutlet="
+                                        getIconComponent(item.icon)
+                                    " />
+                            </div>
+                            {{ item.text }}
+                        </span>
+                        <ul
+                            menu-aside
+                            [menuItems]="item.subMenuItems"
+                            [@subMenuAnimation]="
+                                menuService.isOpen(item.id)
+                            "></ul>
                     }
                 </li>
             }
@@ -89,23 +102,41 @@ import { MenuItem } from './aside.component'
                 ),
             ]),
         ]),
+        trigger('subMenuAnimation', [
+            state(
+                'true',
+                style({ height: '*', opacity: 1, transform: 'translateX(0%)' })
+            ),
+            state(
+                'false',
+                style({
+                    height: '0',
+                    opacity: 0,
+                    transform: 'translateX(-100%)',
+                })
+            ),
+            transition('false <=> true', animate('300ms ease-out')),
+        ]),
     ],
 })
 export class MenuAsideComponent {
     @HostBinding('@listAnimation') animation = true
     isAdmin$: Observable<boolean>
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @Input() menuItems!: MenuItem[]
 
     constructor(
         private iconService: IconService,
         private store: Store,
-        private authSerivce: AuthService
+        public menuService: MenuService
     ) {
         this.isAdmin$ = this.store.select(AuthSelectors.selectIsAdmin)
     }
     getIconComponent(iconName: string): any {
         return this.iconService.getIconComponent(iconName)
+    }
+
+    toggleDropdown(event: Event, id: string) {
+        this.menuService.toggle(id, !this.menuService.isOpen(id))
+        event.preventDefault()
     }
 }
