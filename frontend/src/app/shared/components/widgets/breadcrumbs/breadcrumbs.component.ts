@@ -11,8 +11,11 @@ import { IconService } from '@core/services/icon.service'
     template: `<div class="breadcrumbs text-sm">
         <ul>
             <li>
-                <a routerLink="/" routerLinkActive="router-link-active">
-                    <div class="h-5 w-5">
+                <a
+                    routerLink="/"
+                    routerLinkActive="router-link-active"
+                    class="btn btn-neutral btn-sm">
+                    <div class="h-4 w-4">
                         <ng-container
                             *ngComponentOutlet="getIconComponent('home-icon')">
                         </ng-container>
@@ -31,17 +34,20 @@ import { IconService } from '@core/services/icon.service'
                 @if (breadcrumb.url !== '') {
                     <li>
                         @if (last) {
-                            <div class="h-5 w-5">
-                                <ng-container
-                                    *ngComponentOutlet="
-                                        getIconComponent(breadcrumb.icon)
-                                    ">
-                                </ng-container>
+                            <div
+                                class="btn btn-disabled btn-neutral btn-sm !bg-base-300 !bg-opacity-100 !text-opacity-100 !opacity-100">
+                                <div class="mr-2 h-4 w-4">
+                                    <ng-container
+                                        *ngComponentOutlet="
+                                            getIconComponent(breadcrumb.icon)
+                                        ">
+                                    </ng-container>
+                                </div>
+                                {{ breadcrumb.label }}
                             </div>
-                            {{ breadcrumb.label }}
                         } @else {
-                            <a>
-                                <div class="h-5 w-5">
+                            <a class="btn btn-neutral btn-sm">
+                                <div class="h-4 w-4">
                                     <ng-container
                                         *ngComponentOutlet="
                                             getIconComponent(breadcrumb.icon)
