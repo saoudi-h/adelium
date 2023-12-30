@@ -1,5 +1,6 @@
 import { Identifiable } from '../identifiable.interface'
 import { Question } from './question.entity'
+import { Tag } from './tag.entity'
 
 export class Bank implements Identifiable {
     id!: number
@@ -7,6 +8,9 @@ export class Bank implements Identifiable {
     isDeleting?: boolean
     description!: string
     enabled!: boolean
+    isPublic!: boolean
+    authorId?: number
+    tags!: Tag[]
     questions!: Question[]
     constructor(data: Partial<Bank>) {
         Object.assign(this, data)
