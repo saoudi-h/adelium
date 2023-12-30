@@ -90,7 +90,7 @@ import { Observable, map } from 'rxjs'
                         (click)="deleteById($event, notification.id)"
                         (keyup.enter)="deleteById($event, notification.id)"
                         tabindex="0"
-                        class="alert w-full grid-cols-4 rounded-xl px-2 py-2 transition-colors duration-300 hover:border-error/30 active:!border-error/70 active:!bg-error/30">
+                        class="alert w-full grid-cols-4 rounded-xl bg-base-100 px-2 py-2 transition-colors duration-300 hover:border-error/30 active:!border-error/70 active:!bg-error/30">
                         <div class="col-span-1">
                             @switch (notification.type) {
                                 @case ('success') {

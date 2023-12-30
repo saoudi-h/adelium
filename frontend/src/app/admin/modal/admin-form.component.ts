@@ -45,13 +45,13 @@ import { FormFieldsComponent } from './form-fields.component'
 
             <!-- Content - Body -->
             <div
-                class="mx-auto rounded-t-[3rem] bg-base-100 px-8 py-12 shadow-xl shadow-black">
+                class="mx-auto rounded-t-[3rem] bg-base-100 px-2 py-12 shadow-xl shadow-black sm:px-4 md:px-8">
                 <div
                     form-fields
                     [group]="group"
                     [fields]="modalConfig.fields"
                     [id]="modalConfig.initialValue?.id"
-                    class=" grid grid-cols-1 flex-row flex-wrap gap-4 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
+                    class=" grid grid-cols-1 flex-row flex-wrap gap-4 px-2 py-6 sm:grid-cols-2 sm:px-4 md:grid-cols-3 md:px-6 lg:grid-cols-4"></div>
             </div>
             <!-- Content - Footer -->
             <div class="bg-base-100 px-8 py-8 ">

@@ -25,7 +25,7 @@ import { Toast } from 'ngx-toastr'
     selector: '[custom-toast-component]',
     styles: `
             :host
-                @apply alert rounded-xl transition-colors duration-300 hover:border-error/30 active:border-error/70 active:bg-error/30 backdrop-blur-sm
+                @apply alert rounded-xl transition-colors duration-300 bg-base-100 hover:border-error/30 active:border-error/70 active:bg-error/30 backdrop-blur-sm
                 border-radius: 0.75rem !important
                 box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) !important
                 background-image: none !important

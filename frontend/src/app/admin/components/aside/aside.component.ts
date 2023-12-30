@@ -57,10 +57,7 @@ export interface MenuItem {
                     <div search-widget [alwaysOpen]="true" width="19rem"></div>
                 </div>
             </div>
-            <ul
-                menu-aside
-                [menuItems]="menuItems"
-                class="menu menu-xs w-full"></ul>
+            <ul menu-aside [menuItems]="menuItems" class="menu w-full"></ul>
         </aside>
     `,
 })
