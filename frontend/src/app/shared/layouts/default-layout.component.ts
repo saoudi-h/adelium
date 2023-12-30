@@ -14,7 +14,7 @@ import { SharedModule } from '@shared/shared.module'
         <!-- MODAL -->
         <app-modal />
         <!-- DRAWER -->
-        <div class="drawer bg-base-300">
+        <div class="drawer min-h-screen bg-base-300">
             <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
             <!-- Page -->
             <div class="drawer-content flex flex-col">
@@ -22,7 +22,7 @@ import { SharedModule } from '@shared/shared.module'
                 <app-navbar class="sticky top-0 z-30" />
                 <!-- Page content -->
                 <div
-                    class="relative flex min-h-screen flex-col justify-between overflow-hidden">
+                    class="relative flex grow flex-col justify-between overflow-hidden">
                     <main
                         class="relative flex h-max w-full flex-1 content-center items-center justify-center overflow-hidden bg-gradient-to-t from-base-100 to-base-300">
                         <!-- <div breadcrumb></div> -->

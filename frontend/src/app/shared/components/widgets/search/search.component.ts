@@ -4,6 +4,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { NotificationService } from '@core/services/notification.service'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
+import { CoursesIconComponent } from '@shared/components/icons/courses-icon.component'
 import { SearchIconComponent } from '@shared/components/icons/search-icon.component'
 
 @Component({
@@ -14,6 +15,7 @@ import { SearchIconComponent } from '@shared/components/icons/search-icon.compon
         SearchIconComponent,
         CloseIconComponent,
         ReactiveFormsModule,
+        CoursesIconComponent,
     ],
     animations: [
         trigger('searchAnimation', [
@@ -73,16 +75,16 @@ import { SearchIconComponent } from '@shared/components/icons/search-icon.compon
                 (change)="handleChange()" />
 
             @if (alwaysOpen) {
-                <div icon-close className="h-6 w-6"></div>
+                <div close-icon className="h-6 w-6"></div>
             } @else {
                 <!-- search -->
-                <div class="swap-off">
+                <div class="swap-off z-50">
                     <app-search-icon className="h-6 w-6" />
                 </div>
 
                 <!-- close -->
-                <div class="swap-on">
-                    <div icon-close className="h-6 w-6"></div>
+                <div class="swap-on z-50">
+                    <div close-icon className="h-6 w-6"></div>
                 </div>
             }
         </label>
