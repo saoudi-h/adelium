@@ -4,10 +4,9 @@ package com.adelium.web.quizservice.core.quiz;
 import com.adelium.web.common.entity.BaseEntity;
 import com.adelium.web.quizservice.core.media.Media;
 import com.adelium.web.quizservice.core.question.Question;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import com.adelium.web.quizservice.core.tag.Tag;
+import jakarta.persistence.*;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,7 +39,19 @@ public abstract class BaseQuiz<Q extends Question<M>, M extends Media> extends B
 
     @Column private String description;
 
-    @Column private boolean enabled;
+    @Column private boolean enabled = false;
+
+    @Column private boolean isPublic = false;
+
+    @Column(nullable = false)
+    private Long ownerId;
+
+    @ManyToMany
+    @JoinTable(
+            name = "quiz_tag",
+            joinColumns = @JoinColumn(name = "quiz_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
+    private Set<Tag> tags;
 
     @Override
     public boolean isEnabled() {

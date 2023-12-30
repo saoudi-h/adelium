@@ -50,7 +50,10 @@ public abstract class BaseBank<Q extends Question<M>, M extends Media> extends B
 
     @Column private String description;
 
-    @Column private boolean enabled;
+    @Column private boolean enabled = false;
 
-    @Column private Long ownerId;
+    @Column private boolean isPublic = false;
+
+    @Column(nullable = false)
+    private Long ownerId;
 }
