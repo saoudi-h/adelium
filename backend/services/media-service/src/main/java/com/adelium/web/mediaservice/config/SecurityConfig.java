@@ -31,6 +31,7 @@ public class SecurityConfig {
     private final ForbiddenHandler forbiddenHandler;
 
     private static final String[] WHITE_LIST_URL = {
+        "/files/true/**",
         "/actuator",
         "/actuator/**",
         "/media-docs/**",
@@ -52,13 +53,10 @@ public class SecurityConfig {
                                         .accessDeniedHandler(forbiddenHandler))
                 .authorizeHttpRequests(
                         (requests) ->
-                                requests
-                                        // whitelist no permission needed
-                                        .requestMatchers(WHITE_LIST_URL)
+                                requests.requestMatchers(WHITE_LIST_URL)
                                         .permitAll()
                                         .requestMatchers(ADMIN_URLS)
                                         .hasRole("ADMIN")
-                                        // not in white list routes should be authenticated
                                         .anyRequest()
                                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
