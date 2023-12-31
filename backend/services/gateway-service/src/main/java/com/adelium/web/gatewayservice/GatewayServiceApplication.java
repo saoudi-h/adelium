@@ -38,6 +38,12 @@ public class GatewayServiceApplication {
                                         .and()
                                         .method(HttpMethod.GET)
                                         .uri("lb://quiz-service"))
+                .route(
+                        r ->
+                                r.path("/media-docs/v3/api-docs")
+                                        .and()
+                                        .method(HttpMethod.GET)
+                                        .uri("lb://media-service"))
                 .build();
     }
 }

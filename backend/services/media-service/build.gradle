@@ -1,0 +1,31 @@
+plugins {
+    id 'com.adelium.web.common-conventions'
+    id 'org.springframework.boot' version '3.1.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+dependencies {
+    implementation project(':common')
+    implementation libs.spring.boot.jpa
+    implementation libs.spring.boot.security
+    implementation libs.spring.boot.web
+    implementation libs.mysql.connector
+    implementation libs.spring.boot.actuator
+    implementation libs.spring.boot.validation
+    implementation libs.spring.cloud.eureka.client
+    implementation libs.spring.boot.data.rest
+    implementation libs.jjwt.api
+    implementation libs.spring.cloud.config.client
+    implementation libs.springdoc.openapi.webmvc.ui
+    implementation libs.spring.cloud.starter.openfeign
+    implementation libs.mapstruct
+    implementation libs.javafaker
+    annotationProcessor libs.mapstruct.processor
+    annotationProcessor libs.mapstruct.lombok
+    runtimeOnly libs.jjwt.impl
+    runtimeOnly libs.jjwt.jackson
+    compileOnly libs.lombok
+    developmentOnly libs.spring.boot.devtools
+    annotationProcessor libs.lombok
+    testImplementation libs.spring.security.test
+}

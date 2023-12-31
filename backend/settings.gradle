@@ -1,3 +1,3 @@
 rootProject.name = 'backend'
 
-include 'common','services:auth-service','services:discovery-service','services:gateway-service','services:quiz-service','services:config-service'
+include 'common','services:auth-service','services:discovery-service','services:gateway-service','services:quiz-service','services:config-service','services:media-service'
