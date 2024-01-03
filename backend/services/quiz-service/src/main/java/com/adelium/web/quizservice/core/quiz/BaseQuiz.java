@@ -39,6 +39,9 @@ public abstract class BaseQuiz<Q extends Question<M>, M extends Media> extends B
 
     @Column private String description;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
     @Column private boolean enabled = false;
 
     @Column private boolean isPublic = false;
