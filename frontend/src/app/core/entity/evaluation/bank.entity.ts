@@ -9,7 +9,8 @@ export class Bank implements Identifiable {
     description!: string
     enabled!: boolean
     isPublic!: boolean
-    authorId?: number
+    ownerId!: number
+    imageUrl!: string
     tags!: Tag[]
     questions!: Question[]
     constructor(data: Partial<Bank>) {
