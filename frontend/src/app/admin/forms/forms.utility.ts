@@ -1,10 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Store } from '@ngrx/store'
 import { EntityActions } from '@store/generic/generic.actions'
-import { PaginationParams } from '@store/generic/generic.reducer'
+import {
+    PaginationParams,
+    PaginationResult,
+} from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
-import { map, switchMap } from 'rxjs'
+import { Observable, map, switchMap } from 'rxjs'
 import { Identifiable } from './../../core/entity/identifiable.interface'
+
+export interface DynamicsOptions {
+    all: () => Observable<
+        Array<{ label: string; value: any; disabled?: boolean }>
+    >
+    getNextPage: (params: PaginationParams) => void
+    getInitialsById?: (
+        id: number
+    ) => Observable<{ label: string; value: any; disabled?: boolean }[]>
+
+    getInitialById?: (
+        id: number
+    ) => Observable<{ label: string; value: any; disabled?: boolean }>
+    paginationResult: () => Observable<PaginationResult>
+    setRelations?: (
+        id: number,
+        relation: string,
+        relatedEntityIds: number[]
+    ) => void
+    update?: (item: any, transactionId: string) => void
+}
 
 /**
  * Creates dynamic options for a form utility.
@@ -19,7 +43,7 @@ import { Identifiable } from './../../core/entity/identifiable.interface'
  * @param {string} relation - The relation between the main entity and the related entity.
  * @returns {Object} - An object containing utility functions for creating dynamic options.
  */
-export const createDynamicOptions = <
+export const createMultiDynamicOptions = <
     T extends Identifiable,
     R extends Identifiable,
 >(
@@ -30,7 +54,7 @@ export const createDynamicOptions = <
     relatedActions: EntityActions<R>,
     label: string,
     relation: string
-) => {
+): DynamicsOptions => {
     return {
         all: () =>
             store.select(relatedSelectors.selectAll).pipe(
@@ -44,7 +68,7 @@ export const createDynamicOptions = <
         getNextPage: (params: PaginationParams) => {
             return store.dispatch(relatedActions.getPage({ params: params }))
         },
-        getInitialById: (id: number) => {
+        getInitialsById: (id: number) => {
             store.dispatch(
                 actions.getRelatedEntities({
                     id: id,
@@ -90,6 +114,65 @@ export const createDynamicOptions = <
                     relatedEntityIds,
                 })
             )
+        },
+    }
+}
+
+/**
+ * Creates dynamic options for a form utility.
+ * @template R - The type of the related entity.
+ * @param {Store} store - The Redux store.
+ * @param {EntitySelectors<R>} relatedSelectors - The selectors for the related entity.
+ * @param {EntityActions<R>} relatedActions - The actions for the related entity.
+ * @param {string} label - The label property of the related entity.
+ * @returns {Object} - An object containing utility functions for creating dynamic options.
+ */
+export const createDynamicOptions = <R extends Identifiable>(
+    store: Store,
+    relatedSelectors: EntitySelectors<R>,
+    relatedActions: EntityActions<R>,
+    label: string
+): DynamicsOptions => {
+    return {
+        all: () =>
+            store.select(relatedSelectors.selectAll).pipe(
+                map(entities =>
+                    entities.map(entity => ({
+                        label: entity[label],
+                        value: entity.id,
+                    }))
+                )
+            ),
+        getInitialById: (id: number) => {
+            store.dispatch(
+                relatedActions.getItemById({
+                    id: id,
+                })
+            )
+
+            return store.select(relatedSelectors.selectEntityById(id)).pipe(
+                map(entity => {
+                    if (entity && entity[label]) {
+                        return {
+                            label: entity[label] as string,
+                            value: entity!.id,
+                        }
+                    } else {
+                        return {
+                            label: '',
+                            value: 0,
+                        }
+                    }
+                })
+            )
+        },
+        getNextPage: (params: PaginationParams) => {
+            return store.dispatch(relatedActions.getPage({ params: params }))
+        },
+        paginationResult: () =>
+            store.select(relatedSelectors.selectPaginationResult),
+        update: (item: R, transactionId: string) => {
+            store.dispatch(relatedActions.updateItem({ item, transactionId }))
         },
     }
 }
