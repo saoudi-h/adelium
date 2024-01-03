@@ -20,6 +20,8 @@ public class FileMetadata extends BaseEntity<Long> {
     @Column(unique = true)
     private String fileName;
 
+    private String originalFileName;
+
     private String fileDownloadUri;
 
     private String fileType;

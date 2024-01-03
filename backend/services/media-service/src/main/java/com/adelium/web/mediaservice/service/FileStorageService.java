@@ -55,18 +55,20 @@ public class FileStorageService {
     public String storeFile(MultipartFile file, boolean isPublic, String userName) {
         String originalFileName =
                 StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String fileExtension = getFileExtension(originalFileName);
+        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
         FileMetadata fileMetadata =
                 FileMetadata.builder()
-                        .fileName(originalFileName)
+                        .fileName(uniqueFileName)
+                        .originalFileName(originalFileName)
                         .fileType(file.getContentType())
                         .size(file.getSize())
-                        .fileDownloadUri("/files/download/" + originalFileName)
+                        .fileDownloadUri("/files/download/" + uniqueFileName)
                         .isPublic(isPublic)
                         .ownerName(userName)
                         .build();
         fileMetadataRepository.save(fileMetadata);
-        String fileExtension = getFileExtension(originalFileName);
-        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
         try {
             Path targetLocation =
