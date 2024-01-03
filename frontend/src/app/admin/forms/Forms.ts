@@ -58,14 +58,19 @@ export const RangeForm: FieldType = {
 export const ColorForm: FieldType = {
     name: 'color',
 }
-export const ImageFormFile: ImageForm = {
+export const ImageFileForm: ImageForm = {
     name: 'image',
     option: 'file',
 }
 
-export const ImageFormUrl: ImageForm = {
+export const ImageUrlForm: ImageForm = {
     name: 'image',
     option: 'url',
+}
+
+export const ImageUrlFileForm: ImageForm = {
+    name: 'image',
+    option: 'url-file',
 }
 
 export const TextInput: InputForm = {

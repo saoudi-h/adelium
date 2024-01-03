@@ -1,12 +1,9 @@
-import {
-    PaginationResult,
-    TransactionStatus,
-} from '@store/generic/generic.reducer'
+import { TransactionStatus } from '@store/generic/generic.reducer'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ValidatorFn } from '@angular/forms'
 import { Identifiable } from '@core/entity/identifiable.interface'
-import { PaginationParams } from '@store/generic/generic.reducer'
 import { Observable } from 'rxjs'
+import { DynamicsOptions } from './forms.utility'
 
 export type ActionType = 'add' | 'edit' | 'delete' | 'preview' | 'patch'
 
@@ -48,7 +45,7 @@ export type FieldType = {
 
 export interface ImageForm extends FieldType {
     name: 'image'
-    option: 'url' | 'file'
+    option: 'url' | 'file' | 'url-file'
 }
 
 export interface SelectForm extends FieldType {
@@ -78,23 +75,13 @@ export interface FormField {
     helpText?: string
     validators?: ValidatorFn[]
     staticOptions?: Array<{ label: string; value: any; disabled?: boolean }>
-    dynamicOptions?: {
-        all: () => Observable<
-            Array<{ label: string; value: any; disabled?: boolean }>
-        >
-        getNextPage: (params: PaginationParams) => void
-        getInitialById?: (
-            id: number
-        ) => Observable<{ label: string; value: any; disabled?: boolean }[]>
-        paginationResult: () => Observable<PaginationResult>
-        setRelations?: (
-            id: number,
-            relation: string,
-            relatedEntityIds: number[]
-        ) => void
-    }
+    dynamicOptions?: DynamicsOptions
     addTag?: boolean
     fields?: FormField[]
+    inputFile?: {
+        type: 'url' | 'file' | 'url-file'
+        file?: File
+    }
 }
 
 export interface FormAction {
