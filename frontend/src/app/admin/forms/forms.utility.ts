@@ -9,7 +9,7 @@ import { EntitySelectors } from '@store/generic/generic.selectors'
 import { Observable, map, switchMap } from 'rxjs'
 import { Identifiable } from './../../core/entity/identifiable.interface'
 
-export interface DynamicsOptions {
+export interface DynamicOptions {
     all: () => Observable<
         Array<{ label: string; value: any; disabled?: boolean }>
     >
@@ -28,6 +28,7 @@ export interface DynamicsOptions {
         relatedEntityIds: number[]
     ) => void
     update?: (item: any, transactionId: string) => void
+    display?: (id: number) => Observable<string | string[]>
 }
 
 /**
@@ -54,7 +55,7 @@ export const createMultiDynamicOptions = <
     relatedActions: EntityActions<R>,
     label: string,
     relation: string
-): DynamicsOptions => {
+): DynamicOptions => {
     return {
         all: () =>
             store.select(relatedSelectors.selectAll).pipe(
@@ -115,6 +116,39 @@ export const createMultiDynamicOptions = <
                 })
             )
         },
+        display: (id: number) => {
+            store.dispatch(
+                actions.getRelatedEntities({
+                    id: id,
+                    relation: relation,
+                })
+            )
+
+            return store
+                .select(
+                    selectors.selectRelatedEntities({
+                        id: id,
+                        relation: relation,
+                    })
+                )
+                .pipe(
+                    switchMap(ids =>
+                        store
+                            .select(relatedSelectors.selectAll)
+                            .pipe(
+                                map(entities =>
+                                    entities
+                                        .filter(entity =>
+                                            ids
+                                                ? ids.includes(entity.id)
+                                                : false
+                                        )
+                                        .map(entity => entity[label])
+                                )
+                            )
+                    )
+                )
+        },
     }
 }
 
@@ -132,7 +166,7 @@ export const createDynamicOptions = <R extends Identifiable>(
     relatedSelectors: EntitySelectors<R>,
     relatedActions: EntityActions<R>,
     label: string
-): DynamicsOptions => {
+): DynamicOptions => {
     return {
         all: () =>
             store.select(relatedSelectors.selectAll).pipe(
@@ -173,6 +207,21 @@ export const createDynamicOptions = <R extends Identifiable>(
             store.select(relatedSelectors.selectPaginationResult),
         update: (item: R, transactionId: string) => {
             store.dispatch(relatedActions.updateItem({ item, transactionId }))
+        },
+        display: (id: number) => {
+            store.dispatch(
+                relatedActions.getItemById({
+                    id: id,
+                })
+            )
+
+            return store
+                .select(relatedSelectors.selectEntityById(id))
+                .pipe(
+                    map(entity =>
+                        entity && entity[label] ? entity[label] : ''
+                    )
+                )
         },
     }
 }
