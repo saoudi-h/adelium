@@ -239,7 +239,6 @@ export class AdminFormComponent<T extends Identifiable>
             // edit
             formValue.id = this.modalConfig.initialValue.id
             const transactionId = uuidv4()
-            console.log('formValue', formValue)
             this.modalConfig.onEdit(formValue, transactionId)
             this.updateRelations(form)
             this.transactionSubscription = this.modalConfig
