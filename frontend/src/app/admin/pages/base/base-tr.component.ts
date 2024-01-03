@@ -13,7 +13,17 @@ import { TextDisplayComponent } from './components/field-display/text-dislay.com
 @Component({
     selector: '[base-tr]',
     standalone: true,
-    imports: [CommonModule, SharedModule, ActionEntityComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        ActionEntityComponent,
+        TextDisplayComponent,
+        DateDisplayComponent,
+        CheckBoxtDisplayComponent,
+        ImageDisplayComponent,
+        DynamicSelectDisplayComponent,
+        MultiDynamicSelectDisplayComponent,
+    ],
     template: `
         <td class="h-px w-px whitespace-nowrap">
             <label>
@@ -23,11 +33,51 @@ import { TextDisplayComponent } from './components/field-display/text-dislay.com
         <!-- tds -->
         @for (field of fields; track field) {
             <td>
-                <ng-container
-                    *ngComponentOutlet="
-                        getComponent(field);
-                        inputs: { content: entity[field.id] }
-                    "></ng-container>
+                @switch (field.type.name) {
+                    @case ('input') {
+                        <div
+                            text-display
+                            [content]="entity[field.id]"
+                            [field]="field"></div>
+                    }
+                    @case ('date') {
+                        <deiv
+                            date-display
+                            [content]="entity[field.id]"
+                            [field]="field"></deiv>
+                    }
+                    @case ('checkbox') {
+                        <div
+                            checkbox-display
+                            [content]="entity[field.id]"
+                            [field]="field"></div>
+                    }
+                    @case ('image') {
+                        <div
+                            image-display
+                            [content]="entity[field.id]"
+                            [field]="field"></div>
+                    }
+                    @case ('dynamic-select') {
+                        @if (field.type.option === 'multiple') {
+                            <div
+                                multi-dynamic-select-display
+                                [id]="entity.id"
+                                [field]="field"></div>
+                        } @else {
+                            <div
+                                dynamic-select-display
+                                [content]="entity[field.id]"
+                                [field]="field"></div>
+                        }
+                    }
+                    @default {
+                        <div
+                            text-display
+                            [content]="entity[field.id]"
+                            [field]="field"></div>
+                    }
+                }
             </td>
         }
         <!-- Actions -->
@@ -51,26 +101,5 @@ export class BaseTrComponent<T extends Identifiable> {
 
     onEdit(id: number) {
         this.edit.emit(id)
-    }
-
-    getComponent(field: FormField) {
-        if (field.type.name === 'input') {
-            return TextDisplayComponent
-        } else if (field.type.name === 'date') {
-            return DateDisplayComponent
-        } else if (field.type.name === 'checkbox') {
-            return CheckBoxtDisplayComponent
-        } else if (field.type.name === 'image') {
-            return ImageDisplayComponent
-        } else if (field.type.name === 'dynamic-select') {
-            if (field.type.option === 'multiple') {
-                return MultiDynamicSelectDisplayComponent
-            } else {
-                return DynamicSelectDisplayComponent
-            }
-        } else {
-            return TextDisplayComponent
-            // throw new Error(`Unknown type ${field.type.name}`)
-        }
     }
 }

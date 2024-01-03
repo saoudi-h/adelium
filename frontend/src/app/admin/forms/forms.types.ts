@@ -3,7 +3,7 @@ import { TransactionStatus } from '@store/generic/generic.reducer'
 import { ValidatorFn } from '@angular/forms'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { Observable } from 'rxjs'
-import { DynamicsOptions } from './forms.utility'
+import { DynamicOptions } from './forms.utility'
 
 export type ActionType = 'add' | 'edit' | 'delete' | 'preview' | 'patch'
 
@@ -75,7 +75,7 @@ export interface FormField {
     helpText?: string
     validators?: ValidatorFn[]
     staticOptions?: Array<{ label: string; value: any; disabled?: boolean }>
-    dynamicOptions?: DynamicsOptions
+    dynamicOptions?: DynamicOptions
     addTag?: boolean
     fields?: FormField[]
     inputFile?: {
