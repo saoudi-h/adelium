@@ -6,6 +6,9 @@ import { SharedModule } from '@shared/shared.module'
 import { ActionEntityComponent } from './components/action-entity.component'
 import { CheckBoxtDisplayComponent } from './components/field-display/checkbox-dislay.component'
 import { DateDisplayComponent } from './components/field-display/date-dislay.component'
+import { DynamicSelectDisplayComponent } from './components/field-display/dynamic-select-display.component'
+import { ImageDisplayComponent } from './components/field-display/image-dislay.component'
+import { MultiDynamicSelectDisplayComponent } from './components/field-display/multi-dynamic-select-display.component'
 import { TextDisplayComponent } from './components/field-display/text-dislay.component'
 @Component({
     selector: '[base-tr]',
@@ -57,8 +60,17 @@ export class BaseTrComponent<T extends Identifiable> {
             return DateDisplayComponent
         } else if (field.type.name === 'checkbox') {
             return CheckBoxtDisplayComponent
+        } else if (field.type.name === 'image') {
+            return ImageDisplayComponent
+        } else if (field.type.name === 'dynamic-select') {
+            if (field.type.option === 'multiple') {
+                return MultiDynamicSelectDisplayComponent
+            } else {
+                return DynamicSelectDisplayComponent
+            }
         } else {
-            throw new Error(`Unknown type ${field.type.name}`)
+            return TextDisplayComponent
+            // throw new Error(`Unknown type ${field.type.name}`)
         }
     }
 }
