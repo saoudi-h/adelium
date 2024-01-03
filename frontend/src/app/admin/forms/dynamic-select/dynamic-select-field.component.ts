@@ -92,16 +92,32 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
     }
 
     private loadInitialValuesIfNeeded(): void {
-        if (this.entityId && this.field.dynamicOptions!.getInitialById) {
-            this.subscription.add(
-                this.field
-                    .dynamicOptions!.getInitialById(this.entityId)
-                    .subscribe(initialValues => {
-                        this.group.patchValue({
-                            [this.field.id]: initialValues,
+        if (this.entityId) {
+            if (this.field.dynamicOptions!.getInitialsById) {
+                this.subscription.add(
+                    this.field
+                        .dynamicOptions!.getInitialsById(this.entityId)
+                        .subscribe(initialValues => {
+                            this.group.patchValue({
+                                [this.field.id]: initialValues,
+                            })
                         })
-                    })
-            )
+                )
+            } else {
+                if (this.field.dynamicOptions!.getInitialById) {
+                    this.subscription.add(
+                        this.field
+                            .dynamicOptions!.getInitialById(
+                                this.group.get(this.field.id)?.value
+                            )
+                            .subscribe(initialValue => {
+                                this.group.patchValue({
+                                    [this.field.id]: initialValue,
+                                })
+                            })
+                    )
+                }
+            }
         }
     }
 
