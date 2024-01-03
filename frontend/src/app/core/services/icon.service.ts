@@ -15,6 +15,7 @@ import { ErrorIconComponent } from '@shared/components/icons/error-icon.componen
 import { ExportIconComponent } from '@shared/components/icons/export-icon.component'
 import { GroupsIconComponent } from '@shared/components/icons/groups-icon.component'
 import { HomeIconComponent } from '@shared/components/icons/home-icon.component'
+import { ImageIconComponent } from '@shared/components/icons/image-icon.component'
 import { InfoIconComponent } from '@shared/components/icons/info-icon.component'
 import { LoginIconComponent } from '@shared/components/icons/login-icon.component'
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component'
@@ -108,6 +109,8 @@ export class IconService {
                 return QuizIconComponent
             case 'tag-icon':
                 return TagIconComponent
+            case 'image-icon':
+                return ImageIconComponent
             default:
                 return null
         }
