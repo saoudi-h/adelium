@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
+    DynamicSelectForm,
+    ImageUrlFileForm,
     MultiDynamicSelectForm,
     TextInput,
 } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
-import { createMultiDynamicOptions } from '@admin/forms/forms.utility'
+import {
+    createDynamicOptions,
+    createMultiDynamicOptions,
+} from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
@@ -14,9 +19,12 @@ import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.co
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
+import { User } from '@core/entity/auth/user.entity'
 import { QuizDefault } from '@core/entity/evaluation/quiz-default.entity'
 import { Tag } from '@core/entity/evaluation/tag.entity'
 import { SharedModule } from '@shared/shared.module'
+import { UserActions } from '@store/entities/auth/user/user.actions'
+import { UserSelectors } from '@store/entities/auth/user/user.selectors'
 import { QuizDefaultActions } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.actions'
 import { QuizDefaultSelectors } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.selectors'
 import { TagActions } from '@store/entities/evaluation/tag/tag.actions'
@@ -87,6 +95,12 @@ export class AdminQuizDefaultComponent extends BaseAdminComponent<QuizDefault> {
                 label: 'Actif',
             },
             {
+                id: 'public',
+                sortable: true,
+                type: CheckboxForm,
+                label: 'public',
+            },
+            {
                 id: 'tags',
                 sortable: false,
                 type: MultiDynamicSelectForm,
@@ -100,6 +114,27 @@ export class AdminQuizDefaultComponent extends BaseAdminComponent<QuizDefault> {
                     TagActions,
                     'name',
                     'tags'
+                ),
+            },
+            {
+                id: 'imageUrl',
+                sortable: false,
+                type: ImageUrlFileForm,
+                label: 'Image',
+                placeholder: 'Selectionnez une image',
+                validators: [Validators.required],
+            },
+            {
+                id: 'ownerId',
+                sortable: false,
+                type: DynamicSelectForm,
+                label: 'Propriétaire',
+                placeholder: 'Selectionnez un propriétaire',
+                dynamicOptions: createDynamicOptions<User>(
+                    this.store,
+                    UserSelectors,
+                    UserActions,
+                    'username'
                 ),
             },
             // {

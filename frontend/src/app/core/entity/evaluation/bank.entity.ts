@@ -8,7 +8,7 @@ export class Bank implements Identifiable {
     isDeleting?: boolean
     description!: string
     enabled!: boolean
-    isPublic!: boolean
+    public!: boolean
     ownerId!: number
     imageUrl!: string
     tags!: Tag[]

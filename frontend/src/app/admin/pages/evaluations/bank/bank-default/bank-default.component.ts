@@ -95,6 +95,12 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
                 label: 'Actif',
             },
             {
+                id: 'public',
+                sortable: true,
+                type: CheckboxForm,
+                label: 'public',
+            },
+            {
                 id: 'tags',
                 sortable: false,
                 type: MultiDynamicSelectForm,
