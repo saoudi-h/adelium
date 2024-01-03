@@ -20,6 +20,7 @@ dependencies {
     implementation libs.spring.boot.data.rest
     implementation libs.spring.cloud.starter.openfeign
     implementation libs.mapstruct
+    implementation libs.javafaker
     annotationProcessor libs.mapstruct.processor
     compileOnly libs.lombok
     developmentOnly libs.spring.boot.devtools
