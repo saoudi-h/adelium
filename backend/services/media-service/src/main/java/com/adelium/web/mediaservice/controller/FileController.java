@@ -1,10 +1,12 @@
 /* (C)2023 */
 package com.adelium.web.mediaservice.controller;
 
+import com.adelium.web.mediaservice.dto.UploadResponse;
 import com.adelium.web.mediaservice.service.FileStorageService;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,20 +20,30 @@ public class FileController {
     private final FileStorageService fileStorageService;
 
     @PostMapping("/upload/{isPublic}")
-    public ResponseEntity<String> uploadPublicFile(
+    public ResponseEntity<UploadResponse> uploadPublicFile(
             @RequestParam("file") MultipartFile file,
             @PathVariable boolean isPublic,
             Principal principal) {
         String fileName = fileStorageService.storeFile(file, isPublic, principal.getName());
-        return ResponseEntity.ok(fileName);
+        String fileDownloadUri =
+                WebMvcLinkBuilder.linkTo(
+                                WebMvcLinkBuilder.methodOn(FileController.class)
+                                        .downloadFile(fileName, isPublic, principal))
+                        .toUri()
+                        .toString();
+
+        return ResponseEntity.ok(UploadResponse.builder().url(fileDownloadUri).build());
     }
 
     @GetMapping("/{isPublic}/{fileName:.+}")
-    public ResponseEntity<Resource> downloadPublicFile(
+    public ResponseEntity<Resource> downloadFile(
             @PathVariable String fileName, @PathVariable boolean isPublic, Principal principal) {
 
         Resource resource =
-                fileStorageService.loadFileAsResource(fileName, isPublic, principal.getName());
+                isPublic
+                        ? fileStorageService.loadPublicFileAsResource(fileName)
+                        : fileStorageService.loadPrivateFileAsResource(
+                                fileName, principal.getName());
 
         if (resource == null) {
             return ResponseEntity.notFound().build();

@@ -12,6 +12,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileStorageService {
+
+    private final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
     private final Path fileStoragePublic;
     private final Path fileStoragePrivate;
     private final FileMetadataRepository fileMetadataRepository;
@@ -84,20 +88,23 @@ public class FileStorageService {
         return "";
     }
 
-    public Resource loadFileAsResource(String fileName, boolean isPublic, String userName) {
+    public Resource loadPublicFileAsResource(String fileName) {
+        return loadFileAsResource(fileName, this.fileStoragePublic);
+    }
 
-        if (!isPublic) {
-            FileMetadata fileMetadata =
-                    fileMetadataRepository.findByFileName(fileName).orElse(null);
-            if (fileMetadata == null || !fileMetadata.getOwnerName().equals(userName)) {
-                return null;
-            }
+    public Resource loadPrivateFileAsResource(String fileName, String userName) {
+
+        FileMetadata fileMetadata = fileMetadataRepository.findByFileName(fileName).orElse(null);
+        if (fileMetadata == null || !fileMetadata.getOwnerName().equals(userName)) {
+            return null;
         }
+
+        return loadFileAsResource(fileName, this.fileStoragePrivate);
+    }
+
+    private Resource loadFileAsResource(String fileName, Path path) {
         try {
-            Path filePath =
-                    isPublic
-                            ? this.fileStoragePublic.resolve(fileName).normalize()
-                            : this.fileStoragePrivate.resolve(fileName).normalize();
+            Path filePath = path.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;
