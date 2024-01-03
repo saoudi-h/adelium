@@ -1,3 +1,4 @@
+import { FileUploadService } from './../../core/services/file-upload.service'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EntityFormModel, FormField } from '@admin/forms/forms.types'
 import { CommonModule } from '@angular/common'
@@ -16,7 +17,7 @@ import { IconService } from '@core/services/icon.service'
 import { NotificationService } from '@core/services/notification.service'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { SharedModule } from '@shared/shared.module'
-import { Subscription } from 'rxjs'
+import { Observable, Subscription, forkJoin, tap } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { EntityForm } from '../forms/Forms'
 import { FormFieldsComponent } from './form-fields.component'
@@ -124,7 +125,8 @@ export class AdminFormComponent<T extends Identifiable>
     constructor(
         private formBuilder: FormBuilder,
         private iconService: IconService,
-        private notification: NotificationService
+        private notification: NotificationService,
+        private fileUploadService: FileUploadService
     ) {}
 
     ngOnInit(): void {
@@ -177,6 +179,9 @@ export class AdminFormComponent<T extends Identifiable>
             callback()
         }
         const form = { ...this.group.value }
+
+        const uploadTasks: Observable<any>[] = []
+
         for (const key in form) {
             if (form[key] === null || form[key] === undefined) {
                 delete form[key]
@@ -186,13 +191,47 @@ export class AdminFormComponent<T extends Identifiable>
         const formValue = { ...form }
         this.modalConfig.fields.forEach(field => {
             if (field.type.name === 'dynamic-select') {
-                formValue[field.id] = this.selectionToUris(
-                    formValue[field.id],
-                    field.id
-                )
+                if (field.type.option === 'multiple') {
+                    formValue[field.id] = this.selectionToUris(
+                        formValue[field.id],
+                        field.id
+                    )
+                } else if (field.type.option === 'single') {
+                    formValue[field.id] = formValue[field.id]?.value
+                }
+            } else if (field.type.name === 'image') {
+                if (
+                    (field.type.option === 'file' ||
+                        field.type.option === 'url-file') &&
+                    field.inputFile?.file
+                ) {
+                    const uploadTask = this.fileUploadService
+                        .uploadFile(field.inputFile.file)
+                        .pipe(
+                            tap(response => {
+                                formValue[field.id] = response
+                            })
+                        )
+                    uploadTasks.push(uploadTask)
+                }
             }
         })
 
+        if (uploadTasks.length > 0) {
+            forkJoin(uploadTasks).subscribe({
+                next: () => {
+                    this.continueWithFormSubmission(formValue, form)
+                },
+                error: error => {
+                    console.log("Erreur lors de l'upload des fichiers", error)
+                },
+            })
+        } else {
+            this.continueWithFormSubmission(formValue, form)
+        }
+    }
+
+    continueWithFormSubmission(formValue: any, form: any) {
         if (
             this.modalConfig.actionType === 'edit' &&
             this.modalConfig.initialValue
@@ -200,6 +239,7 @@ export class AdminFormComponent<T extends Identifiable>
             // edit
             formValue.id = this.modalConfig.initialValue.id
             const transactionId = uuidv4()
+            console.log('formValue', formValue)
             this.modalConfig.onEdit(formValue, transactionId)
             this.updateRelations(form)
             this.transactionSubscription = this.modalConfig
@@ -246,10 +286,10 @@ export class AdminFormComponent<T extends Identifiable>
         }
     }
     updateRelations(form: any) {
-        // check if there is a dynamic select field and set the relations
         this.modalConfig.fields.forEach(field => {
             if (
                 field.type.name === 'dynamic-select' &&
+                field.type.option === 'multiple' &&
                 field.dynamicOptions?.setRelations &&
                 form[field.id] &&
                 this.modalConfig.initialValue

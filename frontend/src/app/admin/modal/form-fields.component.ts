@@ -1,6 +1,9 @@
 import { CheckBoxFieldComponent } from '@admin/forms/checkbox/checkbox-field.component'
 import { DynamicSelectFieldComponent } from '@admin/forms/dynamic-select/dynamic-select-field.component'
 import { FormField } from '@admin/forms/forms.types'
+import { ImageFileFieldComponent } from '@admin/forms/image-file/image-file-field.component'
+import { ImageUrlFileFieldComponent } from '@admin/forms/image-url-file/image-url-file-field.component'
+import { ImageUrlFieldComponent } from '@admin/forms/image-url/image-url-field.component'
 import { InputFieldComponent } from '@admin/forms/input/input-field.component'
 import { SelectFieldComponent } from '@admin/forms/select/select-field.component'
 import { CommonModule } from '@angular/common'
@@ -18,6 +21,9 @@ import { SharedModule } from '@shared/shared.module'
         CheckBoxFieldComponent,
         SelectFieldComponent,
         DynamicSelectFieldComponent,
+        ImageUrlFieldComponent,
+        ImageFileFieldComponent,
+        ImageUrlFileFieldComponent,
     ],
     template: `
         @for (field of fields; track field.id) {
@@ -54,6 +60,31 @@ import { SharedModule } from '@shared/shared.module'
                             [field]="field"
                             [group]="group"
                             [entityId]="id ?? undefined"></div>
+                    }
+                    @case ('image') {
+                        @switch (field.type.option) {
+                            @case ('url') {
+                                <div
+                                    image-url-field
+                                    [field]="field"
+                                    [group]="group"></div>
+                            }
+                            @case ('file') {
+                                <div
+                                    image-file-field
+                                    [field]="field"
+                                    [group]="group"></div>
+                            }
+                            @case ('url-file') {
+                                <div
+                                    image-url-file-field
+                                    [field]="field"
+                                    [group]="group"></div>
+                            }
+                            @default {
+                                <div>Unknown image subtype</div>
+                            }
+                        }
                     }
                     <!-- 
                 @case ('select') {
@@ -107,7 +138,6 @@ export class FormFieldsComponent {
     @Input() group!: FormGroup
     @Input() fields!: FormField[]
     @Input() id!: number | undefined
-    constructor() {}
 
     isFormControl(control: AbstractControl | null): control is FormControl {
         return control instanceof FormControl
