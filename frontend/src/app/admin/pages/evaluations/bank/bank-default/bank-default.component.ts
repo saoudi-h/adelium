@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
+    DynamicSelectForm,
+    ImageUrlFileForm,
     MultiDynamicSelectForm,
     TextInput,
 } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
-import { createDynamicOptions } from '@admin/forms/forms.utility'
+import {
+    createDynamicOptions,
+    createMultiDynamicOptions,
+} from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
@@ -14,9 +19,12 @@ import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.co
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
+import { User } from '@core/entity/auth/user.entity'
 import { BankDefault } from '@core/entity/evaluation/bank-default.entity'
 import { Tag } from '@core/entity/evaluation/tag.entity'
 import { SharedModule } from '@shared/shared.module'
+import { UserActions } from '@store/entities/auth/user/user.actions'
+import { UserSelectors } from '@store/entities/auth/user/user.selectors'
 import { BankDefaultActions } from '@store/entities/evaluation/bank/bank-default/bank-default.actions'
 import { BankDefaultSelectors } from '@store/entities/evaluation/bank/bank-default/bank-default.selectors'
 import { TagActions } from '@store/entities/evaluation/tag/tag.actions'
@@ -92,7 +100,7 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
                 type: MultiDynamicSelectForm,
                 label: 'Tag',
                 placeholder: 'Selectionnez les Tags',
-                dynamicOptions: createDynamicOptions<BankDefault, Tag>(
+                dynamicOptions: createMultiDynamicOptions<BankDefault, Tag>(
                     this.store,
                     this.selectors,
                     this.actions,
@@ -100,6 +108,27 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
                     TagActions,
                     'name',
                     'tags'
+                ),
+            },
+            {
+                id: 'imageUrl',
+                sortable: false,
+                type: ImageUrlFileForm,
+                label: 'Image',
+                placeholder: 'Selectionnez une image',
+                validators: [Validators.required],
+            },
+            {
+                id: 'ownerId',
+                sortable: false,
+                type: DynamicSelectForm,
+                label: 'Propriétaire',
+                placeholder: 'Selectionnez un propriétaire',
+                dynamicOptions: createDynamicOptions<User>(
+                    this.store,
+                    UserSelectors,
+                    UserActions,
+                    'username'
                 ),
             },
             // {

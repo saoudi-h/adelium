@@ -9,7 +9,7 @@ import {
     TextInput,
     UrlInput,
 } from '@admin/forms/Forms'
-import { createDynamicOptions } from '@admin/forms/forms.utility'
+import { createMultiDynamicOptions } from '@admin/forms/forms.utility'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
 import { AdminConfig } from '@admin/pages/base/components/admin-config.types'
 import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.component'
@@ -256,7 +256,7 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
                 type: MultiDynamicSelectForm,
                 label: 'Role',
                 placeholder: 'Selectionnez les Roles',
-                dynamicOptions: createDynamicOptions<User, Role>(
+                dynamicOptions: createMultiDynamicOptions<User, Role>(
                     this.store,
                     this.selectors,
                     this.actions,

@@ -5,7 +5,7 @@ import {
     TextInput,
 } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
-import { createDynamicOptions } from '@admin/forms/forms.utility'
+import { createMultiDynamicOptions } from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
@@ -92,7 +92,7 @@ export class AdminQuizMcqComponent extends BaseAdminComponent<QuizMcq> {
                 type: MultiDynamicSelectForm,
                 label: 'Tag',
                 placeholder: 'Selectionnez les Tags',
-                dynamicOptions: createDynamicOptions<QuizMcq, Tag>(
+                dynamicOptions: createMultiDynamicOptions<QuizMcq, Tag>(
                     this.store,
                     this.selectors,
                     this.actions,
