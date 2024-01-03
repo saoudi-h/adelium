@@ -1,10 +1,11 @@
+import { FormField } from '@admin/forms/forms.types'
 import { CommonModule } from '@angular/common'
 import { Component, ElementRef, Input, ViewChild } from '@angular/core'
 
 @Component({
     standalone: true,
     imports: [CommonModule],
-    selector: 'image-display',
+    selector: '[image-display]',
     template: `
         <button class="cursor-default" (click)="show($event)">
             <div class="avatar">
@@ -41,5 +42,6 @@ export class ImageDisplayComponent {
     @ViewChild('myModal') myModal!: ElementRef
     @Input() wideView: boolean = true
     @Input() content!: string
+    @Input() field!: FormField
     constructor() {}
 }
