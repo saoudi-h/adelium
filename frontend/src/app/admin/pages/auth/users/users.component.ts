@@ -131,9 +131,11 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
         view-layout
         [config]="config"
         [paginationResult$]="paginationResult$"
+        [paginationParams$]="paginationParams$"
         (add)="onAdd()"
         (pageChange)="onPageChange($event)"
         (sortChange)="onSortChange($event)"
+        (sizeChange)="onSizeChange($event)"
         [sortState]="sortState">
         <!-- tbody -->
         <!-- <tbody

@@ -175,4 +175,8 @@ export class BaseAdminComponent<T extends Identifiable>
         this.store.dispatch(this.actions.resetEntities())
         this.store.dispatch(this.actions.updatePaginationParams({ sort }))
     }
+
+    onSizeChange(size: number) {
+        this.store.dispatch(this.actions.updatePaginationParams({ size }))
+    }
 }

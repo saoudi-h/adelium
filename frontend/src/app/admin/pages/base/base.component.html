@@ -3,8 +3,10 @@
     (add)="onAdd()"
     [config]="config"
     [fields]="entityFormModel.fields"
+    [paginationParams$]="paginationParams$"
     [paginationResult$]="paginationResult$"
     (sortChange)="onSortChange($event)"
+    (sizeChange)="onSizeChange($event)"
     [sortState]="sortState"
     (pageChange)="onPageChange($event)">
     <!-- tbody -->

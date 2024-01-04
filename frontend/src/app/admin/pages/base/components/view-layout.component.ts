@@ -3,9 +3,14 @@ import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { AddIconComponent } from '@shared/components/icons/add-icon.component'
 import { ExportIconComponent } from '@shared/components/icons/export-icon.component'
+import { PageSizeComponent } from '@shared/components/utility/page-size/page-size-component'
 import { PaginatorComponent } from '@shared/components/utility/paginator/paginator.component'
 import { SharedModule } from '@shared/shared.module'
-import { PaginationResult, SortCriterion } from '@store/generic/generic.reducer'
+import {
+    PaginationParams,
+    PaginationResult,
+    SortCriterion,
+} from '@store/generic/generic.reducer'
 import { Observable } from 'rxjs'
 import { AdminConfig } from './admin-config.types'
 
@@ -15,6 +20,7 @@ import { AdminConfig } from './admin-config.types'
         CommonModule,
         SharedModule,
         PaginatorComponent,
+        PageSizeComponent,
         AddIconComponent,
         AddIconComponent,
         ExportIconComponent,
@@ -170,7 +176,12 @@ import { AdminConfig } from './admin-config.types'
                             </p>
                             <ng-template #noTotal></ng-template>
                         </div>
-
+                        @if (paginationParams$ | async; as paginationParams) {
+                            <div
+                                page-size
+                                [size]="paginationParams.size"
+                                (sizeChange)="onSizeChange($event)"></div>
+                        }
                         <div
                             paginator
                             [pagination$]="paginationResult$"
@@ -187,10 +198,12 @@ export class ViewLayoutComponent {
     @Output() add = new EventEmitter<void>()
     @Output() pageChange = new EventEmitter<number>()
     @Output() sortChange = new EventEmitter<string>()
+    @Output() sizeChange = new EventEmitter<number>()
     @Input() sortState!: SortCriterion
 
     @Input() config!: AdminConfig
     @Input() fields: FormField[] | undefined
+    @Input() paginationParams$!: Observable<PaginationParams>
     @Input() paginationResult$!: Observable<PaginationResult>
 
     onPageChange($event: number) {
@@ -203,5 +216,9 @@ export class ViewLayoutComponent {
 
     onSortChange(column: string): void {
         this.sortChange.emit(column)
+    }
+
+    onSizeChange(size: number): void {
+        this.sizeChange.emit(size)
     }
 }
