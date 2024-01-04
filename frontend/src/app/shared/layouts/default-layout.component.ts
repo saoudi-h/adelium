@@ -5,6 +5,7 @@ import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component
 import { NavbarComponent } from '@shared/components/navbar/navbar.component'
 import { ModalComponent } from '@shared/components/utility/modals/modal.component'
 import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
+import { NotificatorContainerComponent } from '@shared/components/widgets/notificator/notificator-container.component'
 import { SharedModule } from '@shared/shared.module'
 
 @Component({
@@ -12,6 +13,9 @@ import { SharedModule } from '@shared/shared.module'
     standalone: true,
     template: `
         <!-- MODAL -->
+        <div
+            notificator-container
+            className="w-full mt-20 flex justify-center"></div>
         <app-modal />
         <!-- DRAWER -->
         <div class="drawer min-h-screen bg-base-300">
@@ -57,6 +61,7 @@ import { SharedModule } from '@shared/shared.module'
         BreadcrumbsComponent,
         SharedModule,
         ModalComponent,
+        NotificatorContainerComponent,
     ],
 })
 export class DefaultLayoutComponent {}

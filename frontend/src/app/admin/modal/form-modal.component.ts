@@ -15,14 +15,11 @@ import {
 } from '@angular/animations'
 import { CommonModule } from '@angular/common'
 import {
-    AfterViewInit,
     Component,
-    ElementRef,
     EventEmitter,
     HostListener,
     Input,
     Output,
-    ViewChild,
 } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
@@ -45,15 +42,14 @@ import { FormFieldsComponent } from './form-fields.component'
     ],
     selector: '[form-modal]',
     template: `
-        <dialog
-            #dialogRef
+        <div
             @formDialog
             class="modal-overlay"
             [class.active]="active"
             (click)="onOverlayClick($event)"
             (keyup.enter)="onKeyEnterPress($event)"
             role="dialog"
-            class="fixed inset-0 left-0 top-0 z-[1000] m-0 flex h-screen max-h-[100vh] w-screen max-w-[100vw] items-center justify-center overflow-hidden overflow-y-hidden bg-base-100/70 p-0 backdrop-blur-sm">
+            class="fixed inset-0 left-0 top-0 z-40 m-0 flex h-screen max-h-[100vh] w-screen max-w-[100vw] items-center justify-center overflow-hidden overflow-y-hidden bg-base-100/70 p-0 backdrop-blur-sm">
             <div
                 class="container modal-box max-w-none transform-none rounded-none bg-base-100/70 p-0 shadow-xl sm:rounded-lg md:rounded-xl lg:rounded-2xl xl:rounded-3xl"
                 (click)="onModalClick($event)"
@@ -65,7 +61,7 @@ import { FormFieldsComponent } from './form-fields.component'
                     class="modal-content bg-base-200 bg-hero-pattern"
                     (closeModal)="close()"></div>
             </div>
-        </dialog>
+        </div>
     `,
     animations: [
         trigger('formDialog', [
@@ -113,10 +109,7 @@ import { FormFieldsComponent } from './form-fields.component'
         ]),
     ],
 })
-export class FormModalComponent<T extends Identifiable>
-    implements AfterViewInit
-{
-    @ViewChild('dialogRef') dialogRef!: ElementRef
+export class FormModalComponent<T extends Identifiable> {
     @Output() closeModal = new EventEmitter<void>()
     @Input() modalConfig!: EntityFormModel<T>
     @Input() active = false
@@ -125,20 +118,7 @@ export class FormModalComponent<T extends Identifiable>
     @Input() closeOnEnter = false
 
     close() {
-        if (this.dialogRef && this.dialogRef.nativeElement) {
-            this.dialogRef.nativeElement.close()
-        }
         this.closeModal.emit()
-    }
-
-    /**
-     * Shows the modal.
-     * @returns void
-     * */
-    ngAfterViewInit() {
-        if (this.dialogRef && this.dialogRef.nativeElement) {
-            this.dialogRef.nativeElement.showModal()
-        }
     }
 
     /**

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router'
 import { FooterComponent } from '@shared/components/footer/footer.component'
 import { ModalComponent } from '@shared/components/utility/modals/modal.component'
 import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
+import { NotificatorContainerComponent } from '@shared/components/widgets/notificator/notificator-container.component'
 import { SharedModule } from '@shared/shared.module'
 
 @Component({
@@ -13,6 +14,7 @@ import { SharedModule } from '@shared/shared.module'
     standalone: true,
     template: `
         <!-- MODAL -->
+        <div notificator-container className="right-[22rem] mt-20"></div>
         <app-modal />
         <app-form-modals />
         <!-- DRAWER -->
@@ -64,6 +66,7 @@ import { SharedModule } from '@shared/shared.module'
         SharedModule,
         FormModalsComponent,
         ModalComponent,
+        NotificatorContainerComponent,
     ],
 })
 export class AdminLayoutComponent {}

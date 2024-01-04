@@ -7,7 +7,7 @@ import {
     trigger,
 } from '@angular/animations'
 import { CommonModule } from '@angular/common'
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { AppState } from '@reducers'
 import { ErrorIconComponent } from '@shared/components/icons/error-icon.component'
@@ -20,7 +20,7 @@ import { SharedModule } from '@shared/shared.module'
 import * as NotificationActions from '@store/notification/notification.actions'
 import * as NotificationSelectors from '@store/notification/notification.selectors'
 import { Notice } from '@store/notification/notification.types'
-import { ToastContainerDirective, ToastrService } from 'ngx-toastr'
+import { ToastContainerDirective } from 'ngx-toastr'
 import { Observable, map } from 'rxjs'
 
 /**
@@ -56,11 +56,6 @@ import { Observable, map } from 'rxjs'
         DropdownComponent,
     ],
     template: ` <div class="relative">
-        <!-- Toast container -->
-        <div
-            aria-live="polite"
-            toastContainer
-            class="absolute right-72 mt-16"></div>
         <app-dropdown>
             <button
                 dropdown-button
@@ -194,28 +189,19 @@ import { Observable, map } from 'rxjs'
         ]),
     ],
 })
-export class NotificatorWidgetComponent implements OnInit {
+export class NotificatorWidgetComponent {
     notifications$: Observable<Notice[]>
     notificationCount$: Observable<number>
     @ViewChild(DropdownComponent) dropdown!: DropdownComponent
-    @ViewChild(ToastContainerDirective, { static: true })
-    toastContainer: ToastContainerDirective | undefined
     notifications: Notice[] = []
 
-    constructor(
-        private store: Store<AppState>,
-        private toastrService: ToastrService
-    ) {
+    constructor(private store: Store<AppState>) {
         this.notifications$ = this.store.select(
             NotificationSelectors.selectAllNotifications
         )
         this.notificationCount$ = this.notifications$.pipe(
             map(notifications => notifications.length)
         )
-    }
-
-    ngOnInit() {
-        this.toastrService.overlayContainer = this.toastContainer
     }
 
     clearAllNotifications(event: Event) {
