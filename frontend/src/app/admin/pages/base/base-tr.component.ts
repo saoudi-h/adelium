@@ -98,7 +98,7 @@ import { TitleDisplayComponent } from './components/field-display/title-dislay.c
             [id]="entity.id"
             (delete)="onDelete($event)"
             (edit)="onEdit($event)"
-            class="flex justify-end"></td>
+            class="flex items-center justify-end"></td>
     `,
 })
 export class BaseTrComponent<T extends Identifiable> {

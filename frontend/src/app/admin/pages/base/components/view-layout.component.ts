@@ -84,7 +84,7 @@ import { AdminConfig } from './admin-config.types'
                                                           )
                                                         : null
                                                 "
-                                                class="text-md capitalize text-primary">
+                                                class="text-md capitalize text-base-content">
                                                 <div
                                                     [ngClass]="{
                                                         'btn btn-ghost ':
@@ -115,7 +115,7 @@ import { AdminConfig } from './admin-config.types'
                                                         ? onSortChange(field.id)
                                                         : null
                                                 "
-                                                class="text-md capitalize text-primary">
+                                                class="text-md capitalize text-base-content">
                                                 <div
                                                     [ngClass]="{
                                                         'btn btn-ghost':
@@ -140,7 +140,7 @@ import { AdminConfig } from './admin-config.types'
                                         }
                                     }
                                     <th
-                                        class="text-md text-right capitalize text-primary">
+                                        class="text-md text-right capitalize text-base-content">
                                         Actions
                                     </th>
                                 </tr>

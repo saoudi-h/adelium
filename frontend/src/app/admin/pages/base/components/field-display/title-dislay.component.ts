@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core'
     standalone: true,
     selector: '[title-display]',
     template: `<div class="tooltip" attr.data-tip="{{ field.label }}">
-        <h4 class="text-sm font-bold text-primary">{{ content }}</h4>
+        <h4 class="text-sm font-bold text-base-content">{{ content }}</h4>
     </div>`,
 })
 export class TitleDisplayComponent {
