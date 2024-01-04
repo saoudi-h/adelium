@@ -32,7 +32,7 @@ import { SharedModule } from '@shared/shared.module'
                     <main
                         class="relative flex h-max w-full flex-1 flex-row justify-center overflow-hidden bg-gradient-to-t from-base-100 to-base-200">
                         <main
-                            class="relative flex max-w-[100vw] flex-1 flex-col items-start overflow-hidden px-2 pb-4 pt-2 sm:px-4 sm:pb-8 sm:pt-5 md:px-6 md:pb-16 md:pt-10 lg:max-w-[calc(100vw-20rem)] lg:px-16">
+                            class="relative flex max-w-[100vw] flex-1 flex-col items-start overflow-hidden px-2 pb-4 pt-2 sm:px-4 sm:pb-8 sm:pt-5 md:pb-16 md:pt-10 lg:max-w-[calc(100vw-20rem)] lg:px-8">
                             <div breadcrumb></div>
                             <router-outlet></router-outlet>
                         </main>

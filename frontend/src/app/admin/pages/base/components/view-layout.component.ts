@@ -22,7 +22,8 @@ import { AdminConfig } from './admin-config.types'
     standalone: true,
     template: ` <!-- Table Section -->
         <section class="flex w-full max-w-[100vw] grow py-10 lg:py-14">
-            <div class="w-full overflow-hidden">
+            <div
+                class="w-full overflow-hidden rounded-xl border border-base-300 bg-base-200">
                 <div
                     class="grid gap-3 border-b border-base-300 px-6 py-4 md:flex md:items-center md:justify-between">
                     <div>
@@ -84,20 +85,26 @@ import { AdminConfig } from './admin-config.types'
                                                         : null
                                                 "
                                                 class="text-md capitalize text-primary">
-                                                {{ column.label }}
-                                                <span
-                                                    *ngIf="
-                                                        column.sortable &&
-                                                        sortState.property ===
-                                                            column.sortField
-                                                    ">
-                                                    {{
-                                                        sortState.direction ===
-                                                        'asc'
-                                                            ? '▲'
-                                                            : '▼'
-                                                    }}
-                                                </span>
+                                                <div
+                                                    [ngClass]="{
+                                                        'btn btn-ghost ':
+                                                            column.sortable
+                                                    }">
+                                                    {{ column.label }}
+                                                    <span
+                                                        *ngIf="
+                                                            column.sortable &&
+                                                            sortState.property ===
+                                                                column.sortField
+                                                        ">
+                                                        {{
+                                                            sortState.direction ===
+                                                            'asc'
+                                                                ? '▲'
+                                                                : '▼'
+                                                        }}
+                                                    </span>
+                                                </div>
                                             </th>
                                         }
                                     } @else {
@@ -109,20 +116,26 @@ import { AdminConfig } from './admin-config.types'
                                                         : null
                                                 "
                                                 class="text-md capitalize text-primary">
-                                                {{ field.label }}
-                                                <span
-                                                    *ngIf="
-                                                        field.sortable &&
-                                                        sortState.property ===
-                                                            field.id
-                                                    ">
-                                                    {{
-                                                        sortState.direction ===
-                                                        'asc'
-                                                            ? '▲'
-                                                            : '▼'
-                                                    }}
-                                                </span>
+                                                <div
+                                                    [ngClass]="{
+                                                        'btn btn-ghost':
+                                                            field.sortable
+                                                    }">
+                                                    {{ field.label }}
+                                                    <span
+                                                        *ngIf="
+                                                            field.sortable &&
+                                                            sortState.property ===
+                                                                field.id
+                                                        ">
+                                                        {{
+                                                            sortState.direction ===
+                                                            'asc'
+                                                                ? '▲'
+                                                                : '▼'
+                                                        }}
+                                                    </span>
+                                                </div>
                                             </th>
                                         }
                                     }

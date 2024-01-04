@@ -39,7 +39,7 @@ import { FormFieldsComponent } from './form-fields.component'
                 <h3 class="text-3xl font-bold text-primary">
                     {{ modalConfig.title }}
                 </h3>
-                <p class="text-sm text-primary/70">
+                <p class="text-sm font-bold text-primary">
                     {{ modalConfig.additionalInfo }}
                 </p>
             </div>

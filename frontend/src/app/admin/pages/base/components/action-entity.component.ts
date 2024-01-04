@@ -6,7 +6,7 @@ import { EditIconComponent } from '@shared/components/icons/edit-icon.component'
     selector: 'td[action-entity]',
     standalone: true,
     imports: [DeleteIconComponent, EditIconComponent],
-    template: `<div class="join join-vertical">
+    template: `<div class="join join-vertical md:join-horizontal">
         <button
             (click)="onEdit(id)"
             class="btn btn-square btn-outline join-item tooltip flex"

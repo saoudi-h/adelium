@@ -83,7 +83,7 @@ module.exports = {
             {
                 'admin-dark': {
                     'color-scheme': 'dark',
-                    primary: '#9FE88D',
+                    primary: '#17c0dd',
                     secondary: '#FF7D5C',
                     accent: '#C792E9',
                     neutral: '#1c212b',
@@ -101,7 +101,7 @@ module.exports = {
             {
                 'admin-light': {
                     'color-scheme': 'light',
-                    primary: '#66cc8a',
+                    primary: '#008dbd',
                     'primary-content': '#223D30',
                     secondary: '#377cfb',
                     'secondary-content': '#fff',
