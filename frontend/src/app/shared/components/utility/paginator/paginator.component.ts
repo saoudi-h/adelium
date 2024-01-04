@@ -16,7 +16,8 @@ import { Observable } from 'rxjs'
                 <div class="join">
                     @if (pagination.number > 0) {
                         <button
-                            class="btn btn-outline join-item"
+                            class="btn btn-outline join-item tooltip flex"
+                            data-tip="Precedent"
                             (click)="selectPage(pagination.number - 2)">
                             <svg
                                 class="h-4 w-4 flex-shrink-0"
@@ -31,7 +32,7 @@ import { Observable } from 'rxjs'
                                 stroke-linejoin="round">
                                 <path d="m15 18-6-6 6-6" />
                             </svg>
-                            Precedent
+                            <span class="hidden md:block">Precedent</span>
                         </button>
                     }
                     @for (
@@ -51,9 +52,10 @@ import { Observable } from 'rxjs'
 
                     @if (pagination.number + 1 < pagination.totalPages) {
                         <button
-                            class="btn btn-outline join-item"
+                            class="btn btn-outline join-item tooltip flex"
+                            data-tip="Suivant"
                             (click)="selectPage(pagination.number + 2)">
-                            Suivant
+                            <span class="hidden md:block">Suivant</span>
                             <svg
                                 class="h-4 w-4 flex-shrink-0"
                                 xmlns="http://www.w3.org/2000/svg"
