@@ -64,6 +64,7 @@ export interface InputForm extends FieldType {
         | 'hidden'
         | 'number'
         | 'tel'
+        | 'title'
 }
 
 export interface FormField {

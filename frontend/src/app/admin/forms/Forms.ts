@@ -111,3 +111,7 @@ export const TelInput: InputForm = {
     name: 'input',
     option: 'tel',
 }
+export const TitleInput: InputForm = {
+    name: 'input',
+    option: 'title',
+}

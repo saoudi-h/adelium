@@ -10,6 +10,7 @@ import { DynamicSelectDisplayComponent } from './components/field-display/dynami
 import { ImageDisplayComponent } from './components/field-display/image-dislay.component'
 import { MultiDynamicSelectDisplayComponent } from './components/field-display/multi-dynamic-select-display.component'
 import { TextDisplayComponent } from './components/field-display/text-dislay.component'
+import { TitleDisplayComponent } from './components/field-display/title-dislay.component'
 @Component({
     selector: '[base-tr]',
     standalone: true,
@@ -18,6 +19,7 @@ import { TextDisplayComponent } from './components/field-display/text-dislay.com
         SharedModule,
         ActionEntityComponent,
         TextDisplayComponent,
+        TitleDisplayComponent,
         DateDisplayComponent,
         CheckBoxtDisplayComponent,
         ImageDisplayComponent,
@@ -35,10 +37,20 @@ import { TextDisplayComponent } from './components/field-display/text-dislay.com
             <td>
                 @switch (field.type.name) {
                     @case ('input') {
-                        <div
-                            text-display
-                            [content]="entity[field.id]"
-                            [field]="field"></div>
+                        @switch (field.type.option) {
+                            @case ('title') {
+                                <div
+                                    title-display
+                                    [content]="entity[field.id]"
+                                    [field]="field"></div>
+                            }
+                            @default {
+                                <div
+                                    text-display
+                                    [content]="entity[field.id]"
+                                    [field]="field"></div>
+                            }
+                        }
                     }
                     @case ('date') {
                         <deiv

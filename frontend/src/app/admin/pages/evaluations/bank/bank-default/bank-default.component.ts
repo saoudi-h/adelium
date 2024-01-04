@@ -5,6 +5,7 @@ import {
     ImageUrlFileForm,
     MultiDynamicSelectForm,
     TextInput,
+    TitleInput,
 } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
 import {
@@ -75,7 +76,7 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
             {
                 id: 'name',
                 sortable: true,
-                type: TextInput,
+                type: TitleInput,
                 label: 'Nom',
                 placeholder: 'Nom du bank',
                 validators: [Validators.required, Validators.maxLength(50)],
