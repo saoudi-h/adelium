@@ -9,9 +9,12 @@ import { Observable } from 'rxjs'
     imports: [CommonModule],
     selector: '[multi-dynamic-select-display]',
     template: `
-        <div>
+        <div class="tooltip" attr.data-tip="{{ field.label }}">
             @for (element of content$ | async; track element) {
-                <div>{{ element }}</div>
+                <div
+                    class="rounded-xl border border-base-200 bg-base-100 px-4 py-2 text-center text-sm font-semibold text-base-content">
+                    {{ element }}
+                </div>
             }
         </div>
     `,

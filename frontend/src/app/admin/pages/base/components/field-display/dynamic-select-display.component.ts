@@ -9,8 +9,11 @@ import { Observable } from 'rxjs'
     imports: [CommonModule],
     selector: '[dynamic-select-display]',
     template: `
-        <div>
-            <div>{{ content$ | async }}</div>
+        <div class="flex flex-col">
+            <div
+                class="rounded-xl border border-base-200 bg-base-100 px-4 py-2 text-center text-sm font-semibold text-base-content">
+                {{ content$ | async }}
+            </div>
         </div>
     `,
 })
