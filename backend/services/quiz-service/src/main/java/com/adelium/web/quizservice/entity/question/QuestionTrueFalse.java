@@ -34,7 +34,7 @@ public class QuestionTrueFalse extends BaseQuestion<BaseMedia>
     /**
      * The media content representing the question.
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "media_id")
     private BaseMedia content;
 
