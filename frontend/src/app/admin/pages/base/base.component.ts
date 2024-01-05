@@ -15,7 +15,16 @@ import {
     SortCriterion,
 } from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
-import { Observable, Subscription, catchError, first, map, of, tap } from 'rxjs'
+import {
+    Observable,
+    Subscription,
+    catchError,
+    first,
+    map,
+    of,
+    take,
+    tap,
+} from 'rxjs'
 import { baseAnimations } from './base-animations.animation'
 import { BaseTrComponent } from './base-tr.component'
 import { AdminConfig } from './components/admin-config.types'
@@ -83,7 +92,6 @@ export class BaseAdminComponent<T extends Identifiable>
     }
 
     onDelete(id: number) {
-        // Dispatcher l'action de suppression
         this.modalService.openModal({
             type: 'confirmation',
             title: 'Confirmation nécessaire',
@@ -91,9 +99,11 @@ export class BaseAdminComponent<T extends Identifiable>
             isClosable: true,
             onConfirm: () => {
                 setTimeout(() => {
+                    console.log('hahaha')
                     this.store.dispatch(this.actions.deleteItem({ id })), 500
                 })
                 this.entities$ = this.entities$.pipe(
+                    take(1),
                     map(entities =>
                         entities.map(entity => {
                             if (entity.id === id) {

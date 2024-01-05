@@ -201,6 +201,7 @@ import { ActionEntityComponent } from '../../base/components/action-entity.compo
         </td>
         <!-- Actions -->
         <td
+            class="text-right"
             action-entity
             [id]="entity.id"
             (delete)="onDelete($event)"
