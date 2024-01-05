@@ -5,6 +5,7 @@ import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.core.question.BaseQuestion;
 import com.adelium.web.quizservice.core.quiz.BaseQuiz;
 import com.adelium.web.quizservice.core.quiz.Quiz;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -43,6 +44,7 @@ public class QuizDefault extends BaseQuiz<BaseQuestion<BaseMedia>, BaseMedia> {
     private static final String type = "default";
 
     @Override
+    @JsonIgnore
     public String getType() {
         return type;
     }

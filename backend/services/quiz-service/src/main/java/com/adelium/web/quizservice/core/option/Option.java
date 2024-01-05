@@ -2,6 +2,7 @@
 package com.adelium.web.quizservice.core.option;
 
 import com.adelium.web.quizservice.core.media.Media;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 /**
@@ -44,6 +45,7 @@ public interface Option<O extends Media, E extends Media> extends Serializable {
      *
      * @return the type of the option
      */
+    @JsonIgnore
     String getType();
 
     /**
