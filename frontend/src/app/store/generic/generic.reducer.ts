@@ -110,6 +110,9 @@ export function createGenericReducer<T extends Identifiable>(
 
         on(actions.getPageSuccess, (state, { page }) => {
             const items = page._embedded[entityType]
+            if (!items || items.length === 0) {
+                return state
+            }
             return adapter.upsertMany(items, {
                 ...state,
                 paginationInfo: {
