@@ -5,6 +5,7 @@ import { Tag } from './tag.entity'
 
 export class Question implements Identifiable {
     id!: number
+    isDeleting?: boolean
     numberOfOptions!: number
     content!: Media
     options!: Option[]

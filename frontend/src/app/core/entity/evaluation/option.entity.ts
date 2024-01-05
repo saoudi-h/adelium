@@ -4,6 +4,7 @@ import { Question } from './question.entity'
 
 export class Option implements Identifiable {
     id!: number
+    isDeleting?: boolean
     content!: Media
     explanation!: Media
     question!: Question

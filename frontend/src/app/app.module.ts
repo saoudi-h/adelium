@@ -18,6 +18,10 @@ import { AuthorityEffects } from '@store/entities/auth/authority/authority.effec
 import { RoleEffects } from '@store/entities/auth/role/role.effects'
 import { UserEffects } from '@store/entities/auth/user/user.effects'
 import { BankDefaultEffects } from '@store/entities/evaluation/bank/bank-default/bank-default.effects'
+import { OptionMcqEffects } from '@store/entities/evaluation/option/question-mcq/option-mcq.effects'
+import { OptionTrueFalseEffects } from '@store/entities/evaluation/option/question-true-false/option-true-false.effects'
+import { QuestionMcqEffects } from '@store/entities/evaluation/question/question-mcq/question-mcq.effects'
+import { QuestionTrueFalseEffects } from '@store/entities/evaluation/question/question-true-false/question-true-false.effects'
 import { QuizDefaultEffects } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.effects'
 import { QuizMcqEffects } from '@store/entities/evaluation/quiz/quiz-mcq/quiz-mcq.effects'
 import { TagEffects } from '@store/entities/evaluation/tag/tag.effects'
@@ -64,6 +68,10 @@ import { metaReducers, reducers } from './reducers'
             QuizMcqEffects,
             BankDefaultEffects,
             TagEffects,
+            QuestionMcqEffects,
+            QuestionTrueFalseEffects,
+            OptionTrueFalseEffects,
+            OptionMcqEffects,
         ]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         StoreModule.forRoot(reducers, { metaReducers }),

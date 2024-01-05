@@ -105,6 +105,54 @@ const routes: Routes = [
                     active: true,
                 },
             },
+            {
+                path: 'question-mcq',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/question/question-mcq/question-mcq.component'
+                    ).then(mod => mod.AdminQuestionMcqComponent),
+                data: {
+                    breadcrumb: 'Questions à choix multiples',
+                    icon: 'question-icon',
+                    active: true,
+                },
+            },
+            {
+                path: 'question-true-false',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/question/question-true-false/question-true-false.component'
+                    ).then(mod => mod.AdminQuestionTrueFalseComponent),
+                data: {
+                    breadcrumb: 'Questions vrai ou faux',
+                    icon: 'question-icon',
+                    active: true,
+                },
+            },
+            {
+                path: 'option-mcq',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/option/option-mcq/option-mcq.component'
+                    ).then(mod => mod.AdminOptionMcqComponent),
+                data: {
+                    breadcrumb: 'Options à choix multiples',
+                    icon: 'option-icon',
+                    active: true,
+                },
+            },
+            {
+                path: 'option-true-false',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/option/option-true-false/option-true-false.component'
+                    ).then(mod => mod.AdminOptionTrueFalseComponent),
+                data: {
+                    breadcrumb: 'Options vrai ou faux',
+                    icon: 'option-icon',
+                    active: true,
+                },
+            },
         ],
     },
 ]

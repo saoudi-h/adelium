@@ -11,6 +11,22 @@ import {
     bankDefaultReducer,
 } from '@store/entities/evaluation/bank/bank-default/bank-default.reducer'
 import {
+    OptionMcqState,
+    optionMcqReducer,
+} from '@store/entities/evaluation/option/question-mcq/option-mcq.reducer'
+import {
+    OptionTrueFalseState,
+    optionTrueFalseReducer,
+} from '@store/entities/evaluation/option/question-true-false/option-true-false.reducer'
+import {
+    QuestionMcqState,
+    questionMcqReducer,
+} from '@store/entities/evaluation/question/question-mcq/question-mcq.reducer'
+import {
+    QuestionTrueFalseState,
+    questionTrueFalseReducer,
+} from '@store/entities/evaluation/question/question-true-false/question-true-false.reducer'
+import {
     QuizDefaultState,
     quizDefaultReducer,
 } from '@store/entities/evaluation/quiz/quiz-default/quiz-default.reducer'
@@ -45,6 +61,10 @@ export interface AppState {
     quizMcqs: QuizMcqState
     bankDefaults: BankDefaultState
     tags: TagState
+    questionMcqs: QuestionMcqState
+    questionTrueFalses: QuestionTrueFalseState
+    optionMcqs: OptionMcqState
+    optionTrueFalses: OptionTrueFalseState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -59,6 +79,10 @@ export const reducers: ActionReducerMap<AppState> = {
     quizMcqs: quizMcqReducer,
     bankDefaults: bankDefaultReducer,
     tags: tagReducer,
+    questionMcqs: questionMcqReducer,
+    questionTrueFalses: questionTrueFalseReducer,
+    optionMcqs: optionMcqReducer,
+    optionTrueFalses: optionTrueFalseReducer,
 }
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : []
