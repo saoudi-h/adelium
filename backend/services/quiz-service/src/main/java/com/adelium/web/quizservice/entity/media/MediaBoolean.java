@@ -1,6 +1,7 @@
 /* (C)2023 */
-package com.adelium.web.quizservice.core.media;
+package com.adelium.web.quizservice.entity.media;
 
+import com.adelium.web.quizservice.core.media.BaseMedia;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;

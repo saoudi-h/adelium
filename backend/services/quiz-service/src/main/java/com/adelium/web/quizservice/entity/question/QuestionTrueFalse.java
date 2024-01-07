@@ -3,10 +3,10 @@ package com.adelium.web.quizservice.entity.question;
 
 import com.adelium.web.quizservice.core.evaluation.Evaluation;
 import com.adelium.web.quizservice.core.media.BaseMedia;
-import com.adelium.web.quizservice.core.media.MediaText;
 import com.adelium.web.quizservice.core.question.BaseQuestion;
 import com.adelium.web.quizservice.core.question.Optionable;
 import com.adelium.web.quizservice.deserializer.MediaDeserializer;
+import com.adelium.web.quizservice.entity.media.MediaText;
 import com.adelium.web.quizservice.entity.option.OptionTrueFalse;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;

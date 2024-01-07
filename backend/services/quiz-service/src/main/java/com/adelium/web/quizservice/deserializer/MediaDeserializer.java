@@ -2,9 +2,9 @@
 package com.adelium.web.quizservice.deserializer;
 
 import com.adelium.web.quizservice.core.media.BaseMedia;
-import com.adelium.web.quizservice.core.media.MediaBoolean;
-import com.adelium.web.quizservice.core.media.MediaLong;
-import com.adelium.web.quizservice.core.media.MediaText;
+import com.adelium.web.quizservice.entity.media.MediaBoolean;
+import com.adelium.web.quizservice.entity.media.MediaLong;
+import com.adelium.web.quizservice.entity.media.MediaText;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
