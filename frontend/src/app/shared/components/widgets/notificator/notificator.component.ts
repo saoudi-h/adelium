@@ -89,20 +89,24 @@ import { Observable, map } from 'rxjs'
                         <div class="col-span-1">
                             @switch (notification.type) {
                                 @case ('success') {
-                                    <app-success-icon
-                                        className="h-6 w-6 text-success" />
+                                    <div
+                                        success-icon
+                                        className="h-6 w-6 text-success"></div>
                                 }
                                 @case ('warning') {
-                                    <app-warning-icon
-                                        className="h-6 w-6 text-warning" />
+                                    <div
+                                        warning-icon
+                                        className="h-6 w-6 text-warning"></div>
                                 }
                                 @case ('error') {
-                                    <app-error-icon
-                                        className="h-6 w-6 text-error" />
+                                    <div
+                                        error-icon
+                                        className="h-6 w-6 text-error"></div>
                                 }
                                 @case ('info') {
-                                    <app-info-icon
-                                        className="h-6 w-6 text-info" />
+                                    <div
+                                        info-icon
+                                        className="h-6 w-6 text-info"></div>
                                 }
                             }
                         </div>

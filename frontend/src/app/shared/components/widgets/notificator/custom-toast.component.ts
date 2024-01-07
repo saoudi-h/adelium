@@ -41,16 +41,20 @@ import { Toast } from 'ngx-toastr'
             <div class="absolute left-4 top-1/2 -translate-y-1/2 transform">
                 @switch (toastPackage.toastType) {
                     @case ('toast-success') {
-                        <app-success-icon className="h-6 w-6 text-success" />
+                        <div
+                            success-icon
+                            className="h-6 w-6 text-success"></div>
                     }
                     @case ('toast-warning') {
-                        <app-warning-icon className="h-6 w-6 text-warning" />
+                        <div
+                            warning-icon
+                            className="h-6 w-6 text-warning"></div>
                     }
                     @case ('toast-error') {
-                        <app-error-icon className="h-6 w-6 text-error" />
+                        <div error-icon className="h-6 w-6 text-error"></div>
                     }
                     @case ('toast-info') {
-                        <app-info-icon className="h-6 w-6 text-info" />
+                        <div info-icon className="h-6 w-6 text-info"></div>
                     }
                 }
             </div>

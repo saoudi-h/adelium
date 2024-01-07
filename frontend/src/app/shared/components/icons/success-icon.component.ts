@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core'
 
 @Component({
-    selector: 'app-success-icon',
+    selector: '[success-icon]',
     standalone: true,
     template: ` <svg
         viewBox="0 0 1024 1024"
@@ -16,5 +16,5 @@ import { Component, Input } from '@angular/core'
     </svg>`,
 })
 export class SuccessIconComponent {
-    @Input({ required: true }) className = ''
+    @Input() className = ''
 }

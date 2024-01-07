@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core'
 
 @Component({
-    selector: 'app-error-icon',
+    selector: '[error-icon]',
     standalone: true,
     template: `<svg
         viewBox="0 0 1024 1024"
@@ -15,5 +15,5 @@ import { Component, Input } from '@angular/core'
     </svg>`,
 })
 export class ErrorIconComponent {
-    @Input({ required: true }) className = ''
+    @Input() className = ''
 }
