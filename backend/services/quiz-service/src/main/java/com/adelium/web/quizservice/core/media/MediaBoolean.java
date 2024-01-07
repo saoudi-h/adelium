@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class MediaBoolean extends BaseMedia {
      */
     @Column private Boolean content;
 
-    private static final String type = "boolean";
+    @Column private String type = "boolean";
 
     @Override
     public String getType() {

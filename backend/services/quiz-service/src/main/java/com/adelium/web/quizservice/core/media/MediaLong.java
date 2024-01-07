@@ -3,16 +3,15 @@ package com.adelium.web.quizservice.core.media;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
+@SuperBuilder
 public class MediaLong extends BaseMedia {
 
     /**
@@ -20,7 +19,7 @@ public class MediaLong extends BaseMedia {
      */
     @Column private Long content;
 
-    private static final String type = "Long";
+    @Column @Builder.Default private String type = "Long";
 
     @Override
     public String getType() {
