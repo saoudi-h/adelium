@@ -8,10 +8,7 @@ import com.adelium.web.quizservice.core.question.BaseQuestion;
 import com.adelium.web.quizservice.core.question.Question;
 import jakarta.persistence.*;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -31,6 +28,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Entity
 public class BankDefault extends BaseBank<BaseQuestion<BaseMedia>, BaseMedia> {
+
+    @Column @Builder.Default private String type = "default";
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

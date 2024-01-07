@@ -57,4 +57,11 @@ public interface Bank<Q extends Question<M>, M extends Media> {
      * @param question the question to remove
      */
     void removeQuestion(Q question);
+
+    /**
+     * Returns the type of the bank.
+     *
+     * @return the type of the bank
+     */
+    String getType();
 }

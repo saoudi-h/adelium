@@ -5,10 +5,7 @@ import com.adelium.web.quizservice.core.media.MediaBoolean;
 import com.adelium.web.quizservice.core.media.MediaText;
 import com.adelium.web.quizservice.core.option.BaseOption;
 import com.adelium.web.quizservice.entity.question.QuestionTrueFalse;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -26,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class OptionTrueFalse extends BaseOption<MediaBoolean, MediaText> {
 
-    private static final String type = "true_false";
+    @Column @Builder.Default private String type = "true-false";
 
     /**
      * The media content representing the option.
@@ -35,18 +32,13 @@ public class OptionTrueFalse extends BaseOption<MediaBoolean, MediaText> {
     @JoinColumn(name = "explanation_text_media_id")
     protected MediaText explanation;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "content_boolean_media_id", referencedColumnName = "id")
     private MediaBoolean content;
 
     @ManyToOne
     @JoinColumn(name = "question_true_false_id", referencedColumnName = "id")
     private QuestionTrueFalse question;
-
-    @Override
-    public String getType() {
-        return type;
-    }
 
     @Override
     public MediaBoolean getContent() {

@@ -3,11 +3,10 @@ package com.adelium.web.quizservice.entity.option;
 
 import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.core.option.BaseOption;
+import com.adelium.web.quizservice.deserializer.MediaDeserializer;
 import com.adelium.web.quizservice.entity.question.QuestionMCQ;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -25,13 +24,14 @@ import lombok.experimental.SuperBuilder;
 @Entity(name = "option_mcq")
 public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
 
-    private static final String type = "qcm";
+    @Column @Builder.Default private String type = "mcq";
 
     /**
      * The Explanation media content for the answer.
      */
     @OneToOne
     @JoinColumn(name = "explanation_media_id")
+    @JsonDeserialize(using = MediaDeserializer.class)
     protected BaseMedia explanation;
 
     /**
@@ -39,6 +39,7 @@ public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
      */
     @OneToOne
     @JoinColumn(name = "content_media_id")
+    @JsonDeserialize(using = MediaDeserializer.class)
     private BaseMedia content;
 
     @ManyToOne
@@ -46,11 +47,7 @@ public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
     private QuestionMCQ question;
 
     @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
+    @JsonDeserialize(using = MediaDeserializer.class)
     public BaseMedia getContent() {
         return content;
     }

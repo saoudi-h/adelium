@@ -5,17 +5,9 @@ import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.core.question.BaseQuestion;
 import com.adelium.web.quizservice.core.quiz.BaseQuiz;
 import com.adelium.web.quizservice.core.quiz.Quiz;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -41,11 +33,5 @@ public class QuizDefault extends BaseQuiz<BaseQuestion<BaseMedia>, BaseMedia> {
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
     private Set<BaseQuestion<BaseMedia>> questions;
 
-    private static final String type = "default";
-
-    @Override
-    @JsonIgnore
-    public String getType() {
-        return type;
-    }
+    @Column @Builder.Default private String type = "default";
 }

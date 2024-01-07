@@ -8,10 +8,7 @@ import com.adelium.web.quizservice.core.quiz.Quiz;
 import com.adelium.web.quizservice.entity.question.QuestionTrueFalse;
 import jakarta.persistence.*;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -37,10 +34,5 @@ public class QuizTrueFalse extends BaseQuiz<QuestionTrueFalse, BaseMedia> {
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
     private Set<QuestionTrueFalse> questions;
 
-    private static final String type = "default";
-
-    @Override
-    public String getType() {
-        return type;
-    }
+    @Column @Builder.Default private String type = "true-false";
 }

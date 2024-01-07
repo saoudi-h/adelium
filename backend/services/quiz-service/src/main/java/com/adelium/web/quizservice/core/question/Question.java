@@ -3,7 +3,6 @@ package com.adelium.web.quizservice.core.question;
 
 import com.adelium.web.quizservice.core.media.Media;
 import com.adelium.web.quizservice.core.tag.Tag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -49,6 +48,5 @@ public interface Question<T extends Media> extends Serializable {
      *
      * @return the type of the question
      */
-    @JsonIgnore
     String getType();
 }
