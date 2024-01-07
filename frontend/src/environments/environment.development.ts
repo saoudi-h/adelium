@@ -25,5 +25,5 @@ export const environment = {
     mediaTextUrl: '/api/v1/quiz/media-texts',
     mediaBooleanUrl: '/api/v1/quiz/media-booleans',
     // Media-service
-    mediaUrl: '/api/v1/media',
+    mediaServiceUrl: '/api/v1/media',
 }

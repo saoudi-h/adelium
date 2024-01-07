@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment.development'
     providedIn: 'root',
 })
 export class FileUploadService {
-    private url = `${environment.baseUrl}${environment.mediaUrl}`
+    private url = `${environment.baseUrl}${environment.mediaServiceUrl}`
 
     constructor(private http: HttpClient) {}
 
