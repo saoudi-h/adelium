@@ -19,6 +19,7 @@ import { ImageIconComponent } from '@shared/components/icons/image-icon.componen
 import { InfoIconComponent } from '@shared/components/icons/info-icon.component'
 import { LoginIconComponent } from '@shared/components/icons/login-icon.component'
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component'
+import { MediaIconComponent } from '@shared/components/icons/media-icon.component'
 import { MinusIconComponent } from '@shared/components/icons/minus-icon.component'
 import { NotFoundIconComponent } from '@shared/components/icons/not-found-icon.component'
 import { OptionIconComponent } from '@shared/components/icons/option-icon.component'
@@ -114,6 +115,8 @@ export class IconService {
                 return ImageIconComponent
             case 'minus-icon':
                 return MinusIconComponent
+            case 'media-icon':
+                return MediaIconComponent
             default:
                 return null
         }
