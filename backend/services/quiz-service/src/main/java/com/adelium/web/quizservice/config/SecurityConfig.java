@@ -60,7 +60,7 @@ public class SecurityConfig {
                                         .hasRole("ADMIN")
                                         // not in white list routes should be authenticated
                                         .anyRequest()
-                                        .authenticated())
+                                        .permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
