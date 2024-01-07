@@ -153,6 +153,30 @@ const routes: Routes = [
                     active: true,
                 },
             },
+            {
+                path: 'media-text',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/media/media-text/media-text.component'
+                    ).then(mod => mod.AdminMediaTextComponent),
+                data: {
+                    breadcrumb: 'Médias textuels',
+                    icon: 'media-icon',
+                    active: true,
+                },
+            },
+            {
+                path: 'media-boolean',
+                loadComponent: () =>
+                    import(
+                        './pages/evaluations/media/media-boolean/media-boolean.component'
+                    ).then(mod => mod.AdminMediaBooleanComponent),
+                data: {
+                    breadcrumb: 'Médias booléens',
+                    icon: 'media-icon',
+                    active: true,
+                },
+            },
         ],
     },
 ]

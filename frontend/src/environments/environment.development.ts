@@ -21,7 +21,9 @@ export const environment = {
     // Option
     optionMcqUrl: '/api/v1/quiz/option-mcqs',
     optionTrueFalseUrl: '/api/v1/quiz/option-true-falses',
-
+    // Media
+    mediaTextUrl: '/api/v1/quiz/media-texts',
+    mediaBooleanUrl: '/api/v1/quiz/media-booleans',
     // Media-service
     mediaUrl: '/api/v1/media',
 }

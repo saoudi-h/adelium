@@ -11,6 +11,14 @@ import {
     bankDefaultReducer,
 } from '@store/entities/evaluation/bank/bank-default/bank-default.reducer'
 import {
+    MediaBooleanState,
+    mediaBooleanReducer,
+} from '@store/entities/evaluation/media/media-boolean/media-boolean.reducer'
+import {
+    MediaTextState,
+    mediaTextReducer,
+} from '@store/entities/evaluation/media/media-text/media-text.reducer'
+import {
     OptionMcqState,
     optionMcqReducer,
 } from '@store/entities/evaluation/option/question-mcq/option-mcq.reducer'
@@ -65,6 +73,8 @@ export interface AppState {
     questionTrueFalses: QuestionTrueFalseState
     optionMcqs: OptionMcqState
     optionTrueFalses: OptionTrueFalseState
+    mediaTexts: MediaTextState
+    mediaBooleans: MediaBooleanState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -83,6 +93,8 @@ export const reducers: ActionReducerMap<AppState> = {
     questionTrueFalses: questionTrueFalseReducer,
     optionMcqs: optionMcqReducer,
     optionTrueFalses: optionTrueFalseReducer,
+    mediaTexts: mediaTextReducer,
+    mediaBooleans: mediaBooleanReducer,
 }
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : []
