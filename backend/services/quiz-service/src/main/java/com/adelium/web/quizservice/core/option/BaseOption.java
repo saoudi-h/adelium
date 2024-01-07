@@ -43,7 +43,7 @@ public abstract class BaseOption<O extends Media, E extends Media> extends BaseE
     }
 
     @Override
-    public boolean isEnable() {
+    public boolean isEnabled() {
         return enabled;
     }
 }

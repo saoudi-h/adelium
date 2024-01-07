@@ -6,13 +6,12 @@ import com.adelium.web.quizservice.core.media.BaseMedia;
 import com.adelium.web.quizservice.core.media.MediaText;
 import com.adelium.web.quizservice.core.question.BaseQuestion;
 import com.adelium.web.quizservice.core.question.Optionable;
+import com.adelium.web.quizservice.deserializer.MediaDeserializer;
 import com.adelium.web.quizservice.entity.option.OptionMCQ;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -48,9 +47,8 @@ public class QuestionMCQ extends BaseQuestion<BaseMedia>
      */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "media_id")
+    @JsonDeserialize(using = MediaDeserializer.class)
     private BaseMedia content;
-
-    private static final String type = "mcq";
 
     @OneToMany(mappedBy = "question")
     private Set<OptionMCQ> options;
@@ -65,10 +63,7 @@ public class QuestionMCQ extends BaseQuestion<BaseMedia>
         return enabled;
     }
 
-    @Override
-    public String getType() {
-        return type;
-    }
+    @Column @Builder.Default private String type = "mcq";
 
     @Override
     public Evaluation assess(MediaText userAnswer) {
