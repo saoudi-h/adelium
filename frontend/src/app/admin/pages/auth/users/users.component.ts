@@ -99,33 +99,6 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
                 ),
             ]),
         ]),
-        trigger('rowAnimation', [
-            transition(':leave', [
-                animate(
-                    '600ms 200ms ease-out',
-                    keyframes([
-                        style({
-                            transform: 'translateX(0)',
-                            backgroundColor: 'rgba(235, 29, 33, 1)',
-                            opacity: 1,
-                            offset: 0,
-                        }),
-                        style({
-                            transform: 'translateX(-10%)',
-                            backgroundColor: 'rgba(235, 29, 33, 1)',
-                            opacity: 0.8,
-                            offset: 0.3,
-                        }),
-                        style({
-                            transform: 'translateX(50%)',
-                            backgroundColor: 'rgba(235, 29, 33, 1)',
-                            opacity: 0,
-                            offset: 1.0,
-                        }),
-                    ])
-                ),
-            ]),
-        ]),
     ],
     template: `<section
         view-layout
@@ -157,8 +130,6 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
                     @for (entity of entities; track entity) {
                         <tr
                             user-admin-tr
-                            @rowAnimation
-                            [@.disabled]="!entity['isDeleting']"
                             (delete)="onDelete($event)"
                             (edit)="onEdit($event)"
                             [getRoles]="this.getRoles"

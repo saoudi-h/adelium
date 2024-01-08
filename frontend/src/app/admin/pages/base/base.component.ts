@@ -1,3 +1,4 @@
+import { IconService } from '@core/services/icon.service'
 /* eslint-disable @ngrx/avoid-dispatching-multiple-actions-sequentially */
 import { EntityFormModel } from '@admin/forms/forms.types'
 import { FormModalService } from '@admin/modal/formModal.service'
@@ -15,16 +16,7 @@ import {
     SortCriterion,
 } from '@store/generic/generic.reducer'
 import { EntitySelectors } from '@store/generic/generic.selectors'
-import {
-    Observable,
-    Subscription,
-    catchError,
-    first,
-    map,
-    of,
-    take,
-    tap,
-} from 'rxjs'
+import { Observable, Subscription, catchError, first, of, tap } from 'rxjs'
 import { baseAnimations } from './base-animations.animation'
 import { BaseTrComponent } from './base-tr.component'
 import { AdminConfig } from './components/admin-config.types'
@@ -59,7 +51,8 @@ export class BaseAdminComponent<T extends Identifiable>
     constructor(
         protected store: Store<AppState>,
         protected modalService: ModalService,
-        protected formModalService: FormModalService<T>
+        protected formModalService: FormModalService<T>,
+        protected iconService: IconService
     ) {}
     ngOnDestroy(): void {
         this.subscription.unsubscribe()
@@ -98,21 +91,7 @@ export class BaseAdminComponent<T extends Identifiable>
             message: 'Êtes-vous sûr de vouloir continuer ?',
             isClosable: true,
             onConfirm: () => {
-                setTimeout(() => {
-                    console.log('hahaha')
-                    this.store.dispatch(this.actions.deleteItem({ id })), 500
-                })
-                this.entities$ = this.entities$.pipe(
-                    take(1),
-                    map(entities =>
-                        entities.map(entity => {
-                            if (entity.id === id) {
-                                return { ...entity, isDeleting: true }
-                            }
-                            return entity
-                        })
-                    )
-                )
+                this.store.dispatch(this.actions.deleteItem({ id }))
             },
         })
     }
@@ -188,5 +167,9 @@ export class BaseAdminComponent<T extends Identifiable>
 
     onSizeChange(size: number) {
         this.store.dispatch(this.actions.updatePaginationParams({ size }))
+    }
+
+    getIconComponent(iconName: string) {
+        return this.iconService.getIconComponent(iconName)
     }
 }
