@@ -94,6 +94,9 @@ export function createGenericReducer<T extends Identifiable>(
                     totalElements:
                         state.paginationInfo.result.totalElements - 1,
                 },
+                pageIds: state.paginationInfo.pageIds.filter(
+                    pageId => pageId !== id
+                ),
             },
         })),
         on(actions.getItemByIdSuccess, (state, { item }) => {
