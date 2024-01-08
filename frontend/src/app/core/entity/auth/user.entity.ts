@@ -26,7 +26,6 @@ export class User implements Identifiable {
     accountNonExpired!: boolean
     createdAt!: Date
     updatedAt!: Date
-    isDeleting?: boolean
 
     constructor(data: Partial<User>) {
         Object.assign(this, data)

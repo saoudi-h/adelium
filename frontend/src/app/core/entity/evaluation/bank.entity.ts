@@ -5,7 +5,6 @@ import { Tag } from './tag.entity'
 export class Bank implements Identifiable {
     id!: number
     name!: string
-    isDeleting?: boolean
     description!: string
     enabled!: boolean
     public!: boolean
