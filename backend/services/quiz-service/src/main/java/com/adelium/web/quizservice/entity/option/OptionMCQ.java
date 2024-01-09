@@ -45,10 +45,4 @@ public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
     @ManyToOne
     @JoinColumn(name = "question_mcq_id", referencedColumnName = "id")
     private QuestionMCQ question;
-
-    @Override
-    @JsonDeserialize(using = MediaDeserializer.class)
-    public BaseMedia getContent() {
-        return content;
-    }
 }
