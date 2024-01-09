@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
+    MediaBooleanEntityForm,
     MultiDynamicSelectForm,
     NumberInput,
-    TextInput,
 } from '@admin/forms/Forms'
+import { mediaBooleanFormFields } from '@admin/forms/form-field/mediaBooleanFormField'
 import { EntityFormModel } from '@admin/forms/forms.types'
 import { createMultiDynamicOptions } from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
@@ -41,9 +42,9 @@ export class AdminQuestionTrueFalseComponent extends BaseAdminComponent<Question
     override config: AdminConfig = {
         title: 'Question Vrai ou Faux',
         name: 'question Vrai ou Faux',
-        plural: 'question Vrai ou Faux',
+        plural: 'questions Vrai ou Faux',
         masculin: true,
-        subtitle: 'Ajouter, modifier et supprimer des question Vrai ou Faux',
+        subtitle: 'Ajouter, modifier et supprimer des questions Vrai ou Faux',
     }
     override entityFormModel: EntityFormModel<QuestionTrueFalse> = {
         onEdit: this.editOne,
@@ -67,11 +68,10 @@ export class AdminQuestionTrueFalseComponent extends BaseAdminComponent<Question
         fields: [
             {
                 id: 'content',
-                sortable: true,
-                type: TextInput,
-                label: 'Contenu',
-                placeholder: 'Contenu de la question',
-                validators: [Validators.required],
+                sortable: false,
+                type: MediaBooleanEntityForm,
+                label: 'Contenu de la question',
+                fields: mediaBooleanFormFields,
             },
             {
                 id: 'numberOfOptions',

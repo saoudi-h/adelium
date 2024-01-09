@@ -41,10 +41,10 @@ export class AdminQuestionMcqComponent extends BaseAdminComponent<QuestionMcq> {
     override config: AdminConfig = {
         title: 'Question a choix multiples',
         name: 'question a choix multiples',
-        plural: 'question a choix multiples',
+        plural: 'questions a choix multiples',
         masculin: true,
         subtitle:
-            'Ajouter, modifier et supprimer des question a choix multiples',
+            'Ajouter, modifier et supprimer des questions a choix multiples',
     }
     override entityFormModel: EntityFormModel<QuestionMcq> = {
         onEdit: this.editOne,
