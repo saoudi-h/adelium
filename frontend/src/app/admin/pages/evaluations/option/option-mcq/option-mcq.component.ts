@@ -2,11 +2,10 @@
 import {
     CheckboxForm,
     MultiDynamicSelectForm,
-    NumberInput,
     TextInput,
 } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
-import { createMultiDynamicOptions } from '@admin/forms/forms.utility'
+import { createExternalDynamicOptions } from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
@@ -16,12 +15,12 @@ import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
 import { OptionMcq } from '@core/entity/evaluation/option-mcq.entity'
-import { Tag } from '@core/entity/evaluation/tag.entity'
+import { QuestionMcq } from '@core/entity/evaluation/question-mcq.entity'
 import { SharedModule } from '@shared/shared.module'
 import { OptionMcqActions } from '@store/entities/evaluation/option/question-mcq/option-mcq.actions'
 import { OptionMcqSelectors } from '@store/entities/evaluation/option/question-mcq/option-mcq.selectors'
-import { TagActions } from '@store/entities/evaluation/tag/tag.actions'
-import { TagSelectors } from '@store/entities/evaluation/tag/tag.selectors'
+import { QuestionMcqActions } from '@store/entities/evaluation/question/question-mcq/question-mcq.actions'
+import { QuestionMcqSelectors } from '@store/entities/evaluation/question/question-mcq/question-mcq.selectors'
 import { Observable } from 'rxjs'
 
 @Component({
@@ -41,9 +40,10 @@ export class AdminOptionMcqComponent extends BaseAdminComponent<OptionMcq> {
     override config: AdminConfig = {
         title: 'Option a choix multiples',
         name: 'option a choix multiples',
-        plural: 'option a choix multiples',
+        plural: 'options a choix multiples',
         masculin: true,
-        subtitle: 'Ajouter, modifier et supprimer des option a choix multiples',
+        subtitle:
+            'Ajouter, modifier et supprimer des options a choix multiples',
     }
     override entityFormModel: EntityFormModel<OptionMcq> = {
         onEdit: this.editOne,
@@ -70,37 +70,17 @@ export class AdminOptionMcqComponent extends BaseAdminComponent<OptionMcq> {
                 sortable: true,
                 type: TextInput,
                 label: 'Contenu',
-                placeholder: 'Contenu de la option',
+                placeholder: "Contenu de l'option",
                 validators: [Validators.required],
             },
             {
-                id: 'numberOfOptions',
+                id: 'explanation',
                 sortable: false,
-                type: NumberInput,
-                label: "Nombre d'options",
-                placeholder: "Nombre d'options",
-                validators: [
-                    Validators.required,
-                    Validators.max(10),
-                    Validators.min(2),
-                ],
+                type: TextInput,
+                label: 'Explication',
+                placeholder: 'Explication de la option',
+                validators: [Validators.required],
             },
-            // {
-            //     id: 'options',
-            //     sortable: false,
-            //     type: MultiDynamicSelectForm,
-            //     label: 'Options',
-            //     placeholder: 'Selectionnez les options',
-            //     dynamicOptions: createMultiDynamicOptions<OptionMcq, OptionMcq>(
-            //         this.store,
-            //         this.selectors,
-            //         this.actions,
-            //         OptionSelectors,
-            //         OptionActions,
-            //         'name',
-            //         'options'
-            //     ),
-            // },
             {
                 id: 'enabled',
                 sortable: false,
@@ -108,20 +88,24 @@ export class AdminOptionMcqComponent extends BaseAdminComponent<OptionMcq> {
                 label: 'Activé',
             },
             {
-                id: 'tags',
+                id: 'correct',
+                sortable: false,
+                type: CheckboxForm,
+                label: 'Correct',
+            },
+            {
+                id: 'question',
                 sortable: false,
                 type: MultiDynamicSelectForm,
-                label: 'Tag',
-                placeholder: 'Selectionnez les Tags',
-                dynamicOptions: createMultiDynamicOptions<OptionMcq, Tag>(
+                label: 'Question Qcm',
+                placeholder: 'Selectionnez la Question Qcm',
+                dynamicOptions: createExternalDynamicOptions<QuestionMcq>(
                     this.store,
-                    this.selectors,
-                    this.actions,
-                    TagSelectors,
-                    TagActions,
-                    'name',
-                    'tags'
+                    QuestionMcqSelectors,
+                    QuestionMcqActions,
+                    'question'
                 ),
+                validators: [Validators.required],
             },
         ],
     }
