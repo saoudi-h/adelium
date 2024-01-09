@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { FormField } from '../forms.types'
+import { FormField } from '../../forms.types'
 
 @Component({
     standalone: true,

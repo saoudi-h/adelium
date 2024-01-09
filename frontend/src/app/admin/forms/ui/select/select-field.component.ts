@@ -2,7 +2,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { NgSelectModule } from '@ng-select/ng-select'
-import { FormField } from '../forms.types'
+import { FormField } from '../../forms.types'
 
 @Component({
     encapsulation: ViewEncapsulation.None,

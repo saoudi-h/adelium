@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { FileUploadService } from '@core/services/file-upload.service'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
-import { FormField } from '../forms.types'
+import { FormField } from '../../forms.types'
 import { ImageFileFieldComponent } from '../image-file/image-file-field.component'
 import { ImageUrlFieldComponent } from '../image-url/image-url-field.component'
 

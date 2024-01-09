@@ -15,7 +15,7 @@ import {
     PaginationResult,
 } from '@store/generic/generic.reducer'
 import { Observable, Subscription, tap } from 'rxjs'
-import { FormField } from '../forms.types'
+import { FormField } from '../../forms.types'
 
 type itemsType = {
     label: string
@@ -103,11 +103,21 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
                             })
                         })
                 )
+            } else if (this.field.dynamicOptions!.getInitialById) {
+                this.subscription.add(
+                    this.field
+                        .dynamicOptions!.getInitialById(this.entityId)
+                        .subscribe(initialValue => {
+                            this.group.patchValue({
+                                [this.field.id]: initialValue,
+                            })
+                        })
+                )
             } else {
-                if (this.field.dynamicOptions!.getInitialById) {
+                if (this.field.dynamicOptions!.getInitialByRelatedId) {
                     this.subscription.add(
                         this.field
-                            .dynamicOptions!.getInitialById(
+                            .dynamicOptions!.getInitialByRelatedId(
                                 this.group.get(this.field.id)?.value
                             )
                             .subscribe(initialValue => {

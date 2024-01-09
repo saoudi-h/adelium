@@ -8,7 +8,7 @@ import {
 } from '@angular/forms'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import { ImageIconComponent } from '@shared/components/icons/image-icon.component'
-import { FormField } from '../forms.types'
+import { FormField } from '../../forms.types'
 
 @Component({
     selector: '[image-file-field]',
