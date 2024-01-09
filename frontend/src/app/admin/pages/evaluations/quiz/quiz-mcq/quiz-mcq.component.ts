@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
-    DynamicSelectForm,
+    DynamicExternalSelectForm,
     ImageUrlFileForm,
     MultiDynamicSelectForm,
     TextInput,
 } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
 import {
-    createDynamicOptions,
+    createExternalDynamicOptions,
     createMultiDynamicOptions,
 } from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
@@ -128,24 +128,16 @@ export class AdminQuizMcqComponent extends BaseAdminComponent<QuizMcq> {
             {
                 id: 'ownerId',
                 sortable: false,
-                type: DynamicSelectForm,
+                type: DynamicExternalSelectForm,
                 label: 'Propriétaire',
                 placeholder: 'Selectionnez un propriétaire',
-                dynamicOptions: createDynamicOptions<User>(
+                dynamicOptions: createExternalDynamicOptions<User>(
                     this.store,
                     UserSelectors,
                     UserActions,
                     'username'
                 ),
             },
-
-            // {
-            //     id: 'questions',
-            //     sortable: true,
-            //     type: TextInput,
-            //     label: 'Questions',
-            //     validators: [Validators.required, Validators.maxLength(50)],
-            // }
         ],
     }
 }
