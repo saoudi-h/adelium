@@ -1,12 +1,9 @@
 /* (C)2023 */
 package com.adelium.web.quizservice.entity.option;
 
-import com.adelium.web.quizservice.core.option.BaseOption;
-import com.adelium.web.quizservice.deserializer.MediaDeserializer;
 import com.adelium.web.quizservice.entity.media.MediaBoolean;
 import com.adelium.web.quizservice.entity.media.MediaText;
 import com.adelium.web.quizservice.entity.question.QuestionTrueFalse;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -38,7 +35,7 @@ public class OptionTrueFalse extends BaseOption<MediaBoolean, MediaText> {
     @JoinColumn(name = "content_boolean_media_id", referencedColumnName = "id")
     private MediaBoolean content;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question_true_false_id", referencedColumnName = "id")
     private QuestionTrueFalse question;
 

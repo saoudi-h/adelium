@@ -2,13 +2,10 @@
 package com.adelium.web.quizservice.entity.question;
 
 import com.adelium.web.quizservice.core.evaluation.Evaluation;
-import com.adelium.web.quizservice.core.media.BaseMedia;
-import com.adelium.web.quizservice.core.question.BaseQuestion;
+import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.core.question.Optionable;
-import com.adelium.web.quizservice.deserializer.MediaDeserializer;
 import com.adelium.web.quizservice.entity.media.MediaText;
 import com.adelium.web.quizservice.entity.option.OptionMCQ;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import java.util.Set;
 import lombok.*;
@@ -47,7 +44,7 @@ public class QuestionMCQ extends BaseQuestion<BaseMedia>
      */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "media_id")
-    @JsonDeserialize(using = MediaDeserializer.class)
+//    @JsonDeserialize(using = MediaDeserializer.class)
     private BaseMedia content;
 
     @OneToMany(mappedBy = "question")

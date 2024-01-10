@@ -1,11 +1,8 @@
 /* (C)2023 */
 package com.adelium.web.quizservice.entity.option;
 
-import com.adelium.web.quizservice.core.media.BaseMedia;
-import com.adelium.web.quizservice.core.option.BaseOption;
-import com.adelium.web.quizservice.deserializer.MediaDeserializer;
+import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.entity.question.QuestionMCQ;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -31,7 +28,7 @@ public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
      */
     @OneToOne
     @JoinColumn(name = "explanation_media_id")
-    @JsonDeserialize(using = MediaDeserializer.class)
+//    @JsonDeserialize(using = MediaDeserializer.class)
     protected BaseMedia explanation;
 
     /**
@@ -39,7 +36,7 @@ public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
      */
     @OneToOne
     @JoinColumn(name = "content_media_id")
-    @JsonDeserialize(using = MediaDeserializer.class)
+//    @JsonDeserialize(using = MediaDeserializer.class)
     private BaseMedia content;
 
     @ManyToOne
