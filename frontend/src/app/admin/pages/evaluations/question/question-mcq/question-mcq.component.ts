@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
+    HiddenInput,
     MultiDynamicSelectForm,
     NumberInput,
     TextInput,
@@ -66,6 +67,13 @@ export class AdminQuestionMcqComponent extends BaseAdminComponent<QuestionMcq> {
         ],
         additionalInfo: 'Veuillez remplir les champs suivants',
         fields: [
+            {
+                id: 'type',
+                type: HiddenInput,
+                default: 'default',
+                label: 'Type',
+                hide: true,
+            },
             {
                 id: 'content',
                 sortable: true,

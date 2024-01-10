@@ -2,6 +2,7 @@
 import {
     CheckboxForm,
     DynamicSelectForm,
+    HiddenInput,
     MediaBooleanEntityForm,
     MediaTextEntityForm,
 } from '@admin/forms/Forms'
@@ -68,6 +69,13 @@ export class AdminOptionTrueFalseComponent extends BaseAdminComponent<OptionTrue
         additionalInfo: 'Veuillez remplir les champs suivants',
         fields: [
             {
+                id: 'type',
+                type: HiddenInput,
+                default: 'default',
+                label: 'Type',
+                hide: true,
+            },
+            {
                 id: 'content',
                 type: MediaBooleanEntityForm,
                 label: "Contenu de l'option",
@@ -108,7 +116,7 @@ export class AdminOptionTrueFalseComponent extends BaseAdminComponent<OptionTrue
                     QuestionTrueFalseSelectors,
                     QuestionTrueFalseActions,
                     'id',
-                    'questionTrueFalses'
+                    'question'
                 ),
                 validators: [Validators.required],
             },

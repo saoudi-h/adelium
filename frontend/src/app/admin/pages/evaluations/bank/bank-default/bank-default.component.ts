@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
-    DynamicSelectForm,
+    DynamicExternalSelectForm,
+    HiddenInput,
     ImageUrlFileForm,
     MultiDynamicSelectForm,
     TextInput,
@@ -9,7 +10,7 @@ import {
 } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
 import {
-    createDynamicOptions,
+    createExternalDynamicOptions,
     createMultiDynamicOptions,
 } from '@admin/forms/forms.utility'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
@@ -74,6 +75,13 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
         additionalInfo: 'Veuillez remplir les champs suivants',
         fields: [
             {
+                id: 'type',
+                type: HiddenInput,
+                default: 'default',
+                label: 'Type',
+                hide: true,
+            },
+            {
                 id: 'name',
                 sortable: true,
                 type: TitleInput,
@@ -128,23 +136,16 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
             {
                 id: 'ownerId',
                 sortable: false,
-                type: DynamicSelectForm,
+                type: DynamicExternalSelectForm,
                 label: 'Propriétaire',
                 placeholder: 'Selectionnez un propriétaire',
-                dynamicOptions: createDynamicOptions<User>(
+                dynamicOptions: createExternalDynamicOptions<User>(
                     this.store,
                     UserSelectors,
                     UserActions,
                     'username'
                 ),
             },
-            // {
-            //     id: 'questions',
-            //     sortable: true,
-            //     type: TextInput,
-            //     label: 'Questions',
-            //     validators: [Validators.required, Validators.maxLength(50)],
-            // }
         ],
     }
 }

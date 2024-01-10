@@ -2,6 +2,7 @@
 import {
     CheckboxForm,
     DynamicExternalSelectForm,
+    HiddenInput,
     ImageUrlFileForm,
     MultiDynamicSelectForm,
     TextInput,
@@ -72,6 +73,13 @@ export class AdminQuizDefaultComponent extends BaseAdminComponent<QuizDefault> {
         ],
         additionalInfo: 'Veuillez remplir les champs suivants',
         fields: [
+            {
+                id: 'type',
+                type: HiddenInput,
+                default: 'default',
+                label: 'Type',
+                hide: true,
+            },
             {
                 id: 'name',
                 sortable: true,

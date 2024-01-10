@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CheckboxForm } from '@admin/forms/Forms'
+import { CheckboxForm, HiddenInput } from '@admin/forms/Forms'
 import { EntityFormModel } from '@admin/forms/forms.types'
 import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseTrComponent } from '@admin/pages/base/base-tr.component'
@@ -56,6 +56,13 @@ export class AdminMediaBooleanComponent extends BaseAdminComponent<MediaBoolean>
         ],
         additionalInfo: 'Veuillez remplir les champs suivants',
         fields: [
+            {
+                id: 'type',
+                type: HiddenInput,
+                default: 'default',
+                label: 'Type',
+                hide: true,
+            },
             {
                 id: 'content',
                 sortable: true,

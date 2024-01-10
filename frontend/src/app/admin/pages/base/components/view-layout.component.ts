@@ -115,34 +115,38 @@ import { AdminConfig } from './admin-config.types'
                                         }
                                     } @else {
                                         @for (field of fields; track field) {
-                                            <th
-                                                (click)="
-                                                    field.sortable
-                                                        ? onSortChange(field.id)
-                                                        : null
-                                                "
-                                                class="text-md capitalize text-base-content">
-                                                <div
-                                                    [ngClass]="{
-                                                        'btn btn-ghost':
-                                                            field.sortable
-                                                    }">
-                                                    {{ field.label }}
-                                                    <span
-                                                        *ngIf="
-                                                            field.sortable &&
-                                                            sortState.property ===
-                                                                field.id
-                                                        ">
-                                                        {{
-                                                            sortState.direction ===
-                                                            'asc'
-                                                                ? '▲'
-                                                                : '▼'
-                                                        }}
-                                                    </span>
-                                                </div>
-                                            </th>
+                                            @if (!field.hide) {
+                                                <th
+                                                    (click)="
+                                                        field.sortable
+                                                            ? onSortChange(
+                                                                  field.id
+                                                              )
+                                                            : null
+                                                    "
+                                                    class="text-md capitalize text-base-content">
+                                                    <div
+                                                        [ngClass]="{
+                                                            'btn btn-ghost':
+                                                                field.sortable
+                                                        }">
+                                                        {{ field.label }}
+                                                        <span
+                                                            *ngIf="
+                                                                field.sortable &&
+                                                                sortState.property ===
+                                                                    field.id
+                                                            ">
+                                                            {{
+                                                                sortState.direction ===
+                                                                'asc'
+                                                                    ? '▲'
+                                                                    : '▼'
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            }
                                         }
                                     }
                                     <th

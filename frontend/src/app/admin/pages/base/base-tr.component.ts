@@ -7,6 +7,9 @@ import { ActionEntityComponent } from './components/action-entity.component'
 import { CheckBoxtDisplayComponent } from './components/field-display/checkbox-dislay.component'
 import { DateDisplayComponent } from './components/field-display/date-dislay.component'
 import { DynamicSelectDisplayComponent } from './components/field-display/dynamic-select-display.component'
+import { EntityDisplayComponent } from './components/field-display/entity-dislay.component'
+import { ExternalDynamicSelectDisplayComponent } from './components/field-display/external-dynamic-select-display.component'
+import { ExternalMultiDynamicSelectDisplayComponent } from './components/field-display/external-multi-dynamic-select-display.component'
 import { ImageDisplayComponent } from './components/field-display/image-dislay.component'
 import { MultiDynamicSelectDisplayComponent } from './components/field-display/multi-dynamic-select-display.component'
 import { TextDisplayComponent } from './components/field-display/text-dislay.component'
@@ -19,11 +22,14 @@ import { TitleDisplayComponent } from './components/field-display/title-dislay.c
         SharedModule,
         ActionEntityComponent,
         TextDisplayComponent,
+        EntityDisplayComponent,
         TitleDisplayComponent,
         DateDisplayComponent,
         CheckBoxtDisplayComponent,
         ImageDisplayComponent,
         DynamicSelectDisplayComponent,
+        ExternalDynamicSelectDisplayComponent,
+        ExternalMultiDynamicSelectDisplayComponent,
         MultiDynamicSelectDisplayComponent,
     ],
     template: `
@@ -34,63 +40,85 @@ import { TitleDisplayComponent } from './components/field-display/title-dislay.c
         </td>
         <!-- tds -->
         @for (field of fields; track field) {
-            <td>
-                @switch (field.type.name) {
-                    @case ('input') {
-                        @switch (field.type.option) {
-                            @case ('title') {
+            @if (!field.hide) {
+                <td>
+                    @switch (field.type.name) {
+                        @case ('input') {
+                            @switch (field.type.option) {
+                                @case ('title') {
+                                    <div
+                                        title-display
+                                        [content]="entity[field.id]"
+                                        [field]="field"></div>
+                                }
+                                @default {
+                                    <div
+                                        text-display
+                                        [content]="entity[field.id]"
+                                        [field]="field"></div>
+                                }
+                            }
+                        }
+                        @case ('date') {
+                            <div
+                                date-display
+                                [content]="entity[field.id]"
+                                [field]="field"></div>
+                        }
+                        @case ('checkbox') {
+                            <div
+                                checkbox-display
+                                [content]="entity[field.id]"
+                                [field]="field"></div>
+                        }
+                        @case ('image') {
+                            <div
+                                image-display
+                                [content]="entity[field.id]"
+                                [field]="field"></div>
+                        }
+                        @case ('dynamic-select') {
+                            @if (field.type.option === 'multiple') {
                                 <div
-                                    title-display
+                                    multi-dynamic-select-display
+                                    [id]="entity.id"
+                                    [field]="field"></div>
+                            } @else if (field.type.option === 'single') {
+                                <div
+                                    dynamic-select-display
+                                    [id]="entity.id"
+                                    [field]="field"></div>
+                            } @else if (
+                                field.type.option === 'multiple-external'
+                            ) {
+                                <div
+                                    external-multi-dynamic-select-display
                                     [content]="entity[field.id]"
                                     [field]="field"></div>
-                            }
-                            @default {
+                            } @else if (
+                                field.type.option === 'single-external'
+                            ) {
                                 <div
-                                    text-display
+                                    external-dynamic-select-display
                                     [content]="entity[field.id]"
                                     [field]="field"></div>
                             }
                         }
-                    }
-                    @case ('date') {
-                        <deiv
-                            date-display
-                            [content]="entity[field.id]"
-                            [field]="field"></deiv>
-                    }
-                    @case ('checkbox') {
-                        <div
-                            checkbox-display
-                            [content]="entity[field.id]"
-                            [field]="field"></div>
-                    }
-                    @case ('image') {
-                        <div
-                            image-display
-                            [content]="entity[field.id]"
-                            [field]="field"></div>
-                    }
-                    @case ('dynamic-select') {
-                        @if (field.type.option === 'multiple') {
+                        @case ('entity') {
                             <div
-                                multi-dynamic-select-display
-                                [id]="entity.id"
+                                entity-display
+                                [content]="entity[field.id]"
                                 [field]="field"></div>
-                        } @else {
+                        }
+                        @default {
                             <div
-                                dynamic-select-display
+                                text-display
                                 [content]="entity[field.id]"
                                 [field]="field"></div>
                         }
                     }
-                    @default {
-                        <div
-                            text-display
-                            [content]="entity[field.id]"
-                            [field]="field"></div>
-                    }
-                }
-            </td>
+                </td>
+            }
         }
         <!-- Actions -->
         <td
