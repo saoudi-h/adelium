@@ -14,6 +14,13 @@ import { GenericService } from './generic.service'
  */
 @Injectable()
 export abstract class GenericEffects<T extends Identifiable> {
+    /**
+     * Constructor.
+     * @param actions$ - The actions observable.
+     * @param genericService - The service for the type.
+     * @param entityActions - The actions for the type.
+     * @param entityType - The type of the items being handled.
+     */
     constructor(
         private actions$: Actions,
         private genericService: GenericService<T>,
@@ -193,15 +200,45 @@ export abstract class GenericEffects<T extends Identifiable> {
                             entities: entitiesPage._embedded[relation],
                         })
                     ),
-                    catchError(error =>
-                        of(
+                    catchError(error => {
+                        console.log('error', error)
+                        return of(
                             this.entityActions.getRelatedEntitiesFailure({
                                 error,
                             })
                         )
-                    )
+                    })
                 )
             )
+        )
+    })
+
+    getRelatedEntity$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.entityActions.getRelatedEntity),
+            mergeMap(({ id, relation }) => {
+                const relationName = this.getEntityRelationPartialUrl(relation)
+                return this.genericService
+                    .getRelatedEntity(id, relationName)
+                    .pipe(
+                        map(entity => {
+                            console.log('entity', entity)
+                            return this.entityActions.getRelatedEntitySuccess({
+                                id: id,
+                                relation: relation,
+                                entity: entity,
+                            })
+                        }),
+                        catchError(error => {
+                            console.log('error', error)
+                            return of(
+                                this.entityActions.getRelatedEntityFailure({
+                                    error,
+                                })
+                            )
+                        })
+                    )
+            })
         )
     })
 
@@ -215,8 +252,9 @@ export abstract class GenericEffects<T extends Identifiable> {
                     relation,
                     relatedEntityIds
                 )
+                const relationName = this.getEntityRelationPartialUrl(relation)
                 return this.genericService
-                    .updateRelatedEntities(id, relation, relatedEntityIds)
+                    .updateRelatedEntities(id, relationName, relatedEntityIds)
                     .pipe(
                         map(() =>
                             this.entityActions.updateRelatedEntitiesSuccess({
@@ -253,8 +291,23 @@ export abstract class GenericEffects<T extends Identifiable> {
         )
     })
 
+    updateChildEntitySuccess$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.entityActions.getRelatedEntitySuccess),
+            map(({ relation, entity }) => {
+                const actionType = this.determineUpdateAction(relation)
+
+                if (actionType) {
+                    return actionType({ items: [entity] })
+                }
+                return { type: '[No Operation]' }
+            })
+        )
+    })
+
     private determineUpdateAction = (relation: string) => {
-        const relationConfig = entityConfig[relation]
+        const relationConfig =
+            entityConfig[this.getEntityRelationName(relation)]
         if (relationConfig && relationConfig.actions) {
             const updateAction = relationConfig.actions['addSelectionSuccess']
             if (updateAction) {
@@ -262,5 +315,13 @@ export abstract class GenericEffects<T extends Identifiable> {
             }
         }
         return undefined
+    }
+
+    private getEntityRelationName(relation: string): string {
+        return entityConfig[this.entityType].relations[relation].name
+    }
+
+    private getEntityRelationPartialUrl(relation: string): string {
+        return entityConfig[this.entityType].relations[relation].partialUrl
     }
 }

@@ -35,6 +35,9 @@ export interface ExtendedState<T extends Identifiable> extends EntityState<T> {
     relatedEntities: {
         [entityId: number]: { [relation: string]: number[] }
     }
+    relatedEntity: {
+        [entityId: number]: { [relation: string]: number }
+    }
     transactions: { [transactionId: string]: TransactionStatus }
     isLoading: boolean
     error: string | null
@@ -151,6 +154,36 @@ export function createGenericReducer<T extends Identifiable>(
                         [id]: {
                             ...state.relatedEntities[id],
                             [relation]: relatedEntityIds,
+                        },
+                    },
+                }
+            }
+        ),
+        on(
+            actions.getRelatedEntitySuccess,
+            (state, { id, relation, entity }): ExtendedState<T> => {
+                return {
+                    ...state,
+                    relatedEntity: {
+                        ...state.relatedEntity,
+                        [id]: {
+                            ...state.relatedEntity[id],
+                            [relation]: entity.id,
+                        },
+                    },
+                }
+            }
+        ),
+        on(
+            actions.updateRelatedEntitySuccess,
+            (state, { id, relation, relatedEntityId }): ExtendedState<T> => {
+                return {
+                    ...state,
+                    relatedEntity: {
+                        ...state.relatedEntity,
+                        [id]: {
+                            ...state.relatedEntity[id],
+                            [relation]: relatedEntityId,
                         },
                     },
                 }

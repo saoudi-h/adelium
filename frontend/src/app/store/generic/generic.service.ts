@@ -11,6 +11,10 @@ import { PaginationParams } from './generic.reducer'
  * Abstract class representing a generic service for CRUD operations on entities.
  * @template T - The type of the entity.
  */
+/**
+ * A generic service for CRUD operations on entities.
+ * @template T - The type of the entity.
+ */
 export abstract class GenericService<T extends Identifiable> {
     protected abstract apiUrl: string
 
@@ -98,11 +102,35 @@ export abstract class GenericService<T extends Identifiable> {
         entityId: number,
         relation: string
     ): Observable<Page<Identifiable>> {
+        console.log(`${this.apiUrl}/${entityId}/${relation}`)
         return this.http.get<Page<Identifiable>>(
             `${this.apiUrl}/${entityId}/${relation}`
         )
     }
 
+    /**
+     * Retrieves a related entity.
+     * @param entityId - The ID of the entity.
+     * @param relation - The relation name.
+     * @returns An observable that emits the related entity.
+     */
+    getRelatedEntity(
+        entityId: number,
+        relation: string
+    ): Observable<Identifiable> {
+        console.log('entityId, relation', entityId, relation)
+        return this.http.get<Identifiable>(
+            `${this.apiUrl}/${entityId}/${relation}`
+        )
+    }
+
+    /**
+     * Updates the related entities of an entity.
+     * @param entityId - The ID of the entity.
+     * @param relation - The relation name.
+     * @param relatedEntityIds - The IDs of the related entities.
+     * @returns An observable that emits the updated related entities.
+     */
     updateRelatedEntities(
         entityId: number,
         relation: string,

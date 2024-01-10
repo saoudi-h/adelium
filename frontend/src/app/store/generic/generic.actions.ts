@@ -131,22 +131,44 @@ export function createEntityActions<T extends Identifiable>(
             `[${entityType}] Get Related Entities Failure`,
             props<{ error: string }>()
         ),
-        // addRelatedEntity: createAction(
-        //     `[${entityType}] Add Related Entity`,
-        //     props<{
-        //         entityId: number
-        //         relation: string
-        //         relatedEntity: Identifiable
-        //     }>()
-        // ),
-        // addRelatedEntitySuccess: createAction(
-        //     `[${entityType}] Add Related Entity Success`,
-        //     props<{ relation: string; relatedEntity: Identifiable }>()
-        // ),
-        // addRelatedEntityFailure: createAction(
-        //     `[${entityType}] Add Related Entity Failure`,
-        //     props<{ error: string }>()
-        // ),
+
+        // Related entity
+        getRelatedEntity: createAction(
+            `[${entityType}] Get Related Entity`,
+            props<{ id: number; relation: string }>()
+        ),
+        getRelatedEntitySuccess: createAction(
+            `[${entityType}] Get Related Entity Success`,
+            props<{ id: number; relation: string; entity: Identifiable }>()
+        ),
+        getRelatedEntityFailure: createAction(
+            `[${entityType}] Get Related Entity Failure`,
+            props<{ error: string }>()
+        ),
+
+        updateRelatedEntity: createAction(
+            `[${entityType}] Update Related Entity`,
+            props<{
+                id: number
+                relation: string
+                relatedEntityId: number
+            }>()
+        ),
+
+        updateRelatedEntitySuccess: createAction(
+            `[${entityType}] Update Related Entity Success`,
+            props<{
+                id: number
+                relation: string
+                relatedEntityId: number
+            }>()
+        ),
+
+        updateRelatedEntityFailure: createAction(
+            `[${entityType}] Update Related Entity Failure`,
+            props<{ error: string }>()
+        ),
+
         updateRelatedEntities: createAction(
             `[${entityType}] Update Related Entity`,
             props<{

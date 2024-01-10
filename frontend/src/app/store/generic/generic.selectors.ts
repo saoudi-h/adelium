@@ -69,11 +69,6 @@ export function createGenericSelectors<T extends Identifiable>(
      * @param entityType - The type of the related entities.
      * @returns The related entities.
      */
-    // const selectRelatedEntities = (entityType: string, id: number) =>
-    //     createSelector(
-    //         selectEntityStateByName(entityType),
-    //         state => state.entities
-    //     )
 
     const selectRelatedEntities = ({
         id,
@@ -84,6 +79,17 @@ export function createGenericSelectors<T extends Identifiable>(
     }) =>
         createSelector(selectEntityState, state => {
             return state.relatedEntities[id]?.[relation]
+        })
+
+    const selectRelatedEntity = ({
+        id,
+        relation,
+    }: {
+        id: number
+        relation: string
+    }) =>
+        createSelector(selectEntityState, state => {
+            return state.relatedEntity[id]?.[relation]
         })
 
     const selectCurrentPage = createSelector(selectEntityState, state => {
@@ -100,6 +106,12 @@ export function createGenericSelectors<T extends Identifiable>(
     const selectRelatedEntitiesLoaded = (id: number, relation: string) =>
         createSelector(selectEntityState, state => {
             const related = state.relatedEntities[id]
+            return related && related[relation] ? related[relation] : null
+        })
+
+    const selectRelatedEntityLoaded = (id: number, relation: string) =>
+        createSelector(selectEntityState, state => {
+            const related = state.relatedEntity[id]
             return related && related[relation] ? related[relation] : null
         })
 
@@ -122,8 +134,10 @@ export function createGenericSelectors<T extends Identifiable>(
         selectIsLoading,
         selectError,
         selectRelatedEntities,
+        selectRelatedEntity,
         selectSelection,
         selectRelatedEntitiesLoaded,
+        selectRelatedEntityLoaded,
         selectTransactionStatus,
     }
 }
