@@ -12,6 +12,7 @@ export class Quiz implements Identifiable {
     imageUrl!: string
     tags!: Tag[]
     questions!: Question[]
+    type!: string
     constructor(data: Partial<Quiz>) {
         Object.assign(this, data)
     }

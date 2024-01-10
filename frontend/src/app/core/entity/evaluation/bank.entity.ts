@@ -12,6 +12,7 @@ export class Bank implements Identifiable {
     imageUrl!: string
     tags!: Tag[]
     questions!: Question[]
+    type!: string
     constructor(data: Partial<Bank>) {
         Object.assign(this, data)
     }

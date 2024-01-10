@@ -10,6 +10,7 @@ export class Question implements Identifiable {
     options!: Option[]
     enabled!: boolean
     tag!: Tag[]
+    type!: string
 
     constructor(data: Partial<Question>) {
         Object.assign(this, data)
