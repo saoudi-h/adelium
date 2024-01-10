@@ -42,6 +42,11 @@
                         @for (entity of entities; track entity) {
                             <tr
                                 base-tr
+                                [@deleteAnimation]="
+                                    entity.id === deleteId
+                                        ? 'deleted'
+                                        : 'active'
+                                "
                                 (delete)="onDelete($event)"
                                 (edit)="onEdit($event)"
                                 [entity]="entity"

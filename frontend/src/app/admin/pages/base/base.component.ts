@@ -33,6 +33,7 @@ import { ViewLayoutComponent } from './components/view-layout.component'
 export class BaseAdminComponent<T extends Identifiable>
     implements OnInit, OnDestroy
 {
+    deleteId: number | undefined = -1
     private subscription = new Subscription()
     paginationParams$!: Observable<PaginationParams>
     selectors!: EntitySelectors<T>
@@ -91,7 +92,10 @@ export class BaseAdminComponent<T extends Identifiable>
             message: 'Êtes-vous sûr de vouloir continuer ?',
             isClosable: true,
             onConfirm: () => {
-                this.store.dispatch(this.actions.deleteItem({ id }))
+                setTimeout(() => {
+                    this.store.dispatch(this.actions.deleteItem({ id }))
+                }, 500)
+                this.deleteId = id
             },
         })
     }
@@ -121,6 +125,8 @@ export class BaseAdminComponent<T extends Identifiable>
     }
 
     editOne = (formValue: T, transactionId: string) => {
+        console.log('formValue : ', formValue)
+        console.log('json', JSON.stringify(formValue))
         this.store.dispatch(
             this.actions.updateItem({ item: formValue, transactionId })
         )
@@ -138,6 +144,8 @@ export class BaseAdminComponent<T extends Identifiable>
     }
 
     addOne = (formValue: T, transactionId: string) => {
+        console.log('formValue : ', formValue)
+        console.log('json', JSON.stringify(formValue))
         this.store.dispatch(
             this.actions.addItem({ item: formValue, transactionId })
         )
