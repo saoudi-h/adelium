@@ -38,6 +38,21 @@ export const EntityForm: FieldType = {
     name: 'entity',
 }
 
+export const AddressEntityForm: FieldType = {
+    name: 'entity',
+    option: 'address',
+}
+
+export const MediaTextEntityForm: FieldType = {
+    name: 'entity',
+    option: 'media-text',
+}
+
+export const MediaBooleanEntityForm: FieldType = {
+    name: 'entity',
+    option: 'media-boolean',
+}
+
 export const DynamicSelectForm: FieldType = {
     name: 'dynamic-select',
     option: 'single',
@@ -45,6 +60,15 @@ export const DynamicSelectForm: FieldType = {
 export const MultiDynamicSelectForm: FieldType = {
     name: 'dynamic-select',
     option: 'multiple',
+}
+
+export const DynamicExternalSelectForm: FieldType = {
+    name: 'dynamic-select',
+    option: 'single-external',
+}
+export const MultiDynamicExternalSelectForm: FieldType = {
+    name: 'dynamic-select',
+    option: 'multiple-external',
 }
 
 export const SearchForm: FieldType = {

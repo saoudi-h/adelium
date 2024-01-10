@@ -21,11 +21,19 @@ export interface DynamicOptions {
     getInitialById?: (
         id: number
     ) => Observable<{ label: string; value: any; disabled?: boolean }>
+    getInitialByRelatedId?: (
+        relatedId: number
+    ) => Observable<{ label: string; value: any; disabled?: boolean }>
     paginationResult: () => Observable<PaginationResult>
     setRelations?: (
         id: number,
         relation: string,
         relatedEntityIds: number[]
+    ) => void
+    setRelation?: (
+        id: number,
+        relation: string,
+        relatedEntityId: number
     ) => void
     update?: (item: any, transactionId: string) => void
     display?: (id: number) => Observable<string | string[]>
@@ -154,6 +162,129 @@ export const createMultiDynamicOptions = <
 
 /**
  * Creates dynamic options for a form utility.
+ * @template T - The type of the main entity.
+ * @template R - The type of the related entity.
+ * @param {Store} store - The Redux store.
+ * @param {EntitySelectors<T>} selectors - The selectors for the main entity.
+ * @param {EntityActions<T>} actions - The actions for the main entity.
+ * @param {EntitySelectors<R>} relatedSelectors - The selectors for the related entity.
+ * @param {EntityActions<R>} relatedActions - The actions for the related entity.
+ * @param {string} label - The label property of the related entity.
+ * @param {string} relation - The relation between the main entity and the related entity.
+ * @returns {Object} - An object containing utility functions for creating dynamic options.
+ */
+export const createDynamicOptions = <
+    T extends Identifiable,
+    R extends Identifiable,
+>(
+    store: Store,
+    selectors: EntitySelectors<T>,
+    actions: EntityActions<T>,
+    relatedSelectors: EntitySelectors<R>,
+    relatedActions: EntityActions<R>,
+    label: string,
+    relation: string
+): DynamicOptions => {
+    return {
+        all: () =>
+            store.select(relatedSelectors.selectAll).pipe(
+                map(entities =>
+                    entities.map(entity => ({
+                        label: entity[label],
+                        value: entity.id,
+                    }))
+                )
+            ),
+        getInitialById: (id: number) => {
+            store.dispatch(
+                actions.getRelatedEntity({
+                    id: id,
+                    relation: relation,
+                })
+            )
+
+            return store
+                .select(
+                    selectors.selectRelatedEntity({
+                        id: id,
+                        relation: relation,
+                    })
+                )
+                .pipe(
+                    switchMap(id =>
+                        store
+                            .select(relatedSelectors.selectEntityById(id))
+                            .pipe(
+                                map(entity =>
+                                    entity && entity[label]
+                                        ? {
+                                              label: entity[label] as string,
+                                              value: entity!.id,
+                                          }
+                                        : {
+                                              label: '',
+                                              value: 0,
+                                          }
+                                )
+                            )
+                    )
+                )
+        },
+        getNextPage: (params: PaginationParams) => {
+            return store.dispatch(relatedActions.getPage({ params: params }))
+        },
+        paginationResult: () =>
+            store.select(relatedSelectors.selectPaginationResult),
+        setRelation: (
+            id: number,
+            relation: string,
+            relatedEntityId: number
+        ) => {
+            store.dispatch(
+                actions.updateRelatedEntity({
+                    id,
+                    relation,
+                    relatedEntityId,
+                })
+            )
+        },
+        update: (item: R, transactionId: string) => {
+            store.dispatch(relatedActions.updateItem({ item, transactionId }))
+        },
+        display: (id: number) => {
+            store.dispatch(
+                actions.getRelatedEntity({
+                    id: id,
+                    relation: relation,
+                })
+            )
+
+            return store
+                .select(
+                    selectors.selectRelatedEntity({
+                        id,
+                        relation,
+                    })
+                )
+                .pipe(
+                    switchMap(id =>
+                        store
+                            .select(relatedSelectors.selectEntityById(id))
+                            .pipe(
+                                map(entity =>
+                                    entity && entity[label]
+                                        ? entity[label]
+                                        : 'none'
+                                )
+                            )
+                    )
+                )
+        },
+    }
+}
+
+/**
+ * Creates dynamic options for a form utility.
  * @template R - The type of the related entity.
  * @param {Store} store - The Redux store.
  * @param {EntitySelectors<R>} relatedSelectors - The selectors for the related entity.
@@ -161,7 +292,7 @@ export const createMultiDynamicOptions = <
  * @param {string} label - The label property of the related entity.
  * @returns {Object} - An object containing utility functions for creating dynamic options.
  */
-export const createDynamicOptions = <R extends Identifiable>(
+export const createExternalDynamicOptions = <R extends Identifiable>(
     store: Store,
     relatedSelectors: EntitySelectors<R>,
     relatedActions: EntityActions<R>,
@@ -177,7 +308,7 @@ export const createDynamicOptions = <R extends Identifiable>(
                     }))
                 )
             ),
-        getInitialById: (id: number) => {
+        getInitialByRelatedId: (id: number) => {
             store.dispatch(
                 relatedActions.getItemById({
                     id: id,
