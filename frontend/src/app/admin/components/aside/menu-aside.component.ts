@@ -87,7 +87,7 @@ import { MenuService } from './menu-aside.service'
             transition('* => *', [
                 query(
                     'li',
-                    style({ opacity: 0, transform: 'translateY(-200px)' }),
+                    style({ opacity: 0, transform: 'translateX(-200px)' }),
                     { optional: true }
                 ),
                 query(
