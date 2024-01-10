@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CheckBoxFieldComponent } from '@admin/forms/checkbox/checkbox-field.component'
-import { DynamicSelectFieldComponent } from '@admin/forms/dynamic-select/dynamic-select-field.component'
 import { EntityFormModel } from '@admin/forms/forms.types'
-import { InputFieldComponent } from '@admin/forms/input/input-field.component'
-import { SelectFieldComponent } from '@admin/forms/select/select-field.component'
+import { CheckBoxFieldComponent } from '@admin/forms/ui/checkbox/checkbox-field.component'
+import { DynamicSelectFieldComponent } from '@admin/forms/ui/dynamic-select/dynamic-select-field.component'
+import { InputFieldComponent } from '@admin/forms/ui/input/input-field.component'
+import { SelectFieldComponent } from '@admin/forms/ui/select/select-field.component'
 import { FormModalService } from '@admin/modal/formModal.service'
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'

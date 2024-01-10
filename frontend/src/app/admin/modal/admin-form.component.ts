@@ -17,9 +17,9 @@ import { IconService } from '@core/services/icon.service'
 import { NotificationService } from '@core/services/notification.service'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { SharedModule } from '@shared/shared.module'
+import { entityConfig } from '@store/entity-config'
 import { Observable, Subscription, forkJoin, tap } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
-import { EntityForm } from '../forms/Forms'
 import { FormFieldsComponent } from './form-fields.component'
 
 @Component({
@@ -117,7 +117,7 @@ import { FormFieldsComponent } from './form-fields.component'
 export class AdminFormComponent<T extends Identifiable>
     implements OnInit, OnDestroy
 {
-    private transactionSubscription: Subscription | null = null
+    private transactionSubscription: Subscription = new Subscription()
     @Input() modalConfig!: EntityFormModel<T>
     @Output() closeModal = new EventEmitter<void>()
     group!: FormGroup
@@ -146,14 +146,14 @@ export class AdminFormComponent<T extends Identifiable>
     ): FormGroup {
         const group: { [key: string]: any } = {}
         fields.forEach(field => {
-            if (field.type === EntityForm && field.fields) {
+            if (field.type.name === 'entity' && field.fields) {
                 group[field.id] = this.createFormGroup(
                     field.fields,
                     initialValue?.[field.id]
                 )
             } else {
                 group[field.id] = [
-                    initialValue?.[field.id],
+                    initialValue?.[field.id] || field.default || null,
                     field.validators || [],
                 ]
             }
@@ -174,6 +174,11 @@ export class AdminFormComponent<T extends Identifiable>
         return color ? `btn-${color}` : 'btn-primary'
     }
 
+    /**
+     * Handles the form submission.
+     *
+     * @param callback - Optional callback function to be executed before form submission.
+     */
     onSubmit(callback?: () => void) {
         if (callback) {
             callback()
@@ -196,8 +201,17 @@ export class AdminFormComponent<T extends Identifiable>
                         formValue[field.id],
                         field.id
                     )
-                } else if (field.type.option === 'single') {
+                } else if (field.type.option === 'multiple-external') {
+                    formValue[field.id] = formValue[field.id]?.map(
+                        (item: any) => item.value
+                    )
+                } else if (field.type.option === 'single-external') {
                     formValue[field.id] = formValue[field.id]?.value
+                } else if (field.type.option === 'single') {
+                    formValue[field.id] = this.toUri(
+                        formValue[field.id]?.value,
+                        field.entity!
+                    )
                 }
             } else if (field.type.name === 'image') {
                 if (
@@ -241,47 +255,51 @@ export class AdminFormComponent<T extends Identifiable>
             const transactionId = uuidv4()
             this.modalConfig.onEdit(formValue, transactionId)
             this.updateRelations(form)
-            this.transactionSubscription = this.modalConfig
-                .selectTransactionStatus(transactionId)
-                .subscribe(status => {
-                    if (status.status === 'success') {
-                        this.onCloseModal()
-                        if (this.modalConfig.onSuccess) {
-                            this.modalConfig.onSuccess()
+            this.transactionSubscription.add(
+                this.modalConfig
+                    .selectTransactionStatus(transactionId)
+                    .subscribe(status => {
+                        if (status.status === 'success') {
+                            this.onCloseModal()
+                            if (this.modalConfig.onSuccess) {
+                                this.modalConfig.onSuccess()
+                            }
+                            this.notification.success(
+                                'Modifié avec succès',
+                                `Le ${this.modalConfig.title} a été modifié avec succès`
+                            )
+                        } else if (status.status === 'failure') {
+                            this.notification.error(
+                                'Erreur',
+                                `Une erreur est survenue lors de la modification du ${this.modalConfig.title}`
+                            )
                         }
-                        this.notification.success(
-                            'Modifié avec succès',
-                            `Le ${this.modalConfig.title} a été modifié avec succès`
-                        )
-                    } else if (status.status === 'failure') {
-                        this.notification.error(
-                            'Erreur',
-                            `Une erreur est survenue lors de la modification du ${this.modalConfig.title}`
-                        )
-                    }
-                })
+                    })
+            )
         } else if (this.modalConfig.actionType === 'add') {
             const transactionId = uuidv4()
             this.modalConfig.onAdd(formValue, transactionId)
-            this.transactionSubscription = this.modalConfig
-                .selectTransactionStatus(transactionId)
-                .subscribe(status => {
-                    if (status.status === 'success') {
-                        this.onCloseModal()
-                        if (this.modalConfig.onSuccess !== undefined) {
-                            this.modalConfig.onSuccess()
+            this.transactionSubscription.add(
+                this.modalConfig
+                    .selectTransactionStatus(transactionId)
+                    .subscribe(status => {
+                        if (status.status === 'success') {
+                            this.onCloseModal()
+                            if (this.modalConfig.onSuccess !== undefined) {
+                                this.modalConfig.onSuccess()
+                            }
+                            this.notification.success(
+                                'Ajouté avec succès',
+                                `Le ${this.modalConfig.title} a été ajouté avec succès`
+                            )
+                        } else if (status.status === 'failure') {
+                            this.notification.error(
+                                'Erreur',
+                                `Une erreur est survenue lors de l'ajout du ${this.modalConfig.title}`
+                            )
                         }
-                        this.notification.success(
-                            'Ajouté avec succès',
-                            `Le ${this.modalConfig.title} a été ajouté avec succès`
-                        )
-                    } else if (status.status === 'failure') {
-                        this.notification.error(
-                            'Erreur',
-                            `Une erreur est survenue lors de l'ajout du ${this.modalConfig.title}`
-                        )
-                    }
-                })
+                    })
+            )
         }
     }
     updateRelations(form: any) {
@@ -298,20 +316,33 @@ export class AdminFormComponent<T extends Identifiable>
                     field.id,
                     this.selectionToIds(form[field.id])
                 )
+            } else if (
+                field.type.name === 'dynamic-select' &&
+                field.type.option === 'single' &&
+                field.dynamicOptions?.setRelation &&
+                form[field.id] &&
+                this.modalConfig.initialValue
+            ) {
+                form[field.id] = field.dynamicOptions.setRelation(
+                    this.modalConfig.initialValue.id,
+                    field.id,
+                    form[field.id].value
+                )
             }
         })
     }
 
     selectionToUris(selection: any[], relation: string): string[] {
-        return selection.map(item => `/api/v1/auth/${relation}/${item.value}`)
+        return selection.map(item => this.toUri(item.value, relation))
+    }
+    toUri(value: any, relation: string): string {
+        return `${entityConfig[relation]?.uri}/${value}`
     }
     selectionToIds(selection: any[]): number[] {
         return selection.map(item => item.value)
     }
 
     ngOnDestroy() {
-        if (this.transactionSubscription) {
-            this.transactionSubscription.unsubscribe()
-        }
+        this.transactionSubscription.unsubscribe()
     }
 }
