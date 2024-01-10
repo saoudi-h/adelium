@@ -7,7 +7,7 @@ import { Observable } from 'rxjs'
 @Component({
     standalone: true,
     imports: [CommonModule],
-    selector: '[dynamic-select-display]',
+    selector: '[external-multi-dynamic-select-display]',
     template: `
         <div class="flex flex-col">
             <div
@@ -17,13 +17,13 @@ import { Observable } from 'rxjs'
         </div>
     `,
 })
-export class DynamicSelectDisplayComponent implements OnInit {
-    @Input() id!: number
+export class ExternalMultiDynamicSelectDisplayComponent implements OnInit {
+    @Input() content!: number
     @Input() field!: FormField
     content$!: Observable<any>
 
     ngOnInit() {
         if (!this.field?.dynamicOptions?.display) return
-        this.content$ = this.field?.dynamicOptions?.display(this.id)
+        this.content$ = this.field?.dynamicOptions?.display(this.content)
     }
 }
