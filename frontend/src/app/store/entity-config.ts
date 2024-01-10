@@ -17,35 +17,35 @@ export const entityConfig: {
     users: {
         actions: UserActions,
         relations: {
-            roles: { type: 'manyToMany', partialUrl: 'roles' },
+            roles: { type: 'manyToMany', partialUrl: 'roles', name: 'roles' },
         },
         uri: environment.userEndPoint,
     },
     roles: {
         actions: RoleActions,
         relations: {
-            roles: { type: 'manyToMany', partialUrl: 'users' },
+            roles: { type: 'manyToMany', partialUrl: 'users', name: 'users' },
         },
         uri: environment.roleEndPoint,
     },
     bankDefaults: {
         actions: BankDefaultActions,
         relations: {
-            tags: { type: 'manyToMany', partialUrl: 'tags' },
+            tags: { type: 'manyToMany', partialUrl: 'tags', name: 'tags' },
         },
         uri: environment.bankDefaultUrl,
     },
     quizDefaults: {
         actions: QuizDefaultActions,
         relations: {
-            tags: { type: 'manyToMany', partialUrl: 'tags' },
+            tags: { type: 'manyToMany', partialUrl: 'tags', name: 'tags' },
         },
         uri: environment.quizDefaultUrl,
     },
     quizMcq: {
         actions: QuizMcqActions,
         relations: {
-            tags: { type: 'manyToMany', partialUrl: 'tags' },
+            tags: { type: 'manyToMany', partialUrl: 'tags', name: 'tags' },
         },
         uri: environment.quizMcqUrl,
     },
@@ -57,32 +57,45 @@ export const entityConfig: {
     questionMcqs: {
         actions: QuestionMcqActions,
         relations: {
-            tags: { type: 'manyToMany', partialUrl: 'tags' },
-            options: { type: 'oneToMany', partialUrl: 'options' },
+            tags: { type: 'manyToMany', partialUrl: 'tags', name: 'tags' },
+            options: {
+                type: 'oneToMany',
+                partialUrl: 'options',
+                name: 'optionMcqs',
+            },
         },
         uri: environment.questionMcqUrl,
     },
     questionTrueFalses: {
         actions: QuestionTrueFalseActions,
         relations: {
-            tags: { type: 'manyToMany', partialUrl: 'tags' },
-            options: { type: 'oneToMany', partialUrl: 'options' },
+            tags: { type: 'oneToMany', partialUrl: 'tags', name: 'tags' },
+            options: {
+                type: 'oneToMany',
+                partialUrl: 'options',
+                name: 'optionTrueFalses',
+            },
         },
         uri: environment.questionTrueFalseUrl,
     },
     optionMcqs: {
         actions: OptionMcqActions,
         relations: {
-            questionMcq: { type: 'manyToOne', partialUrl: 'question-mcqs' },
+            questionMcqs: {
+                type: 'manyToOne',
+                partialUrl: 'question',
+                name: 'questionMcqs',
+            },
         },
         uri: environment.optionMcqUrl,
     },
     optionTrueFalses: {
         actions: OptionTrueFalseActions,
         relations: {
-            questionTrueFalse: {
+            question: {
                 type: 'manyToOne',
-                partialUrl: 'question-true-falses',
+                partialUrl: 'question',
+                name: 'questionTrueFalses',
             },
         },
         uri: environment.optionTrueFalseUrl,
