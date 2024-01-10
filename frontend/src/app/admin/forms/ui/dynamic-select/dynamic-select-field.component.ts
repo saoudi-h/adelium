@@ -38,6 +38,9 @@ type itemsType = {
 })
 export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
     @Input() group!: FormGroup
+    @Input() field!: FormField
+    @Input() entityId?: number
+
     subscription = new Subscription()
     itemsBuffer: itemsType[] = []
     items$!: Observable<itemsType[]> | undefined
@@ -56,9 +59,6 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
           >
         | undefined
     numberOfItemsFromEndBeforeFetchingMore = 2
-
-    @Input() field!: FormField
-    @Input() entityId?: number
 
     ngOnInit(): void {
         if (this.field.dynamicOptions) {
@@ -113,20 +113,18 @@ export class DynamicSelectFieldComponent implements OnInit, OnDestroy {
                             })
                         })
                 )
-            } else {
-                if (this.field.dynamicOptions!.getInitialByRelatedId) {
-                    this.subscription.add(
-                        this.field
-                            .dynamicOptions!.getInitialByRelatedId(
-                                this.group.get(this.field.id)?.value
-                            )
-                            .subscribe(initialValue => {
-                                this.group.patchValue({
-                                    [this.field.id]: initialValue,
-                                })
+            } else if (this.field.dynamicOptions!.getInitialByRelatedId) {
+                this.subscription.add(
+                    this.field
+                        .dynamicOptions!.getInitialByRelatedId(
+                            this.group.get(this.field.id)?.value
+                        )
+                        .subscribe(initialValue => {
+                            this.group.patchValue({
+                                [this.field.id]: initialValue,
                             })
-                    )
-                }
+                        })
+                )
             }
         }
     }
