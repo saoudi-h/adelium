@@ -1,9 +1,9 @@
 /* (C)2023 */
 package com.adelium.web.quizservice.entity.quiz;
 
+import com.adelium.web.quizservice.core.quiz.Quiz;
 import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.entity.question.BaseQuestion;
-import com.adelium.web.quizservice.core.quiz.Quiz;
 import com.adelium.web.quizservice.entity.question.QuestionMCQ;
 import jakarta.persistence.*;
 import java.util.Set;

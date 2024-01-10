@@ -2,8 +2,8 @@
 package com.adelium.web.quizservice.entity.question;
 
 import com.adelium.web.quizservice.core.evaluation.Evaluation;
-import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.core.question.Optionable;
+import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.entity.media.MediaText;
 import com.adelium.web.quizservice.entity.option.OptionTrueFalse;
 import jakarta.persistence.*;
@@ -35,7 +35,6 @@ public class QuestionTrueFalse extends BaseQuestion<BaseMedia>
      */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "content_media_id", referencedColumnName = "id")
-//    @JsonDeserialize(using = MediaDeserializer.class)
     private BaseMedia content;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

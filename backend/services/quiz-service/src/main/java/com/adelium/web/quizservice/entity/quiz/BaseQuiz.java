@@ -6,10 +6,6 @@ import com.adelium.web.quizservice.core.media.Media;
 import com.adelium.web.quizservice.core.question.Question;
 import com.adelium.web.quizservice.core.quiz.Quiz;
 import com.adelium.web.quizservice.core.tag.Tag;
-import com.adelium.web.quizservice.entity.bank.BankDefault;
-import com.adelium.web.quizservice.entity.quiz.QuizDefault;
-import com.adelium.web.quizservice.entity.quiz.QuizMCQ;
-import com.adelium.web.quizservice.entity.quiz.QuizTrueFalse;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -40,9 +36,9 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = QuizDefault.class, name = "default"),
-        @JsonSubTypes.Type(value = QuizTrueFalse.class, name = "true-false"),
-        @JsonSubTypes.Type(value = QuizMCQ.class, name = "mcq"),
+    @JsonSubTypes.Type(value = QuizDefault.class, name = "default"),
+    @JsonSubTypes.Type(value = QuizTrueFalse.class, name = "true-false"),
+    @JsonSubTypes.Type(value = QuizMCQ.class, name = "mcq"),
 })
 public abstract class BaseQuiz<Q extends Question<M>, M extends Media> extends BaseEntity<Long>
         implements Quiz<Q, M> {

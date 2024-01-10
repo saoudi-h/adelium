@@ -38,5 +38,4 @@ public class OptionTrueFalse extends BaseOption<MediaBoolean, MediaText> {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question_true_false_id", referencedColumnName = "id")
     private QuestionTrueFalse question;
-
 }

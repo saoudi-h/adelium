@@ -6,7 +6,6 @@ import com.adelium.web.quizservice.core.bank.Bank;
 import com.adelium.web.quizservice.core.media.Media;
 import com.adelium.web.quizservice.core.question.Question;
 import com.adelium.web.quizservice.core.tag.Tag;
-import com.adelium.web.quizservice.entity.bank.BankDefault;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.Column;
@@ -41,7 +40,7 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = BankDefault.class, name = "default"),
+    @JsonSubTypes.Type(value = BankDefault.class, name = "default"),
 })
 public abstract class BaseBank<Q extends Question<M>, M extends Media> extends BaseEntity<Long>
         implements Bank<Q, M> {

@@ -2,9 +2,9 @@
 package com.adelium.web.quizservice.entity.bank;
 
 import com.adelium.web.quizservice.core.bank.Bank;
+import com.adelium.web.quizservice.core.question.Question;
 import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.entity.question.BaseQuestion;
-import com.adelium.web.quizservice.core.question.Question;
 import jakarta.persistence.*;
 import java.util.Set;
 import lombok.*;

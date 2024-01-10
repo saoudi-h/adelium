@@ -4,9 +4,6 @@ package com.adelium.web.quizservice.entity.option;
 import com.adelium.web.common.entity.BaseEntity;
 import com.adelium.web.quizservice.core.media.Media;
 import com.adelium.web.quizservice.core.option.Option;
-import com.adelium.web.quizservice.entity.bank.BankDefault;
-import com.adelium.web.quizservice.entity.option.OptionMCQ;
-import com.adelium.web.quizservice.entity.option.OptionTrueFalse;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.Column;
@@ -30,8 +27,8 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = OptionMCQ.class, name = "mcq"),
-        @JsonSubTypes.Type(value = OptionTrueFalse.class, name = "true-false"),
+    @JsonSubTypes.Type(value = OptionMCQ.class, name = "mcq"),
+    @JsonSubTypes.Type(value = OptionTrueFalse.class, name = "true-false"),
 })
 public abstract class BaseOption<O extends Media, E extends Media> extends BaseEntity<Long>
         implements Option<O, E> {

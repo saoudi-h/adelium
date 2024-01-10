@@ -3,9 +3,6 @@ package com.adelium.web.quizservice.entity.media;
 
 import com.adelium.web.common.entity.BaseEntity;
 import com.adelium.web.quizservice.core.media.Media;
-import com.adelium.web.quizservice.entity.media.MediaBoolean;
-import com.adelium.web.quizservice.entity.media.MediaLong;
-import com.adelium.web.quizservice.entity.media.MediaText;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.Entity;
@@ -28,8 +25,8 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = MediaText.class, name = "text"),
-        @JsonSubTypes.Type(value = MediaBoolean.class, name = "boolean"),
-        @JsonSubTypes.Type(value = MediaLong.class, name = "long")
+    @JsonSubTypes.Type(value = MediaText.class, name = "text"),
+    @JsonSubTypes.Type(value = MediaBoolean.class, name = "boolean"),
+    @JsonSubTypes.Type(value = MediaLong.class, name = "long")
 })
 public abstract class BaseMedia extends BaseEntity<Long> implements Media {}

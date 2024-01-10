@@ -2,8 +2,8 @@
 package com.adelium.web.quizservice.entity.question;
 
 import com.adelium.web.quizservice.core.evaluation.Evaluation;
-import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.core.question.Optionable;
+import com.adelium.web.quizservice.entity.media.BaseMedia;
 import com.adelium.web.quizservice.entity.media.MediaText;
 import com.adelium.web.quizservice.entity.option.OptionMCQ;
 import jakarta.persistence.*;
@@ -44,7 +44,6 @@ public class QuestionMCQ extends BaseQuestion<BaseMedia>
      */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "media_id")
-//    @JsonDeserialize(using = MediaDeserializer.class)
     private BaseMedia content;
 
     @OneToMany(mappedBy = "question")

@@ -28,7 +28,6 @@ public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
      */
     @OneToOne
     @JoinColumn(name = "explanation_media_id")
-//    @JsonDeserialize(using = MediaDeserializer.class)
     protected BaseMedia explanation;
 
     /**
@@ -36,7 +35,6 @@ public class OptionMCQ extends BaseOption<BaseMedia, BaseMedia> {
      */
     @OneToOne
     @JoinColumn(name = "content_media_id")
-//    @JsonDeserialize(using = MediaDeserializer.class)
     private BaseMedia content;
 
     @ManyToOne
