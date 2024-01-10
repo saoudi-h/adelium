@@ -27,6 +27,7 @@ export const initialState: MediaBooleanState =
             pageIds: [],
         },
         relatedEntities: {},
+        relatedEntity: {},
         transactions: {},
         isLoading: false,
         error: null,

@@ -27,6 +27,7 @@ export const initialState: QuestionMcqState =
             pageIds: [],
         },
         relatedEntities: {},
+        relatedEntity: {},
         transactions: {},
         isLoading: false,
         error: null,

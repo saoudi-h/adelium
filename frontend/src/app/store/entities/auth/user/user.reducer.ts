@@ -26,6 +26,7 @@ export const initialState: UserState = userAdapter.getInitialState({
         pageIds: [],
     },
     relatedEntities: {},
+    relatedEntity: {},
     transactions: {},
     isLoading: false,
     error: null,

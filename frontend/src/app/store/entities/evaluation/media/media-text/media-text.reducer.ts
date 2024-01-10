@@ -26,6 +26,7 @@ export const initialState: MediaTextState = mediaTextAdapter.getInitialState({
         pageIds: [],
     },
     relatedEntities: {},
+    relatedEntity: {},
     transactions: {},
     isLoading: false,
     error: null,

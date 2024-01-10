@@ -27,6 +27,7 @@ export const initialState: BankDefaultState =
             pageIds: [],
         },
         relatedEntities: {},
+        relatedEntity: {},
         transactions: {},
         isLoading: false,
         error: null,

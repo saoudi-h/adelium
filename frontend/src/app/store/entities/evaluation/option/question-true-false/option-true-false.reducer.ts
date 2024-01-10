@@ -27,6 +27,7 @@ export const initialState: OptionTrueFalseState =
             pageIds: [],
         },
         relatedEntities: {},
+        relatedEntity: {},
         transactions: {},
         isLoading: false,
         error: null,

@@ -28,6 +28,7 @@ export const initialState: QuestionTrueFalseState =
             pageIds: [],
         },
         relatedEntities: {},
+        relatedEntity: {},
         transactions: {},
         isLoading: false,
         error: null,

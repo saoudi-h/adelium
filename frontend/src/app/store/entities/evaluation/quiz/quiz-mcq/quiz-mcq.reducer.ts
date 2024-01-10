@@ -26,6 +26,7 @@ export const initialState: QuizMcqState = quizMcqAdapter.getInitialState({
         pageIds: [],
     },
     relatedEntities: {},
+    relatedEntity: {},
     transactions: {},
     isLoading: false,
     error: null,

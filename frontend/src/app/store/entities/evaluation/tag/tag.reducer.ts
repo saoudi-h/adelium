@@ -26,6 +26,7 @@ export const initialState: TagState = tagAdapter.getInitialState({
         pageIds: [],
     },
     relatedEntities: {},
+    relatedEntity: {},
     transactions: {},
     isLoading: false,
     error: null,

@@ -26,6 +26,7 @@ export const initialState: OptionMcqState = optionMcqAdapter.getInitialState({
         pageIds: [],
     },
     relatedEntities: {},
+    relatedEntity: {},
     transactions: {},
     isLoading: false,
     error: null,

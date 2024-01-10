@@ -29,6 +29,7 @@ export const initialState: RoleState = roleAdapter.getInitialState({
     },
     transactions: {},
     relatedEntities: {},
+    relatedEntity: {},
     isLoading: false,
     error: null,
 })
