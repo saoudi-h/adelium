@@ -1,3 +1,4 @@
+import { AddressDisplayComponent } from '@admin/pages/base/components/field-display/entity/address-display.component'
 import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { Role } from '@core/entity/auth/role.entity'
@@ -8,7 +9,12 @@ import { ActionEntityComponent } from '../../base/components/action-entity.compo
 @Component({
     selector: '[user-admin-tr]',
     standalone: true,
-    imports: [CommonModule, SharedModule, ActionEntityComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        ActionEntityComponent,
+        AddressDisplayComponent,
+    ],
     template: `
         <td class="h-px w-px whitespace-nowrap">
             <label>
@@ -48,31 +54,7 @@ import { ActionEntityComponent } from '../../base/components/action-entity.compo
         <!-- Address -->
         <td>
             @if (entity.address) {
-                <div class="flex flex-col">
-                    <div>
-                        {{
-                            entity.address.streetNumber +
-                                ' ' +
-                                entity['address'].street
-                        }}
-                    </div>
-
-                    @if (entity['address'].additionalInfo) {
-                        <div>
-                            {{ entity['address'].additionalInfo }}
-                        </div>
-                    }
-                    <div>
-                        {{
-                            entity['address'].postalCode +
-                                ' ' +
-                                entity['address'].city
-                        }}
-                    </div>
-                    <div>
-                        {{ entity['address'].country }}
-                    </div>
-                </div>
+                <div address-display [content]="entity.address"></div>
             }
         </td>
         <!-- Autorisations -->

@@ -1,25 +1,19 @@
+import { AddressEntityForm } from './../../../forms/Forms'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     CheckboxForm,
     EmailInput,
-    EntityForm,
     MultiDynamicSelectForm,
-    NumberInput,
     TelInput,
     TextInput,
     UrlInput,
 } from '@admin/forms/Forms'
+import { addressFormFields } from '@admin/forms/form-field/addressFormField'
 import { createMultiDynamicOptions } from '@admin/forms/forms.utility'
+import { baseAnimations } from '@admin/pages/base/base-animations.animation'
 import { BaseAdminComponent } from '@admin/pages/base/base.component'
 import { AdminConfig } from '@admin/pages/base/components/admin-config.types'
 import { ViewLayoutComponent } from '@admin/pages/base/components/view-layout.component'
-import {
-    animate,
-    keyframes,
-    style,
-    transition,
-    trigger,
-} from '@angular/animations'
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { Validators } from '@angular/forms'
@@ -33,6 +27,7 @@ import { UserSelectors } from '@store/entities/auth/user/user.selectors'
 import { Observable, filter, switchMap } from 'rxjs'
 import { EntityFormModel } from '../../../forms/forms.types'
 import { UserAdminTrComponent } from './user-admin-tr.component'
+
 @Component({
     standalone: true,
     selector: '[admin-users]',
@@ -42,64 +37,7 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
         ViewLayoutComponent,
         UserAdminTrComponent,
     ],
-    animations: [
-        trigger('bodyAnimation', [
-            transition(':increment', [
-                animate(
-                    '600ms ease-out',
-                    keyframes([
-                        style({
-                            transform: 'translateX(0%)',
-                            opacity: 1,
-                            offset: 0,
-                        }),
-                        style({
-                            transform: 'translateX(-50%)',
-                            opacity: 0,
-                            offset: 0.5,
-                        }),
-                        style({
-                            transform: 'translateX(0%)',
-                            opacity: 0,
-                            offset: 0.6,
-                        }),
-                        style({
-                            transform: 'translateX(0)',
-                            opacity: 1,
-                            offset: 1.0,
-                        }),
-                    ])
-                ),
-            ]),
-            transition(':decrement', [
-                animate(
-                    '600ms ease-out',
-                    keyframes([
-                        style({
-                            transform: 'translateX(0%)',
-                            opacity: 1,
-                            offset: 0,
-                        }),
-                        style({
-                            transform: 'translateX(50%)',
-                            opacity: 0,
-                            offset: 0.5,
-                        }),
-                        style({
-                            transform: 'translateX(0%)',
-                            opacity: 0,
-                            offset: 0.6,
-                        }),
-                        style({
-                            transform: 'translateX(0)',
-                            opacity: 1,
-                            offset: 1.0,
-                        }),
-                    ])
-                ),
-            ]),
-        ]),
-    ],
+    animations: baseAnimations,
     template: `<section
         view-layout
         [config]="config"
@@ -110,17 +48,6 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
         (sortChange)="onSortChange($event)"
         (sizeChange)="onSizeChange($event)"
         [sortState]="sortState">
-        <!-- tbody -->
-        <!-- <tbody
-            *ngIf="entities$"
-            class=""
-            user-admin-tbody
-            [entities$]="entities$"
-            [isLoading$]="isLoading$"
-            [error$]="error$"
-            (delete)="onDelete($event)"
-            (edit)="onEdit($event)"></tbody> -->
-
         @if (error$ | async; as errorMessage) {
             <div>error : {{ errorMessage }}</div>
         }
@@ -130,6 +57,9 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
                     @for (entity of entities; track entity) {
                         <tr
                             user-admin-tr
+                            [@deleteAnimation]="
+                                entity.id === deleteId ? 'deleted' : 'active'
+                            "
                             (delete)="onDelete($event)"
                             (edit)="onEdit($event)"
                             [getRoles]="this.getRoles"
@@ -268,50 +198,9 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
             },
             {
                 id: 'address',
-                type: EntityForm,
-                fields: [
-                    {
-                        id: 'streetNumber',
-                        type: NumberInput,
-                        label: 'Numéro de rue',
-                        validators: [Validators.required, Validators.max(9999)],
-                    },
-                    {
-                        id: 'street',
-                        type: TextInput,
-                        label: 'Rue',
-                        validators: [Validators.required],
-                    },
-                    {
-                        id: 'additionalInfo',
-                        type: TextInput,
-                        label: "Complément d'addresse",
-                    },
-                    {
-                        id: 'city',
-                        type: TextInput,
-                        label: 'Ville',
-                        validators: [Validators.required],
-                    },
-                    {
-                        id: 'postalCode',
-                        type: NumberInput,
-                        label: 'Code postal',
-                        validators: [Validators.required],
-                    },
-                    {
-                        id: 'country',
-                        type: TextInput,
-                        label: 'Pays',
-                        validators: [Validators.required],
-                    },
-                    {
-                        id: 'departmentNumber',
-                        type: NumberInput,
-                        label: 'Numéro de département',
-                    },
-                ],
+                type: AddressEntityForm,
                 label: 'Addresse',
+                fields: addressFormFields,
             },
             {
                 id: 'avatar',
