@@ -189,6 +189,24 @@ export function createEntityActions<T extends Identifiable>(
             `[${entityType}] Update Related Entity Failure`,
             props<{ error: string }>()
         ),
+
+        exportAll: createAction(`[${entityType}] Export All`),
+        exportAllSuccess: createAction(`[${entityType}] Export All Success`),
+        exportAllFailure: createAction(
+            `[${entityType}] Export All Failure`,
+            props<{ error: string }>()
+        ),
+        exportSelection: createAction(
+            `[${entityType}] Export Selection`,
+            props<{ ids: number[] }>()
+        ),
+        exportSelectionSuccess: createAction(
+            `[${entityType}] Export Selection Success`
+        ),
+        exportSelectionFailure: createAction(
+            `[${entityType}] Export Selection Failure`,
+            props<{ error: string }>()
+        ),
         // removeRelatedEntity: createAction(
         //     `[${entityType}] Remove Related Entity`,
         //     props<{

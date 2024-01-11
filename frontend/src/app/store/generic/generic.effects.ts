@@ -3,7 +3,7 @@ import { Identifiable } from '@core/entity/identifiable.interface'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { entityConfig } from '@store/entity-config'
 import { from, of } from 'rxjs'
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators'
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators'
 import { EntityActions } from './generic.actions'
 import { GenericService } from './generic.service'
 /**
@@ -303,6 +303,59 @@ export abstract class GenericEffects<T extends Identifiable> {
             })
         )
     })
+
+    exportAll$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.entityActions.exportAll),
+            mergeMap(() =>
+                this.genericService.exportAll(this.entityType).pipe(
+                    tap(blob => {
+                        const filename = `${
+                            this.entityType
+                        }_${new Date().toLocaleDateString()}.csv`
+                        this.downloadFile(blob, filename)
+                    }),
+                    map(() => this.entityActions.exportAllSuccess()),
+                    catchError(error =>
+                        of(this.entityActions.exportAllFailure({ error }))
+                    )
+                )
+            )
+        )
+    })
+
+    exportSelection$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.entityActions.exportSelection),
+            mergeMap(({ ids }) =>
+                this.genericService.exportSelection(this.entityType, ids).pipe(
+                    tap(blob => {
+                        const filename = `${
+                            this.entityType
+                        }_${new Date().toLocaleDateString()}.csv`
+                        this.downloadFile(blob, filename)
+                    }),
+                    map(() => this.entityActions.exportSelectionSuccess()),
+                    catchError(error =>
+                        of(
+                            this.entityActions.exportSelectionFailure({
+                                error,
+                            })
+                        )
+                    )
+                )
+            )
+        )
+    })
+
+    private downloadFile(blob: Blob, filename: string) {
+        const url = window.URL.createObjectURL(blob)
+        const anchor = document.createElement('a')
+        anchor.href = url
+        anchor.download = filename
+        anchor.click()
+        window.URL.revokeObjectURL(url)
+    }
 
     private determineUpdateAction = (relation: string) => {
         const relationName = this.getEntityRelationName(relation)

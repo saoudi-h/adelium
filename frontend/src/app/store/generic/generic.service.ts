@@ -17,6 +17,7 @@ import { PaginationParams } from './generic.reducer'
  */
 export abstract class GenericService<T extends Identifiable> {
     protected abstract apiUrl: string
+    protected abstract serviceUrl: string
 
     constructor(protected http: HttpClient) {}
 
@@ -141,6 +142,23 @@ export abstract class GenericService<T extends Identifiable> {
             `${this.apiUrl}/${entityId}/${relation}`,
             relatedEntities,
             { headers }
+        )
+    }
+
+    exportAll(entityName: string): Observable<any> {
+        return this.http.get(
+            `${this.serviceUrl}/export/csv/${entityName}/all`,
+            {
+                responseType: 'blob',
+            }
+        )
+    }
+
+    exportSelection(entityName: string, ids: number[]): Observable<any> {
+        return this.http.post(
+            `${this.serviceUrl}/export/csv/${entityName}/selection`,
+            ids,
+            { responseType: 'blob' }
         )
     }
 }
