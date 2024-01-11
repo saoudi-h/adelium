@@ -222,7 +222,6 @@ export abstract class GenericEffects<T extends Identifiable> {
                     .getRelatedEntity(id, relationName)
                     .pipe(
                         map(entity => {
-                            console.log('entity', entity)
                             return this.entityActions.getRelatedEntitySuccess({
                                 id: id,
                                 relation: relation,
@@ -306,8 +305,12 @@ export abstract class GenericEffects<T extends Identifiable> {
     })
 
     private determineUpdateAction = (relation: string) => {
-        const relationConfig =
-            entityConfig[this.getEntityRelationName(relation)]
+        const relationName = this.getEntityRelationName(relation)
+        if (!relationName) {
+            console.error('relationName is undefined')
+            return undefined
+        }
+        const relationConfig = entityConfig[relationName]
         if (relationConfig && relationConfig.actions) {
             const updateAction = relationConfig.actions['addSelectionSuccess']
             if (updateAction) {
@@ -317,8 +320,11 @@ export abstract class GenericEffects<T extends Identifiable> {
         return undefined
     }
 
-    private getEntityRelationName(relation: string): string {
-        return entityConfig[this.entityType].relations[relation].name
+    private getEntityRelationName(relation: string): string | undefined {
+        return (
+            entityConfig[this.entityType]?.relations[relation]?.name ??
+            undefined
+        )
     }
 
     private getEntityRelationPartialUrl(relation: string): string {
