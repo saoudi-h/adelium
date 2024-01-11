@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller class for user details.
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @see UserRepository
  * @see UserDetailsMapper
  */
-@RepositoryRestController
+@RepositoryRestController("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -30,7 +29,7 @@ public class UserController {
      * @param username the username of the user
      * @return the ResponseEntity containing the UserDetailsDTO
      */
-    @GetMapping("/users/by-username/{username}")
+    @GetMapping("/by-username/{username}")
     public ResponseEntity<UserDetailsDTO> getUser(@PathVariable String username) {
         return userRepository
                 .findByUsername(username)
