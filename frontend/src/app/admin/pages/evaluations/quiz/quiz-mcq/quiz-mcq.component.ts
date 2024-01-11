@@ -76,7 +76,7 @@ export class AdminQuizMcqComponent extends BaseAdminComponent<QuizMcq> {
             {
                 id: 'type',
                 type: HiddenInput,
-                default: 'default',
+                default: 'mcq',
                 label: 'Type',
                 hide: true,
             },
