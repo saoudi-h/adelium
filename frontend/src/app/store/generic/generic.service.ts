@@ -102,7 +102,6 @@ export abstract class GenericService<T extends Identifiable> {
         entityId: number,
         relation: string
     ): Observable<Page<Identifiable>> {
-        console.log(`${this.apiUrl}/${entityId}/${relation}`)
         return this.http.get<Page<Identifiable>>(
             `${this.apiUrl}/${entityId}/${relation}`
         )
@@ -118,7 +117,6 @@ export abstract class GenericService<T extends Identifiable> {
         entityId: number,
         relation: string
     ): Observable<Identifiable> {
-        console.log('entityId, relation', entityId, relation)
         return this.http.get<Identifiable>(
             `${this.apiUrl}/${entityId}/${relation}`
         )
