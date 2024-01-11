@@ -3,12 +3,14 @@ export const environment = {
     baseUrl: 'http://localhost:8080',
 
     // Auth-service
+    authServiceUrl: '/api/v1/auth',
     userEndPoint: '/api/v1/auth/users',
     roleEndPoint: '/api/v1/auth/roles',
     authorityEndPoint: '/api/v1/auth/authorities',
     maxRefreshAttempts: 3,
 
     // Quiz-service
+    quizServiceUrl: '/api/v1/quiz',
     quizDefaultUrl: '/api/v1/quiz/quiz-defaults',
     quizMcqUrl: '/api/v1/quiz/quiz-mcqs',
     // Bank
@@ -24,6 +26,7 @@ export const environment = {
     // Media
     mediaTextUrl: '/api/v1/quiz/media-texts',
     mediaBooleanUrl: '/api/v1/quiz/media-booleans',
+
     // Media-service
     mediaServiceUrl: '/api/v1/media',
 }
