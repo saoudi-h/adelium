@@ -8,7 +8,9 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.stereotype.Service;
@@ -33,27 +35,40 @@ public class ExportService {
         }
     }
 
-    private String[] extractHeader(Class<?> entityClass) {
-        List<String> headers = new ArrayList<>();
-        for (Field field : entityClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(JsonIgnore.class)) {
-                continue;
+    private <T> String[] extractHeader(Class<T> entityClass) {
+        Set<String> headers = new LinkedHashSet<>();
+        Class<?> currentClass = entityClass;
+
+        while (currentClass != null) {
+            Field[] fields = currentClass.getDeclaredFields();
+            for (Field field : fields) {
+                if (field.isAnnotationPresent(JsonIgnore.class)) {
+                    continue;
+                }
+                headers.add(field.getName());
             }
-            headers.add(field.getName());
+            currentClass = currentClass.getSuperclass();
         }
+
         return headers.toArray(new String[0]);
     }
 
-    private List<Object> extractValues(Object entity) throws IllegalAccessException {
+    private <T> List<Object> extractValues(T entity) throws IllegalAccessException {
         List<Object> values = new ArrayList<>();
-        Field[] fields = entity.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(JsonIgnore.class)) {
-                continue;
+        Class<?> currentClass = entity.getClass();
+
+        while (currentClass != null) {
+            Field[] fields = currentClass.getDeclaredFields();
+            for (Field field : fields) {
+                if (field.isAnnotationPresent(JsonIgnore.class)) {
+                    continue;
+                }
+                field.setAccessible(true);
+                values.add(field.get(entity));
             }
-            field.setAccessible(true);
-            values.add(field.get(entity));
+            currentClass = currentClass.getSuperclass();
         }
+
         return values;
     }
 }
