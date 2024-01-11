@@ -35,4 +35,9 @@ public class Authority extends BaseEntity<Long> implements GrantedAuthority {
     @ManyToMany(mappedBy = "grantedAuthorities")
     @Builder.Default
     private Collection<Role> roles = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return authority;
+    }
 }

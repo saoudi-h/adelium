@@ -44,4 +44,9 @@ public class Role extends BaseEntity<Long> implements GrantedAuthoritiesContaine
     @ManyToMany(mappedBy = "roles")
     @Builder.Default
     private List<User> users = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

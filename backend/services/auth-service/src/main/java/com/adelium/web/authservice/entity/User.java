@@ -287,4 +287,9 @@ public class User extends BaseEntity<Long> implements UserDetails {
         }
         return authorities;
     }
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }

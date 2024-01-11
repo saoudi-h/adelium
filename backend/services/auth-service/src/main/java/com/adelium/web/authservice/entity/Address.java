@@ -47,4 +47,21 @@ public class Address extends BaseEntity<Long> {
 
     @OneToOne(mappedBy = "address")
     private User user;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(streetNumber).append(' ');
+        sb.append(street).append('\'');
+        if (additionalInfo != null) {
+            sb.append(additionalInfo).append('\'');
+        }
+        sb.append(city).append(' ');
+        sb.append(postalCode).append('\'');
+        sb.append(country).append(' ');
+        if (departmentNumber != null) {
+            sb.append(departmentNumber);
+        }
+        return sb.toString();
+    }
 }
