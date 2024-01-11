@@ -42,7 +42,7 @@ export const entityConfig: {
         },
         uri: environment.quizDefaultUrl,
     },
-    quizMcq: {
+    quizMcqs: {
         actions: QuizMcqActions,
         relations: {
             tags: { type: 'manyToMany', partialUrl: 'tags', name: 'tags' },
