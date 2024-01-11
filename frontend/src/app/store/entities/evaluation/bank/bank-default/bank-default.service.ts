@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class BankDefaultService extends GenericService<BankDefault> {
     protected apiUrl = `${environment.baseUrl}${environment.bankDefaultUrl}`
+    protected serviceUrl = `${environment.baseUrl}${environment.quizServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

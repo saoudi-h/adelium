@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class MediaTextService extends GenericService<MediaText> {
     protected apiUrl = `${environment.baseUrl}${environment.mediaTextUrl}`
+    protected serviceUrl = `${environment.baseUrl}${environment.quizServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

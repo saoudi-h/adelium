@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class UserService extends GenericService<User> {
     protected apiUrl = `${environment.baseUrl}${environment.userEndPoint}`
+    protected serviceUrl = `${environment.baseUrl}${environment.authServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class MediaBooleanService extends GenericService<MediaBoolean> {
     protected apiUrl = `${environment.baseUrl}${environment.mediaBooleanUrl}`
+    protected serviceUrl = `${environment.baseUrl}${environment.quizServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

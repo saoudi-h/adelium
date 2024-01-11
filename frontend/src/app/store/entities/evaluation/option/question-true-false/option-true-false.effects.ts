@@ -3,7 +3,7 @@ import { OptionTrueFalse } from '@core/entity/evaluation/option-true-false.entit
 import { Actions } from '@ngrx/effects'
 import { GenericEffects } from '@store/generic/generic.effects'
 import { OptionTrueFalseActions } from './option-true-false.actions'
-import { OptionTrueFalseService } from './option-true-falseservice'
+import { OptionTrueFalseService } from './option-true-false.service'
 
 @Injectable({ providedIn: 'root' })
 export class OptionTrueFalseEffects extends GenericEffects<OptionTrueFalse> {

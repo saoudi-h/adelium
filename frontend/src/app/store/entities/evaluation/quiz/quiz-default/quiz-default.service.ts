@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class QuizDefaultService extends GenericService<QuizDefault> {
     protected apiUrl = `${environment.baseUrl}${environment.quizDefaultUrl}`
+    protected serviceUrl = `${environment.baseUrl}${environment.quizServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

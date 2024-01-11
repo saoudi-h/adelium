@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class TagService extends GenericService<Tag> {
     protected apiUrl = `${environment.baseUrl}${environment.tagUrl}`
+    protected serviceUrl = `${environment.baseUrl}${environment.quizServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

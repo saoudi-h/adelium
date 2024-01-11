@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class AuthorityService extends GenericService<Authority> {
     protected apiUrl = `${environment.baseUrl}${environment.authorityEndPoint}`
+    protected serviceUrl = `${environment.baseUrl}${environment.authServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

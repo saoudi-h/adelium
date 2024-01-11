@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class RoleService extends GenericService<Role> {
     protected apiUrl = `${environment.baseUrl}${environment.roleEndPoint}`
+    protected serviceUrl = `${environment.baseUrl}${environment.authServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)

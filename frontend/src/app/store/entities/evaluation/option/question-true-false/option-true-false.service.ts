@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.development'
 })
 export class OptionTrueFalseService extends GenericService<OptionTrueFalse> {
     protected apiUrl = `${environment.baseUrl}${environment.optionTrueFalseUrl}`
+    protected serviceUrl = `${environment.baseUrl}${environment.quizServiceUrl}`
 
     constructor(http: HttpClient) {
         super(http)
