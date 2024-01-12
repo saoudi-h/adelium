@@ -1,12 +1,13 @@
 <section
     view-layout
-    (add)="onAdd()"
     [config]="config"
     [fields]="entityFormModel.fields"
     [paginationParams$]="paginationParams$"
     [paginationResult$]="paginationResult$"
-    (sortChange)="onSortChange($event)"
     [sortState]="sortState"
+    (sizeChange)="onSizeChange($event)"
+    (add)="onAdd()"
+    (sortChange)="onSortChange($event)"
     (exportAll)="exportAll()"
     (pageChange)="onPageChange($event)">
     <!-- tbody -->

@@ -211,10 +211,10 @@ export class ViewLayoutComponent {
     @Output() sizeChange = new EventEmitter<number>()
     @Input() sortState!: SortCriterion
 
-    @Input() config!: AdminConfig
+    @Input({ required: true }) config!: AdminConfig
     @Input() fields: FormField[] | undefined
-    @Input() paginationParams$!: Observable<PaginationParams>
-    @Input() paginationResult$!: Observable<PaginationResult>
+    @Input({ required: true }) paginationParams$!: Observable<PaginationParams>
+    @Input({ required: true }) paginationResult$!: Observable<PaginationResult>
 
     onPageChange($event: number) {
         this.pageChange.emit($event)
