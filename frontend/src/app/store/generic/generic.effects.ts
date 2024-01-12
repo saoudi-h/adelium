@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Identifiable } from '@core/entity/identifiable.interface'
+import { NotificationService } from '@core/services/notification.service'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { entityConfig } from '@store/entity-config'
 import { from, of } from 'rxjs'
@@ -21,11 +22,13 @@ export abstract class GenericEffects<T extends Identifiable> {
      * @param entityActions - The actions for the type.
      * @param entityType - The type of the items being handled.
      */
+
     constructor(
         private actions$: Actions,
         private genericService: GenericService<T>,
         private entityActions: EntityActions<T>,
-        private entityType: string
+        private entityType: string,
+        private notificationService: NotificationService
     ) {}
 
     /**
@@ -323,6 +326,36 @@ export abstract class GenericEffects<T extends Identifiable> {
             )
         )
     })
+
+    exportAllSuccess$ = createEffect(
+        () => {
+            return this.actions$.pipe(
+                ofType(this.entityActions.exportAllSuccess),
+                map(() => {
+                    this.notificationService.success(
+                        'Exportation',
+                        'Exportation réussie'
+                    )
+                })
+            )
+        },
+        { dispatch: false }
+    )
+
+    exportAllFailure$ = createEffect(
+        () => {
+            return this.actions$.pipe(
+                ofType(this.entityActions.exportAllFailure),
+                map(() => {
+                    this.notificationService.error(
+                        'Exportation',
+                        "Echec de l'exportation"
+                    )
+                })
+            )
+        },
+        { dispatch: false }
+    )
 
     exportSelection$ = createEffect(() => {
         return this.actions$.pipe(
