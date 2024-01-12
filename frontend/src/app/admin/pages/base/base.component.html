@@ -7,6 +7,7 @@
     [paginationResult$]="paginationResult$"
     (sortChange)="onSortChange($event)"
     [sortState]="sortState"
+    (exportAll)="exportAll()"
     (pageChange)="onPageChange($event)">
     <!-- tbody -->
     @if (paginationResult$ | async; as pagination) {

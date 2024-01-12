@@ -52,6 +52,7 @@ export class AdminQuizDefaultComponent extends BaseAdminComponent<QuizDefault> {
         plural: 'quiz généraux',
         masculin: true,
         subtitle: 'Ajouter, modifier et supprimer des quiz généraux',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<QuizDefault> = {
         onEdit: this.editOne,

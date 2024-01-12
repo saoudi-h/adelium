@@ -180,4 +180,9 @@ export class BaseAdminComponent<T extends Identifiable>
     getIconComponent(iconName: string) {
         return this.iconService.getIconComponent(iconName)
     }
+
+    exportAll() {
+        console.log('export all')
+        this.store.dispatch(this.actions.exportAll())
+    }
 }

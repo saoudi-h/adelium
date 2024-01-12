@@ -35,6 +35,7 @@ export class AdminRolesComponent extends BaseAdminComponent<Role> {
         plural: 'roles',
         masculin: true,
         subtitle: 'Ajouter, modifier et supprimer des rôles',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<Role> = {
         onEdit: this.editOne,

@@ -52,6 +52,7 @@ export class AdminQuizMcqComponent extends BaseAdminComponent<QuizMcq> {
         plural: 'quiz a choix multiples',
         masculin: true,
         subtitle: 'Ajouter, modifier et supprimer des quiz a choix multiples',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<QuizMcq> = {
         onEdit: this.editOne,

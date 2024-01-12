@@ -47,6 +47,7 @@ export class AdminOptionTrueFalseComponent extends BaseAdminComponent<OptionTrue
         plural: 'options vrai ou faux',
         masculin: true,
         subtitle: 'Ajouter, modifier et supprimer des options vrai ou faux',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<OptionTrueFalse> = {
         onEdit: this.editOne,
@@ -71,7 +72,7 @@ export class AdminOptionTrueFalseComponent extends BaseAdminComponent<OptionTrue
             {
                 id: 'type',
                 type: HiddenInput,
-                default: 'default',
+                default: 'true-false',
                 label: 'Type',
                 hide: true,
             },

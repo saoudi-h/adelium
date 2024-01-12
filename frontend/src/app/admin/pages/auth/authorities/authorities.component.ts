@@ -34,6 +34,7 @@ export class AdminAuthoritiesComponent extends BaseAdminComponent<Authority> {
         plural: 'autorisations',
         masculin: true,
         subtitle: 'Ajouter, modifier et supprimer des autorisations',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<Authority> = {
         onEdit: this.editOne,

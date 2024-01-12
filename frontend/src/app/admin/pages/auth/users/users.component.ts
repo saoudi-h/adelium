@@ -47,6 +47,7 @@ import { UserAdminTrComponent } from './user-admin-tr.component'
         (pageChange)="onPageChange($event)"
         (sortChange)="onSortChange($event)"
         (sizeChange)="onSizeChange($event)"
+        (exportAll)="exportAll()"
         [sortState]="sortState">
         @if (error$ | async; as errorMessage) {
             <div>error : {{ errorMessage }}</div>
@@ -91,6 +92,7 @@ export class AdminUsersComponent extends BaseAdminComponent<User> {
         title: 'Utilisateurs',
         name: 'utilisateur',
         plural: 'utilisateurs',
+        exportable: true,
         masculin: true,
         tableLabels: [
             { label: 'Utilisateur', sortable: true, sortField: 'username' },

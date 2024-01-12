@@ -42,13 +42,18 @@ import { AdminConfig } from './admin-config.types'
                     </div>
 
                     <div>
-                        <div class="join grid grid-cols-2">
-                            <button class="btn btn-outline join-item">
-                                <div export-icon className="h-6 w-6"></div>
-                                <div class="hidden sm:flex md:hidden xl:flex">
-                                    Exporter
-                                </div>
-                            </button>
+                        <div class="join">
+                            @if (config.exportable) {
+                                <button
+                                    class="btn btn-outline join-item"
+                                    (click)="onExport()">
+                                    <div export-icon className="h-6 w-6"></div>
+                                    <div
+                                        class="hidden sm:flex md:hidden xl:flex">
+                                        Exporter
+                                    </div>
+                                </button>
+                            }
                             <button
                                 class="btn btn-outline join-item"
                                 (click)="onAdd()">
@@ -200,6 +205,7 @@ import { AdminConfig } from './admin-config.types'
 })
 export class ViewLayoutComponent {
     @Output() add = new EventEmitter<void>()
+    @Output() exportAll = new EventEmitter<void>()
     @Output() pageChange = new EventEmitter<number>()
     @Output() sortChange = new EventEmitter<string>()
     @Output() sizeChange = new EventEmitter<number>()
@@ -224,5 +230,10 @@ export class ViewLayoutComponent {
 
     onSizeChange(size: number): void {
         this.sizeChange.emit(size)
+    }
+
+    onExport(): void {
+        console.log('on export')
+        this.exportAll.emit()
     }
 }

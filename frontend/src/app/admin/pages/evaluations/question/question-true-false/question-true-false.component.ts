@@ -46,6 +46,7 @@ export class AdminQuestionTrueFalseComponent extends BaseAdminComponent<Question
         plural: 'questions Vrai ou Faux',
         masculin: true,
         subtitle: 'Ajouter, modifier et supprimer des questions Vrai ou Faux',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<QuestionTrueFalse> = {
         onEdit: this.editOne,
@@ -70,7 +71,7 @@ export class AdminQuestionTrueFalseComponent extends BaseAdminComponent<Question
             {
                 id: 'type',
                 type: HiddenInput,
-                default: 'default',
+                default: 'true-false',
                 label: 'Type',
                 hide: true,
             },

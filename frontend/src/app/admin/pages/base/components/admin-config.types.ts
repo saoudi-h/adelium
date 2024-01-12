@@ -9,4 +9,5 @@ export interface AdminConfig {
         sortField: string
     }[]
     subtitle: string
+    exportable?: boolean
 }

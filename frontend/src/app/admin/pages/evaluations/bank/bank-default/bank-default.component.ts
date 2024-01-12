@@ -48,18 +48,19 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
     override isLoading$!: Observable<boolean>
     override error$!: Observable<string | null>
     override config: AdminConfig = {
-        title: 'Bank généraux',
-        name: 'bank général',
-        plural: 'bank généraux',
+        title: 'Banques générales',
+        name: 'banque général',
+        plural: 'banques générales',
         masculin: true,
-        subtitle: 'Ajouter, modifier et supprimer des bank généraux',
+        subtitle: 'Ajouter, modifier et supprimer des banques générales',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<BankDefault> = {
         onEdit: this.editOne,
         onAdd: this.addOne,
         selectTransactionStatus: this.selectTransactionStatus,
         actionType: 'add',
-        title: 'Bank général',
+        title: 'Banque général',
         id: 'bank-default',
         actions: [
             {
@@ -86,7 +87,7 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
                 sortable: true,
                 type: TitleInput,
                 label: 'Nom',
-                placeholder: 'Nom du bank',
+                placeholder: 'Nom de la banque',
                 validators: [Validators.required, Validators.maxLength(50)],
             },
             {
@@ -94,7 +95,7 @@ export class AdminBankDefaultComponent extends BaseAdminComponent<BankDefault> {
                 sortable: true,
                 type: TextInput,
                 label: 'Description',
-                placeholder: 'Description du bank',
+                placeholder: 'Description de la banque',
                 validators: [Validators.required],
             },
             {

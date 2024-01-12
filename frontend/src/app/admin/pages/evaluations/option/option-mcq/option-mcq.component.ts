@@ -45,6 +45,7 @@ export class AdminOptionMcqComponent extends BaseAdminComponent<OptionMcq> {
         masculin: true,
         subtitle:
             'Ajouter, modifier et supprimer des options a choix multiples',
+        exportable: true,
     }
     override entityFormModel: EntityFormModel<OptionMcq> = {
         onEdit: this.editOne,
@@ -69,7 +70,7 @@ export class AdminOptionMcqComponent extends BaseAdminComponent<OptionMcq> {
             {
                 id: 'type',
                 type: HiddenInput,
-                default: 'default',
+                default: 'mcq',
                 label: 'Type',
                 hide: true,
             },
