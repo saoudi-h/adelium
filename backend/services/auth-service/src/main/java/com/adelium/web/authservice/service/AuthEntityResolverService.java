@@ -3,6 +3,7 @@ package com.adelium.web.authservice.service;
 
 import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.authservice.entity.User;
+import com.adelium.web.authservice.repository.AuthorityRepository;
 import com.adelium.web.authservice.repository.RoleRepository;
 import com.adelium.web.authservice.repository.UserRepository;
 import com.adelium.web.common.utility.EntityResolver;
@@ -19,10 +20,15 @@ public class AuthEntityResolverService implements EntityResolver {
 
     private final Map<String, RepositoryAndClassPair<?>> entityResolverMap;
 
-    public AuthEntityResolverService(UserRepository userRepository, RoleRepository roleRepository) {
+    public AuthEntityResolverService(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            AuthorityRepository authorityRepository) {
         this.entityResolverMap = new HashMap<>();
-        entityResolverMap.put("User", new RepositoryAndClassPair<>(userRepository, User.class));
-        entityResolverMap.put("Role", new RepositoryAndClassPair<>(roleRepository, Role.class));
+        entityResolverMap.put("users", new RepositoryAndClassPair<>(userRepository, User.class));
+        entityResolverMap.put("roles", new RepositoryAndClassPair<>(roleRepository, Role.class));
+        entityResolverMap.put(
+                "authorities", new RepositoryAndClassPair<>(authorityRepository, Role.class));
     }
 
     @Override
