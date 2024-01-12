@@ -133,7 +133,7 @@ export class AsideComponent {
                 {
                     type: 'menu',
                     id: 'bank',
-                    text: 'Bank',
+                    text: 'Banques',
                     adminOnly: false,
                     icon: 'bank-icon',
                     subMenuItems: [

@@ -88,7 +88,7 @@ const routes: Routes = [
                         './pages/evaluations/bank/bank-default/bank-default.component'
                     ).then(mod => mod.AdminBankDefaultComponent),
                 data: {
-                    breadcrumb: 'Bank généraux',
+                    breadcrumb: 'Banques générales',
                     icon: 'bank-icon',
                     active: true,
                 },
