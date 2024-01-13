@@ -22,6 +22,7 @@ import { LogoutIconComponent } from '@shared/components/icons/logout-icon.compon
 import { MediaIconComponent } from '@shared/components/icons/media-icon.component'
 import { MinusIconComponent } from '@shared/components/icons/minus-icon.component'
 import { NotFoundIconComponent } from '@shared/components/icons/not-found-icon.component'
+import { OauthIconComponent } from '@shared/components/icons/oauth-icon.component'
 import { OptionIconComponent } from '@shared/components/icons/option-icon.component'
 import { ProfileIconComponent } from '@shared/components/icons/profile.component'
 import { QuestionIconComponent } from '@shared/components/icons/question-icon.component'
@@ -117,6 +118,8 @@ export class IconService {
                 return MinusIconComponent
             case 'media-icon':
                 return MediaIconComponent
+            case 'oauth-icon':
+                return OauthIconComponent
             default:
                 return null
         }
