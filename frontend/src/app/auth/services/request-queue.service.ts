@@ -2,7 +2,6 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { AppState } from '@reducers'
 import * as RequestQueueActions from '@store/request-queue/request-queue.actions'
 import { Observable, forkJoin } from 'rxjs'
 
@@ -13,7 +12,7 @@ import { Observable, forkJoin } from 'rxjs'
  * Service for managing a request queue.
  */
 export class RequestQueueService {
-    constructor(private store: Store<AppState>) {}
+    constructor(private store: Store) {}
 
     /**
      * Enqueues a request to the request queue.
