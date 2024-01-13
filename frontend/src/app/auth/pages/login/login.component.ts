@@ -6,6 +6,7 @@ import { UserLogin } from '@core/dto/UserLogin'
 import { Store } from '@ngrx/store'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import * as AuthActions from '@store/auth/auth.actions'
+import { GithubOauthActions } from '@store/auth/oauth2/github/github-oauth.actions'
 import { SvgLoginComponent } from './svg-login.component'
 @Component({
     selector: 'app-login',
@@ -44,5 +45,13 @@ export class LoginComponent {
 
         const userLogin: UserLogin = this.loginForm.value as UserLogin
         this.store.dispatch(AuthActions.login({ userLogin }))
+    }
+
+    googleLogin() {
+        // TODO: implement
+        // this.store.dispatch(GoogleOauthActions.startGoogleLogin())
+    }
+    githubLogin() {
+        this.store.dispatch(GithubOauthActions.startLogin())
     }
 }
