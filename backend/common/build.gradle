@@ -4,7 +4,7 @@
 plugins {
     id 'com.adelium.web.common-conventions'
     id 'java-library'
-    id 'org.springframework.boot' version '3.1.5' apply false
+    id 'org.springframework.boot' version '3.2.1' apply false
     id 'io.spring.dependency-management' version '1.1.4'
 }
 

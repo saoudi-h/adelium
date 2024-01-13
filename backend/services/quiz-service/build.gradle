@@ -1,7 +1,7 @@
 plugins {
     id 'com.adelium.web.common-conventions'
-    id 'org.springframework.boot' version '3.1.5'
-    id 'io.spring.dependency-management' version '1.1.4'
+    alias libs.plugins.plugin.spring.boot
+    alias libs.plugins.plugin.spring.dependency.management
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
@@ -20,10 +20,13 @@ dependencies {
     implementation libs.spring.boot.data.rest
     implementation libs.spring.cloud.starter.openfeign
     implementation libs.mapstruct
-    implementation libs.javafaker
     annotationProcessor libs.mapstruct.processor
     compileOnly libs.lombok
     developmentOnly libs.spring.boot.devtools
     annotationProcessor libs.lombok
     testImplementation libs.spring.security.test
+    implementation(libs.javafaker) {
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+    implementation libs.yaml.snakeyaml
 }

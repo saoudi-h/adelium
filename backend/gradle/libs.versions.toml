@@ -1,19 +1,23 @@
 [versions]
-spring-boot = "3.1.5"
-spring-cloud-eureka = "4.0.3"
-spring-cloud-gateway = "4.0.8"
-spring-cloud-config = "4.0.4"
-spring-cloud-openfeign = "4.0.4"
-spring-security = "6.1.5"
-java-format = "1.18.1"
+spring-boot = "3.2.1"
+spring-cloud-eureka = "4.1.0"
+spring-cloud-gateway = "4.1.1"
+spring-cloud-config = "4.1.0"
+spring-cloud-openfeign = "4.1.0"
+spring-security = "6.2.1"
+java-format = "1.19.2"
 mysql = "8.2.0"
 jjwt = "0.12.3"
 lombok = "1.18.30"
-springdoc-openapi = "2.2.0"
+springdoc-openapi = "2.3.0"
 mapstruct = "1.5.5.Final"
 mapstruct-lombok = "0.2.0"
 javafaker-version = "1.0.2"
 apache-commons-csv = "1.10.0"
+spring-dependency-management = "1.1.4"
+apache-commons = "3.14.0"
+snakeyaml = "2.2"
+
 
 [libraries]
 spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
@@ -48,8 +52,13 @@ mapstruct-lombok = { module = "org.projectlombok:lombok-mapstruct-binding", vers
 spring-boot-starter-cache = { module = "org.springframework.boot:spring-boot-starter-cache", version.ref = "spring-boot" }
 javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker-version" }
 apache-commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "apache-commons-csv" }
+spring-boot-starter-oauth2-client = { module = "org.springframework.boot:spring-boot-starter-oauth2-client", version.ref = "spring-boot" }
+apache-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "apache-commons" }
+yaml-snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+
 
 
 
 [plugins]
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+plugin-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+plugin-spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
