@@ -10,6 +10,18 @@ const routes: Routes = [
         canActivate: [notAuthGuard],
         children: [
             {
+                path: 'login/oauth2/code/:provider',
+                loadComponent: () =>
+                    import('./pages/login/oauth-callback.component').then(
+                        mod => mod.OauthCallbackComponent
+                    ),
+                data: {
+                    breadcrumb: 'OAuth',
+                    icon: 'oauth-icon',
+                    active: true,
+                },
+            },
+            {
                 path: 'login',
                 loadComponent: () =>
                     import('./pages/login/login.component').then(
