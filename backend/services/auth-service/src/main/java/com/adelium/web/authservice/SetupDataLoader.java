@@ -8,6 +8,7 @@ import com.adelium.web.authservice.entity.User;
 import com.adelium.web.authservice.repository.AuthorityRepository;
 import com.adelium.web.authservice.repository.RoleRepository;
 import com.adelium.web.authservice.repository.UserRepository;
+import com.adelium.web.authservice.service.UserService;
 import com.github.javafaker.Faker;
 import jakarta.transaction.Transactional;
 import java.util.Arrays;
@@ -44,6 +45,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private final AuthorityRepository authorityRepository;
 
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     private final Faker faker = new Faker();
 
@@ -112,6 +114,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                         .phone(phone)
                         .password(passwordEncoder.encode(password))
                         .roles(Set.of(role))
+                        .avatar(userService.getGravatar(email, firstname, lastname))
                         .enabled(true)
                         .address(
                                 Address.builder()
