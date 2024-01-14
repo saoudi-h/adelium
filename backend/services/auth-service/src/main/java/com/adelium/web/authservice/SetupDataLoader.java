@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
@@ -103,23 +104,24 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             String phone,
             String password,
             Role role) {
-        User user = new User();
-        user.setUsername(email);
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setPhone(phone);
-        user.setPassword(passwordEncoder.encode(password));
-        user.getRoles().add(role);
-        user.setEnabled(true);
-        user.setAddress(
-                Address.builder()
-                        .streetNumber(faker.address().streetAddressNumber())
-                        .street(faker.address().streetName())
-                        .postalCode(faker.address().zipCode())
-                        .city(faker.address().city())
-                        .country(faker.address().country())
+        userRepository.save(
+                User.builder()
+                        .username(email)
+                        .firstname(firstname)
+                        .lastname(lastname)
+                        .phone(phone)
+                        .password(passwordEncoder.encode(password))
+                        .roles(Set.of(role))
+                        .enabled(true)
+                        .address(
+                                Address.builder()
+                                        .streetNumber(faker.address().streetAddressNumber())
+                                        .street(faker.address().streetName())
+                                        .postalCode(faker.address().zipCode())
+                                        .city(faker.address().city())
+                                        .country(faker.address().country())
+                                        .build())
                         .build());
-        userRepository.save(user);
     }
 
     /**
