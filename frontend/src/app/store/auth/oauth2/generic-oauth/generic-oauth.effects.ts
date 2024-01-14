@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import { NotificationService } from '@core/services/notification.service'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { catchError, map, mergeMap, of } from 'rxjs'
+import * as AuthActions from '../../auth.actions'
 import { OauthActions } from './generic-oauth.actions'
 import { GenericOauthService } from './generic-oauth.service'
 
@@ -48,6 +49,13 @@ export abstract class GenericOauthEffects {
                     )
                 )
             )
+        )
+    })
+
+    tokenExchangeSuccess$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.oauthActions.tokenExchangeSuccess),
+            map(token => AuthActions.loginSuccess(token))
         )
     })
 }
