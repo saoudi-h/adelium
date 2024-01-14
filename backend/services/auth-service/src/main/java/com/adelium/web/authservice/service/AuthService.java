@@ -45,6 +45,7 @@ public class AuthService {
     private final UserDetailsMapper userDetailsMapper;
     private final TokenService tokenService;
     private final RoleRepository roleRepository;
+    private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     /**
@@ -62,6 +63,9 @@ public class AuthService {
         var user = userDetailsMapper.toEntity(userDetailsDTO);
         user.setRoles(Set.of(userRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAvatar(
+                userService.getGravatar(
+                        user.getUsername(), user.getFirstname(), user.getLastname()));
         try {
             var savedUser = userRepository.save(user);
             var jwtToken = tokenService.generateToken(user);
@@ -88,7 +92,7 @@ public class AuthService {
      * @param user    the user
      * @param jwtToken the JWT token to save
      */
-    private void saveUserToken(User user, String jwtToken, Token refreshToken) {
+    public void saveUserToken(User user, String jwtToken, Token refreshToken) {
         var token =
                 Token.builder()
                         .user(user)
@@ -101,7 +105,7 @@ public class AuthService {
         tokenRepository.save(token);
     }
 
-    private Token saveRefreshToken(User user, String refreshToken) {
+    public Token saveRefreshToken(User user, String refreshToken) {
         var token =
                 Token.builder()
                         .user(user)
