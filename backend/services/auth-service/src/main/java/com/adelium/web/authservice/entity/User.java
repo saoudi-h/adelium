@@ -5,13 +5,7 @@ import com.adelium.web.common.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -61,7 +55,8 @@ public class User extends BaseEntity<Long> implements UserDetails {
      * The Phone number of the user.
      */
     @Column(nullable = false)
-    private String phone;
+    @Builder.Default
+    private String phone = "0000000000";
 
     /**
      * Is the user account expired?
@@ -178,13 +173,18 @@ public class User extends BaseEntity<Long> implements UserDetails {
     @JsonIgnore
     private Set<Token> tokens = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @Builder.Default
+    @JsonIgnore
+    private Set<OAuthAccount> oAuthAccounts = new HashSet<>();
+
     /**
      * The address of the user.
      *
      * @see Address
      */
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = true)
     private Address address;
 
     /**
@@ -193,6 +193,10 @@ public class User extends BaseEntity<Long> implements UserDetails {
      */
     @Column(nullable = true)
     private String avatar;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean isOAuthAccount = false;
 
     /**
      * The date of creation of the user.
@@ -217,7 +221,6 @@ public class User extends BaseEntity<Long> implements UserDetails {
     protected void onCreate() {
         createdAt = new Date();
         updatedAt = new Date();
-        avatar = getGravatar(this.username, this.firstname, this.lastname);
     }
 
     /**
@@ -228,47 +231,6 @@ public class User extends BaseEntity<Long> implements UserDetails {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
-    }
-
-    /**
-     * Return the avatar of the user.
-     * from Gravatar if exists, from ui-avatars.com otherwise
-     *
-     * @see <a href="https://fr.gravatar.com/">Gravatar</a>
-     * @see <a href="https://ui-avatars.com/">ui-avatars.com</a>
-     *
-     * @param email the email of the user
-     * @param firstname the firstname of the user
-     * @param lastname the lastname of the user
-     * @return the avatar of the user, null if an error occurs
-     */
-    private static String getGravatar(String email, String firstname, String lastname) {
-        try {
-            String trimmedEmail = email.trim().toLowerCase();
-
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-            md.update(trimmedEmail.getBytes());
-
-            byte[] bytes = md.digest();
-
-            StringBuilder sb = new StringBuilder();
-            for (byte b : bytes) {
-                sb.append(String.format("%02x", b));
-            }
-            String encodedName =
-                    URLEncoder.encode(firstname + ' ' + lastname, StandardCharsets.UTF_8);
-
-            return String.format(
-                    "https://www.gravatar.com/avatar/%s?d=%s",
-                    sb.toString(),
-                    URLEncoder.encode(
-                            "https://ui-avatars.com/api/" + encodedName + "/" + 128,
-                            StandardCharsets.UTF_8));
-
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
     }
 
     /**
