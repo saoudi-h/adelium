@@ -2,8 +2,9 @@ server:
   port: 8888
 
 spring:
-  config:
+  application:
     name: config-service
+  config:
     import: application-secret.yaml
   cloud:
     config:
