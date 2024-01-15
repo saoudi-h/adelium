@@ -9,6 +9,16 @@ export const environment = {
     authorityEndPoint: '/api/v1/auth/authorities',
     maxRefreshAttempts: 3,
 
+    // Oauth2
+
+    // Github
+    githubRedirectUrl: 'http://127.0.0.1:4200/auth/login/oauth2/code/github',
+    githubLoginUrl: 'https://github.com/login/oauth/authorize',
+
+    // Google
+    googleRedirectUrl: 'http://127.0.0.1:4200/login/oauth2/code/google',
+    googleLoginUrl: '/oauth2/authorization/google',
+
     // Quiz-service
     quizServiceUrl: '/api/v1/quiz',
     quizDefaultUrl: '/api/v1/quiz/quiz-defaults',
