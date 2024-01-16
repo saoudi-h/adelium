@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { DefaultLayoutComponent } from '@shared/layouts/default-layout.component'
-import { notAuthGuard } from './guards/not-auth.guard'
+import { anonymousGuard } from './guards/anonymous.guard'
 
 const routes: Routes = [
     {
         path: '',
         component: DefaultLayoutComponent,
-        canActivate: [notAuthGuard],
+        canActivate: [anonymousGuard],
         children: [
             {
                 path: 'login/oauth2/code/:provider',
                 loadComponent: () =>
-                    import('./pages/login/oauth-callback.component').then(
+                    import('./pages/oauth/oauth-callback.component').then(
                         mod => mod.OauthCallbackComponent
                     ),
                 data: {

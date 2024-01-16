@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store'
 import * as AuthSelectors from '@store/auth/auth.selectors'
 import { map, take } from 'rxjs'
 
-export const notAuthGuard: CanActivateFn = () => {
+export const anonymousGuard: CanActivateFn = () => {
     const store = inject(Store)
     const router = inject(Router)
     return store.select(AuthSelectors.selectIsLoggedIn).pipe(
