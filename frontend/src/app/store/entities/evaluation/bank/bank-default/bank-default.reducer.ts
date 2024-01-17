@@ -2,7 +2,7 @@ import { BankDefault } from '@core/entity/evaluation/bank-default.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { BankDefaultActions } from './bank-default.actions'
 import { bankDefaultAdapter } from './bank-default.adapter'
 

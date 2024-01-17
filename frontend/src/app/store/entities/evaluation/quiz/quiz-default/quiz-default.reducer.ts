@@ -2,7 +2,7 @@ import { QuizDefault } from '@core/entity/evaluation/quiz-default.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { QuizDefaultActions } from './quiz-default.actions'
 import { quizDefaultAdapter } from './quiz-default.adapter'
 

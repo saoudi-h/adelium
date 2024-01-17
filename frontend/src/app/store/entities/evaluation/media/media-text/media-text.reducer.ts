@@ -2,7 +2,7 @@ import { MediaText } from '@core/entity/evaluation/media-text.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { MediaTextActions } from './media-text.actions'
 import { mediaTextAdapter } from './media-text.adapter'
 

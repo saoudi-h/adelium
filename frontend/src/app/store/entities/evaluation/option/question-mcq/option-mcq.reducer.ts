@@ -2,7 +2,7 @@ import { OptionMcq } from '@core/entity/evaluation/option-mcq.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { OptionMcqActions } from './option-mcq.actions'
 import { optionMcqAdapter } from './option-mcq.adapter'
 

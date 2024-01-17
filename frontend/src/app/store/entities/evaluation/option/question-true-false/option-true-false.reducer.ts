@@ -2,7 +2,7 @@ import { OptionTrueFalse } from '@core/entity/evaluation/option-true-false.entit
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { OptionTrueFalseActions } from './option-true-false.actions'
 import { optionTrueFalseAdapter } from './option-true-false.adapter'
 

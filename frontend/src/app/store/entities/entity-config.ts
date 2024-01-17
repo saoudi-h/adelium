@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { environment } from 'src/environments/environment.development'
-import { RoleActions } from './entities/auth/role/role.actions'
-import { UserActions } from './entities/auth/user/user.actions'
-import { BankDefaultActions } from './entities/evaluation/bank/bank-default/bank-default.actions'
-import { OptionMcqActions } from './entities/evaluation/option/question-mcq/option-mcq.actions'
-import { OptionTrueFalseActions } from './entities/evaluation/option/question-true-false/option-true-false.actions'
-import { QuestionMcqActions } from './entities/evaluation/question/question-mcq/question-mcq.actions'
-import { QuestionTrueFalseActions } from './entities/evaluation/question/question-true-false/question-true-false.actions'
-import { QuizDefaultActions } from './entities/evaluation/quiz/quiz-default/quiz-default.actions'
-import { QuizMcqActions } from './entities/evaluation/quiz/quiz-mcq/quiz-mcq.actions'
-import { TagActions } from './entities/evaluation/tag/tag.actions'
+import { RoleActions } from './auth/role/role.actions'
+import { UserActions } from './auth/user/user.actions'
+import { BankDefaultActions } from './evaluation/bank/bank-default/bank-default.actions'
+import { OptionMcqActions } from './evaluation/option/question-mcq/option-mcq.actions'
+import { OptionTrueFalseActions } from './evaluation/option/question-true-false/option-true-false.actions'
+import { QuestionMcqActions } from './evaluation/question/question-mcq/question-mcq.actions'
+import { QuestionTrueFalseActions } from './evaluation/question/question-true-false/question-true-false.actions'
+import { QuizDefaultActions } from './evaluation/quiz/quiz-default/quiz-default.actions'
+import { QuizMcqActions } from './evaluation/quiz/quiz-mcq/quiz-mcq.actions'
+import { TagActions } from './evaluation/tag/tag.actions'
 
 export const entityConfig: {
     [key: string]: { actions: any; relations: any; uri?: string }

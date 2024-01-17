@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { Role } from '@core/entity/auth/role.entity'
 import { NotificationService } from '@core/services/notification.service'
 import { Actions } from '@ngrx/effects'
-import { GenericEffects } from '@store/generic/generic.effects'
+import { GenericEffects } from '@store/entities/generic/generic.effects'
 import { RoleActions } from './role.actions'
 import { RoleService } from './role.service'
 

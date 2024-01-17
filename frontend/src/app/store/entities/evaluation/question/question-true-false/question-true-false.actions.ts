@@ -1,5 +1,5 @@
 import { QuestionTrueFalse } from '@core/entity/evaluation/question-true-false.entity'
-import { createEntityActions } from '@store/generic/generic.actions'
+import { createEntityActions } from '@store/entities/generic/generic.actions'
 
 export const QuestionTrueFalseActions = createEntityActions<QuestionTrueFalse>(
     'Question-true-false'

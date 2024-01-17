@@ -2,7 +2,7 @@ import { QuestionMcq } from '@core/entity/evaluation/question-mcq.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { QuestionMcqActions } from './question-mcq.actions'
 import { questionMcqAdapter } from './question-mcq.adapter'
 

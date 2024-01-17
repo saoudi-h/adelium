@@ -2,7 +2,7 @@ import { Authority } from '@core/entity/auth/authority.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { AuthorityActions } from './authority.actions'
 import { authorityAdapter } from './authority.adapter'
 

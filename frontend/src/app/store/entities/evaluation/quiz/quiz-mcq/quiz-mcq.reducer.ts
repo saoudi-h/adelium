@@ -2,7 +2,7 @@ import { QuizMcq } from '@core/entity/evaluation/quiz-mcq.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { QuizMcqActions } from './quiz-mcq.actions'
 import { quizMcqAdapter } from './quiz-mcq.adapter'
 

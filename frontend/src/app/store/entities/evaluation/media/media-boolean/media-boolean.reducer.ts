@@ -2,7 +2,7 @@ import { MediaBoolean } from '@core/entity/evaluation/media-boolean.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { MediaBooleanActions } from './media-boolean.actions'
 import { mediaBooleanAdapter } from './media-boolean.adapter'
 

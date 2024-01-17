@@ -2,7 +2,7 @@ import { Tag } from '@core/entity/evaluation/tag.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { TagActions } from './tag.actions'
 import { tagAdapter } from './tag.adapter'
 

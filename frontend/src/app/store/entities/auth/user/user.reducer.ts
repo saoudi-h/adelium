@@ -2,7 +2,7 @@ import { User } from '@core/entity/auth/user.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { UserActions } from './user.actions'
 import { userAdapter } from './user.adapter'
 

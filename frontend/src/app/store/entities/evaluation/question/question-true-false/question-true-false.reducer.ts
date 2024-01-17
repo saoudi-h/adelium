@@ -2,7 +2,7 @@ import { QuestionTrueFalse } from '@core/entity/evaluation/question-true-false.e
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { QuestionTrueFalseActions } from './question-true-false.actions'
 import { questionTrueFalseAdapter } from './question-true-false.adapter'
 

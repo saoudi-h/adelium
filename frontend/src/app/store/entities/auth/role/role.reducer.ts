@@ -2,7 +2,7 @@ import { Role } from '@core/entity/auth/role.entity'
 import {
     ExtendedState,
     createGenericReducer,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { RoleActions } from './role.actions'
 import { roleAdapter } from './role.adapter'
 
