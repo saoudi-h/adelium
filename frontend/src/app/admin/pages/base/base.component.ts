@@ -9,13 +9,13 @@ import { ModalService } from '@core/services/modal.service'
 import { Store } from '@ngrx/store'
 import { AppState } from '@reducers'
 import { SharedModule } from '@shared/shared.module'
-import { EntityActions } from '@store/generic/generic.actions'
+import { EntityActions } from '@store/entities/generic/generic.actions'
 import {
     PaginationParams,
     PaginationResult,
     SortCriterion,
-} from '@store/generic/generic.reducer'
-import { EntitySelectors } from '@store/generic/generic.selectors'
+} from '@store/entities/generic/generic.reducer'
+import { EntitySelectors } from '@store/entities/generic/generic.selectors'
 import { Observable, Subscription, catchError, first, of, tap } from 'rxjs'
 import { baseAnimations } from './base-animations.animation'
 import { BaseTrComponent } from './base-tr.component'

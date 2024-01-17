@@ -10,7 +10,7 @@ import {
     PaginationParams,
     PaginationResult,
     SortCriterion,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { Observable } from 'rxjs'
 import { AdminConfig } from './admin-config.types'
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ValidatorFn } from '@angular/forms'
 import { Identifiable } from '@core/entity/identifiable.interface'
-import { TransactionStatus } from '@store/generic/generic.reducer'
+import { TransactionStatus } from '@store/entities/generic/generic.reducer'
 import { Observable } from 'rxjs'
 import { DynamicOptions } from './forms.utility'
 

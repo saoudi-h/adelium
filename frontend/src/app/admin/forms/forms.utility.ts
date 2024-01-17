@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Store } from '@ngrx/store'
-import { EntityActions } from '@store/generic/generic.actions'
+import { EntityActions } from '@store/entities/generic/generic.actions'
 import {
     PaginationParams,
     PaginationResult,
-} from '@store/generic/generic.reducer'
-import { EntitySelectors } from '@store/generic/generic.selectors'
+} from '@store/entities/generic/generic.reducer'
+import { EntitySelectors } from '@store/entities/generic/generic.selectors'
 import { Observable, map, switchMap } from 'rxjs'
 import { Identifiable } from './../../core/entity/identifiable.interface'
 

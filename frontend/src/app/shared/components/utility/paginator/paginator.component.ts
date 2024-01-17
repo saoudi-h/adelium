@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Input, Output } from '@angular/core'
-import { PaginationResult } from '@store/generic/generic.reducer'
+import { PaginationResult } from '@store/entities/generic/generic.reducer'
 import { Observable } from 'rxjs'
 
 /**

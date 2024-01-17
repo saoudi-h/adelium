@@ -13,7 +13,7 @@ import { FieldStatusComponent } from '@shared/components/form/field-status.compo
 import {
     PaginationParams,
     PaginationResult,
-} from '@store/generic/generic.reducer'
+} from '@store/entities/generic/generic.reducer'
 import { Observable, Subscription, tap } from 'rxjs'
 import { FormField } from '../../forms.types'
 
