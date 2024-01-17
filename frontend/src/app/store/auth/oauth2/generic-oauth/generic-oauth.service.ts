@@ -12,6 +12,8 @@ export abstract class GenericOauthService {
     protected abstract clientId: string
     protected abstract redirectUrl: string
     protected abstract provider: string
+    protected abstract scope: string
+    protected abstract responseType: string | undefined
 
     constructor(
         protected http: HttpClient,
@@ -19,20 +21,21 @@ export abstract class GenericOauthService {
     ) {}
 
     getUrl(): string {
-        return `${this.loginUrl}?client_id=${this.clientId}&redirect_uri=${this.redirectUrl}&scope=user&response_type=code`
+        return `${this.loginUrl}?client_id=${this.clientId}&redirect_uri=${this.redirectUrl}&scope=${this.scope}&response_type=${this.responseType}`
     }
     startLogin(): void {
+        console.log('service.startLogin')
+        console.log('this.getUrl() : ', this.getUrl())
         window.location.href = this.getUrl()
     }
 
     exchangeCodeForToken(code: string): Observable<Token> {
-        const url = `${this.authServiceUrl}/oauth/token/${this.provider}`
+        const url = `${this.authServiceUrl}/oauth/token/code/${this.provider}`
         return this.http.post<Token>(url, code)
     }
 
-    // // Obtenez le profil utilisateur
-    // getUserProfile(): Observable<any> {
-    //     const url = `${this.backendUrl}/oauth/user`
-    //     return this.http.get<any>(url)
-    // }
+    exchangeTokenForToken(code: string): Observable<Token> {
+        const url = `${this.authServiceUrl}/oauth/token/token/${this.provider}`
+        return this.http.post<Token>(url, code)
+    }
 }

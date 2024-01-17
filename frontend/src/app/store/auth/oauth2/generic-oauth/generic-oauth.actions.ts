@@ -7,7 +7,7 @@ export function createOauthActions(provider: string) {
         startLogin: createAction(`[Auth][${provider}]  Start Login`),
         loginRedirectSuccess: createAction(
             `[Auth][${provider}] Login Redirect Success`,
-            props<{ code: string }>()
+            props<{ isToken: boolean; code: string }>()
         ),
         loginRedirectFailure: createAction(
             `[Auth][${provider}] Login Redirect Failure`,
@@ -18,14 +18,27 @@ export function createOauthActions(provider: string) {
             `[Auth][${provider}] Exchange Code for Token`,
             props<{ code: string }>()
         ),
-        tokenExchangeSuccess: createAction(
+        exchangeCodeForTokenFailure: createAction(
+            `[Auth][${provider}]  Code Exchange Failure`,
+            props<{ error: any }>()
+        ),
+        exchangeCodeForTokenSuccess: createAction(
+            `[Auth][${provider}]  Code Exchange Success`,
+            props<{ token: Token }>()
+        ),
+        exchangeTokenForToken: createAction(
+            `[Auth][${provider}] Exchange Token for Token`,
+            props<{ token: string }>()
+        ),
+        exchangeTokenForTokenSuccess: createAction(
             `[Auth][${provider}]  Token Exchange Success`,
             props<{ token: Token }>()
         ),
-        tokenExchangeFailure: createAction(
+        exchangeTokenForTokenFailure: createAction(
             `[Auth][${provider}]  Token Exchange Failure`,
             props<{ error: any }>()
         ),
+
         fetchUser: createAction(`[Auth][${provider}]  Fetch User`),
         userFetchSuccess: createAction(
             `[Auth][${provider}]  User Fetch Success`,

@@ -17,7 +17,7 @@ export function createGenericOauthReducer(
     return createReducer(
         initialState,
         on(
-            actions.tokenExchangeSuccess,
+            actions.exchangeCodeForTokenSuccess,
             (state, { token }): OauthState => ({
                 ...state,
                 token,
@@ -26,7 +26,24 @@ export function createGenericOauthReducer(
             })
         ),
         on(
-            actions.tokenExchangeFailure,
+            actions.exchangeCodeForTokenFailure,
+            (state, { error }): OauthState => ({
+                ...state,
+                error,
+                isAuthenticated: false,
+            })
+        ),
+        on(
+            actions.exchangeTokenForTokenSuccess,
+            (state, { token }): OauthState => ({
+                ...state,
+                token,
+                isAuthenticated: true,
+                error: null,
+            })
+        ),
+        on(
+            actions.exchangeTokenForTokenFailure,
             (state, { error }): OauthState => ({
                 ...state,
                 error,

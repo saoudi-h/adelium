@@ -28,7 +28,11 @@ export abstract class GenericOauthEffects {
     loginRedirectSuccess$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(this.oauthActions.loginRedirectSuccess),
-            map(({ code }) => this.oauthActions.exchangeCodeForToken({ code }))
+            map(({ code, isToken }) =>
+                isToken
+                    ? this.oauthActions.exchangeTokenForToken({ token: code })
+                    : this.oauthActions.exchangeCodeForToken({ code })
+            )
         )
     })
 
@@ -38,11 +42,33 @@ export abstract class GenericOauthEffects {
             mergeMap(({ code }) =>
                 this.oauthService.exchangeCodeForToken(code).pipe(
                     map(token =>
-                        this.oauthActions.tokenExchangeSuccess({ token })
+                        this.oauthActions.exchangeCodeForTokenSuccess({ token })
                     ),
                     catchError(error =>
                         of(
-                            this.oauthActions.tokenExchangeFailure({
+                            this.oauthActions.exchangeCodeForTokenFailure({
+                                error,
+                            })
+                        )
+                    )
+                )
+            )
+        )
+    })
+
+    exchangeTokenForToken$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(this.oauthActions.exchangeTokenForToken),
+            mergeMap(({ token }) =>
+                this.oauthService.exchangeTokenForToken(token).pipe(
+                    map(token =>
+                        this.oauthActions.exchangeTokenForTokenSuccess({
+                            token,
+                        })
+                    ),
+                    catchError(error =>
+                        of(
+                            this.oauthActions.exchangeTokenForTokenFailure({
                                 error,
                             })
                         )
@@ -54,7 +80,10 @@ export abstract class GenericOauthEffects {
 
     tokenExchangeSuccess$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(this.oauthActions.tokenExchangeSuccess),
+            ofType(
+                this.oauthActions.exchangeTokenForTokenSuccess,
+                this.oauthActions.exchangeCodeForTokenSuccess
+            ),
             map(token => AuthActions.loginSuccess(token))
         )
     })
