@@ -12,6 +12,8 @@ export class GithubOauthService extends GenericOauthService {
     protected clientId = environment.githubClientId
     protected redirectUrl = environment.githubRedirectUrl
     protected provider = 'github'
+    protected scope = 'user:email'
+    protected responseType = 'code'
 
     constructor(http: HttpClient, router: Router) {
         super(http, router)
