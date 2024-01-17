@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store'
 import { FieldStatusComponent } from '@shared/components/form/field-status.component'
 import * as AuthActions from '@store/auth/auth.actions'
 import { GithubOauthActions } from '@store/auth/oauth2/github/github-oauth.actions'
+import { GoogleOauthActions } from '@store/auth/oauth2/google/google-oauth.actions'
 import { SvgLoginComponent } from './svg-login.component'
 @Component({
     selector: 'app-login',
@@ -48,8 +49,7 @@ export class LoginComponent {
     }
 
     googleLogin() {
-        // TODO: implement
-        // this.store.dispatch(GoogleOauthActions.startGoogleLogin())
+        this.store.dispatch(GoogleOauthActions.startLogin())
     }
     githubLogin() {
         this.store.dispatch(GithubOauthActions.startLogin())
