@@ -4,12 +4,6 @@
             <div class="flex flex-col items-center justify-center gap-6">
                 <div class="text-center lg:text-left">
                     <h1 class="font-serif text-res-h1 font-bold">
-                        @if (error$ | async; as error) {
-                            <span class="text-red-500">{{ error }}</span>
-                        } @else {
-                            <span class="text-primary">Bienvenue</span>
-                        }
-
                         Connection à votre compte {{ provider }}
                     </h1>
                     <p

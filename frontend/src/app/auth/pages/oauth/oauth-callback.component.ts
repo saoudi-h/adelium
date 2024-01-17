@@ -28,10 +28,10 @@ export class OauthCallbackComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.subscribe(params => {
             this.provider = params['provider']
-            const provider =
+            const providerConfig =
                 providersMap[this.provider as keyof typeof providersMap]
 
-            if (!provider) {
+            if (!providerConfig) {
                 this.notificationService.error(
                     'Erreur de connexion',
                     "Une erreur est survenue lors de l'authentification. Veuillez réessayer plus tard."
@@ -40,36 +40,57 @@ export class OauthCallbackComponent implements OnInit {
                 this.goToLoginPage()
                 return
             }
-
-            this.route.queryParams.subscribe(queryParams => {
-                const code = queryParams['code']
-                if (code) {
-                    this.store.dispatch(
-                        provider.actions.loginRedirectSuccess({ code })
-                    )
-                    this.error$ = this.store.select(
-                        provider.selectors.selectAuthError
-                    )
-                } else if (queryParams['error']) {
-                    this.notificationService.error(
-                        'Erreur de connexion',
-                        "Une erreur est survenue lors de l'authentification. Veuillez réessayer plus tard."
-                    )
-                    this.store.dispatch(
-                        provider.actions.loginRedirectFailure({
-                            error: {
-                                error: queryParams['error'],
-                                errorDescription:
-                                    queryParams['error_description'],
-                                errorUri: queryParams['error_uri'],
-                            },
-                        })
-                    )
-                    this.goToLoginPage()
-                } else {
-                    this.goToLoginPage()
-                }
-            })
+            if (providerConfig.receiveToken) {
+                this.route.fragment.subscribe(fragment => {
+                    const accessToken = fragment
+                        ? new URLSearchParams(fragment).get('access_token')
+                        : null
+                    if (accessToken) {
+                        this.store.dispatch(
+                            providerConfig.actions.loginRedirectSuccess({
+                                isToken: true,
+                                code: accessToken,
+                            })
+                        )
+                        this.error$ = this.store.select(
+                            providerConfig.selectors.selectAuthError
+                        )
+                    }
+                })
+            } else {
+                this.route.queryParams.subscribe(queryParams => {
+                    const code = queryParams['code']
+                    if (code) {
+                        this.store.dispatch(
+                            providerConfig.actions.loginRedirectSuccess({
+                                isToken: false,
+                                code,
+                            })
+                        )
+                        this.error$ = this.store.select(
+                            providerConfig.selectors.selectAuthError
+                        )
+                    } else if (queryParams['error']) {
+                        this.notificationService.error(
+                            'Erreur de connexion',
+                            "Une erreur est survenue lors de l'authentification. Veuillez réessayer plus tard."
+                        )
+                        this.store.dispatch(
+                            providerConfig.actions.loginRedirectFailure({
+                                error: {
+                                    error: queryParams['error'],
+                                    errorDescription:
+                                        queryParams['error_description'],
+                                    errorUri: queryParams['error_uri'],
+                                },
+                            })
+                        )
+                        this.goToLoginPage()
+                    } else {
+                        this.goToLoginPage()
+                    }
+                })
+            }
         })
     }
 
