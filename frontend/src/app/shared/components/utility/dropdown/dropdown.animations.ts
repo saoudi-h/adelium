@@ -13,30 +13,26 @@ export const dropdownAnimation = trigger('dropdown', [
         style({
             opacity: 0,
             overflow: 'hidden',
-            display: 'none',
         })
     ),
     state(
         'open',
         style({
             opacity: 1,
-            display: 'block',
         })
     ),
     transition(
         'closed => open',
         animate(
-            '400ms ease-out',
+            '{{openDuration}}ms ease-out',
             keyframes([
                 style({
                     transform: 'translate3d(0, -100%, 0) skewY(-30deg)',
                     opacity: 0,
-                    display: 'none',
                 }),
                 style({
                     transform: 'skewY(20deg)',
                     opacity: 1,
-                    display: 'block',
                 }),
                 style({
                     transform: 'skewY(-5deg)',
@@ -51,17 +47,20 @@ export const dropdownAnimation = trigger('dropdown', [
     ),
     transition(
         'open => closed',
-        animate(
-            '400ms ease-out',
-            keyframes([
-                style({
-                    opacity: 1,
-                }),
-                style({
-                    transform: 'translate3d(100%, 0, 0) skewX(30deg)',
-                    opacity: 0,
-                }),
-            ])
-        )
+        [
+            animate(
+                '{{closeDuration}}ms ease-out',
+                keyframes([
+                    style({
+                        opacity: 1,
+                    }),
+                    style({
+                        transform: 'translate3d(100%, 0, 0) skewX(30deg)',
+                        opacity: 0,
+                    }),
+                ])
+            ),
+        ],
+        { params: { openDuration: 400, closeDuration: 400 } }
     ),
 ])
