@@ -1,4 +1,5 @@
 import { Injectable, Type } from '@angular/core'
+import { AboutIconComponent } from '@shared/components/icons/about-icon.component'
 import { AddIconComponent } from '@shared/components/icons/add-icon.component'
 import { AdminIconComponent } from '@shared/components/icons/admin-icon.component'
 import { AnnouncementsIconComponent } from '@shared/components/icons/announcements-icon.component'
@@ -6,7 +7,9 @@ import { AssessmentIconComponent } from '@shared/components/icons/assessment-ico
 import { AuthIconComponent } from '@shared/components/icons/auth-icon.component'
 import { AuthorityIconComponent } from '@shared/components/icons/authority-icon.component'
 import { BankIconComponent } from '@shared/components/icons/bank-icon.component'
+import { BusinessIconComponent } from '@shared/components/icons/business-icon.component'
 import { CategoriesIconComponent } from '@shared/components/icons/categories-icon.component'
+import { ChevronIconComponent } from '@shared/components/icons/chevron-icon.component'
 import { CloseIconComponent } from '@shared/components/icons/close-icon.component'
 import { CoursesIconComponent } from '@shared/components/icons/courses-icon.component'
 import { DeleteIconComponent } from '@shared/components/icons/delete-icon.component'
@@ -29,11 +32,13 @@ import { QuestionIconComponent } from '@shared/components/icons/question-icon.co
 import { QuizIconComponent } from '@shared/components/icons/quiz-icon.component'
 import { RegisterIconComponent } from '@shared/components/icons/register-icon.component'
 import { ReportsComponent } from '@shared/components/icons/reports-icon.component'
+import { ResourcesIconComponent } from '@shared/components/icons/resources-icon.component'
 import { RoleIconComponent } from '@shared/components/icons/role-icon.component'
 import { SaveIconComponent } from '@shared/components/icons/save-icon.component'
 import { SettingsIconComponent } from '@shared/components/icons/settings-icon.component'
 import { SuccessIconComponent } from '@shared/components/icons/success-icon.component'
 import { TagIconComponent } from '@shared/components/icons/tag-icon.component'
+import { TrainingIconComponent } from '@shared/components/icons/training-icon.component'
 import { TrainingManagementIconComponent } from '@shared/components/icons/training-management-icon.component'
 import { UsersIconComponent } from '@shared/components/icons/users-icon.component'
 import { WarningIconComponent } from '@shared/components/icons/warning-icon.component'
@@ -120,6 +125,16 @@ export class IconService {
                 return MediaIconComponent
             case 'oauth-icon':
                 return OauthIconComponent
+            case 'training-icon':
+                return TrainingIconComponent
+            case 'business-icon':
+                return BusinessIconComponent
+            case 'resources-icon':
+                return ResourcesIconComponent
+            case 'about-icon':
+                return AboutIconComponent
+            case 'chevron-icon':
+                return ChevronIconComponent
             default:
                 return null
         }
