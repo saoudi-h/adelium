@@ -15,22 +15,18 @@ public class GoogleUserInfoParser implements UserInfoParser {
 
         try {
             JsonNode rootNode = mapper.readTree(userInfoJson);
-            String username = rootNode.get("login").asText();
-            int oAuthId = rootNode.get("id").asInt();
-            String avatar = rootNode.get("avatar_url").asText();
-            String name = rootNode.get("name").asText();
-            String email = rootNode.get("email").asText();
-            String firstName = name.split(" ")[0];
-            String lastName = name.split(" ")[1];
-            String profileUrl = rootNode.get("html_url").asText();
+            String username = rootNode.get("email").asText();
+            String oAuthId = rootNode.get("sub").asText();
+            String avatar = rootNode.get("picture").asText();
+            String firstName = rootNode.get("given_name").asText();
+            String lastName = rootNode.get("family_name").asText();
             return OAuthUser.builder()
-                    .oAuthId(String.valueOf(oAuthId))
-                    .email(email)
+                    .oAuthId(oAuthId)
+                    .email(username)
                     .firstname(firstName)
                     .lastname(lastName)
                     .username(username)
                     .avatar(avatar)
-                    .profile(profileUrl)
                     .build();
         } catch (Exception e) {
             return null;

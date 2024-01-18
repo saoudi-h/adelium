@@ -6,6 +6,8 @@ import com.adelium.web.authservice.entity.OAuthAccount;
 import com.adelium.web.authservice.entity.Role;
 import com.adelium.web.authservice.entity.User;
 import com.adelium.web.authservice.exception.RoleNotFoundException;
+import com.adelium.web.authservice.exception.TokenGenerationException;
+import com.adelium.web.authservice.exception.TokenRetrievalException;
 import com.adelium.web.authservice.oauth.config.ProviderConfig;
 import com.adelium.web.authservice.oauth.factory.UserInfoParserFactory;
 import com.adelium.web.authservice.oauth.parser.UserInfoParser;
@@ -16,10 +18,7 @@ import com.adelium.web.authservice.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +28,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * This class is responsible for handling OAuth authentication.
+ * <p>
+ * It is responsible for exchanging an OAuth code for an access token,
+ * exchanging an access token for a user info and creating a user if it does not exist.
+ * </p>
+ */
 @RequiredArgsConstructor
 @Service
 public class OAuthService {
@@ -44,21 +50,51 @@ public class OAuthService {
     private final Logger logger = LoggerFactory.getLogger(OAuthService.class);
 
     public ResponseEntity<?> exchangeCodeForToken(String providerName, String code) {
-        logger.info("exchangeCodeForToken");
-        logger.info("providerName : " + providerName);
+        return exchangeForToken(providerName, code, true);
+    }
+
+    public ResponseEntity<?> exchangeTokenForToken(String providerName, String token) {
+        return exchangeForToken(providerName, token, false);
+    }
+
+    private ResponseEntity<?> exchangeForToken(
+            String providerName, String codeOrToken, boolean isCode) {
         ProviderConfig config = providerConfigs.get(providerName);
         if (config == null) {
             return ResponseEntity.badRequest()
-                    .body("Fournisseur OAuth non supporté : " + providerConfigs);
+                    .body("Unsupported OAuth provider: " + providerConfigs);
         }
 
-        ResponseEntity<String> response = requestToken(config, code);
+        String accessToken = isCode ? getAccessToken(codeOrToken, config) : codeOrToken;
+        OAuthUser oAuthUser = getOAuthUser(accessToken, config);
+        if (oAuthUser == null) {
+            logger.error("Failed to get OAuth user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-        return handleTokenResponse(response, config);
+        User user = getUser(oAuthUser, config);
+        if (user == null) {
+            logger.error("Failed to get user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return generateTokens(user);
     }
 
-    private ResponseEntity<String> requestToken(ProviderConfig config, String code) {
-        logger.info("requestToken");
+    private User getUser(OAuthUser oAuthUser, ProviderConfig config) {
+        if (oAuthUser == null) {
+            return null;
+        }
+
+        Optional<User> optionalUser = userRepository.findByUsername(oAuthUser.getUsername());
+        return optionalUser
+                .map(user -> updateUserInfo(user, oAuthUser))
+                .orElseGet(() -> getUserByAccountOrCreate(oAuthUser, config));
+    }
+
+    private String getAccessToken(String code, ProviderConfig config)
+            throws TokenRetrievalException, TokenGenerationException {
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -72,13 +108,10 @@ public class OAuthService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-        return restTemplate.postForEntity(
-                config.getProvider().getTokenUri(), request, String.class);
-    }
+        ResponseEntity<String> response =
+                restTemplate.postForEntity(
+                        config.getProvider().getTokenUri(), request, String.class);
 
-    public ResponseEntity<?> handleTokenResponse(
-            ResponseEntity<String> response, ProviderConfig config) {
-        logger.info("handleTokenResponse");
         if (response.getStatusCode() == HttpStatus.OK) {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
@@ -86,51 +119,20 @@ public class OAuthService {
 
                 if (rootNode.has("access_token")
                         && !rootNode.get("access_token").asText().isEmpty()) {
-                    String accessToken = rootNode.get("access_token").asText();
-                    OAuthUser oAuthUser = getOAuthUser(accessToken, config);
-                    System.out.println("oAuthUser : " + oAuthUser);
-                    if (oAuthUser == null) {
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body("Erreur lors de l'analyse de la réponse OAuth.");
-                    }
-
-                    User user = null;
-                    boolean isUserExist = false;
-
-                    Optional<User> optionalUser =
-                            userRepository.findByUsername(oAuthUser.getUsername());
-                    if (optionalUser.isPresent()) {
-                        isUserExist = true;
-                        user = optionalUser.get();
-                    } else {
-                        user = processOAuthUser(oAuthUser, config);
-                        logger.info("user : " + user);
-                    }
-                    if (isUserExist) {
-                        logger.info("user exist");
-                        updateUserInfo(user, oAuthUser);
-                        user = userRepository.save(user);
-                    }
-                    logger.info("before generateTokens");
-                    return generateTokens(user);
+                    return rootNode.get("access_token").asText();
 
                 } else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body("L'access_token est manquant ou invalide.");
+                    throw new TokenGenerationException("L'access_token est manquant ou invalide.");
                 }
             } catch (IOException e) {
-                logger.error("Erreur lors de l'analyse de la réponse OAuth.");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Erreur lors de l'analyse de la réponse OAuth.");
+                throw new RuntimeException("Erreur lors de l'analyse de la réponse OAuth.");
             }
         } else {
-            return ResponseEntity.status(response.getStatusCode())
-                    .body("Erreur lors de l'obtention du token OAuth.");
+            throw new TokenRetrievalException("Erreur lors de l'obtention du token OAuth.");
         }
     }
 
-    private User processOAuthUser(OAuthUser oAuthUser, ProviderConfig config) {
-        logger.info("processOAuthUser");
+    private User getUserByAccountOrCreate(OAuthUser oAuthUser, ProviderConfig config) {
         String providerName = config.getName();
 
         Optional<OAuthAccount> existingAccount =
@@ -142,12 +144,8 @@ public class OAuthService {
             updateUserInfo(user, oAuthUser);
             return userRepository.save(user);
         } else {
-            logger.info("before createNewUser");
             User newUser = createNewUser(oAuthUser, config);
-            logger.info("after createNewUser");
-            logger.info("newUser : " + newUser);
             User savedUser = userRepository.save(newUser);
-            logger.info("savedUser : " + savedUser);
 
             OAuthAccount newOAuthAccount =
                     OAuthAccount.builder()
@@ -156,14 +154,11 @@ public class OAuthService {
                             .user(savedUser)
                             .build();
             oAuthAccountRepository.save(newOAuthAccount);
-            logger.info("newOAuthAccount : " + newOAuthAccount);
-
             return savedUser;
         }
     }
 
     private ResponseEntity<TokensDTO> generateTokens(User user) {
-        logger.info("generateTokens");
         try {
             var jwtToken = tokenService.generateToken(user);
             var jwtRefreshToken = tokenService.generateRefreshToken(user);
@@ -203,8 +198,7 @@ public class OAuthService {
         return user;
     }
 
-    public OAuthUser getOAuthUser(String accessToken, ProviderConfig config) {
-        logger.info("getOAuthUser");
+    private OAuthUser getOAuthUser(String accessToken, ProviderConfig config) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setBearerAuth(accessToken);
@@ -219,22 +213,19 @@ public class OAuthService {
 
         UserInfoParser parser = UserInfoParserFactory.getParser(config.getName());
         try {
-            logger.info("response.getBody() : " + response.getBody());
-            var userParsed = parser.parse(response.getBody());
-            logger.info("userParsed : " + userParsed);
-            return userParsed;
+            return parser.parse(response.getBody());
         } catch (Exception e) {
             logger.error("Error while parsing user info", e);
             return null;
         }
     }
 
-    private void updateUserInfo(User user, OAuthUser oAuthUser) {
-        logger.info("updateUserInfo");
+    private User updateUserInfo(User user, OAuthUser oAuthUser) {
         user.setAvatar(oAuthUser.getAvatar());
         user.setFirstname(oAuthUser.getFirstname());
         user.setLastname(oAuthUser.getLastname());
         user.setUsername(oAuthUser.getUsername());
         user.setAvatar(oAuthUser.getAvatar());
+        return user;
     }
 }

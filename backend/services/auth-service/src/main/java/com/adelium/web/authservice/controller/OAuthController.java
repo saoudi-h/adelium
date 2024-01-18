@@ -13,9 +13,15 @@ public class OAuthController {
 
     private final OAuthService service;
 
-    @PostMapping("/token/{provider}")
+    @PostMapping("/token/code/{provider}")
     public ResponseEntity<?> exchangeCodeForToken(
             @PathVariable String provider, @RequestBody String code) {
         return service.exchangeCodeForToken(provider, code);
+    }
+
+    @PostMapping("/token/token/{provider}")
+    public ResponseEntity<?> exchangeTokenForToken(
+            @PathVariable String provider, @RequestBody String token) {
+        return service.exchangeTokenForToken(provider, token);
     }
 }
