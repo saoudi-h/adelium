@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common'
 import { Component, Input } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
+import { menuData } from '@data/menu.data'
 import { LogoWidgetComponent } from '../widgets/logo/logo.component'
 import { NavUserWidgetComponent } from '../widgets/nav-user/nav-user.component'
 import { NotificatorWidgetComponent } from '../widgets/notificator/notificator.component'
 import { SearchWidgetComponent } from '../widgets/search/search.component'
 import { ThemeSwitcherWidgetComponent } from '../widgets/theme-switcher/theme-switcher.component'
 import { MegaMenuComponent } from './mega-menu.component'
+import { NavMenuComponent } from './nav-menu/nav-menu.component'
 
 @Component({
-    selector: 'app-navbar',
+    selector: '[nav-header]',
     standalone: true,
     template: `<header
         class="sticky top-0 z-30 flex h-16 w-full justify-center border-b border-base-300 bg-base-300/50 bg-hero-pattern text-base-content backdrop-blur-lg transition-all duration-100">
@@ -35,30 +37,20 @@ import { MegaMenuComponent } from './mega-menu.component'
                     </label>
                 </div>
                 <a
+                    logo-widget
                     class="btn btn-ghost text-xl normal-case"
                     routerLink="/"
-                    routerLinkActive="router-link-active"
-                    ><div logo-widget></div>
+                    routerLinkActive="router-link-active">
                 </a>
             </div>
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1">
-                    <li><a>Item 1</a></li>
-                    <li tabindex="0">
-                        <details>
-                            <summary>Parent</summary>
-                            <ul
-                                class="menu dropdown-content menu-sm left-[-50%] z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow xl:menu-horizontal lg:min-w-max"
-                                tabindex="0"
-                                megaMenu></ul>
-                        </details>
-                    </li>
-                    <li><a>Item 3</a></li>
-                </ul>
-            </div>
+
+            <div
+                class="navbar-center hidden lg:block"
+                nav-menu
+                [menu]="menuData"></div>
             <div class="navbar-end">
-                <div theme-switcher-widget></div>
-                <div search-widget></div>
+                <div theme-switcher-widget class="hidden lg:block"></div>
+                <div search-widget class="hidden lg:block"></div>
                 <div notificator-widget></div>
                 <div nav-user-widget></div>
             </div>
@@ -74,8 +66,10 @@ import { MegaMenuComponent } from './mega-menu.component'
         NotificatorWidgetComponent,
         NavUserWidgetComponent,
         LogoWidgetComponent,
+        NavMenuComponent,
     ],
 })
-export class NavbarComponent {
+export class NavHeaderComponent {
     @Input() headerWide = false
+    menuData = menuData
 }

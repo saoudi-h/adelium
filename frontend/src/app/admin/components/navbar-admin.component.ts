@@ -5,7 +5,7 @@ import { NavUserWidgetComponent } from '@shared/components/widgets/nav-user/nav-
 import { NotificatorWidgetComponent } from '@shared/components/widgets/notificator/notificator.component'
 import { SearchWidgetComponent } from '@shared/components/widgets/search/search.component'
 import { ThemeSwitcherWidgetComponent } from '@shared/components/widgets/theme-switcher/theme-switcher.component'
-import { MegaMenuComponent } from '../../shared/components/navbar/mega-menu.component'
+import { MegaMenuComponent } from '../../shared/components/header/mega-menu.component'
 import { LogoWidgetComponent } from '../../shared/components/widgets/logo/logo.component'
 
 @Component({
