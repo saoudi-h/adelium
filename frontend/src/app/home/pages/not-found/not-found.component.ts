@@ -21,7 +21,7 @@ import { SvgNotFoundComponent } from './svg-not-found.component'
                     </h1>
                     <p
                         class="py-4 font-light text-base-content/60 md:text-lg xl:text-2xl">
-                        Sorry, the page you are looking for could not be found.
+                        Désolé, la page que vous recherchez est introuvable.
                     </p>
                     <a
                         class="btn btn-primary btn-lg font-normal"
