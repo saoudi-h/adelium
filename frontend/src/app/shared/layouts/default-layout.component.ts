@@ -1,8 +1,9 @@
 import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
+import { AsideFrontComponent } from '@shared/components/aside/aside-front.component'
 import { FooterComponent } from '@shared/components/footer/footer.component'
-import { MegaMenuComponent } from '@shared/components/navbar/mega-menu.component'
-import { NavbarComponent } from '@shared/components/navbar/navbar.component'
+import { MegaMenuComponent } from '@shared/components/header/mega-menu.component'
+import { NavHeaderComponent } from '@shared/components/header/nav-header.component'
 import { ModalComponent } from '@shared/components/utility/modals/modal.component'
 import { BreadcrumbsComponent } from '@shared/components/widgets/breadcrumbs/breadcrumbs.component'
 import { NotificatorContainerComponent } from '@shared/components/widgets/notificator/notificator-container.component'
@@ -23,7 +24,7 @@ import { SharedModule } from '@shared/shared.module'
             <!-- Page -->
             <div class="drawer-content flex flex-col">
                 <!-- Nav Bar -->
-                <app-navbar class="sticky top-0 z-30" />
+                <div nav-header class="sticky top-0 z-30"></div>
                 <!-- Page content -->
                 <div
                     class="relative flex grow flex-col justify-between overflow-hidden">
@@ -42,7 +43,8 @@ import { SharedModule } from '@shared/shared.module'
                     for="my-drawer-3"
                     aria-label="close sidebar"
                     class="drawer-overlay"></label>
-                <ul class="menu min-h-full w-80 bg-base-200 p-4" megaMenu></ul>
+                <div aside-front></div>
+                <!-- <ul class="menu min-h-full w-80 bg-base-200 p-4" megaMenu></ul> -->
             </div>
         </div>
     `,
@@ -55,13 +57,14 @@ import { SharedModule } from '@shared/shared.module'
     ],
     imports: [
         FooterComponent,
-        NavbarComponent,
+        NavHeaderComponent,
         RouterModule,
         MegaMenuComponent,
         BreadcrumbsComponent,
         SharedModule,
         ModalComponent,
         NotificatorContainerComponent,
+        AsideFrontComponent,
     ],
 })
 export class DefaultLayoutComponent {}
