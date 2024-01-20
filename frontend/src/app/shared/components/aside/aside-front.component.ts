@@ -46,7 +46,10 @@ import { MenuAsideFrontComponent } from './menu-aside-front.component'
                     <div search-widget [alwaysOpen]="true" width="19rem"></div>
                 </div>
             </div>
-            <ul menu-aside-front [menu]="menu" class="menu w-full"></ul>
+            <ul
+                menu-aside-front
+                [menu]="menu"
+                class="flex flex-col gap-2 px-2 py-2"></ul>
         </aside>
     `,
 })
