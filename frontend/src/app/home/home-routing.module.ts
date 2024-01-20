@@ -20,6 +20,18 @@ const routes: Routes = [
                 },
             },
             {
+                path: 'about',
+                loadComponent: () =>
+                    import('./pages/about/about.component').then(
+                        mod => mod.AboutComponent
+                    ),
+                data: {
+                    breadcrumb: 'À propos',
+                    icon: 'info-icon',
+                    active: true,
+                },
+            },
+            {
                 path: '**',
                 loadComponent: () =>
                     import('./pages/not-found/not-found.component').then(
