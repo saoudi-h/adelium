@@ -1,28 +1,36 @@
-<footer class="footer bg-base-200 p-2 text-base-content md:p-10">
+<footer class="footer bg-base-200 p-2 py-10 text-base-content md:p-10">
     <div class="container footer mx-auto justify-items-center gap-6">
         @for (section of footer.main.sections; track section) {
             <nav class="justify-items-center md:justify-items-start">
-                <header class="footer-title">{{ section.title }}</header>
+                <header
+                    class="font-serif text-base font-bold md:text-lg xl:text-xl">
+                    {{ section.title }}
+                </header>
                 @for (link of section.links; track link) {
-                    <a class="link-hover link" [href]="link.url">{{
-                        link.label
-                    }}</a>
+                    <a
+                        class="link-hover link font-light text-base-content/60 md:text-base xl:text-lg"
+                        [href]="link.url"
+                        >{{ link.label }}</a
+                    >
                 }
             </nav>
         }
 
         <form>
-            <header class="footer-title">
+            <header
+                class="font-serif text-base font-bold md:text-lg xl:text-xl">
                 {{ footer.main.newsLetter.title }}
             </header>
-            <p class="footer-subtitle max-w-sm">
+            <p
+                class="footer-subtitle max-w-sm font-light text-base-content/60 md:text-base xl:text-lg">
                 {{ footer.main.newsLetter.description }}
             </p>
             <fieldset class="form-control w-80">
                 <label class="label" for="">
-                    <span class="label-text">{{
-                        footer.main.newsLetter.form.placeholder
-                    }}</span>
+                    <span
+                        class="label-text font-serif text-sm font-normal md:text-base xl:text-lg"
+                        >{{ footer.main.newsLetter.form.placeholder }}</span
+                    >
                 </label>
                 <div class="relative">
                     <input
@@ -42,7 +50,10 @@
     class="footer border-t border-base-300 bg-base-300/50 bg-hero-pattern px-10 py-4">
     <aside class="grid-flow-col items-center">
         <div logo-widget className=""></div>
-        <p>{{ footer.bottom.copyright }}</p>
+        <p
+            class="font-sans font-light text-base-content/60 md:text-base xl:text-lg">
+            {{ footer.bottom.copyright }}
+        </p>
     </aside>
     <nav class="md:place-self-center md:justify-self-end">
         <div class="grid grid-flow-col gap-4">
