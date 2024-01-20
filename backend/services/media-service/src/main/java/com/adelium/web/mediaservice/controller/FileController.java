@@ -22,7 +22,7 @@ public class FileController {
     @PostMapping("/upload/{isPublic}")
     public ResponseEntity<UploadResponse> uploadPublicFile(
             @RequestParam("file") MultipartFile file,
-            @PathVariable boolean isPublic,
+            @PathVariable("isPublic") boolean isPublic,
             Principal principal) {
         String fileName = fileStorageService.storeFile(file, isPublic, principal.getName());
         String fileDownloadUri =
@@ -37,7 +37,9 @@ public class FileController {
 
     @GetMapping("/{isPublic}/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(
-            @PathVariable String fileName, @PathVariable boolean isPublic, Principal principal) {
+            @PathVariable("fileName") String fileName,
+            @PathVariable boolean isPublic,
+            Principal principal) {
 
         Resource resource =
                 isPublic

@@ -30,7 +30,7 @@ public class UserController {
      * @return the ResponseEntity containing the UserDetailsDTO
      */
     @GetMapping("/by-username/{username}")
-    public ResponseEntity<UserDetailsDTO> getUser(@PathVariable String username) {
+    public ResponseEntity<UserDetailsDTO> getUser(@PathVariable("username") String username) {
         return userRepository
                 .findByUsername(username)
                 .map(userDetailsMapper::toDTO)

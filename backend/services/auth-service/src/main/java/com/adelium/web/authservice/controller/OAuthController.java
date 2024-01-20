@@ -15,13 +15,13 @@ public class OAuthController {
 
     @PostMapping("/token/code/{provider}")
     public ResponseEntity<?> exchangeCodeForToken(
-            @PathVariable String provider, @RequestBody String code) {
+            @PathVariable("provider") String provider, @RequestBody String code) {
         return service.exchangeCodeForToken(provider, code);
     }
 
     @PostMapping("/token/token/{provider}")
     public ResponseEntity<?> exchangeTokenForToken(
-            @PathVariable String provider, @RequestBody String token) {
+            @PathVariable("provider") String provider, @RequestBody String token) {
         return service.exchangeTokenForToken(provider, token);
     }
 }

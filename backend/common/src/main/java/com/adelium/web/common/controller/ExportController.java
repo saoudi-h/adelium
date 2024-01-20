@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +25,10 @@ public class ExportController {
     private final ExportService exportService;
     private final EntityResolver entityResolver;
 
+    private final Logger logger = LoggerFactory.getLogger(ExportController.class);
+
     @GetMapping("/export/csv/{entity}/all")
-    public ResponseEntity<byte[]> exportAll(@PathVariable String entity) {
+    public ResponseEntity<byte[]> exportAll(@PathVariable("entity") String entity) {
         Optional<RepositoryAndClassPair<?>> resolvedEntity = entityResolver.resolveEntity(entity);
 
         if (resolvedEntity.isEmpty()) {
