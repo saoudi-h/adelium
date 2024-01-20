@@ -23,6 +23,7 @@ import { InfoIconComponent } from '@shared/components/icons/info-icon.component'
 import { LoginIconComponent } from '@shared/components/icons/login-icon.component'
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component'
 import { MediaIconComponent } from '@shared/components/icons/media-icon.component'
+import { MinimizeIconComponent } from '@shared/components/icons/minimize-icon.component'
 import { MinusIconComponent } from '@shared/components/icons/minus-icon.component'
 import { NotFoundIconComponent } from '@shared/components/icons/not-found-icon.component'
 import { OauthIconComponent } from '@shared/components/icons/oauth-icon.component'
@@ -135,6 +136,8 @@ export class IconService {
                 return AboutIconComponent
             case 'chevron-icon':
                 return ChevronIconComponent
+            case 'minimize-icon':
+                return MinimizeIconComponent
             default:
                 return null
         }
