@@ -16,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * BaseOption is an abstract class that represents a basic implementation of the Option interface.
  * It provides common fields and methods for all Option implementations.
+ *
  * @param <O> the type of the option's original media
  * @param <E> the type of the option's edited media
  */

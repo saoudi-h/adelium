@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * This interface represents an option in a quiz. It is a generic interface that can be implemented with different types of options.
+ *
  * @param <O> the type of media used in the option
  * @param <E> the type of media used in the explanation
  */

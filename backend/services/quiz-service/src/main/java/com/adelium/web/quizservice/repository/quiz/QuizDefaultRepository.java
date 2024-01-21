@@ -15,8 +15,7 @@ import org.springframework.stereotype.Repository;
  *
  * @see BaseRepository
  * @see QuizDefault
- *
- * */
+ */
 @Repository
 @Transactional
 @RepositoryRestResource(collectionResourceRel = "quizDefaults", path = "quiz-defaults")

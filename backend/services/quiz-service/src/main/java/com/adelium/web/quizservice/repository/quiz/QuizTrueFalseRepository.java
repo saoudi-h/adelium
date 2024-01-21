@@ -16,8 +16,7 @@ import org.springframework.stereotype.Repository;
  *
  * @see BaseRepository
  * @see QuizMCQ
- *
- * */
+ */
 @Repository
 @Transactional
 @RepositoryRestResource(collectionResourceRel = "quizzesTrueFalse", path = "quiz_true_false")

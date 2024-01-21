@@ -9,6 +9,7 @@ import java.util.Set;
 /**
  * The Question interface represents a question in a quiz.
  * It is a generic interface that can be implemented with different types of media.
+ *
  * @param <T> the type of media associated with the question
  * @see Media
  * @see Serializable

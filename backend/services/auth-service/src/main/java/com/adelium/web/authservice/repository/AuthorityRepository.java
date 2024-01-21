@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 /**
  * Repository interface for managing Authority entities.
  * <p>
- *     The @RepositoryRestResource annotation is used to customize the REST endpoint.
- *     It is used to change the path of the endpoint, and the name of the collection.
- *     The path is the part of the URL after the application name.
+ * The @RepositoryRestResource annotation is used to customize the REST endpoint.
+ * It is used to change the path of the endpoint, and the name of the collection.
+ * The path is the part of the URL after the application name.
  * </p>
  *
  * @see BaseRepository

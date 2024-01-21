@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * Represents a true/false quiz question.
- *
+ * <p>
  * Extends the AbstractQuestion class and implements the Propositional interface.
  */
 @EqualsAndHashCode(callSuper = true)

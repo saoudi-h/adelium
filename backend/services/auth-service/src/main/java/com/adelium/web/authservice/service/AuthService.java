@@ -89,7 +89,7 @@ public class AuthService {
     /**
      * Saves the user token.
      *
-     * @param user    the user
+     * @param user     the user
      * @param jwtToken the JWT token to save
      */
     public void saveUserToken(User user, String jwtToken, Token refreshToken) {

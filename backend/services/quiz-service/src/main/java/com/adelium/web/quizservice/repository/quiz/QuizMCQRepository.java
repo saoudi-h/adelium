@@ -15,8 +15,7 @@ import org.springframework.stereotype.Repository;
  *
  * @see BaseRepository
  * @see QuizMCQ
- *
- * */
+ */
 @Repository
 @Transactional
 @RepositoryRestResource(collectionResourceRel = "quizMcqs", path = "quiz-mcqs")

@@ -12,7 +12,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  * It provides methods to perform CRUD operations on Base entities in the database.
  *
  * @param <Model> the type of the model
- * @param <ID> the type of the model's ID
+ * @param <ID>    the type of the model's ID
  * @see JpaRepository
  * @see BaseEntity
  */

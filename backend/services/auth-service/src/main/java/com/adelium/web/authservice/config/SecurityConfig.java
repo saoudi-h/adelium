@@ -33,7 +33,9 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final UnauthorizedHandler unauthorizedHandler;
     private final ForbiddenHandler forbiddenHandler;
-    private static final String[] ADMIN_URL = {"/users/**", "/roles/**", "/authorities/**"};
+    private static final String[] ADMIN_URL = {
+        "/users/**", "/roles/**", "/authorities/**", "/export/**"
+    };
 
     private static final String[] WHITE_LIST_URL = {
         "/auth/refresh",
@@ -46,9 +48,7 @@ public class SecurityConfig {
         "/swagger-resources/**",
     };
 
-    private static final String[] ANONYMOUS_URL = {
-        "/auth/login", "/auth/register",
-    };
+    private static final String[] ANONYMOUS_URL = {"/auth/login", "/auth/register", "/oauth/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter)

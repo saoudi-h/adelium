@@ -14,9 +14,9 @@ import lombok.experimental.SuperBuilder;
 /**
  * Represents a multiple choice quiz question.
  * <p>
- *     Extends the AbstractQuestion class and implements the Propositional interface.
- *     It is a generic class, with the type of the options as a parameter.
- *     It is also a JPA entity.
+ * Extends the AbstractQuestion class and implements the Propositional interface.
+ * It is a generic class, with the type of the options as a parameter.
+ * It is also a JPA entity.
  * </p>
  *
  * @see BaseQuestion

@@ -1,6 +1,6 @@
 plugins {
-	id 'java'
-	id 'com.diffplug.spotless'
+    id 'java'
+    id 'com.diffplug.spotless'
 }
 
 repositories {
@@ -11,7 +11,7 @@ group = 'com.adelium'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '21'
+    sourceCompatibility = '21'
 }
 
 spotless {
@@ -21,8 +21,8 @@ spotless {
 				exclude '**/build/**', '**/build-*/**'
 		}
 		googleJavaFormat('1.18.1').aosp().reflowLongStrings().skipJavadocFormatting()
-		removeUnusedImports()
 		formatAnnotations()
+		removeUnusedImports()
 		trimTrailingWhitespace()
       	endWithNewline()
 	    toggleOffOn()
@@ -62,16 +62,16 @@ spotless {
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 dependencies {
-	implementation libs.google.java.format
-	testImplementation libs.spring.boot.test
+    implementation libs.google.java.format
+    testImplementation libs.spring.boot.test
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

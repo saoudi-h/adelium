@@ -37,13 +37,12 @@ public class UserService implements UserDetailsService {
      * Return the avatar of the user.
      * from Gravatar if exists, from ui-avatars.com otherwise
      *
+     * @param email     the email of the user
+     * @param firstname the firstname of the user
+     * @param lastname  the lastname of the user
+     * @return the avatar of the user, null if an error occurs
      * @see <a href="https://fr.gravatar.com/">Gravatar</a>
      * @see <a href="https://ui-avatars.com/">ui-avatars.com</a>
-     *
-     * @param email the email of the user
-     * @param firstname the firstname of the user
-     * @param lastname the lastname of the user
-     * @return the avatar of the user, null if an error occurs
      */
     public String getGravatar(String email, String firstname, String lastname) {
         try {

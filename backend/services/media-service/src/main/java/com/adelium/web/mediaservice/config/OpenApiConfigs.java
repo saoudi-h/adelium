@@ -20,9 +20,9 @@ public class OpenApiConfigs {
     /**
      * Configures custom OpenAPI documentation.
      *
-     * @param serviceTitle    the title of the service
-     * @param serviceVersion  the version of the service
-     * @param url             the URL of the service
+     * @param serviceTitle   the title of the service
+     * @param serviceVersion the version of the service
+     * @param url            the URL of the service
      * @return the custom OpenAPI configuration
      */
     @Bean

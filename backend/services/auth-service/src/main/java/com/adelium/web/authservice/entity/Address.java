@@ -10,11 +10,11 @@ import lombok.*;
 /**
  * This class represents a user Address.
  * <p>
- *     The address has a street number, a street, an additional info, a city, a postal code, a country, a department number.
- *     It is associated with a user.
+ * The address has a street number, a street, an additional info, a city, a postal code, a country, a department number.
+ * It is associated with a user.
  * </p>
- * @see BaseEntity
  *
+ * @see BaseEntity
  */
 @NoArgsConstructor
 @AllArgsConstructor

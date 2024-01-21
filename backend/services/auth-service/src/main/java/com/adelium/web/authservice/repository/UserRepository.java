@@ -14,14 +14,13 @@ import org.springframework.stereotype.Repository;
  * It extends the BaseRepository interface.
  * It also contains a method to find a user by its username.
  * <p>
- *     The @RepositoryRestResource annotation is used to customize the REST endpoint.
- *     It is used to change the path of the endpoint, and the name of the collection.
- *     The path is the part of the URL after the application name.
+ * The @RepositoryRestResource annotation is used to customize the REST endpoint.
+ * It is used to change the path of the endpoint, and the name of the collection.
+ * The path is the part of the URL after the application name.
  * </p>
  *
  * @see BaseRepository
  * @see User
- *
  */
 @Repository
 @Transactional
@@ -30,6 +29,7 @@ public interface UserRepository extends BaseRepository<User, Long> {
 
     /**
      * Finds a user by its username.
+     *
      * @param username the username of the user to find
      * @return an Optional containing the user if found, or an empty Optional otherwise
      */
