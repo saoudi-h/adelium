@@ -1,5 +1,5 @@
 /* (C)2023 */
-package com.adelium.web.gateway;
+package com.adelium.web.gatewayservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
