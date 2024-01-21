@@ -15,6 +15,7 @@ public class TokenDTO extends BaseDTO<Long> {
     public String token;
 
     @NotBlank(message = "Token type is mandatory")
+    @Builder.Default
     public TokenType tokenType = TokenType.BEARER;
 
     public boolean revoked;

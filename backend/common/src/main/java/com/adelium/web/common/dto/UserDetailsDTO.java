@@ -33,10 +33,10 @@ public class UserDetailsDTO extends BaseDTO<Long> implements UserDetails {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    private boolean accountNonExpired = true;
-    private boolean accountNonLocked = true;
-    private boolean credentialsNonExpired = true;
-    private boolean enabled = true;
+    @Builder.Default private boolean accountNonExpired = true;
+    @Builder.Default private boolean accountNonLocked = true;
+    @Builder.Default private boolean credentialsNonExpired = true;
+    @Builder.Default private boolean enabled = true;
 
     // @NotEmpty(message = "Authorities must not be empty")
     // @Valid
