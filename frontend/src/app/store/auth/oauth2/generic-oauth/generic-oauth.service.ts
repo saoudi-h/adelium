@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { Token } from '@core/dto/Token'
 import { Observable } from 'rxjs'
-import { environment } from 'src/environments/environment.development'
+import { environment } from 'src/environments/environment'
 
 @Injectable()
 export abstract class GenericOauthService {

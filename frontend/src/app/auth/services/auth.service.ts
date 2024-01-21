@@ -7,7 +7,7 @@ import { UserRegister } from '@core/dto/UserRegister'
 import { Store } from '@ngrx/store'
 import * as AuthActions from '@store/auth/auth.actions'
 import { Observable, catchError, switchMap, throwError } from 'rxjs'
-import { environment } from 'src/environments/environment.development'
+import { environment } from 'src/environments/environment'
 @Injectable({
     providedIn: 'root',
 })

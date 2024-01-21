@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { environment } from 'src/environments/environment.development'
+import { environment } from 'src/environments/environment'
 import { RoleActions } from './auth/role/role.actions'
 import { UserActions } from './auth/user/user.actions'
 import { BankDefaultActions } from './evaluation/bank/bank-default/bank-default.actions'

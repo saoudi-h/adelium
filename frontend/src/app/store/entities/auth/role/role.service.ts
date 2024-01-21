@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Role } from '@core/entity/auth/role.entity'
 import { GenericService } from '@store/entities/generic/generic.service'
-import { environment } from 'src/environments/environment.development'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
     providedIn: 'root',

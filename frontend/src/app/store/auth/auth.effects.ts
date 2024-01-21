@@ -18,7 +18,7 @@ import {
     take,
     tap,
 } from 'rxjs/operators'
-import { environment } from 'src/environments/environment.development'
+import { environment } from 'src/environments/environment'
 @Injectable()
 export class AuthEffects {
     private maxRefreshAttempts = environment.maxRefreshAttempts
