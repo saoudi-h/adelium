@@ -1,11 +1,13 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 // https://spring.io/guides/gs/multi-module/
 // https://www.youtube.com/watch?v=tr5_OWgXDiw
 
 plugins {
     id 'com.adelium.web.common-conventions'
     id 'java-library'
-    id 'org.springframework.boot' version '3.2.1' apply false
-    id 'io.spring.dependency-management' version '1.1.4'
+    alias libs.plugins.plugin.spring.boot apply false
+    alias libs.plugins.plugin.spring.dependency.management
 }
 
 dependencies {
@@ -28,6 +30,6 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        mavenBom SpringBootPlugin.BOM_COORDINATES
     }
 }
