@@ -70,9 +70,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (username != null
                     && SecurityContextHolder.getContext().getAuthentication() == null) {
                 // user not connected
-                System.out.println("before getting user details");
                 UserDetailsDTO userDetails = getUserDetails(username);
-                System.out.println("after getting user details");
 
                 if (userDetails != null && jwtService.isTokenValid(jwtToken, userDetails)) {
                     Claims claims = jwtService.extractAllClaims(jwtToken);

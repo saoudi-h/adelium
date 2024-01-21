@@ -9,8 +9,6 @@ public class GoogleUserInfoParser implements UserInfoParser {
     @Override
     public OAuthUser parse(String userInfoJson) {
 
-        // TODO : parse the REAL JSON response from Google to get the user info
-        // currently, we just return the same thing as GitHub, which is probably wrong
         ObjectMapper mapper = new ObjectMapper();
 
         try {
