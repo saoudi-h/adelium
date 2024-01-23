@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.adelium.web.common.service;
 
+import com.adelium.web.common.exception.CsvCreationException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,7 +24,9 @@ public class ExportService {
                 CSVPrinter csvPrinter =
                         new CSVPrinter(
                                 new OutputStreamWriter(out, StandardCharsets.UTF_8),
-                                CSVFormat.DEFAULT.withHeader(extractHeader(entityClass)))) {
+                                CSVFormat.Builder.create()
+                                        .setHeader(extractHeader(entityClass))
+                                        .build())) {
 
             for (Object entity : entities) {
                 csvPrinter.printRecord(extractValues(entity));
@@ -31,7 +34,7 @@ public class ExportService {
             csvPrinter.flush();
             return out.toByteArray();
         } catch (IOException | IllegalAccessException e) {
-            throw new RuntimeException("Erreur lors de la création du fichier CSV", e);
+            throw new CsvCreationException("Erreur lors de la création du fichier CSV", e);
         }
     }
 
