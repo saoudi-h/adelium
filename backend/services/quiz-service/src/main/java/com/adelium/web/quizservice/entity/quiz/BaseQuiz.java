@@ -10,10 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -51,9 +48,9 @@ public abstract class BaseQuiz<Q extends Question<M>, M extends Media> extends B
     @Column(nullable = false)
     private String imageUrl;
 
-    @Column private boolean enabled = false;
+    @Column @Builder.Default private boolean enabled = false;
 
-    @Column private boolean isPublic = false;
+    @Column @Builder.Default private boolean isPublic = false;
 
     @Column(nullable = false)
     private Long ownerId;

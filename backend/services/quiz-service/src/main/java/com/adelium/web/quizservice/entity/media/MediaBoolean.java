@@ -3,10 +3,7 @@ package com.adelium.web.quizservice.entity.media;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
@@ -22,7 +19,10 @@ public class MediaBoolean extends BaseMedia {
      */
     @Column private Boolean content;
 
-    @Column private String type = "boolean";
+    /**
+     * The type of the media.
+     */
+    @Column @Builder.Default private String type = "boolean";
 
     @Override
     public String getType() {

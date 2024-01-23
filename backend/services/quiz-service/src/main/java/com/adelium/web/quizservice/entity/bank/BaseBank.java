@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import java.util.Set;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -60,9 +61,9 @@ public abstract class BaseBank<Q extends Question<M>, M extends Media> extends B
     @Column(nullable = false)
     private String imageUrl;
 
-    @Column private boolean enabled = false;
+    @Column @Builder.Default private boolean enabled = false;
 
-    @Column private boolean isPublic = false;
+    @Column @Builder.Default private boolean isPublic = false;
 
     @Column(nullable = false)
     private Long ownerId;
