@@ -1,6 +1,10 @@
 spring:
+  security:
+    user:
+      name: ${DISCOVERY_SERVICE_USERNAME:user}
+      password: ${DISCOVERY_SERVICE_PASSWORD:password}
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://${CONFIG_SERVICE_USERNAME:user}:${CONFIG_SERVICE_PASSWORD:password}@localhost:8888
   application:
     name: discovery-service
 server:
