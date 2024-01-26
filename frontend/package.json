@@ -4,7 +4,11 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
+        "start:profile": "ng serve --configuration",
         "build": "ng build",
+        "build:profile": "ng build --configuration",
+        "build:docker": "ng build --configuration=docker",
+        "build:ssl": "ng build --configuration=ssl",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "lint": "ng lint",
