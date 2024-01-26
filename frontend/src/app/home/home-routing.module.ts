@@ -32,6 +32,18 @@ const routes: Routes = [
                 },
             },
             {
+                path: 'presentation',
+                loadComponent: () =>
+                    import('./pages/presentation/presentation.component').then(
+                        mod => mod.PresentationComponent
+                    ),
+                data: {
+                    breadcrumb: 'Présentation',
+                    icon: 'presentation-icon',
+                    active: true,
+                },
+            },
+            {
                 path: '**',
                 loadComponent: () =>
                     import('./pages/not-found/not-found.component').then(
