@@ -1,0 +1,22 @@
+# Étape de construction
+FROM node:21-alpine3.18 AS builder
+
+WORKDIR /usr/local/app
+
+COPY /frontend .
+
+RUN npm install
+
+RUN npm run build:ssl
+
+# Étape de déploiement
+FROM nginx:1.21.3-alpine
+
+# Copier les certificats
+# COPY /frontend/.nginx/certs/ /etc/nginx/certs/
+COPY /frontend/.nginx/nginx.prod.conf /etc/nginx/conf.d/nginx.conf
+
+# Copier les fichiers de l'application
+COPY --from=builder /usr/local/app/dist/adelium /usr/share/nginx/html
+
+EXPOSE 80
