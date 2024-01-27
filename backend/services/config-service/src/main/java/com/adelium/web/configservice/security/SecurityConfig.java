@@ -18,7 +18,13 @@ public class SecurityConfig {
                         csrf ->
                                 csrf.ignoringRequestMatchers(
                                         "/actuator/**", "/encrypt/**", "/decrypt/**"))
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(
+                        authorize ->
+                                authorize
+                                        .requestMatchers("/actuator/**")
+                                        .permitAll()
+                                        .anyRequest()
+                                        .authenticated())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
