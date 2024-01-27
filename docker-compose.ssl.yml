@@ -1,0 +1,249 @@
+services:
+  #######################################################################################################
+  # databases
+  #######################################################################################################
+
+  ##########################################
+  # data-auth:
+  ##########################################
+  data-auth:
+    container_name: data-auth
+    image: mysql:8.3.0
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    volumes:
+      - data-auth-vol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: adel_auth
+
+  ##########################################
+  # data-quiz:
+  ##########################################
+  data-quiz:
+    container_name: data-quiz
+    image: mysql:8.3.0
+    ports:
+      - "3308:3306"
+
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    volumes:
+      - data-quiz-vol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: adel_quiz
+
+  ##########################################
+  # data-media:
+  ##########################################
+  data-media:
+    container_name: data-media
+    image: mysql:8.3.0
+    ports:
+      - "3309:3306"
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    volumes:
+      - data-media-vol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: adel_media
+
+  #######################################################################################################
+  # backend
+  #######################################################################################################
+
+  ##########################################
+  # config-service
+  ##########################################
+  config-service:
+    container_name: config-service
+    build:
+      context: ./backend/
+      dockerfile: services/config-service/Dockerfile
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: wget -qO- https://localhost:8888/actuator/health || exit 1
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    environment:
+      SPRING_PROFILES_ACTIVE: ssl
+  ##########################################
+  # discovery-service
+  ##########################################
+  discovery-service:
+    container_name: discovery-service
+    build:
+      context: ./backend/
+      dockerfile: services/discovery-service/Dockerfile
+    ports:
+      - "8761:8761"
+    depends_on:
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: wget -qO- https://localhost:8761/actuator/health || exit 1
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    environment:
+      SPRING_PROFILES_ACTIVE: ssl
+      CONFIG_SERVICE_PASSWORD: password
+      CONFIG_SERVICE_USERNAME: user
+
+  ##########################################
+  # gateway-service
+  ##########################################
+  gateway-service:
+    container_name: gateway-service
+    build:
+      context: ./backend/
+      dockerfile: services/gateway-service/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+    healthcheck:
+      test: wget -qO- https://localhost:8080/actuator/health || exit 1
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    environment:
+      SPRING_PROFILES_ACTIVE: ssl
+      CONFIG_SERVICE_PASSWORD: password
+      CONFIG_SERVICE_USERNAME: user
+
+  ##########################################
+  # auth-service
+  ##########################################
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ./backend/
+      dockerfile: services/auth-service/Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      data-auth:
+        condition: service_started
+    healthcheck:
+      test: wget -qO- https://localhost:8081/actuator/health || exit 1
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    environment:
+      SPRING_PROFILES_ACTIVE: ssl
+      CONFIG_SERVICE_PASSWORD: password
+      CONFIG_SERVICE_USERNAME: user
+
+
+  ##########################################
+  # quiz-service
+  ##########################################
+  quiz-service:
+    container_name: quiz-service
+    build:
+      context: ./backend/
+      dockerfile: services/quiz-service/Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      data-quiz:
+        condition: service_started
+    healthcheck:
+      test: wget -qO- https://localhost:8082/actuator/health || exit 1
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    environment:
+      SPRING_PROFILES_ACTIVE: ssl
+      CONFIG_SERVICE_PASSWORD: password
+      CONFIG_SERVICE_USERNAME: user
+
+
+  ##########################################
+  # media-service
+  ##########################################
+  media-service:
+    container_name: media-service
+    build:
+      context: ./backend/
+      dockerfile: services/media-service/Dockerfile
+    ports:
+      - "8083:8083"
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      data-media:
+        condition: service_started
+    healthcheck:
+      test: wget -qO- https://localhost:8083/actuator/health || exit 1
+      interval: 25s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    environment:
+      SPRING_PROFILES_ACTIVE: ssl
+      CONFIG_SERVICE_PASSWORD: password
+      CONFIG_SERVICE_USERNAME: user
+
+
+  #######################################################################################################
+  # frontend
+  #######################################################################################################
+
+  ##########################################
+  # frontend-angular
+  ##########################################
+  frontend-angular:
+    container_name: frontend-angular
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.ssl
+    ports:
+      - "443:443"
+    environment:
+      PRODUCTION: true
+
+#######################################################################################################
+# volumes
+#######################################################################################################
+volumes:
+  data-auth-vol:
+  data-quiz-vol:
+  data-media-vol:
