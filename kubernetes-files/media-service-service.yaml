@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\Hakim\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert -f docker-compose.prod.yml -o kubernetes-files/
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: media-service
+  name: media-service
+spec:
+  ports:
+    - name: "8083"
+      port: 8083
+      targetPort: 8083
+  selector:
+    io.kompose.service: media-service
+status:
+  loadBalancer: {}

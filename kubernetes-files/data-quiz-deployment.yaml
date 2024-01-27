@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\Hakim\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert -f docker-compose.prod.yml -o kubernetes-files/
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: data-quiz
+  name: data-quiz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: data-quiz
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\Hakim\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert -f docker-compose.prod.yml -o kubernetes-files/
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/adelium-default: "true"
+        io.kompose.service: data-quiz
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: adel_quiz
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+          image: mysql:8.3.0
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin ping -h localhost
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 25
+            timeoutSeconds: 10
+          name: data-quiz
+          ports:
+            - containerPort: 3306
+              # hostPort: 3308
+              protocol: TCP
+          resources: 
+            limits:
+              cpu: 500m
+              ephemeral-storage: 1Gi
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 500Mi
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: data-quiz-vol
+      restartPolicy: Always
+      volumes:
+        - name: data-quiz-vol
+          persistentVolumeClaim:
+            claimName: data-quiz-vol
+status: {}

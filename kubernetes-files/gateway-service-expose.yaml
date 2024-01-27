@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  labels:
+    io.kompose.service: gateway-service
+  name: gateway-service-expose
+  namespace: default
+spec:
+  allocateLoadBalancerNodePorts: true
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    io.kompose.service: gateway-service
+  type: LoadBalancer
