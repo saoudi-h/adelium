@@ -1,0 +1,16 @@
+server:
+  ssl:
+    key-alias: media-service
+    key-store: classpath:media-service.jks
+    key-store-type: JKS
+    key-store-password: password
+    trust-store: classpath:truststore.jks
+    trust-store-password: password
+    trust-store-type: JKS
+    enabled: true
+
+spring:
+  config:
+    import: optional:configserver:https://${CONFIG_SERVICE_USERNAME:user}:${CONFIG_SERVICE_PASSWORD:password}@config-service:8888
+  application:
+    name: media-service

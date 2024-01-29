@@ -1,0 +1,16 @@
+spring:
+  config:
+    import: optional:configserver:https://${CONFIG_SERVICE_USERNAME:user}:${CONFIG_SERVICE_PASSWORD:password}@config-service:8888
+  application:
+    name: discovery-service
+server:
+  ssl:
+    key-alias: discovery-service
+    key-store: classpath:discovery-service.jks
+    key-store-type: JKS
+    key-store-password: password
+    trust-store: classpath:truststore.jks
+    trust-store-password: password
+    trust-store-type: JKS
+    enabled: true
+  port: 8761

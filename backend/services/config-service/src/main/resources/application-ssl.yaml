@@ -1,0 +1,36 @@
+
+server:
+  port: 8888
+  ssl:
+    key-alias: config-service
+    key-store: classpath:config-service.jks
+    key-store-type: JKS
+    key-store-password: password
+    trust-store: classpath:truststore.jks
+    trust-store-password: password
+    trust-store-type: JKS
+    enabled: true
+
+
+spring:
+  security:
+    user:
+      name: ${CONFIG_SERVICE_USERNAME:user}
+      password: ${CONFIG_SERVICE_PASSWORD:password}
+  application:
+    name: config-service
+  config:
+    import: application-secret.yaml
+  cloud:
+    config:
+      enabled: false
+      server:
+        git:
+          uri: "https://github.com/saoudi-h/adelium-config-cloud-github"
+          username: "saoudihakim@gmail.com"
+          password: "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"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
