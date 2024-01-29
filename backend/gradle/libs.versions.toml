@@ -44,6 +44,7 @@ springdoc-openapi-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starte
 springdoc-openapi-webflux-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springdoc-openapi" }
 spring-boot-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
 spring-boot-data-rest = { module = "org.springframework.boot:spring-boot-starter-data-rest", version.ref = "spring-boot" }
+# // TODO: remove this dependency, it is imported twice, both are used.
 spirng-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
 spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
