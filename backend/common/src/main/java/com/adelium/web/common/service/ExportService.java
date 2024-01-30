@@ -34,7 +34,7 @@ public class ExportService {
             csvPrinter.flush();
             return out.toByteArray();
         } catch (IOException | IllegalAccessException e) {
-            throw new CsvCreationException("Erreur lors de la création du fichier CSV", e);
+            throw new CsvCreationException("Error while creating CSV file", e);
         }
     }
 
