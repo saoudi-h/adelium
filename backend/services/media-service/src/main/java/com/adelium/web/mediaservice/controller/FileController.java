@@ -12,13 +12,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * File controller.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/files")
 public class FileController {
 
+    /**
+     * File storage service.
+     */
     private final FileStorageService fileStorageService;
 
+    /**
+     * Uploads file.
+     *
+     * @param file      file
+     * @param isPublic  is public
+     * @param principal principal
+     * @return upload response
+     */
     @PostMapping("/upload/{isPublic}")
     public ResponseEntity<UploadResponse> uploadPublicFile(
             @RequestParam("file") MultipartFile file,
@@ -35,6 +49,14 @@ public class FileController {
         return ResponseEntity.ok(UploadResponse.builder().url(fileDownloadUri).build());
     }
 
+    /**
+     * Downloads file.
+     *
+     * @param fileName  file name
+     * @param isPublic  is public
+     * @param principal principal
+     * @return file
+     */
     @GetMapping("/{isPublic}/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(
             @PathVariable("fileName") String fileName,

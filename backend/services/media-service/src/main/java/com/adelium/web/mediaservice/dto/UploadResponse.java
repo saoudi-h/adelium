@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Upload response DTO.
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

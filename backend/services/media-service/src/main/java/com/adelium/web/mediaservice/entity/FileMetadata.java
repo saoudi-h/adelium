@@ -9,6 +9,9 @@ import jakarta.persistence.TemporalType;
 import java.util.Date;
 import lombok.*;
 
+/**
+ * File metadata entity.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
