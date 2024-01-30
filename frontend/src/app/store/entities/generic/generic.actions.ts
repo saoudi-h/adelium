@@ -207,22 +207,6 @@ export function createEntityActions<T extends Identifiable>(
             `[${entityType}] Export Selection Failure`,
             props<{ error: string }>()
         ),
-        // removeRelatedEntity: createAction(
-        //     `[${entityType}] Remove Related Entity`,
-        //     props<{
-        //         entityId: number
-        //         relation: string
-        //         relatedEntityId: number
-        //     }>()
-        // ),
-        // removeRelatedEntitySuccess: createAction(
-        //     `[${entityType}] Remove Related Entity Success`,
-        //     props<{ relation: string; relatedEntityId: number }>()
-        // ),
-        // removeRelatedEntityFailure: createAction(
-        //     `[${entityType}] Remove Related Entity Failure`,
-        //     props<{ error: string }>()
-        // ),
 
         resetEntities: createAction(`[${entityType}] Reset Entities`),
     }
