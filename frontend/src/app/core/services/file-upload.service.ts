@@ -26,17 +26,15 @@ export class FileUploadService {
                 })
                 .subscribe({
                     next: (event: HttpEvent<any>) => {
-                        switch (event.type) {
-                            case HttpEventType.Response:
-                                if (event.body && event.body.url) {
-                                    observer.next(event.body.url)
-                                    observer.complete()
-                                } else {
-                                    observer.error(
-                                        'URL non retournée par le serveur'
-                                    )
-                                }
-                                break
+                        if (event.type === HttpEventType.Response) {
+                            if (event?.body.url) {
+                                observer.next(event.body.url)
+                                observer.complete()
+                            } else {
+                                observer.error(
+                                    'URL non retournée par le serveur'
+                                )
+                            }
                         }
                     },
                     error: error => {
