@@ -24,7 +24,7 @@ test('should display a desabled login button', async ({ page }) => {
 
 test('should display a enabled login button', async ({ page }) => {
     await page.goto(loginPage)
-    await page.getByLabel('Adresse Email').fill('moha@lasqual.com')
+    await page.getByLabel('Adresse Email').fill('hakim.saoudi@adelium.com')
     await page.getByLabel('Mot de passe').fill('kOmpLikaYTidPass1234?')
     await expect(
         page
